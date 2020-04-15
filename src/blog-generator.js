@@ -1,14 +1,17 @@
-const fs = require("fs");
+const fs = require('fs');
+const path = require('path');
 
 const showdown  = require('showdown');
 const converter = new showdown.Converter();
 
 const { 
-  relativePath,
-  createPathIfAbsent
+  createPathIfAbsent,
+  getConfigPaths
 } = require('./helpers.js');
 
-const blogTemplate = fs.readFileSync(relativePath('src/templates/[blog].html'), 'utf-8');
+const {sourcePath, destinationPath, contentPath} = getConfigPaths();
+
+const blogTemplate = fs.readFileSync(path.join(sourcePath, '[blog]', 'index.html'), 'utf-8');
 let metaInfoMemoize = {};
 
 
@@ -27,7 +30,7 @@ function getBlogMeta(blogSlug) {
 
   let meta;
   try {
-    meta = JSON.parse(fs.readFileSync(relativePath(`content/${blogSlug}/meta.json`), 'utf-8'));
+    meta = JSON.parse(fs.readFileSync(path.join(contentPath, blogSlug, 'meta.json'), 'utf-8'));
   } catch(err) {
     meta = {title: blogSlug, description: `Hi, This is ${blogSlug}...`}
   }
@@ -42,7 +45,7 @@ function getBlogMeta(blogSlug) {
  */
 function getBlogPageHTML(blogSlug) {
   // get markdown and convert into HTML
-  const markdown = fs.readFileSync(relativePath(`content/${blogSlug}/index.md`), 'utf-8');
+  const markdown = fs.readFileSync(path.join(contentPath, blogSlug, 'index.md'), 'utf-8');
   const content = converter.makeHtml(markdown);
 
   // get META information of blog from meta.json file
@@ -63,21 +66,24 @@ function getBlogPageHTML(blogSlug) {
  */
 function copyBlogAssets(blogSlug) {
 // Copy other files from content directory if exist
-  const assetsList = fs.readdirSync(relativePath('content/' + blogSlug))
+  const assetsList = fs.readdirSync(path.join(contentPath, blogSlug))
     .filter(val => val !== 'index.md' && val !== 'meta.json');
 
   for(let asset of assetsList) {
-    fs.copyFileSync(relativePath(`content/${blogSlug}/${asset}`), relativePath(`dist/${blogSlug}/${asset}`));
+    fs.copyFileSync(
+      path.join(contentPath, blogSlug, asset), 
+      path.join(destinationPath, blogSlug, asset)
+    );
   }
 }
 
 function generateBlog(blogSlug) {
   // Create blog directory in dist if doesn't exist
-  createPathIfAbsent(relativePath(`dist/${blogSlug}`));
+  createPathIfAbsent(path.join(destinationPath, blogSlug));
 
   // Get HTML Content of Blog and write it.
-  const blogIndexHTML = getBlogPageHTML(blogSlug);
-  fs.writeFileSync(relativePath(`dist/${blogSlug}/index.html`), blogIndexHTML);
+  const blogIndexHTML = getBlogPageHTML(blogSlug, contentPath);
+  fs.writeFileSync(path.join(destinationPath, blogSlug, 'index.html'), blogIndexHTML);
 
   // Copy Blog Assets (images, other files, etc.)
   copyBlogAssets(blogSlug);

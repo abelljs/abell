@@ -1,5 +1,5 @@
 module.exports = {
-  source: 'src',
-  destination: 'dist',
+  sourcePath: 'pages',
+  destinationPath: 'dist',
   contentPath: 'content'
 }

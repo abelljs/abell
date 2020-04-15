@@ -1,12 +1,15 @@
 const fs = require('fs')
+const path = require('path');
 
-const { relativePath, getDirectories } = require('./helpers.js');
+const { getDirectories, getConfigPaths } = require('./helpers.js');
 const { getBlogMeta } = require('./blog-generator.js');
 
 
-function createLandingPage() {
+function generateLandingPage() {
+  const {sourcePath, destinationPath, contentPath} = getConfigPaths();
+
   const metaInfos = {}
-  for(let blogSlug of getDirectories('content')) {
+  for(let blogSlug of getDirectories(contentPath)) {
     metaInfos[blogSlug] = getBlogMeta(blogSlug);
   }
 
@@ -19,15 +22,17 @@ function createLandingPage() {
     `
   }).join('');
 
-  const indexTemplate = fs.readFileSync(relativePath('src/templates/index.html'), 'utf-8');
+  const indexTemplate = fs.readFileSync(path.join(sourcePath, 'index.html'), 'utf-8');
 
   const indexHTMLContent = indexTemplate
     .replace(/{\% ?articlesList ?\%}/g, articlesHTML);
 
-  fs.writeFileSync(relativePath(`dist/index.html`), indexHTMLContent);
+  fs.writeFileSync(path.join(destinationPath, 'index.html'), indexHTMLContent);
+
+  console.log("...Built Landing Page");
 }
 
 
 module.exports = {
-  createLandingPage
+  generateLandingPage
 }

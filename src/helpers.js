@@ -1,13 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-/**
- * @method relativePath
- * @description generates responsive path for different operating systems
- * @param {String} pathString 
- */
-const relativePath = pathString => path.join(process.cwd(), ...pathString.split('/')); 
-
+const relativeJoinedPath = pathString => path.join(process.cwd(), ...pathString.split('/'));
 
 const getDirectories = source =>
   fs.readdirSync(source, { withFileTypes: true })
@@ -28,6 +22,12 @@ const rmdirRecursiveSync = function(pathToRemove) {
   }
 };
 
+const getConfigPaths = () => {
+  const destinationPath = relativeJoinedPath('dist');
+  const sourcePath = relativeJoinedPath('pages');
+  const contentPath = relativeJoinedPath('content');
+  return {destinationPath, sourcePath, contentPath}
+}
 
 const createPathIfAbsent = pathToCreate => {
   if(!fs.existsSync(pathToCreate)) {
@@ -36,8 +36,9 @@ const createPathIfAbsent = pathToCreate => {
 } 
 
 module.exports = {
-  relativePath,
+  relativeJoinedPath,
   getDirectories,
   rmdirRecursiveSync,
+  getConfigPaths,
   createPathIfAbsent
 }
