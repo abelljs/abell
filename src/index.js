@@ -41,6 +41,17 @@ function build() {
   console.log(`\n\n>> Your blog is ready at '${destinationPath.split('/').slice(-1)}' 🐨 🎉 \n\n`);
 }
 
-build();
 
+// Main
+const cliArguments = process.argv.slice(2);
+
+switch(cliArguments[0]) {
+  case 'build':
+    build();
+    break;
+  
+  default:
+    console.log("Unknown command 😔 .")
+    break;
+}
 
