@@ -1,6 +1,6 @@
 {
   "name": "abell",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Abell is a static blog generator that generates blog in Vanilla JavaScript",
   "main": "dist/index.js",
   "bin": {
@@ -25,6 +25,8 @@
   },
   "homepage": "https://github.com/abelljs/abell#readme",
   "dependencies": {
+    "browser-sync": "^2.26.7",
+    "serve-handler": "^6.1.2",
     "showdown": "^1.9.1"
   },
   "devDependencies": {
