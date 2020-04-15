@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/abelljs/abell/issues"
   },
-  "homepage": "https://github.com/abelljs/abell#readme"
+  "homepage": "https://github.com/abelljs/abell#readme",
+  "dependencies": {
+    "showdown": "^1.9.1"
+  }
 }
