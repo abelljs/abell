@@ -1,3 +1,5 @@
 const fse = require('fs-extra');
 
-fse.copy('src', 'dist');
+fse.copySync('src', 'dist');
+
+console.log(">> Abell built 🌻 ");
