@@ -9,7 +9,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "node build/build.main.js",
-    "dev": "cd demo && node ../src/index.js",
+    "dev:build": "cd demo && node ../src/index.js",
+    "dev:server": "serve demo/dist",
     "prepublishOnly": "npm run build"
   },
   "repository": {
