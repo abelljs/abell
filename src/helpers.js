@@ -1,13 +1,12 @@
 const fs = require('fs');
-const util = require('util');
 const path = require('path');
 
 /**
- * @method rPath
+ * @method relativePath
  * @description generates responsive path for different operating systems
  * @param {String} pathString 
  */
-const rPath = pathString => path.join(...pathString.split('/')); 
+const relativePath = pathString => path.join(process.cwd(), ...pathString.split('/')); 
 
 
 const getDirectories = source =>
@@ -37,7 +36,7 @@ const createPathIfAbsent = pathToCreate => {
 } 
 
 module.exports = {
-  rPath,
+  relativePath,
   getDirectories,
   rmdirRecursiveSync,
   createPathIfAbsent

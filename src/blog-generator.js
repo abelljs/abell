@@ -4,11 +4,11 @@ const showdown  = require('showdown');
 const converter = new showdown.Converter();
 
 const { 
-  rPath,
+  relativePath,
   createPathIfAbsent
 } = require('./helpers.js');
 
-const blogTemplate = fs.readFileSync(rPath('src/templates/[blog].html'), 'utf-8');
+const blogTemplate = fs.readFileSync(relativePath('src/templates/[blog].html'), 'utf-8');
 let metaInfoMemoize = {};
 
 
@@ -27,7 +27,7 @@ function getBlogMeta(blogSlug) {
 
   let meta;
   try {
-    meta = JSON.parse(fs.readFileSync(rPath(`content/${blogSlug}/meta.json`), 'utf-8'));
+    meta = JSON.parse(fs.readFileSync(relativePath(`content/${blogSlug}/meta.json`), 'utf-8'));
   } catch(err) {
     meta = {title: blogSlug, description: `Hi, This is ${blogSlug}...`}
   }
@@ -42,7 +42,7 @@ function getBlogMeta(blogSlug) {
  */
 function getBlogPageHTML(blogSlug) {
   // get markdown and convert into HTML
-  const markdown = fs.readFileSync(rPath(`content/${blogSlug}/index.md`), 'utf-8');
+  const markdown = fs.readFileSync(relativePath(`content/${blogSlug}/index.md`), 'utf-8');
   const content = converter.makeHtml(markdown);
 
   // get META information of blog from meta.json file
@@ -63,21 +63,21 @@ function getBlogPageHTML(blogSlug) {
  */
 function copyBlogAssets(blogSlug) {
 // Copy other files from content directory if exist
-  const assetsList = fs.readdirSync(rPath('content/' + blogSlug))
+  const assetsList = fs.readdirSync(relativePath('content/' + blogSlug))
     .filter(val => val !== 'index.md' && val !== 'meta.json');
 
   for(let asset of assetsList) {
-    fs.copyFileSync(rPath(`content/${blogSlug}/${asset}`), rPath(`dist/${blogSlug}/${asset}`));
+    fs.copyFileSync(relativePath(`content/${blogSlug}/${asset}`), relativePath(`dist/${blogSlug}/${asset}`));
   }
 }
 
 function generateBlog(blogSlug) {
   // Create blog directory in dist if doesn't exist
-  createPathIfAbsent(rPath(`dist/${blogSlug}`));
+  createPathIfAbsent(relativePath(`dist/${blogSlug}`));
 
   // Get HTML Content of Blog and write it.
   const blogIndexHTML = getBlogPageHTML(blogSlug);
-  fs.writeFileSync(rPath(`dist/${blogSlug}/index.html`), blogIndexHTML);
+  fs.writeFileSync(relativePath(`dist/${blogSlug}/index.html`), blogIndexHTML);
 
   // Copy Blog Assets (images, other files, etc.)
   copyBlogAssets(blogSlug);

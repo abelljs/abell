@@ -1,6 +1,6 @@
 const fs = require('fs')
 
-const { rPath, getDirectories } = require('./helpers.js');
+const { relativePath, getDirectories } = require('./helpers.js');
 const { getBlogMeta } = require('./blog-generator.js');
 
 
@@ -19,12 +19,12 @@ function createLandingPage() {
     `
   }).join('');
 
-  const indexTemplate = fs.readFileSync(rPath('src/templates/index.html'), 'utf-8');
+  const indexTemplate = fs.readFileSync(relativePath('src/templates/index.html'), 'utf-8');
 
   const indexHTMLContent = indexTemplate
     .replace(/{\% ?articlesList ?\%}/g, articlesHTML);
 
-  fs.writeFileSync(rPath(`dist/index.html`), indexHTMLContent);
+  fs.writeFileSync(relativePath(`dist/index.html`), indexHTMLContent);
 }
 
 
