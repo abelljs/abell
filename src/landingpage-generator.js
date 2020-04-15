@@ -29,7 +29,7 @@ function generateLandingPage() {
 
   fs.writeFileSync(path.join(destinationPath, 'index.html'), indexHTMLContent);
 
-  console.log("...Built Landing Page");
+  console.log("\n...Built Landing Page");
 }
 
 
