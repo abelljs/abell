@@ -24,5 +24,8 @@
   "homepage": "https://github.com/abelljs/abell#readme",
   "dependencies": {
     "showdown": "^1.9.1"
+  },
+  "devDependencies": {
+    "fs-extra": "^9.0.0"
   }
 }
