@@ -22,10 +22,24 @@ const rmdirRecursiveSync = function(pathToRemove) {
   }
 };
 
+let abellConfig;
 const getConfigPaths = () => {
-  const destinationPath = relativeJoinedPath('dist');
-  const sourcePath = relativeJoinedPath('pages');
-  const contentPath = relativeJoinedPath('content');
+  // If not memoized
+  if(!abellConfig) {
+    try {
+      abellConfig = require(path.join(process.cwd(), 'abell.config.js'));
+    } catch(err) {
+      abellConfig = {
+        destinationPath: 'dist',
+        sourcePath: 'pages',
+        contentPath: 'content'
+      };
+    }
+  }
+
+  const destinationPath = relativeJoinedPath(abellConfig.destinationPath);
+  const sourcePath = relativeJoinedPath(abellConfig.sourcePath);
+  const contentPath = relativeJoinedPath(abellConfig.contentPath);
   return {destinationPath, sourcePath, contentPath}
 }
 
