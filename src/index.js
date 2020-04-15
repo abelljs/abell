@@ -13,6 +13,7 @@ const { generateLandingPage } = require('./landingpage-generator.js');
 
 
 function build() {
+  console.log("\n>> Build started\n");
   // TODO: if destinationPath is not 'dist' and has contents, ask for confirmation.
 
   // Get configured paths of destination and content
