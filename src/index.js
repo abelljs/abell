@@ -18,7 +18,7 @@ const { generateBlog } = require('./blog-generator.js');
 const { generateLandingPage } = require('./landingpage-generator.js');
 
 
-function build({logs = 'complete'}) {
+function build({logs = 'complete'} = {logs: 'complete'}) {
   if(logs !== 'minimum') console.log("\n>> Build started\n");
   
   // Get configured paths of destination and content
