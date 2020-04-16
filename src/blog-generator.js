@@ -10,7 +10,6 @@ const {
 } = require('./helpers.js');
 
 
-let blogTemplate;
 let metaInfoMemoize = {};
 
 
@@ -47,7 +46,7 @@ function getBlogMeta(blogSlug) {
 function getBlogPageHTML(blogSlug) {
   const {sourcePath, contentPath} = getConfigPaths();
 
-  if(!blogTemplate) blogTemplate = fs.readFileSync(path.join(sourcePath, '[blog]', 'index.html'), 'utf-8');
+  const blogTemplate = fs.readFileSync(path.join(sourcePath, '[blog]', 'index.html'), 'utf-8');
 
   // get markdown and convert into HTML
   const markdown = fs.readFileSync(path.join(contentPath, blogSlug, 'index.md'), 'utf-8');
@@ -57,9 +56,16 @@ function getBlogPageHTML(blogSlug) {
   const meta = getBlogMeta(blogSlug);
 
   // Replace actual values with variables
-  return blogTemplate
-    .replace(regexIncludingVariable('title', 'g'), (meta.title || blogSlug))
-    .replace(regexIncludingVariable('description', 'g'), (meta.description || ''))
+  let newTemplate = Object.entries(meta)
+    .reduce((prevVal, entry) => 
+      prevVal.replace(
+        regexIncludingVariable(entry[0], 'g'), 
+        (entry[1] || '')
+      ),
+      blogTemplate
+    )
+
+  return newTemplate
     .replace(regexIncludingVariable('blogContent', ''), content)
 }
 

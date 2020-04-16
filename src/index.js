@@ -11,8 +11,7 @@ const {
   getConfigPaths,
   forcefullySetDestination,
   copyFolderSync,
-  boldGreen,
-  grey
+  boldGreen
 } = require('./helpers.js');
 
 const { generateBlog } = require('./blog-generator.js');
@@ -54,7 +53,7 @@ function build({logs = 'complete'}) {
 }
 
 function serve() {
-  forcefullySetDestination('.cache'); // Forces to output in .temp/ directory
+  forcefullySetDestination('.cache'); // Forces to output in .cache/ directory
 
   const {sourcePath, contentPath, destinationPath} = getConfigPaths();
   
