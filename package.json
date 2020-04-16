@@ -10,7 +10,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "node build/build.main.js",
     "dev:build": "cd demo && node ../src/index.js build",
-    "dev:server": "npm run dev serve",
+    "dev:server": "cd demo && node ../src/index.js serve",
     "dev": "npm run dev:server",
     "prepublishOnly": "npm run build"
   },

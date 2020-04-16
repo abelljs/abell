@@ -22,19 +22,26 @@ const rmdirRecursiveSync = function(pathToRemove) {
   }
 };
 
-let abellConfig;
+const readUserConfigFile = () => {
+  let userConfig;
+  try {
+    userConfig = require(path.join(process.cwd(), 'abell.config.js'));
+  } catch(err) {
+    userConfig = {
+      destinationPath: 'dist',
+      sourcePath: 'pages',
+      contentPath: 'content'
+    };
+  }
+
+  return userConfig;
+}
+
+var abellConfig;
 const getConfigPaths = () => {
   // If not memoized
   if(!abellConfig) {
-    try {
-      abellConfig = require(path.join(process.cwd(), 'abell.config.js'));
-    } catch(err) {
-      abellConfig = {
-        destinationPath: 'dist',
-        sourcePath: 'pages',
-        contentPath: 'content'
-      };
-    }
+    abellConfig = readUserConfigFile();
   }
 
   const destinationPath = relativeJoinedPath(abellConfig.destinationPath);
@@ -42,6 +49,14 @@ const getConfigPaths = () => {
   const contentPath = relativeJoinedPath(abellConfig.contentPath);
   return {destinationPath, sourcePath, contentPath}
 }
+
+const forcefullySetDestination = (forcedDestination) => {
+  abellConfig = {
+    ...readUserConfigFile(),
+    destinationPath: forcedDestination
+  }
+}
+
 
 const createPathIfAbsent = pathToCreate => {
   if(!fs.existsSync(pathToCreate)) {
@@ -60,11 +75,18 @@ function copyFolderSync(from, to) {
   });
 }
 
+
+const boldGreen = (message) => `\u001b[1m\u001b[32m${message}\u001b[39m\u001b[22m`;
+const grey = (message) => `\u001b[90m${message}\u001b[39m`;
+
 module.exports = {
   relativeJoinedPath,
   getDirectories,
   rmdirRecursiveSync,
   getConfigPaths,
+  forcefullySetDestination,
   createPathIfAbsent,
-  copyFolderSync
+  copyFolderSync,
+  boldGreen,
+  grey
 }

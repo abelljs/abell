@@ -9,9 +9,8 @@ const {
   getConfigPaths
 } = require('./helpers.js');
 
-const {sourcePath, destinationPath, contentPath} = getConfigPaths();
 
-const blogTemplate = fs.readFileSync(path.join(sourcePath, '[blog]', 'index.html'), 'utf-8');
+let blogTemplate;
 let metaInfoMemoize = {};
 
 
@@ -27,6 +26,8 @@ function getBlogMeta(blogSlug) {
   if(metaInfoMemoize[blogSlug]) {
     return metaInfoMemoize[blogSlug];
   }
+
+  const {contentPath} = getConfigPaths();
 
   let meta;
   try {
@@ -44,6 +45,10 @@ function getBlogMeta(blogSlug) {
  * @param {string} blogSlug 
  */
 function getBlogPageHTML(blogSlug) {
+  const {sourcePath, contentPath} = getConfigPaths();
+
+  if(!blogTemplate) blogTemplate = fs.readFileSync(path.join(sourcePath, '[blog]', 'index.html'), 'utf-8');
+
   // get markdown and convert into HTML
   const markdown = fs.readFileSync(path.join(contentPath, blogSlug, 'index.md'), 'utf-8');
   const content = converter.makeHtml(markdown);
@@ -65,6 +70,8 @@ function getBlogPageHTML(blogSlug) {
  * @param {string} blogSlug 
  */
 function copyBlogAssets(blogSlug) {
+  const {contentPath, destinationPath} = getConfigPaths();
+
 // Copy other files from content directory if exist
   const assetsList = fs.readdirSync(path.join(contentPath, blogSlug))
     .filter(val => val !== 'index.md' && val !== 'meta.json');
@@ -78,18 +85,18 @@ function copyBlogAssets(blogSlug) {
 }
 
 function generateBlog(blogSlug) {
+  const {destinationPath} = getConfigPaths();
+
   // Create blog directory in dist if doesn't exist
   createPathIfAbsent(path.join(destinationPath, blogSlug));
 
   // Get HTML Content of Blog and write it.
-  const blogIndexHTML = getBlogPageHTML(blogSlug, contentPath);
+  const blogIndexHTML = getBlogPageHTML(blogSlug);
   fs.writeFileSync(path.join(destinationPath, blogSlug, 'index.html'), blogIndexHTML);
 
   // Copy Blog Assets (images, other files, etc.)
   copyBlogAssets(blogSlug);
 
-  // Print Built
-  console.log("...Built " + blogSlug);
 }
 
 
