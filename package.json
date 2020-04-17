@@ -10,8 +10,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "node build/build.main.js",
     "dev:build": "cd demo && node ../src/index.js build",
-    "dev:server": "cd demo && node ../src/index.js serve",
-    "dev": "npm run dev:server",
+    "dev:serve": "cd demo && node ../src/index.js serve",
+    "dev": "npm run dev:serve",
     "prepublishOnly": "npm run build"
   },
   "repository": {
@@ -27,6 +27,7 @@
   "homepage": "https://github.com/abelljs/abell#readme",
   "dependencies": {
     "browser-sync": "^2.26.7",
+    "commander": "^5.0.0",
     "showdown": "^1.9.1"
   },
   "devDependencies": {
