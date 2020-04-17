@@ -64,9 +64,9 @@ function getBlogPageHTML(blogSlug) {
       ),
       blogTemplate
     )
-
+  
   return newTemplate
-    .replace(regexIncludingVariable('$blogContent', ''), content)
+    .replace(regexIncludingVariable('\\$blogContent', ''), content)
 }
 
 

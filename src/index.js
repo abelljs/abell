@@ -53,7 +53,7 @@ function build({logs = 'complete'} = {logs: 'complete'}) {
 }
 
 function serve() {
-  forcefullySetDestination('.cache'); // Forces to output in .cache/ directory
+  forcefullySetDestination('.debug'); // Forces to output in .cache/ directory
 
   const {sourcePath, contentPath, destinationPath} = getConfigPaths();
   
