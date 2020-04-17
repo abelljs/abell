@@ -25,7 +25,7 @@ function generateLandingPage() {
   const indexTemplate = fs.readFileSync(path.join(sourcePath, 'index.html'), 'utf-8');
 
   const indexHTMLContent = indexTemplate
-    .replace(/{\% ?articlesList ?\%}/g, articlesHTML);
+    .replace(/{\% ?\$articlesList ?\%}/g, articlesHTML);
 
   fs.writeFileSync(path.join(destinationPath, 'index.html'), indexHTMLContent);
 

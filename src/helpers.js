@@ -29,7 +29,7 @@ const readUserConfigFile = () => {
   } catch(err) {
     userConfig = {
       destinationPath: 'dist',
-      sourcePath: 'pages',
+      sourcePath: 'src',
       contentPath: 'content'
     };
   }
