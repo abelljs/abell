@@ -28,7 +28,10 @@
   "dependencies": {
     "browser-sync": "^2.26.7",
     "commander": "^5.0.0",
-    "showdown": "^1.9.1"
+    "rehype-parse": "^6.0.2",
+    "rehype-stringify": "^7.0.0",
+    "showdown": "^1.9.1",
+    "unified": "^9.0.0"
   },
   "devDependencies": {
     "fs-extra": "^9.0.0"
