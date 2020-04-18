@@ -9,7 +9,9 @@
   <header></header>
   <h1>Hey there</h1>
   <main>
-    {% $articlesList %}
+    <article abell-for="{% meta in $contentList %}">
+      <div>{% meta.title %}</div>
+    </article>
   </main>
   <footer></footer>
 </body>
