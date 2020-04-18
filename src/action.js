@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 const browserSync = require('browser-sync');
+const chokidar = require('chokidar');
 
 const { 
   getDirectories,
@@ -9,6 +10,7 @@ const {
   getConfigPaths,
   forcefullySetDestination,
   copyFolderSync,
+  exitHandler,
   boldGreen
 } = require('./helpers.js');
 
@@ -44,7 +46,7 @@ function build({logs = 'complete'} = {logs: 'complete'}) {
 
 
   if(logs === 'minimum') {
-    console.log(`>> Built 🌻`)
+    console.log(`>> Files Built 🌻`)
   } else {
     console.log(`\n\n>> Your blog is ready at '${destinationPath.split('/').slice(-1)}' 🐨 🎉 \n\n`);
   }
@@ -54,14 +56,12 @@ function serve(port = 5000) {
   forcefullySetDestination('.debug'); // Forces to output in .cache/ directory
 
   const {sourcePath, contentPath, destinationPath} = getConfigPaths();
+
   
-  // Initial build
   build({logs: 'minimum'});
-
-  console.log('='.repeat(process.stdout.columns));
-  console.log("\n\n💫 Abell dev server running.");
+  console.log("Starting your abell-dev-server 🤠...")
   const bs = browserSync.create('abell-dev-server');
-
+  
   bs.init({
     port,
     server: destinationPath,
@@ -72,55 +72,47 @@ function serve(port = 5000) {
     reloadDelay: 1000
   });
 
+
+  // Print ports on screen
+  console.log('='.repeat(process.stdout.columns));
+  console.log("\n\n💫 Abell dev server running.");
   console.log(`${boldGreen("Local: ")} http://localhost:${port} \n\n`);
   console.log('='.repeat(process.stdout.columns));
-  
-  fs.watch(sourcePath, (eventType, fileName) => {
-    if(fileName === 'index.html') {
-      generateLandingPage();
-    } else {
-      build({logs: 'minimum'});
-    }
-    bs.reload();
-  })
 
-  for(let directory of getDirectories(sourcePath)) {
-    fs.watch(path.join(sourcePath, directory), (eventType, fileName) => {
+  chokidar
+    .watch(sourcePath, {ignoreInitial: true})
+    .on('all', (event, path) => {
       build({logs: 'minimum'});
       bs.reload();
     })
-  }
 
-  
-  for(let directory of getDirectories(contentPath)) {
-    fs.watch(path.join(contentPath, directory), (eventName, fileName) => {
-      generateBlog(directory);
+  chokidar
+    .watch(contentPath, {ignoreInitial: true})
+    .on('all', (event, path) => {
+      try{
+        const directoryName = path.slice(contentPath.length + 1).split('/')[0];
+        if(path.endsWith('.md')) {
+          generateBlog(directoryName);
+        }else{
+          build({logs: 'minimum'});
+        }
+        
+      }catch(err) {
+        build({logs: 'minimum'});
+      }
       bs.reload();
     })
-  }
 
-  function exitHandler(options, exitCode) {
-    if (options.cleanup) {
-      rmdirRecursiveSync(destinationPath);
-      console.log("\n\nBiee 🐨✌️\n");
-    }
-
-    if (options.exit) process.exit();
-  }
 
   //do something when app is closing
   process.on('exit', exitHandler.bind(null,{cleanup:true}));
-
   //catches ctrl+c event
   process.on('SIGINT', exitHandler.bind(null, {exit:true}));
-
   // catches "kill pid" (for example: nodemon restart)
   process.on('SIGUSR1', exitHandler.bind(null, {exit:true}));
   process.on('SIGUSR2', exitHandler.bind(null, {exit:true}));
-
   //catches uncaught exceptions
   process.on('uncaughtException', exitHandler.bind(null, {exit:true}));
-
 }
 
 module.exports = {build, serve};

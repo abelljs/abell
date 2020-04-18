@@ -10,7 +10,7 @@ function generateLandingPage() {
 
   const metaInfos = {}
   for(let blogSlug of getDirectories(contentPath)) {
-    metaInfos[blogSlug] = getBlogMeta(blogSlug);
+    metaInfos[blogSlug] = getBlogMeta(blogSlug, {forceFetch: true});
   }
 
   const articlesHTML = Object.entries(metaInfos).map(([slug, article]) => {
@@ -25,7 +25,7 @@ function generateLandingPage() {
   const indexTemplate = fs.readFileSync(path.join(sourcePath, 'index.html'), 'utf-8');
 
   const indexHTMLContent = indexTemplate
-    .replace(/{\% ?\$articlesList ?\%}/g, articlesHTML);
+    .replace(/{\% ?\$contentList ?\%}/g, articlesHTML);
 
   fs.writeFileSync(path.join(destinationPath, 'index.html'), indexHTMLContent);
 

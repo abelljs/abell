@@ -75,6 +75,14 @@ function copyFolderSync(from, to) {
   });
 }
 
+function exitHandler(options, exitCode) {
+  if (options.cleanup) {
+    rmdirRecursiveSync(destinationPath);
+    console.log("\n\nBiee 🐨✌️\n");
+  }
+
+  if (options.exit) process.exit();
+}
 
 const boldGreen = (message) => `\u001b[1m\u001b[32m${message}\u001b[39m\u001b[22m`;
 const grey = (message) => `\u001b[90m${message}\u001b[39m`;
@@ -87,6 +95,7 @@ module.exports = {
   forcefullySetDestination,
   createPathIfAbsent,
   copyFolderSync,
+  exitHandler,
   boldGreen,
   grey
 }
