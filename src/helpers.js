@@ -77,6 +77,7 @@ function copyFolderSync(from, to) {
 
 function exitHandler(options, exitCode) {
   if (options.cleanup) {
+    const {destinationPath} = getConfigPaths();
     rmdirRecursiveSync(destinationPath);
     console.log("\n\nBiee 🐨✌️\n");
   }
