@@ -7,15 +7,11 @@ const converter = new showdown.Converter();
 
 const { 
   createPathIfAbsent,
-  getConfigPaths
+  getAbellConfigs
 } = require('./helpers.js');
 
 
 let metaInfoMemoize = {};
-
-
-const regexIncludingVariable = (val, flag = '') => 
-  new RegExp(`{\%[ \n\t]*?${val}[ \n\t]*?\%}`, flag)
 
 /**
  * @method getBlogMeta
@@ -29,7 +25,7 @@ function getBlogMeta(blogSlug, {forceFetch = false} = {forceFetch: false}) {
     return metaInfoMemoize[blogSlug];
   }
 
-  const {contentPath} = getConfigPaths();
+  const {contentPath} = getAbellConfigs({forceFetch});
 
   let meta;
   try {
@@ -47,7 +43,7 @@ function getBlogMeta(blogSlug, {forceFetch = false} = {forceFetch: false}) {
  * @param {string} blogSlug 
  */
 function getBlogPageHTML(blogSlug) {
-  const {sourcePath, contentPath} = getConfigPaths();
+  const {sourcePath, contentPath} = getAbellConfigs();
 
   const blogTemplate = fs.readFileSync(path.join(sourcePath, '[content]', 'index.html'), 'utf-8');
 
@@ -79,7 +75,7 @@ function getBlogPageHTML(blogSlug) {
  * @param {string} blogSlug 
  */
 function copyBlogAssets(blogSlug) {
-  const {contentPath, destinationPath} = getConfigPaths();
+  const {contentPath, destinationPath} = getAbellConfigs();
 
 // Copy other files from content directory if exist
   const assetsList = fs.readdirSync(path.join(contentPath, blogSlug))
@@ -94,7 +90,7 @@ function copyBlogAssets(blogSlug) {
 }
 
 function generateBlog(blogSlug) {
-  const {destinationPath} = getConfigPaths();
+  const {destinationPath} = getAbellConfigs();
 
   // Create blog directory in dist if doesn't exist
   createPathIfAbsent(path.join(destinationPath, blogSlug));

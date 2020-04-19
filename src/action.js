@@ -7,7 +7,7 @@ const chokidar = require('chokidar');
 const { 
   getDirectories,
   rmdirRecursiveSync,
-  getConfigPaths,
+  getAbellConfigs,
   forcefullySetDestination,
   copyFolderSync,
   exitHandler,
@@ -22,7 +22,7 @@ function build({logs = 'complete'} = {logs: 'complete'}) {
   if(logs !== 'minimum') console.log("\n>> Build started\n");
   
   // Get configured paths of destination and content
-  const {destinationPath, contentPath, sourcePath} = getConfigPaths();
+  const {destinationPath, contentPath, sourcePath} = getAbellConfigs();
 
   // Refresh dist
   rmdirRecursiveSync(destinationPath);
@@ -55,7 +55,7 @@ function build({logs = 'complete'} = {logs: 'complete'}) {
 function serve(port = 5000) {
   forcefullySetDestination('.debug'); // Forces to output in .cache/ directory
 
-  const {sourcePath, contentPath, destinationPath} = getConfigPaths();
+  const {sourcePath, contentPath, destinationPath} = getAbellConfigs();
 
   
   build({logs: 'minimum'});

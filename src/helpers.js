@@ -30,7 +30,7 @@ const readUserConfigFile = () => {
     userConfig = {
       destinationPath: 'dist',
       sourcePath: 'src',
-      contentPath: 'content'
+      contentPath: 'content',
     };
   }
 
@@ -38,7 +38,7 @@ const readUserConfigFile = () => {
 }
 
 var abellConfig;
-const getConfigPaths = () => {
+const getAbellConfigs = () => {
   // If not memoized
   if(!abellConfig) {
     abellConfig = readUserConfigFile();
@@ -47,7 +47,12 @@ const getConfigPaths = () => {
   const destinationPath = relativeJoinedPath(abellConfig.destinationPath);
   const sourcePath = relativeJoinedPath(abellConfig.sourcePath);
   const contentPath = relativeJoinedPath(abellConfig.contentPath);
-  return {destinationPath, sourcePath, contentPath}
+
+  return {
+    destinationPath, 
+    sourcePath, 
+    contentPath,
+  }
 }
 
 const forcefullySetDestination = (forcedDestination) => {
@@ -77,7 +82,7 @@ function copyFolderSync(from, to) {
 
 function exitHandler(options, exitCode) {
   if (options.cleanup) {
-    const {destinationPath} = getConfigPaths();
+    const {destinationPath} = getAbellConfigs();
     rmdirRecursiveSync(destinationPath);
     console.log("\n\nBiee 🐨✌️\n");
   }
@@ -92,7 +97,8 @@ module.exports = {
   relativeJoinedPath,
   getDirectories,
   rmdirRecursiveSync,
-  getConfigPaths,
+  readUserConfigFile,
+  getAbellConfigs,
   forcefullySetDestination,
   createPathIfAbsent,
   copyFolderSync,

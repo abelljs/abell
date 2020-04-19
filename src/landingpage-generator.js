@@ -2,12 +2,12 @@ const fs = require('fs')
 const path = require('path');
 const Mustache = require('mustache');
 
-const { getDirectories, getConfigPaths } = require('./helpers.js');
+const { getDirectories, getAbellConfigs } = require('./helpers.js');
 const { getBlogMeta } = require('./blog-generator.js');
 
 
 function generateLandingPage() {
-  const {sourcePath, destinationPath, contentPath} = getConfigPaths();
+  const {sourcePath, destinationPath, contentPath} = getAbellConfigs();
 
   const metaInfos = {}
   for(let blogSlug of getDirectories(contentPath)) {
