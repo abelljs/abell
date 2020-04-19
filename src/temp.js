@@ -1,15 +1,30 @@
-const unified = require('unified');
-const rehypeParser = require('rehype-parse');
-const util = require('util');
-const select = require('hast-util-select').select;
+const Mustache = require('mustache');
 
-const htmlText = `
-  <div class="hi">Hi <span class="cool">nice</span> </div>
+const htmlText = /* html */`
+<head>
+  <meta name="og:title" content="{{ title }}" />
+</head>
+<body>
+  <header></header>
+  <h1>Hey there</h1>
+  <main>
+    {{ # $contentList }}
+      <article>
+        <div>{{ title }}</div>
+      </article>
+    {{ / $contentList }}
+  </main>
+  <footer></footer>
+</body>
 `
 
-const logTree = objToLog => console.log(util.inspect(objToLog, {showHidden: false, depth: null}))
+const out = Mustache.render(
+  htmlText, 
+  {
+    $contentList: [{title: 'Hi'}, {title: 'cool'}],
+    title: 'nice'
+  }
+);
 
 
-const tree = unified().use(rehypeParser).parse(htmlText);
-const niceSpan = select('.cool', tree);
-console.log(niceSpan)
+console.log(out);

@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
+const Mustache = require('mustache');
 const showdown  = require('showdown');
 const converter = new showdown.Converter();
 
@@ -46,7 +47,7 @@ function getBlogMeta(blogSlug) {
 function getBlogPageHTML(blogSlug) {
   const {sourcePath, contentPath} = getConfigPaths();
 
-  const blogTemplate = fs.readFileSync(path.join(sourcePath, '[blog]', 'index.html'), 'utf-8');
+  const blogTemplate = fs.readFileSync(path.join(sourcePath, '[content]', 'index.html'), 'utf-8');
 
   // get markdown and convert into HTML
   const markdown = fs.readFileSync(path.join(contentPath, blogSlug, 'index.md'), 'utf-8');
@@ -55,18 +56,15 @@ function getBlogPageHTML(blogSlug) {
   // get META information of blog from meta.json file
   const meta = getBlogMeta(blogSlug);
 
-  // Replace actual values with variables
-  let newTemplate = Object.entries(meta)
-    .reduce((prevVal, entry) => 
-      prevVal.replace(
-        regexIncludingVariable(entry[0], 'g'), 
-        (entry[1] || '')
-      ),
-      blogTemplate
-    )
+  const contentHTML = Mustache.render(
+    blogTemplate, 
+    {
+      meta, 
+      $contentData: content
+    }
+  )
   
-  return newTemplate
-    .replace(regexIncludingVariable('\\$blogContent', ''), content)
+  return contentHTML;
 }
 
 

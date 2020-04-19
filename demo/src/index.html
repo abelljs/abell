@@ -1,17 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Unlighted</title>
+  <meta name="og:title" content="demo abell" />
+  <title>demo abell</title>
 </head>
 <body>
   <header></header>
   <h1>Hey there</h1>
   <main>
-    <article abell-for="{% meta in $contentList %}">
-      <div>{% meta.title %}</div>
-    </article>
+    {{ # $contentList }}
+      <article>
+        <a href="{{$slug}}"><h2>{{title}}</h2></a>
+        <p class="article-description">{{description}}</p>
+      </article>
+    {{ / $contentList }}
   </main>
   <footer></footer>
 </body>

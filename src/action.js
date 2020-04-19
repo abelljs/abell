@@ -26,9 +26,9 @@ function build({logs = 'complete'} = {logs: 'complete'}) {
   rmdirRecursiveSync(destinationPath);
   fs.mkdirSync(destinationPath);
 
-  // Copy all files from source directory and then delete [blog] directory
+  // Copy all files from source directory and then delete [content] directory
   copyFolderSync(sourcePath, destinationPath)
-  rmdirRecursiveSync(path.join(destinationPath, '[blog]'));
+  rmdirRecursiveSync(path.join(destinationPath, '[content]'));
 
   // Generate all blogs from content directory
   for(let blogSlug of getDirectories(contentPath)) {
