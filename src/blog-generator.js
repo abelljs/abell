@@ -21,9 +21,11 @@ const regexIncludingVariable = (val, flag = '') =>
  * @method getBlogMeta
  * @description Returns Meta Content of Blog
  * @param {string} blogSlug 
+ * @param {object} {forceFetch} forces to recalculate instead of returning from memoized function
+ * 
  */
-function getBlogMeta(blogSlug) {
-  if(metaInfoMemoize[blogSlug]) {
+function getBlogMeta(blogSlug, {forceFetch = false} = {forceFetch: false}) {
+  if(!forceFetch && metaInfoMemoize[blogSlug]) {
     return metaInfoMemoize[blogSlug];
   }
 
