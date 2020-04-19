@@ -53,6 +53,9 @@ function getBlogPageHTML(blogSlug) {
 
   // get markdown and convert into HTML
   const markdown = fs.readFileSync(path.join(contentPath, blogSlug, 'index.md'), 'utf-8');
+  if(!markdown) {
+    console.log("Something went wrong 😭 Please save again to refresh the server.")
+  }
   const content = converter.makeHtml(markdown);
 
   // get META information of blog from meta.json file
@@ -65,7 +68,7 @@ function getBlogPageHTML(blogSlug) {
       $contentData: content
     }
   )
-  
+
   return contentHTML;
 }
 
