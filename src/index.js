@@ -20,7 +20,13 @@ program
   .command('serve')
   .option('--port [port]', 'Serve on different port')
   .action((command) => {
-    action.serve(command.port);
+    const programInfo = getBaseProgramInfo();
+    programInfo.port = command.port || 5000;
+    programInfo.task = 'serve';
+    programInfo.logs = 'minimum';
+    programInfo.abellConfigs.destinationPath = '.debug';
+    
+    action.serve(programInfo);
   })
 
 program.parse(process.argv);

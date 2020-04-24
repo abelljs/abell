@@ -25,13 +25,13 @@ const rmdirRecursiveSync = function(pathToRemove) {
 const readUserConfigFile = () => {
   let userConfig;
   try {
-    userConfig = require(path.join(process.cwd(), 'abell.config.js'));
+    userConfig = JSON.parse(fs.readFileSync('abell.config.json'));
   } catch(err) {
     userConfig = {
       destinationPath: 'dist',
       sourcePath: 'src',
       contentPath: 'content',
-      meta: {}
+      globalMeta: {}
     };
   }
 
@@ -74,10 +74,10 @@ function copyFolderSync(from, to) {
 
 function exitHandler(options, exitCode) {
   if (options.cleanup) {
-    const {destinationPath} = getAbellConfigs();
-    rmdirRecursiveSync(destinationPath);
+    rmdirRecursiveSync('.debug');
     console.log("\n\nBiee 🐨✌️\n");
   }
+  if(exitCode !== 0) console.log(exitCode);
 
   if (options.exit) process.exit();
 }

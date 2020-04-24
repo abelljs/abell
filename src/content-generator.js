@@ -18,24 +18,21 @@ function getContentMeta(contentSlug, contentPath) {
   } catch(err) {
     meta = {title: contentSlug, description: `Hi, This is ${contentSlug}...`}
   }
-  return meta;
+  return {...meta, $slug: contentSlug};
 }
 
 
 function getContentMetaAll(contentDirectories, contentPath) {
   let contentMetaInfo = {}
   for(let contentSlug of contentDirectories) {
-    contentMetaInfo[contentSlug] = {
-      ...getContentMeta(contentSlug, contentPath), 
-      $slug: contentSlug
-    };
+    contentMetaInfo[contentSlug] = getContentMeta(contentSlug, contentPath);
   }
 
   return contentMetaInfo;
 }
 
 
-const getBaseProgramInfo = () => {
+function getBaseProgramInfo() {
   // Get configured paths of destination and content
   const abellConfigs = getAbellConfigs();
   const contentDirectories = getDirectories(abellConfigs.contentPath);
@@ -44,7 +41,7 @@ const getBaseProgramInfo = () => {
     abellConfigs,
     contentTemplate: fs.readFileSync(path.join(abellConfigs.sourcePath, '[content]', 'index.html'), 'utf-8'),
     globalMeta: {
-      ...abellConfigs.meta, 
+      ...abellConfigs.globalMeta, 
       contentMetaInfo
     },
     logs: 'minimum'
