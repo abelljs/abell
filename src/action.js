@@ -8,48 +8,41 @@ const {
   getDirectories,
   rmdirRecursiveSync,
   getAbellConfigs,
-  forcefullySetDestination,
   copyFolderSync,
   exitHandler,
   boldGreen
 } = require('./helpers.js');
 
-const { generateBlog } = require('./blog-generator.js');
-const { generateLandingPage } = require('./landingpage-generator.js');
+const { 
+  generateContentFile, 
+  generateHTMLFile
+} = require('./content-generator');
 
+function build(programInfo) {
+  if(programInfo.logs == 'complete') console.log("\n>> Build started\n");
 
-function build({logs = 'complete'} = {logs: 'complete'}) {
-  if(logs !== 'minimum') console.log("\n>> Build started\n");
-  
-  // Get configured paths of destination and content
-  const {destinationPath, contentPath, sourcePath} = getAbellConfigs();
+  const contentDirectories = getDirectories(programInfo.abellConfigs.contentPath);
 
   // Refresh dist
-  rmdirRecursiveSync(destinationPath);
-  fs.mkdirSync(destinationPath);
+  rmdirRecursiveSync(programInfo.abellConfigs.destinationPath);
+  fs.mkdirSync(programInfo.abellConfigs.destinationPath);
+  
+  // Copy everything from src to dist except [content] folder.
+  copyFolderSync(programInfo.abellConfigs.sourcePath, programInfo.abellConfigs.destinationPath);
+  rmdirRecursiveSync(path.join(programInfo.abellConfigs.destinationPath, '[content]'));
 
-  // Copy all files from source directory and then delete [content] directory
-  copyFolderSync(sourcePath, destinationPath)
-  rmdirRecursiveSync(path.join(destinationPath, '[content]'));
 
-  // Generate all blogs from content directory
-  for(let blogSlug of getDirectories(contentPath)) {
-    generateBlog(blogSlug);
-
-    if(logs !== 'minimum') console.log("...Built " + blogSlug);
+  // GENERATE CONTENT HTML FILES 
+  for(let contentSlug of contentDirectories) {
+    generateContentFile(contentSlug, programInfo);
+    if(programInfo.logs == 'complete') console.log(`...Built ${contentSlug}`);
   }
 
-  // generate landing page (dist/index.html)
-  generateLandingPage();
+  // GENERATE OTHER HTML FILES
+  generateHTMLFile('index.html', programInfo);
+  if(programInfo.logs == 'complete') console.log(`...Built index.html\n`);
 
-  if(logs !== 'minimum') console.log("\n...Built Landing Page");
-
-
-  if(logs === 'minimum') {
-    console.log(`>> Files Built 🌻`)
-  } else {
-    console.log(`\n\n>> Your blog is ready at '${destinationPath.split('/').slice(-1)}' 🐨 🎉 \n\n`);
-  }
+  console.log(">>> Build complete 🚀✨");
 }
 
 function serve(port = 5000) {

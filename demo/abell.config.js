@@ -2,7 +2,7 @@ module.exports = {
   sourcePath: 'src',
   destinationPath: 'dist',
   contentPath: 'content',
-  globalVariables: {
+  meta: {
     siteName: 'Abell Demo'
   }
 }

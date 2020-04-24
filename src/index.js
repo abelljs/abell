@@ -3,11 +3,18 @@
 const action = require('./action');
 const program = require('commander');
 
+const { getBaseProgramInfo } = require('./content-generator');
+
 program.version(require('../package.json').version);
 
 program
   .command('build')
-  .action(action.build);
+  .action(() => {
+    const programInfo = getBaseProgramInfo();
+    programInfo.logs = 'complete';
+    programInfo.task = 'build';
+    action.build(programInfo);
+  });
 
 program
   .command('serve')

@@ -20,20 +20,14 @@ let metaInfoMemoize = {};
  * @param {object} {forceFetch} forces to recalculate instead of returning from memoized function
  * 
  */
-function getBlogMeta(blogSlug, {forceFetch = false} = {forceFetch: false}) {
-  if(!forceFetch && metaInfoMemoize[blogSlug]) {
-    return metaInfoMemoize[blogSlug];
-  }
-
-  const {contentPath} = getAbellConfigs({forceFetch});
-
+function getContentMeta(blogSlug) {
+  const {contentPath} = getAbellConfigs();
   let meta;
   try {
     meta = JSON.parse(fs.readFileSync(path.join(contentPath, blogSlug, 'meta.json'), 'utf-8'));
   } catch(err) {
     meta = {title: blogSlug, description: `Hi, This is ${blogSlug}...`}
   }
-  metaInfoMemoize[blogSlug] = meta;
   return meta;
 }
 
@@ -57,6 +51,7 @@ function getBlogPageHTML(blogSlug) {
   // get META information of blog from meta.json file
   const meta = getBlogMeta(blogSlug);
 
+  // Add variables to HTML
   const contentHTML = Mustache.render(
     blogTemplate, 
     {
@@ -107,5 +102,6 @@ function generateBlog(blogSlug) {
 
 module.exports = {
   generateBlog,
-  getBlogMeta
+  getContentMeta,
+  createPathIfAbsent
 }

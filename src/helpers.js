@@ -31,34 +31,26 @@ const readUserConfigFile = () => {
       destinationPath: 'dist',
       sourcePath: 'src',
       contentPath: 'content',
+      meta: {}
     };
   }
 
   return userConfig;
 }
 
-var abellConfig;
 const getAbellConfigs = () => {
   // If not memoized
-  if(!abellConfig) {
-    abellConfig = readUserConfigFile();
-  }
+  const abellConfig = readUserConfigFile();
 
   const destinationPath = relativeJoinedPath(abellConfig.destinationPath);
   const sourcePath = relativeJoinedPath(abellConfig.sourcePath);
   const contentPath = relativeJoinedPath(abellConfig.contentPath);
 
   return {
+    ...abellConfig,
     destinationPath, 
     sourcePath, 
     contentPath,
-  }
-}
-
-const forcefullySetDestination = (forcedDestination) => {
-  abellConfig = {
-    ...readUserConfigFile(),
-    destinationPath: forcedDestination
   }
 }
 
@@ -91,18 +83,14 @@ function exitHandler(options, exitCode) {
 }
 
 const boldGreen = (message) => `\u001b[1m\u001b[32m${message}\u001b[39m\u001b[22m`;
-const grey = (message) => `\u001b[90m${message}\u001b[39m`;
+// const grey = (message) => `\u001b[90m${message}\u001b[39m`;
 
 module.exports = {
-  relativeJoinedPath,
   getDirectories,
   rmdirRecursiveSync,
-  readUserConfigFile,
   getAbellConfigs,
-  forcefullySetDestination,
   createPathIfAbsent,
   copyFolderSync,
   exitHandler,
   boldGreen,
-  grey
 }
