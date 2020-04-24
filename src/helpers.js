@@ -25,8 +25,11 @@ const rmdirRecursiveSync = function(pathToRemove) {
 const readUserConfigFile = () => {
   let userConfig;
   try {
-    userConfig = JSON.parse(fs.readFileSync('abell.config.json'));
+    delete require.cache[path.join(process.cwd(), 'abell.config.js')];
+    userConfig = require(path.join(process.cwd(), 'abell.config.js'));
+    if(Object.keys(userConfig).length <= 0) throw new Error("Something went wrong while fetching new configurations. Save again to refresh the dev server.");
   } catch(err) {
+    console.log(boldRed(">> ") + err.message);
     userConfig = {
       destinationPath: 'dist',
       sourcePath: 'src',
@@ -82,6 +85,7 @@ function exitHandler(options, exitCode) {
   if (options.exit) process.exit();
 }
 
+const boldRed = (message) => `\u001b[1m\u001b[31m${message}\u001b[39m\u001b[22m`;
 const boldGreen = (message) => `\u001b[1m\u001b[32m${message}\u001b[39m\u001b[22m`;
 // const grey = (message) => `\u001b[90m${message}\u001b[39m`;
 
@@ -93,4 +97,5 @@ module.exports = {
   copyFolderSync,
   exitHandler,
   boldGreen,
+  boldRed
 }

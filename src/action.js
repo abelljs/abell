@@ -86,14 +86,14 @@ function serve(programInfo) {
   console.log('='.repeat(process.stdout.columns));
 
 
-  const abellConfigsPath = path.join(process.cwd(), 'abell.config.json')
+  const abellConfigsPath = path.join(process.cwd(), 'abell.config.js')
   if(fs.existsSync(abellConfigsPath)) {
-    // Watch abell.config.json
+    // Watch abell.config.js
     chokidar
       .watch(abellConfigsPath, {ignoreInitial: true})
       .on('change', filePath => {
 
-        delete require.cache[abellConfigsPath];
+        // delete require.cache[abellConfigsPath];
 
         const baseProgramInfo = getBaseProgramInfo();
         // destination should be unchanged while serving. So we keep existing destination in temp variable.

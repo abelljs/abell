@@ -1,8 +1,0 @@
-{
-  "sourcePath": "src",
-  "destinationPath": "dist",
-  "contentPath": "content",
-  "globalMeta": {
-    "siteName": "Abell demo"
-  }
-}
