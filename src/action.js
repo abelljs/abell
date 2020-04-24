@@ -7,64 +7,70 @@ const chokidar = require('chokidar');
 const { 
   getDirectories,
   rmdirRecursiveSync,
-  getAbellConfigs,
-  forcefullySetDestination,
   copyFolderSync,
   exitHandler,
   boldGreen
 } = require('./helpers.js');
 
-const { generateBlog } = require('./blog-generator.js');
-const { generateLandingPage } = require('./landingpage-generator.js');
+const { 
+  generateContentFile, 
+  generateHTMLFile,
+  getBaseProgramInfo,
+  getContentMeta
+} = require('./content-generator');
 
 
-function build({logs = 'complete'} = {logs: 'complete'}) {
-  if(logs !== 'minimum') console.log("\n>> Build started\n");
-  
-  // Get configured paths of destination and content
-  const {destinationPath, contentPath, sourcePath} = getAbellConfigs();
+
+/**
+ * @method build
+ * @param {any} programInfo programInfo has all the information required by program for build
+ * @description
+ *  Builds the static site! 
+ *  The build parameters are first calculated in index.js and the programInfo with all those parameters is passed
+ */
+
+function build(programInfo) {
+
+  if(programInfo.logs == 'complete') console.log("\n>> Abell Build Started\n");
+
+  const contentDirectories = getDirectories(programInfo.abellConfigs.contentPath);
 
   // Refresh dist
-  rmdirRecursiveSync(destinationPath);
-  fs.mkdirSync(destinationPath);
+  rmdirRecursiveSync(programInfo.abellConfigs.destinationPath);
+  fs.mkdirSync(programInfo.abellConfigs.destinationPath);
+  
+  // Copy everything from src to dist except [content] folder.
+  copyFolderSync(programInfo.abellConfigs.sourcePath, programInfo.abellConfigs.destinationPath);
+  rmdirRecursiveSync(path.join(programInfo.abellConfigs.destinationPath, '[content]'));
 
-  // Copy all files from source directory and then delete [content] directory
-  copyFolderSync(sourcePath, destinationPath)
-  rmdirRecursiveSync(path.join(destinationPath, '[content]'));
 
-  // Generate all blogs from content directory
-  for(let blogSlug of getDirectories(contentPath)) {
-    generateBlog(blogSlug);
-
-    if(logs !== 'minimum') console.log("...Built " + blogSlug);
+  // GENERATE CONTENT HTML FILES 
+  for(let contentSlug of contentDirectories) {
+    generateContentFile(contentSlug, programInfo);
+    if(programInfo.logs == 'complete') console.log(`...Built ${contentSlug}`);
   }
 
-  // generate landing page (dist/index.html)
-  generateLandingPage();
+  // GENERATE OTHER HTML FILES
+  generateHTMLFile('index.html', programInfo);
+  if(programInfo.logs == 'complete') console.log(`...Built index.html\n`);
 
-  if(logs !== 'minimum') console.log("\n...Built Landing Page");
+  if(programInfo.logs == 'complete') console.log(`${boldGreen('>>>')} Build complete 🚀✨\n\n`);
+  if(programInfo.logs == 'minimum') console.log(`${boldGreen('>>>')} Files built.. ✨`);
 
-
-  if(logs === 'minimum') {
-    console.log(`>> Files Built 🌻`)
-  } else {
-    console.log(`\n\n>> Your blog is ready at '${destinationPath.split('/').slice(-1)}' 🐨 🎉 \n\n`);
-  }
 }
 
-function serve(port = 5000) {
-  forcefullySetDestination('.debug'); // Forces to output in .cache/ directory
 
-  const {sourcePath, contentPath, destinationPath} = getAbellConfigs();
 
+function serve(programInfo) {  
   
-  build({logs: 'minimum'});
+  build(programInfo);
+
   console.log("Starting your abell-dev-server 🤠...")
   const bs = browserSync.create('abell-dev-server');
   
   bs.init({
-    port,
-    server: destinationPath,
+    port: programInfo.port,
+    server: programInfo.abellConfigs.destinationPath,
     logLevel: 'silent',
     logPrefix: 'abell-dev-server',
     logConnections: false,
@@ -76,35 +82,76 @@ function serve(port = 5000) {
   // Print ports on screen
   console.log('='.repeat(process.stdout.columns));
   console.log("\n\n💫 Abell dev server running.");
-  console.log(`${boldGreen("Local: ")} http://localhost:${port} \n\n`);
+  console.log(`${boldGreen("Local: ")} http://localhost:${programInfo.port} \n\n`);
   console.log('='.repeat(process.stdout.columns));
 
+
+  const abellConfigsPath = path.join(process.cwd(), 'abell.config.js')
+  if(fs.existsSync(abellConfigsPath)) {
+    // Watch abell.config.js
+    chokidar
+      .watch(abellConfigsPath, {ignoreInitial: true})
+      .on('change', filePath => {
+
+        // delete require.cache[abellConfigsPath];
+
+        const baseProgramInfo = getBaseProgramInfo();
+        // destination should be unchanged while serving. So we keep existing destination in temp variable.
+        const existingDestination = programInfo.abellConfigs.destinationPath;
+        programInfo.abellConfigs = baseProgramInfo.abellConfigs;
+        programInfo.abellConfigs.destinationPath = existingDestination;
+        programInfo.globalMeta = baseProgramInfo.globalMeta;
+
+        console.log("Abell configs changed 🤓");
+
+        build(programInfo);
+        bs.reload();
+      })
+  }
+
+
+  // Watch 'src'
   chokidar
-    .watch(sourcePath, {ignoreInitial: true})
-    .on('all', (event, path) => {
-      build({logs: 'minimum'});
+    .watch(programInfo.abellConfigs.sourcePath, {ignoreInitial: true})
+    .on('all', (event, filePath) => {
+      const directoryName = filePath.slice(programInfo.abellConfigs.sourcePath.length + 1).split('/')[0];
+      if(filePath.endsWith('index.html') && directoryName === '[content]') {
+        // Content template changed
+        programInfo.contentTemplate = fs.readFileSync(path.join(programInfo.abellConfigs.sourcePath, '[content]', 'index.html'), 'utf-8');
+      }
+        
+      build(programInfo);
       bs.reload();
     })
 
+
+  // Watch 'content'
   chokidar
-    .watch(contentPath, {ignoreInitial: true})
-    .on('all', (event, path) => {
+    .watch(programInfo.abellConfigs.contentPath, {ignoreInitial: true})
+    .on('all', (event, filePath) => {
       try{
-        const directoryName = path.slice(contentPath.length + 1).split('/')[0];
-        if(path.endsWith('.md')) {
-          generateBlog(directoryName);
-        }else{
-          build({logs: 'minimum'});
+        const directoryName = filePath.slice(programInfo.abellConfigs.contentPath.length + 1).split('/')[0];
+        if(filePath.endsWith('index.md')) {
+          generateContentFile(directoryName, programInfo);
+          console.log(`...Built ${directoryName}`);
+        }else if(filePath.endsWith('meta.json')) {
+          // refetch meta and then build
+          const meta = getContentMeta(directoryName, programInfo.abellConfigs.contentPath);
+          programInfo.globalMeta.contentMetaInfo[directoryName] = meta;
+          build(programInfo);
+        }else {
+          build(programInfo);
         }
         
       }catch(err) {
-        build({logs: 'minimum'});
+        build(programInfo);
       }
+
       bs.reload();
     })
 
 
-  //do something when app is closing
+  // do something when app is closing
   process.on('exit', exitHandler.bind(null,{cleanup:true}));
   //catches ctrl+c event
   process.on('SIGINT', exitHandler.bind(null, {exit:true}));

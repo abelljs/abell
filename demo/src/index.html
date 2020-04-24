@@ -2,11 +2,12 @@
 <html lang="en">
 <head>
   <meta name="og:title" content="demo abell" />
-  <title>demo abell</title>
+  <!-- <link rel="stylesheet" href="style.css" /> -->
+  <title>{{ globalMeta.siteName }}</title>
 </head>
 <body>
   <header></header>
-  <h1>Hey there</h1>
+  <h1>{{ globalMeta.siteName }}</h1>
   <main>
     {{ # $contentList }}
       <article>
