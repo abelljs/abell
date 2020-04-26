@@ -16,9 +16,17 @@ function getContentMeta(contentSlug, contentPath) {
   try {
     meta = JSON.parse(fs.readFileSync(path.join(contentPath, contentSlug, 'meta.json'), 'utf-8'));
   } catch(err) {
-    meta = {title: contentSlug, description: `Hi, This is ${contentSlug}...`}
+    meta = { title: contentSlug, description: `Hi, This is ${contentSlug}...` }
   }
-  return {...meta, $slug: contentSlug};
+
+  const { mtime, ctime } = fs.statSync(path.join(contentPath, contentSlug, 'index.md'));
+
+  return {
+    ...meta, 
+    $slug: contentSlug,
+    $modifiedAt: mtime,
+    $createdAt: ctime
+  };
 }
 
 
@@ -82,10 +90,18 @@ function copyContentAssets(from, to) {
 function generateHTMLFile(filepath, programInfo) {
   const pageTemplate = fs.readFileSync(path.join(programInfo.abellConfigs.sourcePath, filepath), 'utf-8');
 
+  const contentList = Object.values(programInfo.globalMeta.contentMetaInfo)
+    .sort((a, b) => a.$createdAt.getTime() > b.$createdAt.getTime() ? -1 : 1)
+    .map(contentInfo => ({
+      ...contentInfo, 
+      $createdAt: contentInfo.$createdAt.toDateString(),
+      $modifiedAt: contentInfo.$modifiedAt.toDateString()
+    }))
+
   const pageContent = Mustache.render(
     pageTemplate, 
     {
-      $contentList: Object.values(programInfo.globalMeta.contentMetaInfo),
+      $contentList: contentList,
       globalMeta: programInfo.globalMeta
     }
   )
