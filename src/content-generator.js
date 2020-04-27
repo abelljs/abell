@@ -77,9 +77,9 @@ function copyContentAssets(from, to) {
 }
 
 
-function importMarkdownAndAddToTemplate(pageTemplate, { contentPath, view }) {
+function importMarkdownAndAddToTemplate(pageTemplate, contentPath, view) {
 
-  const importSelectRegex = /{{ ?import_content '(.*?)' ?}}/g
+  const importSelectRegex = /{{ ?import_content *['"](.*?)['"] ?}}/g
   let mdPath = importSelectRegex.exec(pageTemplate);
   while(mdPath !== null) {
 
@@ -133,10 +133,8 @@ function generateHTMLFile(filepath, programInfo) {
   // imports markdown to template 
   const newPageTemplate = importMarkdownAndAddToTemplate(
     pageTemplate, 
-    {
-      contentPath: programInfo.abellConfigs.contentPath,
-      view
-    }
+    programInfo.abellConfigs.contentPath,
+    view
   );
 
   const pageContent = Mustache.render(
@@ -176,10 +174,8 @@ function generateContentFile(contentSlug, programInfo) {
   // imports markdown to template 
   const contentTemplate = importMarkdownAndAddToTemplate(
     programInfo.contentTemplate, 
-    {
-      contentPath: programInfo.abellConfigs.contentPath,
-      view
-    }
+    programInfo.abellConfigs.contentPath,
+    view
   );
 
   // render HTML of content
