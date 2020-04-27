@@ -76,6 +76,33 @@ function copyContentAssets(from, to) {
   }
 }
 
+
+function importMarkdownAndAddToTemplate(pageTemplate, { contentPath, view }) {
+
+  const importSelectRegex = /{{ ?import_content '(.*?)' ?}}/g
+  let mdPath = importSelectRegex.exec(pageTemplate);
+  while(mdPath !== null) {
+
+    const renderedPath = Mustache.render(mdPath[1], view);
+    // get markdown and convert into HTML
+    const markdown = fs.readFileSync(path.join(contentPath, renderedPath), 'utf-8');
+    if(!markdown) {
+      console.log("Something went wrong 😭 Please save again to refresh the server.")
+    }
+    const content = converter.makeHtml(markdown);
+  
+    pageTemplate = pageTemplate.slice(0, mdPath['index']) 
+      + content 
+      + pageTemplate.slice(mdPath['index'] + mdPath[0].length)
+
+    
+    mdPath = importSelectRegex.exec(pageTemplate);
+  }
+
+
+  return pageTemplate;
+}
+
 /**
  * @method generateHTMLFile
  * @param {string} filepath filepath relative to source directory
@@ -98,12 +125,23 @@ function generateHTMLFile(filepath, programInfo) {
       $modifiedAt: contentInfo.$modifiedAt.toDateString()
     }))
 
-  const pageContent = Mustache.render(
+  const view = {
+    $contentList: contentList,
+    globalMeta: programInfo.globalMeta
+  }
+  
+  // imports markdown to template 
+  const newPageTemplate = importMarkdownAndAddToTemplate(
     pageTemplate, 
     {
-      $contentList: contentList,
-      globalMeta: programInfo.globalMeta
+      contentPath: programInfo.abellConfigs.contentPath,
+      view
     }
+  );
+
+  const pageContent = Mustache.render(
+    newPageTemplate, 
+    view
   )
 
   fs.writeFileSync(path.join(programInfo.abellConfigs.destinationPath, filepath), pageContent);
@@ -129,20 +167,24 @@ function generateContentFile(contentSlug, programInfo) {
   // Create Path of content if does not already exist
   createPathIfAbsent(path.join(programInfo.abellConfigs.destinationPath, contentSlug));
 
-  // get markdown and convert into HTML
-  const markdown = fs.readFileSync(path.join(programInfo.abellConfigs.contentPath, contentSlug, 'index.md'), 'utf-8');
-  if(!markdown) {
-    console.log("Something went wrong 😭 Please save again to refresh the server.")
-  }
-  const content = converter.makeHtml(markdown);
-
-  // render HTML of content
-  const contentHTML = Mustache.render(programInfo.contentTemplate, {
+  const view = {
     globalMeta: programInfo.globalMeta,
     meta: programInfo.globalMeta.contentMetaInfo[contentSlug],
     $contentList: Object.values(programInfo.globalMeta.contentMetaInfo),
-    $contentData: content
-  })
+  }
+
+  // imports markdown to template 
+  const contentTemplate = importMarkdownAndAddToTemplate(
+    programInfo.contentTemplate, 
+    {
+      contentPath: programInfo.abellConfigs.contentPath,
+      view
+    }
+  );
+
+  // render HTML of content
+  const contentHTML = Mustache.render(contentTemplate, view)
+
 
   // WRITE IT OUT!! YASSSSSS!!!
   fs.writeFileSync(

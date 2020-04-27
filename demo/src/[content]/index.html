@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="description" content="{{ meta.description }}"/>
-  
+  <meta name="og:url" content="{{ meta.$slug }}" />
   <meta name="og:title" content="{{ meta.title }}"/>
   <meta name="og:description" content="{{ meta.description }}"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -11,7 +11,7 @@
 </head>
 <body>
   <section id="blog-container">
-    {{{ $contentData }}}
+    {{ import_content '{{ meta.$slug }}/index.md' }}
   </section>
 </body>
 </html>
