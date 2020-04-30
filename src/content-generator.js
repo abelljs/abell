@@ -3,7 +3,9 @@ const path = require('path');
 
 const Mustache = require('mustache');
 const MarkdownIt  = require('markdown-it');
-const mdIt = new MarkdownIt();
+const mdIt = new MarkdownIt({
+  html: true
+});
 
 const { 
   createPathIfAbsent, 
