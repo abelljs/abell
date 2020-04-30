@@ -2,8 +2,8 @@ const fs = require('fs');
 const path = require('path');
 
 const Mustache = require('mustache');
-const showdown  = require('showdown');
-const converter = new showdown.Converter();
+const MarkdownIt  = require('markdown-it');
+const mdIt = new MarkdownIt();
 
 const { 
   createPathIfAbsent, 
@@ -89,7 +89,7 @@ function importMarkdownAndAddToTemplate(pageTemplate, contentPath, view) {
     if(!markdown) {
       console.log("Something went wrong 😭 Please save again to refresh the server.")
     }
-    const content = converter.makeHtml(markdown);
+    const content = mdIt.render(markdown);
   
     pageTemplate = pageTemplate.slice(0, mdPath['index']) 
       + content 

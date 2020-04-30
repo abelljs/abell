@@ -29,8 +29,8 @@
     "browser-sync": "^2.26.7",
     "chokidar": "^3.3.1",
     "commander": "^5.0.0",
-    "mustache": "^4.0.1",
-    "showdown": "^1.9.1"
+    "markdown-it": "^10.0.0",
+    "mustache": "^4.0.1"
   },
   "devDependencies": {
     "fs-extra": "^9.0.0"
