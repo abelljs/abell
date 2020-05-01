@@ -2,6 +2,10 @@
   "name": "abell",
   "version": "0.1.11",
   "description": "Abell is a static blog generator that generates blog in Vanilla JavaScript",
+  "funding": {
+    "type" : "patreon",
+    "url" : "https://patreon.com/saurabhdaware"
+  },
   "main": "dist/index.js",
   "bin": {
     "abell": "dist/index.js"
