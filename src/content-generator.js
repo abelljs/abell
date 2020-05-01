@@ -49,12 +49,20 @@ function getBaseProgramInfo() {
   const contentMetaInfo = getContentMetaAll(contentDirectories, abellConfigs.contentPath);
   const programInfo = {
     abellConfigs,
-    contentTemplate: fs.readFileSync(path.join(abellConfigs.sourcePath, '[content]', 'index.html'), 'utf-8'),
+    contentTemplate: fs.readFileSync(
+      path.join(
+        abellConfigs.sourcePath, 
+        '[content]', 
+        ('index' + (abellConfigs.templateExtension || '.abell'))
+      ), 
+      'utf-8'
+    ),
     globalMeta: {
       ...abellConfigs.globalMeta, 
       contentMetaInfo
     },
-    logs: 'minimum'
+    logs: 'minimum',
+    templateExtension: abellConfigs.templateExtension || '.abell'
   }
 
   return programInfo
@@ -117,7 +125,7 @@ function importMarkdownAndAddToTemplate(pageTemplate, contentPath, view) {
  */
 
 function generateHTMLFile(filepath, programInfo) {
-  const pageTemplate = fs.readFileSync(path.join(programInfo.abellConfigs.sourcePath, filepath), 'utf-8');
+  const pageTemplate = fs.readFileSync(path.join(programInfo.abellConfigs.sourcePath, filepath + programInfo.templateExtension), 'utf-8');
 
   const contentList = Object.values(programInfo.globalMeta.contentMetaInfo)
     .sort((a, b) => a.$createdAt.getTime() > b.$createdAt.getTime() ? -1 : 1)
@@ -144,7 +152,10 @@ function generateHTMLFile(filepath, programInfo) {
     view
   )
 
-  fs.writeFileSync(path.join(programInfo.abellConfigs.destinationPath, filepath), pageContent);
+  fs.writeFileSync(
+    path.join(programInfo.abellConfigs.destinationPath, filepath + '.html'), 
+    pageContent
+  );
   
 }
 

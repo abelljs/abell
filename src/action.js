@@ -39,9 +39,10 @@ function build(programInfo) {
   rmdirRecursiveSync(programInfo.abellConfigs.destinationPath);
   fs.mkdirSync(programInfo.abellConfigs.destinationPath);
   
-  // Copy everything from src to dist except [content] folder.
+  // Copy everything from src to dist except [content] folder and index.abell.
   copyFolderSync(programInfo.abellConfigs.sourcePath, programInfo.abellConfigs.destinationPath);
   rmdirRecursiveSync(path.join(programInfo.abellConfigs.destinationPath, '[content]'));
+  fs.unlinkSync(path.join(programInfo.abellConfigs.destinationPath, 'index.abell'))
 
 
   // GENERATE CONTENT HTML FILES 
@@ -51,8 +52,8 @@ function build(programInfo) {
   }
 
   // GENERATE OTHER HTML FILES
-  generateHTMLFile('index.html', programInfo);
-  if(programInfo.logs == 'complete') console.log(`...Built index.html\n`);
+  generateHTMLFile('index', programInfo);
+  if(programInfo.logs == 'complete') console.log(`...Built index\n`);
 
   if(programInfo.logs == 'complete') console.log(`${boldGreen('>>>')} Build complete 🚀✨\n\n`);
   if(programInfo.logs == 'minimum') console.log(`${boldGreen('>>>')} Files built.. ✨`);
@@ -115,9 +116,9 @@ function serve(programInfo) {
     .watch(programInfo.abellConfigs.sourcePath, {ignoreInitial: true})
     .on('all', (event, filePath) => {
       const directoryName = filePath.slice(programInfo.abellConfigs.sourcePath.length + 1).split('/')[0];
-      if(filePath.endsWith('index.html') && directoryName === '[content]') {
+      if(filePath.endsWith('index' + programInfo.templateExtension) && directoryName === '[content]') {
         // Content template changed
-        programInfo.contentTemplate = fs.readFileSync(path.join(programInfo.abellConfigs.sourcePath, '[content]', 'index.html'), 'utf-8');
+        programInfo.contentTemplate = fs.readFileSync(path.join(programInfo.abellConfigs.sourcePath, '[content]', 'index' + programInfo.templateExtension), 'utf-8');
       }
         
       build(programInfo);
