@@ -1,4 +1,4 @@
-# Abell
+<h1> <img width="40" alt="logo of abell" src="https://res.cloudinary.com/saurabhdaware/image/upload/v1588339230/abell/favicon.ico" /> Abell</h1>
 
 ![GitHub package.json version](https://img.shields.io/github/package-json/v/abelljs/abell?style=for-the-badge)
 
