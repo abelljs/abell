@@ -116,11 +116,11 @@ List of predefined variables
 #### Loops in Abell
 
 
-Starting from v0.2.0, Abell uses [abell-renderer](https://github.com/abelljs/abell-renderer) for rendering. 
+Starting from v0.1.12, Abell uses [abell-renderer](https://github.com/abelljs/abell-renderer) for rendering. 
 
 You can use JavaScript methods within `{{` and `}}` so to loop through an object and generate HTML, you can use `.map()` method from JavaScript.
 
-*Note: The JavaScript you write inside {{ and }} compiles on build time and runs in NodeJS context so you cannot use frontend JavaScript methods from DOM*
+*Note: The JavaScript you write inside `{{` and `}}` compiles on build time and runs in NodeJS context so you cannot use frontend JavaScript methods from DOM*
 
 ##### Example 1
 Let's say we have this object in variable `$contentList`
