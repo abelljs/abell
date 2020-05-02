@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const Mustache = require('mustache');
+const abellRenderer = require('abell-renderer');
 const MarkdownIt  = require('markdown-it');
 const mdIt = new MarkdownIt({
   html: true
@@ -92,8 +92,7 @@ function importMarkdownAndAddToTemplate(pageTemplate, contentPath, view) {
   const importSelectRegex = /{{ ?import_content *['"](.*?)['"] ?}}/g
   let mdPath = importSelectRegex.exec(pageTemplate);
   while(mdPath !== null) {
-
-    const renderedPath = Mustache.render(mdPath[1], view);
+    const renderedPath = abellRenderer.render(mdPath[1], view);
     // get markdown and convert into HTML
     const markdown = fs.readFileSync(path.join(contentPath, renderedPath), 'utf-8');
     if(!markdown) {
@@ -120,7 +119,7 @@ function importMarkdownAndAddToTemplate(pageTemplate, contentPath, view) {
  * 
  * @description 
  *  1. Read Template
- *  2. Render Template with mustache and add variables
+ *  2. Render Template with abell-renderer and add variables
  *  3. Write to the destination.
  */
 
@@ -147,7 +146,7 @@ function generateHTMLFile(filepath, programInfo) {
     view
   );
 
-  const pageContent = Mustache.render(
+  const pageContent = abellRenderer.render(
     newPageTemplate, 
     view
   )
@@ -192,7 +191,7 @@ function generateContentFile(contentSlug, programInfo) {
   );
 
   // render HTML of content
-  const contentHTML = Mustache.render(contentTemplate, view)
+  const contentHTML = abellRenderer.render(contentTemplate, view)
 
 
   // WRITE IT OUT!! YASSSSSS!!!

@@ -7,15 +7,19 @@
 </head>
 <body>
   <header></header>
-  <h1>{{ globalMeta.siteName }}</h1>
+  <h1>{{ globalMeta.siteName.toUpperCase() }}</h1>
   <main>
-    {{ # $contentList }}
-      <article>
-        <a href="{{$slug}}"><h2>{{title}}</h2></a>
-        <p>Created at: {{$createdAt}}</p>
-        <p class="article-description">{{description}}</p>
-      </article>
-    {{ / $contentList }}
+    {{
+      $contentList
+        .map(meta => `
+          <article>
+            <a href="${meta.$slug}"><h2>${meta.title}</h2></a>
+            <p>Created at: ${meta.$createdAt}</p>
+            <p class="article-description">${meta.description}</p>
+          </article>
+        `).join('');
+    }}
+
   </main>
   <footer></footer>
 </body>
