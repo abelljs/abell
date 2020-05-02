@@ -30,7 +30,7 @@ The API is not finallised so I will be breaking the functionity a lot.
 - [Contributing to Abell](#3-contributing-to-abell)
   - [Local Setup of Abell Builder](#local-setup-of-abell-builder)
   - [Creating Pull Request](#creating-pull-request)
-  
+- [Changelog](#changelog)
 
 ### 1. Create your site
 Deploy to netlify button below will create copy of [Abell Starter Project](https://github.com/abelljs/abell-starter-minima) in your GitHub and will deploy it to [Netlify](http://netlify.com/) and boom! that's it 🎉
@@ -116,7 +116,11 @@ List of predefined variables
 #### Loops in Abell
 
 
-Abell internally uses [Mustache](https://github.com/janl/mustache.js) for rendering. Thus everything that can done in Mustache is possible in .abell files as well.
+Starting from v0.2.0, Abell uses [abell-renderer](https://github.com/abelljs/abell-renderer) for rendering. 
+
+You can use JavaScript methods within `{{` and `}}` so to loop through an object and generate HTML, you can use `.map()` method from JavaScript.
+
+*Note: The JavaScript you write inside {{ and }} compiles on build time and runs in NodeJS context so you cannot use frontend JavaScript methods from DOM*
 
 ##### Example 1
 Let's say we have this object in variable `$contentList`
@@ -140,14 +144,34 @@ Let's say we have this object in variable `$contentList`
 
 We can loop `$contentList` with,
 
-```html
-{{ # $contentList }}
-  <article>
-    <a href="{{$slug}}"><h2>{{title}}</h2></a>
-    <p>Created at: {{$createdAt}}</p>
-  </article>
-{{ / $contentList }}
+```js
+<div class="article-container">
+{{ 
+  $contentList
+    .map(meta => `
+      <article>
+        <a href="${meta.$slug}"><h2>${meta.title.toUpperCase()}</h2></a>
+        <p>Created at: ${meta.$createdAt}</p>
+      </article>
+    `).join('')
+}}
+</div>
 ```
+
+**outputs:**
+```html
+<div class="article-container">
+  <article>
+    <a href="my-cool-blog"><h2>Cool Blog</h2></a>
+    <p>Created at: Sun Apr 30 2020</p>
+  </article>
+  <article>
+    <a href="nice-blog-69"><h2>Nice Blog</h2></a>
+    <p>Created at: Sun Apr 06 2069</p>
+  </article>
+</div>
+```
+
 
 ##### Example 2
 
@@ -157,16 +181,27 @@ Let's say we have `globalMeta.foo` as,
 ['Hi I am 1', 'John Doe', 'Lorem Ipsum']
 ```
 
-We can loop normal arrays using dot to refer the value.
 
-```html
-
-{{ # globalMeta.foo }}
-  <b>{{ . }}</b>
-{{ / globalMeta.foo }}
+```js
+<div>
+  {{ 
+    globalMeta.foo
+      .map(content => `<b>${content}<b>`)
+      .join('')
+  }}
+</div>
 ```
 
+**outputs:**
+```html
+<div>
+  <b>Hi I am 1</b>
+  <b>John Doe</b>
+  <b>Lorem Ipsum</b>
+</div>
+```
 
+You can also use other JavaScript methods within `{{` `}}`
 
 ### 3. Contributing to Abell
 
@@ -189,6 +224,10 @@ To run a DEV server, you can run `npm run dev:serve` which will serve the websit
 - Send Pull Request from your branch to master of main repository.
 
 `npm run dev:build` is equivalent to `abell build` and `npm run dev:serve` is equivalent to `abell serve` 
+
+### Changelog
+
+Changelogs are maintained in [CHANGELOG.md](CHANGELOG.md)
 
 
 ---
