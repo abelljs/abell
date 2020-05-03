@@ -3,11 +3,13 @@ const path = require('path');
 
 const relativeJoinedPath = pathString => path.join(process.cwd(), ...pathString.split('/'));
 
-const getDirectories = source =>
-  fs.readdirSync(source, { withFileTypes: true })
-    .filter(dirent => dirent.isDirectory())
-    .map(dirent => dirent.name)
-
+const getDirectories = source => {
+  return fs.readdirSync(source)
+    .filter(dirent => {
+      return fs.lstatSync(path.join(source, dirent)).isDirectory()
+    })
+}
+ 
 const rmdirRecursiveSync = function(pathToRemove) {
   if (fs.existsSync(pathToRemove)) {
     fs.readdirSync(pathToRemove).forEach((file, index) => {
