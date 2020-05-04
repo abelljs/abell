@@ -80,6 +80,14 @@ function serve(programInfo) {
   });
 
 
+  const chokidarOptions = {
+    ignoreInitial: true,
+    awaitWriteFinish: {
+      stabilityThreshold: 600,
+      pollInterval: 100
+    }
+  }
+
   // Print ports on screen
   console.log('='.repeat(process.stdout.columns));
   console.log("\n\n💫 Abell dev server running.");
@@ -91,7 +99,7 @@ function serve(programInfo) {
   if(fs.existsSync(abellConfigsPath)) {
     // Watch abell.config.js
     chokidar
-      .watch(abellConfigsPath, {ignoreInitial: true})
+      .watch(abellConfigsPath, chokidarOptions)
       .on('change', filePath => {
 
         // delete require.cache[abellConfigsPath];
@@ -113,7 +121,7 @@ function serve(programInfo) {
 
   // Watch 'src'
   chokidar
-    .watch(programInfo.abellConfigs.sourcePath, {ignoreInitial: true})
+    .watch(programInfo.abellConfigs.sourcePath, chokidarOptions)
     .on('all', (event, filePath) => {
       const directoryName = filePath.slice(programInfo.abellConfigs.sourcePath.length + 1).split('/')[0];
       if(filePath.endsWith('index' + programInfo.templateExtension) && directoryName === '[content]') {
@@ -128,7 +136,7 @@ function serve(programInfo) {
 
   // Watch 'content'
   chokidar
-    .watch(programInfo.abellConfigs.contentPath, {ignoreInitial: true})
+    .watch(programInfo.abellConfigs.contentPath, chokidarOptions)
     .on('all', (event, filePath) => {
       try{
         const directoryName = filePath.slice(programInfo.abellConfigs.contentPath.length + 1).split('/')[0];
