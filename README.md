@@ -7,7 +7,7 @@ Abell is a static blog generator that generates blog in Vanilla JavaScript
 
 ***NOT READY ENOUGH TO USE IN PRODUCTION. ☠️***
 
-The API is not finallised so I will be breaking the functionity a lot. 
+The API is not finalised so I will be breaking the functionality a lot. 
 
 ## 📖 Documentation for Contributors
 
@@ -214,7 +214,7 @@ This repository contains the code that builds the Abell Website. If you want you
 - `npm install` to install dependencies
 - `npm run dev:build` to build static site! 
 
-and you will have your wesite in `./demo/dist`
+and you will have your website in `./demo/dist`
 
 To run a DEV server, you can run `npm run dev:serve` which will serve the website on `localhost`
 
