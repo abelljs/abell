@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.1.15
+
+Added build time to logs
+
 ## v0.1.14
 - Documentations Fixes [#6](https://github.com/abelljs/abell/pull/6) (Thank you [@0xflotus](https://github.com/0xflotus))
 - Fixed [#5](https://github.com/abelljs/abell/issues/5) (dev-server content going blank issue 🎉💃)

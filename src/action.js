@@ -51,11 +51,19 @@ function build(programInfo) {
     if(programInfo.logs == 'complete') console.log(`...Built ${contentSlug}`);
   }
 
+  /**
+   * TODO: Generate other HTML files from directory just like index.abell
+   */
+  
   // GENERATE OTHER HTML FILES
   generateHTMLFile('index', programInfo);
   if(programInfo.logs == 'complete') console.log(`...Built index\n`);
 
-  if(programInfo.logs == 'complete') console.log(`${boldGreen('>>>')} Build complete 🚀✨\n\n`);
+  if(programInfo.logs == 'complete') {
+    const buildTime = (new Date().getTime()) - programInfo.buildStartTime ;
+    console.log(`${boldGreen('>>>')} Build complete (Built in ${buildTime}ms) 🚀✨\n\n`)
+  }
+
   if(programInfo.logs == 'minimum') console.log(`${boldGreen('>>>')} Files built.. ✨`);
 
 }

@@ -48,6 +48,7 @@ function getBaseProgramInfo() {
   const contentDirectories = getDirectories(abellConfigs.contentPath);
   const contentMetaInfo = getContentMetaAll(contentDirectories, abellConfigs.contentPath);
   const programInfo = {
+    buildStartTime: new Date().getTime(),
     abellConfigs,
     contentTemplate: fs.readFileSync(
       path.join(
