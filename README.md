@@ -1,13 +1,13 @@
 <p align="center"> <img width="600" alt="Cover of Abell" src="https://res.cloudinary.com/saurabhdaware/image/upload/v1588851941/abell/githubhead.png" /> </p>
 
-<p align="center"><a href="https://npmjs.org/package/abell"><img alt="GitHub package.json version" src="https://img.shields.io/github/package-json/v/abelljs/abell?style=for-the-badge"></a></p>
+<p align="center"><a href="https://npmjs.org/package/abell"><img alt="GitHub package.json version" src="https://img.shields.io/github/package-json/v/abelljs/abell?style=for-the-badge&labelColor=black&logo=npm&label=abell&color=darkred"></a>&nbsp;<a href="https://npmjs.org/package/abell-renderer"><img alt="GitHub package.json version" src="https://img.shields.io/github/package-json/v/abelljs/abell-renderer?style=for-the-badge&labelColor=black&logo=npm&label=abell%20renderer&color=darkred"></a> &nbsp;<a href="https://join.slack.com/t/abellland/shared_invite/zt-ebklbe8h-FhRgHxNbuO_hvFDf~nZtGQ"><img src="https://img.shields.io/badge/slack-join%20channel-4A154B?style=for-the-badge&logo=slack&logoColor=pink&labelColor=black"/></a></p>
 
 <p align="center">
   Abell is a static blog generator that generates blog in Vanilla JavaScript
 </p>
 
 
-<p align="center"><b>NOT READY ENOUGH TO USE IN PRODUCTION. ☠️</b></p>
+<p align="center"><b>NOT READY ENOUGH TO USE IN PRODUCTION. ☠️</b><br/><br/></p>
 
 ## 📖 Documentation for Contributors
 
