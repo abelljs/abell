@@ -11,9 +11,9 @@
 
 
 
-## 📖 Documentation for Contributors
+## 📖 Documentation
 
-*This documentation is only for the people who want to help me in making Abell!*
+*This documentation is only for the people who want to contribute or just want to try it out for fun. Abell should not be used for production applications yet.*
 
 ### Table of Content
 
