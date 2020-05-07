@@ -1,13 +1,13 @@
-<h1> <img width="40" alt="logo of abell" src="https://res.cloudinary.com/saurabhdaware/image/upload/v1588339230/abell/favicon.ico" /> Abell</h1>
+<p align="center"> <img width="600" alt="Cover of Abell" src="https://res.cloudinary.com/saurabhdaware/image/upload/v1588851941/abell/githubhead.png" /> </p>
 
-![GitHub package.json version](https://img.shields.io/github/package-json/v/abelljs/abell?style=for-the-badge)
+<p align="center"><a href="https://npmjs.org/package/abell"><img alt="GitHub package.json version" src="https://img.shields.io/github/package-json/v/abelljs/abell?style=for-the-badge"></a></p>
 
-Abell is a static blog generator that generates blog in Vanilla JavaScript
+<p align="center">
+  Abell is a static blog generator that generates blog in Vanilla JavaScript
+</p>
 
 
-***NOT READY ENOUGH TO USE IN PRODUCTION. ☠️***
-
-The API is not finalised so I will be breaking the functionality a lot. 
+<p align="center"><b>NOT READY ENOUGH TO USE IN PRODUCTION. ☠️</b></p>
 
 ## 📖 Documentation for Contributors
 
