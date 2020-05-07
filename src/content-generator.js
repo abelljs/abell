@@ -88,6 +88,12 @@ function copyContentAssets(from, to) {
 }
 
 
+/**
+ * Adds support for {{ import_content 'path/to/md' }} statement
+ * @param {string} pageTemplate String of .abell page
+ * @param {string} contentPath path to content folder
+ * @param {object} view sandbox object with variables to run upon
+ */
 function importMarkdownAndAddToTemplate(pageTemplate, contentPath, view) {
 
   const importSelectRegex = /{{ ?import_content *['"](.*?)['"] ?}}/g

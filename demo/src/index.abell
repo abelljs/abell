@@ -6,7 +6,11 @@
   <title>{{ globalMeta.siteName }}</title>
 </head>
 <body>
-  <header></header>
+  {{
+    const a = 3;
+    const b = 8;
+  }}
+  <header>Addition of numbers: {{ a + b }}</header>
   <h1>{{ globalMeta.siteName.toUpperCase() }}</h1>
   <main>
     {{
@@ -19,7 +23,6 @@
           </article>
         `).join('');
     }}
-
   </main>
   <footer></footer>
 </body>
