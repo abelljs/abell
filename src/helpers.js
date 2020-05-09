@@ -24,28 +24,21 @@ const rmdirRecursiveSync = function(pathToRemove) {
   }
 };
 
-const readUserConfigFile = () => {
-  let userConfig;
+const getAbellConfigs = () => {
+  let abellConfig;
   try {
     delete require.cache[path.join(process.cwd(), 'abell.config.js')];
-    userConfig = require(path.join(process.cwd(), 'abell.config.js'));
-    if(Object.keys(userConfig).length <= 0) throw new Error("Something went wrong while fetching new configurations. Save again to refresh the dev server.");
+    abellConfig = require(path.join(process.cwd(), 'abell.config.js'));
+    if(Object.keys(abellConfig).length <= 0) throw new Error("Something went wrong while fetching new configurations. Save again to refresh the dev server.");
   } catch(err) {
     console.log(boldRed(">> ") + err.message);
-    userConfig = {
+    abellConfig = {
       destinationPath: 'dist',
       sourcePath: 'src',
       contentPath: 'content',
       globalMeta: {}
     };
   }
-
-  return userConfig;
-}
-
-const getAbellConfigs = () => {
-  // If not memoized
-  const abellConfig = readUserConfigFile();
 
   const destinationPath = relativeJoinedPath(abellConfig.destinationPath);
   const sourcePath = relativeJoinedPath(abellConfig.sourcePath);

@@ -11,7 +11,7 @@
     "abell": "dist/index.js"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha --recursive \"./tests/*.js\"",
     "build": "node build/build.main.js",
     "dev:build": "cd demo && node ../src/index.js build",
     "dev:serve": "cd demo && node ../src/index.js serve",
@@ -37,6 +37,8 @@
     "markdown-it": "^10.0.0"
   },
   "devDependencies": {
-    "fs-extra": "^9.0.0"
+    "chai": "^4.2.0",
+    "fs-extra": "^9.0.0",
+    "mocha": "^7.1.2"
   }
 }
