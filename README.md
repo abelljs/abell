@@ -60,7 +60,7 @@ To test your blog, you can either [run your site locally](#1b-run-your-blog-loca
 Sample abell.config.js:
 ```js
 module.exports = {
-  sourcePath: 'src', // path of source where index.abell and [content]/index.abell are located
+  sourcePath: 'src', // path of source where index.abell and template/content.abell are located
   destinationPath: 'dist', // Build destination
   contentPath: 'content', // Content Path which has .md 
   globalMeta: { // All the global variables
@@ -75,7 +75,7 @@ module.exports = {
 #### Variables in Abell
 
 Abell lets you use variables inside your .abell files. 
-- [Content Specific Variables](#content-specific-variables) that can be accessed from `./src/[content]/index.abell`.
+- [Content Specific Variables](#content-specific-variables) that can be accessed from `./src/template/content.abell`.
 - There are [Global Variables](#global-variables) that can be accessed from any .abell files with `{{ globalMeta.<key> }}`.
 - [Predefined Variables](#predefined-variables)
 
@@ -91,7 +91,7 @@ Example `./content/<content-slug>/meta.json`
 }
 ```
 
-These variables can be accessed from `./src/[content]/index.abell` with `{{ meta.title }}`, `{{ meta.description }}`, `{{ meta.foo }}`
+These variables can be accessed from `./src/template/content.abell` with `{{ meta.title }}`, `{{ meta.description }}`, `{{ meta.foo }}`
 
 ##### Global variables
 

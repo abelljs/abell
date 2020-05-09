@@ -39,9 +39,9 @@ function build(programInfo) {
   rmdirRecursiveSync(programInfo.abellConfigs.destinationPath);
   fs.mkdirSync(programInfo.abellConfigs.destinationPath);
   
-  // Copy everything from src to dist except [content] folder and index.abell.
+  // Copy everything from src to dist except template folder and index.abell.
   copyFolderSync(programInfo.abellConfigs.sourcePath, programInfo.abellConfigs.destinationPath);
-  rmdirRecursiveSync(path.join(programInfo.abellConfigs.destinationPath, '[content]'));
+  rmdirRecursiveSync(path.join(programInfo.abellConfigs.destinationPath, 'template'));
   fs.unlinkSync(path.join(programInfo.abellConfigs.destinationPath, 'index.abell'))
 
 
@@ -132,9 +132,9 @@ function serve(programInfo) {
     .watch(programInfo.abellConfigs.sourcePath, chokidarOptions)
     .on('all', (event, filePath) => {
       const directoryName = filePath.slice(programInfo.abellConfigs.sourcePath.length + 1).split('/')[0];
-      if(filePath.endsWith('index' + programInfo.templateExtension) && directoryName === '[content]') {
+      if(filePath.endsWith('index' + programInfo.templateExtension) && directoryName === 'template') {
         // Content template changed
-        programInfo.contentTemplate = fs.readFileSync(path.join(programInfo.abellConfigs.sourcePath, '[content]', 'index' + programInfo.templateExtension), 'utf-8');
+        programInfo.contentTemplate = fs.readFileSync(path.join(programInfo.abellConfigs.sourcePath, 'template', 'content' + programInfo.templateExtension), 'utf-8');
       }
         
       build(programInfo);

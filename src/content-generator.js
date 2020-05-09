@@ -53,8 +53,8 @@ function getBaseProgramInfo() {
     contentTemplate: fs.readFileSync(
       path.join(
         abellConfigs.sourcePath, 
-        '[content]', 
-        ('index' + (abellConfigs.templateExtension || '.abell'))
+        'template', 
+        ('content' + (abellConfigs.templateExtension || '.abell'))
       ), 
       'utf-8'
     ),
