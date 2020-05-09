@@ -58,11 +58,6 @@ function build(programInfo) {
   generateHTMLFile('index', programInfo);
   if(programInfo.logs == 'complete') console.log(`...Built index\n`);
 
-  if(programInfo.logs == 'complete') {
-    const buildTime = (new Date().getTime()) - programInfo.buildStartTime ;
-    console.log(`${boldGreen('>>>')} Abell Build complete (Built in ${buildTime}ms) 🚀✨\n\n`)
-  }
-
   if(programInfo.logs == 'minimum') console.log(`${boldGreen('>>>')} Files built.. ✨`);
 
 }

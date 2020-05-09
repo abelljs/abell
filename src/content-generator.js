@@ -62,7 +62,6 @@ function getBaseProgramInfo() {
 
 
   const programInfo = {
-    buildStartTime: new Date().getTime(),
     abellConfigs,
     contentTemplate,
     contentList,
