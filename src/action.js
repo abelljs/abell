@@ -60,7 +60,7 @@ function build(programInfo) {
 
   if(programInfo.logs == 'complete') {
     const buildTime = (new Date().getTime()) - programInfo.buildStartTime ;
-    console.log(`${boldGreen('>>>')} Build complete (Built in ${buildTime}ms) 🚀✨\n\n`)
+    console.log(`${boldGreen('>>>')} Abell Build complete (Built in ${buildTime}ms) 🚀✨\n\n`)
   }
 
   if(programInfo.logs == 'minimum') console.log(`${boldGreen('>>>')} Files built.. ✨`);
