@@ -145,6 +145,8 @@ function serve(programInfo) {
   chokidar
     .watch(programInfo.abellConfigs.contentPath, chokidarOptions)
     .on('all', (event, filePath) => {
+      console.log(`>> Event '${event}' emitted from ${path.relative(process.cwd(), filePath)}`);
+
       try{
         const directoryName = filePath.slice(programInfo.abellConfigs.contentPath.length + 1).split('/')[0];
         if(filePath.endsWith('index.md')) {
@@ -154,12 +156,16 @@ function serve(programInfo) {
           // refetch meta and then build
           const meta = getContentMeta(directoryName, programInfo.abellConfigs.contentPath);
           programInfo.globalMeta.contentMetaInfo[directoryName] = meta;
+          const indexToChange = programInfo.contentList.findIndex(content => content.$slug == directoryName);
+          programInfo.contentList[indexToChange] = meta; 
           build(programInfo);
         }else {
           build(programInfo);
         }
         
       }catch(err) {
+        console.log("Something did not happen as expected, Falling back to complete build");
+        console.log(err);
         build(programInfo);
       }
 

@@ -47,6 +47,9 @@ function getBaseProgramInfo() {
   const abellConfigs = getAbellConfigs();
   const contentDirectories = getDirectories(abellConfigs.contentPath);
   const contentMetaInfo = getContentMetaAll(contentDirectories, abellConfigs.contentPath);
+  const contentList = Object.values(contentMetaInfo)
+    .sort((a, b) => a.$createdAt.getTime() > b.$createdAt.getTime() ? -1 : 1);
+
 
   const contentTemplate = fs.readFileSync(
     path.join(
@@ -62,6 +65,7 @@ function getBaseProgramInfo() {
     buildStartTime: new Date().getTime(),
     abellConfigs,
     contentTemplate,
+    contentList,
     contentDirectories,
     globalMeta: {
       ...abellConfigs.globalMeta, 
@@ -138,11 +142,8 @@ function importMarkdownAndAddToTemplate(pageTemplate, contentPath, view) {
 function generateHTMLFile(filepath, programInfo) {
   const pageTemplate = fs.readFileSync(path.join(programInfo.abellConfigs.sourcePath, filepath + programInfo.templateExtension), 'utf-8');
 
-  const contentList = Object.values(programInfo.globalMeta.contentMetaInfo)
-    .sort((a, b) => a.$createdAt.getTime() > b.$createdAt.getTime() ? -1 : 1);
-
   const view = {
-    $contentList: contentList,
+    $contentList: programInfo.contentList,
     globalMeta: programInfo.globalMeta
   }
   
@@ -187,7 +188,7 @@ function generateContentFile(contentSlug, programInfo) {
   const view = {
     globalMeta: programInfo.globalMeta,
     meta: programInfo.globalMeta.contentMetaInfo[contentSlug],
-    $contentList: Object.values(programInfo.globalMeta.contentMetaInfo),
+    $contentList: programInfo.contentList
   }
 
   // imports markdown to template 
