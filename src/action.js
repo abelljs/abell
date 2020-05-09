@@ -33,7 +33,6 @@ function build(programInfo) {
 
   if(programInfo.logs == 'complete') console.log("\n>> Abell Build Started\n");
 
-  const contentDirectories = getDirectories(programInfo.abellConfigs.contentPath);
 
   // Refresh dist
   rmdirRecursiveSync(programInfo.abellConfigs.destinationPath);
@@ -46,7 +45,7 @@ function build(programInfo) {
 
 
   // GENERATE CONTENT HTML FILES 
-  for(let contentSlug of contentDirectories) {
+  for(let contentSlug of programInfo.contentDirectories) {
     generateContentFile(contentSlug, programInfo);
     if(programInfo.logs == 'complete') console.log(`...Built ${contentSlug}`);
   }

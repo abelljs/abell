@@ -47,17 +47,22 @@ function getBaseProgramInfo() {
   const abellConfigs = getAbellConfigs();
   const contentDirectories = getDirectories(abellConfigs.contentPath);
   const contentMetaInfo = getContentMetaAll(contentDirectories, abellConfigs.contentPath);
+
+  const contentTemplate = fs.readFileSync(
+    path.join(
+      abellConfigs.sourcePath, 
+      'template', 
+      ('content' + (abellConfigs.templateExtension || '.abell'))
+    ), 
+    'utf-8'
+  )
+
+
   const programInfo = {
     buildStartTime: new Date().getTime(),
     abellConfigs,
-    contentTemplate: fs.readFileSync(
-      path.join(
-        abellConfigs.sourcePath, 
-        'template', 
-        ('content' + (abellConfigs.templateExtension || '.abell'))
-      ), 
-      'utf-8'
-    ),
+    contentTemplate,
+    contentDirectories,
     globalMeta: {
       ...abellConfigs.globalMeta, 
       contentMetaInfo
@@ -134,12 +139,7 @@ function generateHTMLFile(filepath, programInfo) {
   const pageTemplate = fs.readFileSync(path.join(programInfo.abellConfigs.sourcePath, filepath + programInfo.templateExtension), 'utf-8');
 
   const contentList = Object.values(programInfo.globalMeta.contentMetaInfo)
-    .sort((a, b) => a.$createdAt.getTime() > b.$createdAt.getTime() ? -1 : 1)
-    .map(contentInfo => ({
-      ...contentInfo, 
-      $createdAt: contentInfo.$createdAt.toDateString(),
-      $modifiedAt: contentInfo.$modifiedAt.toDateString()
-    }))
+    .sort((a, b) => a.$createdAt.getTime() > b.$createdAt.getTime() ? -1 : 1);
 
   const view = {
     $contentList: contentList,
