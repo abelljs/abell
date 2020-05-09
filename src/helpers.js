@@ -89,7 +89,7 @@ function exitHandler(options, exitCode) {
 
 const boldRed = (message) => `\u001b[1m\u001b[31m${message}\u001b[39m\u001b[22m`;
 const boldGreen = (message) => `\u001b[1m\u001b[32m${message}\u001b[39m\u001b[22m`;
-// const grey = (message) => `\u001b[90m${message}\u001b[39m`;
+const grey = (message) => `\u001b[90m${message}\u001b[39m`;
 
 module.exports = {
   getDirectories,
@@ -99,5 +99,6 @@ module.exports = {
   copyFolderSync,
   exitHandler,
   boldGreen,
-  boldRed
+  boldRed,
+  grey
 }
