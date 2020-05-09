@@ -1,8 +1,11 @@
 # Changelog
 
 ## v0.2.1
-BREAKING CHANGES
-- Default folder to read content template changed from `[content]/index.abell` to `template/content.abell`.
+- **BREAKING CHANGE** Default folder to read content template changed from `[content]/index.abell` to `template/content.abell`.
+- Build time reduced. (Pre-calculating directories and contentList before execution)
+- More accurate Build times. 
+- Error handling on Build Failures.
+- Documentation design updates.
 
 ## v0.2.0
 Migration to [abell-renderer](https://github.com/abelljs/abell-renderer) v0.1.0 
