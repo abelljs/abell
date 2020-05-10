@@ -3,27 +3,26 @@
 const action = require('./action');
 const program = require('commander');
 
-const { getBaseProgramInfo } = require('./content-generator');
-const { boldGreen, boldRed, grey } = require('./helpers.js');
+const {getBaseProgramInfo} = require('./content-generator');
+const {boldGreen, boldRed, grey} = require('./helpers.js');
 
 program.version(require('../package.json').version);
 
 program
   .command('build')
   .action(() => {
-    try{
+    try {
       const buildStartTime = new Date().getTime();
       const programInfo = getBaseProgramInfo();
       programInfo.logs = 'complete';
       programInfo.task = 'build';
       action.build(programInfo);
       const buildTime = new Date().getTime() - buildStartTime;
-      console.log(`${boldGreen('>>>')} Abell Build complete (Built in ${buildTime}ms) 🚀✨\n\n`)
-    } catch(err) {
+      console.log(`${boldGreen('>>>')} Abell Build complete (Built in ${buildTime}ms) 🚀✨\n\n`);
+    } catch (err) {
       console.log(err);
       console.log(`\n\n${boldRed('>>>')} Abell Build Failed 😭 \n`);
-      console.log(`${boldRed(">>")} If you think there's something wrong in Abell, It would be very helpful if you could report bug with above logs at ${grey('https://github.com/abelljs/abell/issues')}\n\n`);
-
+      console.log(`${boldRed('>>')} If you think there's something wrong in Abell, It would be very helpful if you could report bug with above logs at ${grey('https://github.com/abelljs/abell/issues')}\n\n`); // eslint-disable-line
     }
   });
 
@@ -38,7 +37,7 @@ program
     programInfo.abellConfigs.destinationPath = '.debug';
     
     action.serve(programInfo);
-  })
+  });
 
 program.parse(process.argv);
 

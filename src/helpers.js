@@ -1,14 +1,26 @@
 const fs = require('fs');
 const path = require('path');
 
+/**
+ * 
+ * @typedef {Object} AbellConfigs - Configurations from abell.config.js
+ * @property {String} contentPath - Path to content directory (default 'content')
+ * @property {String} sourcePath - Path to source directory (default 'src')
+ * @property {String} destinationPath
+ *  - Path to output destination (default 'dist', changes to 'debug' during dev-server)
+ * @property {Object} globalMeta - Meta variables that are accessible globally in .abell files
+ * 
+ */
+
+
 const relativeJoinedPath = pathString => path.join(process.cwd(), ...pathString.split('/'));
 
 const getDirectories = source => {
   return fs.readdirSync(source)
     .filter(dirent => {
-      return fs.lstatSync(path.join(source, dirent)).isDirectory()
-    })
-}
+      return fs.lstatSync(path.join(source, dirent)).isDirectory();
+    });
+};
  
 const rmdirRecursiveSync = function(pathToRemove) {
   if (fs.existsSync(pathToRemove)) {
@@ -24,14 +36,19 @@ const rmdirRecursiveSync = function(pathToRemove) {
   }
 };
 
-const getAbellConfigs = () => {
+/**
+ * @return {AbellConfigs}
+ */
+function getAbellConfigs() {
   let abellConfig;
   try {
     delete require.cache[path.join(process.cwd(), 'abell.config.js')];
     abellConfig = require(path.join(process.cwd(), 'abell.config.js'));
-    if(Object.keys(abellConfig).length <= 0) throw new Error("Something went wrong while fetching new configurations. Save again to refresh the dev server.");
-  } catch(err) {
-    console.log(boldRed(">> ") + err.message);
+    if (Object.keys(abellConfig).length <= 0) {
+      throw new Error('Something went wrong while fetching new configurations. Save again to refresh the dev server.'); // eslint-disable-line
+    }
+  } catch (err) {
+    console.log(boldRed('>> ') + err.message);
     abellConfig = {
       destinationPath: 'dist',
       sourcePath: 'src',
@@ -49,34 +66,44 @@ const getAbellConfigs = () => {
     destinationPath, 
     sourcePath, 
     contentPath,
-  }
-}
+  };
+};
 
 
 const createPathIfAbsent = pathToCreate => {
-  if(!fs.existsSync(pathToCreate)) {
+  if (!fs.existsSync(pathToCreate)) {
     fs.mkdirSync(pathToCreate);
   }
-} 
+};
 
+/**
+ * 
+ * @param {String} from - Path to copy from
+ * @param {String} to - Path to copy to
+ * @return {void}
+ */
 function copyFolderSync(from, to) {
   createPathIfAbsent(to);
   fs.readdirSync(from).forEach(element => {
-      if (fs.lstatSync(path.join(from, element)).isFile()) {
-          fs.copyFileSync(path.join(from, element), path.join(to, element));
-      } else {
-          copyFolderSync(path.join(from, element), path.join(to, element));
-      }
+    if (fs.lstatSync(path.join(from, element)).isFile()) {
+      fs.copyFileSync(path.join(from, element), path.join(to, element));
+    } else {
+      copyFolderSync(path.join(from, element), path.join(to, element));
+    }
   });
 }
 
+/**
+ * Called before exit from cli,
+ * @param {Object} options 
+ * @param {Number} exitCode 
+ */
 function exitHandler(options, exitCode) {
   if (options.cleanup) {
     rmdirRecursiveSync('.debug');
-    console.log("\n\nBiee 🐨✌️\n");
+    console.log('\n\nBiee 🐨✌️\n');
   }
-  if(exitCode !== 0) console.log(exitCode);
-
+  if (exitCode !== 0) console.log(exitCode);
   if (options.exit) process.exit();
 }
 
@@ -94,4 +121,4 @@ module.exports = {
   boldGreen,
   boldRed,
   grey
-}
+};
