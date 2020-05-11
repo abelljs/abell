@@ -244,5 +244,6 @@ module.exports = {
   getContentMetaAll,
   getBaseProgramInfo,
   generateContentFile,
-  generateHTMLFile
+  generateHTMLFile,
+  importMarkdown
 };
