@@ -27,9 +27,11 @@ describe('importMarkdown()', () => {
     const shouldOutput = `
       <h1>Abell Test Title Check</h1>
       <p>Hi this my another blog.
-      <b>Nice</b></p>
-      <pre><code class="language-js">const s = 'cool'
-      </code></pre>
+        <b>Nice</b>
+      </p>
+      <pre>
+        <code class="language-js">const s = 'cool'</code>
+      </pre>
     `;
 
     expect(
