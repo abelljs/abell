@@ -1,4 +1,6 @@
-# Hi, This is just another blog
+# {{ meta.title }}
+
+{{ meta.$createdAt }}
 
 Hi this my another blog.
 

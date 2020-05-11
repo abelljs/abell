@@ -1,3 +1,3 @@
-# My First Blog
+# {{ globalMeta.siteName }}
 
 First blog

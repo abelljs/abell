@@ -11,7 +11,7 @@
 </head>
 <body>
   <section id="blog-container">
-    {{ import_content '{{ meta.$slug }}/index.md' }}
+    {{ $importContent(meta.$slug + '/index.md') }}
   </section>
 </body>
 </html>

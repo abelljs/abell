@@ -20,7 +20,7 @@ const {
  * @property {Date} $createdAt - Date object with time of content creation
  * @property {Date} $modifiedAt - Date object with time of last modification
  * 
- * @typedef {Object} ProgramInfo
+ * @typedef {Object} ProgramInfo - Contains all the information required by the build to execute.
  * @property {import('./helpers.js').AbellConfigs} abellConfigs 
  *  - Configuration from abell.config.js file
  * @property {String} contentTemplate - string of the template from template/content.abell file
@@ -133,36 +133,20 @@ function copyContentAssets(from, to) {
   }
 }
 
-
 /**
- * Adds support for {{ import_content 'path/to/md' }} statement
- * @param {String} pageTemplate String of .abell page
- * @param {String} contentPath path to content folder
- * @param {Object} view sandbox object with variables to run upon
- * @return {String} pageTemplate
+ * 1. Reads md file from given path 
+ * 2. Converts md to html
+ * 3. Adds variable to the new HTML and returns the HTML
+ * 
+ * @param {String} mdPath 
+ * @param {String} contentPath
+ * @param {Object} variables
+ * @return {String}
  */
-function importMarkdownAndAddToTemplate(pageTemplate, contentPath, view) {
-  const importSelectRegex = /{{ ?import_content *['"](.*?)['"] ?}}/g;
-  let mdPath = importSelectRegex.exec(pageTemplate);
-  while (mdPath !== null) {
-    const renderedPath = abellRenderer.render(mdPath[1], view);
-    // get markdown and convert into HTML
-    const markdown = fs.readFileSync(path.join(contentPath, renderedPath), 'utf-8');
-    if (!markdown) {
-      console.log('Something went wrong 😭 Please save again to refresh the server.');
-    }
-    const content = mdIt.render(markdown);
-  
-    pageTemplate = pageTemplate.slice(0, mdPath['index']) 
-      + content 
-      + pageTemplate.slice(mdPath['index'] + mdPath[0].length);
-
-    
-    mdPath = importSelectRegex.exec(pageTemplate);
-  }
-
-
-  return pageTemplate;
+function importMarkdown(mdPath, contentPath, variables) {
+  const markdown = fs.readFileSync(path.join(contentPath, mdPath), 'utf-8');
+  const content = mdIt.render(markdown);
+  return abellRenderer.render(content, variables); // Add variables to markdown
 }
 
 /**
@@ -181,19 +165,22 @@ function generateHTMLFile(filepath, programInfo) {
     'utf-8'
   );
 
-  const view = {
+  const variables = {
     $contentList: programInfo.contentList,
     globalMeta: programInfo.globalMeta
   };
-  
-  // imports markdown to template 
-  const newPageTemplate = importMarkdownAndAddToTemplate(
-    pageTemplate,
-    programInfo.abellConfigs.contentPath,
-    view
-  );
 
-  const pageContent = abellRenderer.render(newPageTemplate, view);
+  const view = {
+    ...variables,
+    $importContent: (path) => 
+      importMarkdown(
+        path, 
+        programInfo.abellConfigs.contentPath, 
+        variables
+      )
+  };
+
+  const pageContent = abellRenderer.render(pageTemplate, view);
 
   fs.writeFileSync(
     path.join(programInfo.abellConfigs.destinationPath, filepath + '.html'), 
@@ -218,21 +205,24 @@ function generateContentFile(contentSlug, programInfo) {
   // Create Path of content if does not already exist
   createPathIfAbsent(path.join(programInfo.abellConfigs.destinationPath, contentSlug));
 
-  const view = {
+  const variables = {
     globalMeta: programInfo.globalMeta,
     meta: programInfo.globalMeta.contentMetaInfo[contentSlug],
     $contentList: programInfo.contentList
   };
 
-  // imports markdown to template 
-  const contentTemplate = importMarkdownAndAddToTemplate(
-    programInfo.contentTemplate, 
-    programInfo.abellConfigs.contentPath,
-    view
-  );
+  const view = {
+    ...variables,
+    $importContent: (path) => 
+      importMarkdown(
+        path, 
+        programInfo.abellConfigs.contentPath, 
+        variables
+      )
+  };
 
   // render HTML of content
-  const contentHTML = abellRenderer.render(contentTemplate, view);
+  const contentHTML = abellRenderer.render(programInfo.contentTemplate, view);
 
 
   // WRITE IT OUT!! YASSSSSS!!!
