@@ -114,6 +114,19 @@ List of predefined variables
 | $contentList     | Array of all 'meta' values from content       | `[{title: 'Cool Blog', $slug: 'my-cool-blog'}, {title: 'Nice blog', $slug: 'nice-blog-69'}]` |
 
 
+#### Importing Markdown as HTML
+You can import markdown files as HTML in .abell files using `$importContent(path)` function.
+
+In this function, paths are relative to 'content' directory. 
+
+**Example:**
+```jsx
+  <section id="blog-container">
+    {{ $importContent(meta.$slug + '/index.md') }}
+  </section>
+```
+
+This will import the markdown as HTML from `./content/my-blog/index.md`. (where `my-blog` is dynamic)
 
 #### Loops in Abell
 

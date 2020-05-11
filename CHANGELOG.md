@@ -1,5 +1,18 @@
 # Changelog
 
+## v0.2.2
+**BREAKING CHANGE** 
+Syntax for importing content changed.
+
+```js
+{{ import_content '{{meta.$slug}}/index.md' }}
+```
+⬇️
+
+```js
+{{ $importContent(meta.$slug + '/index.md') }}
+```
+
 ## v0.2.1
 - **BREAKING CHANGE** Default folder to read content template changed from `[content]/index.abell` to `template/content.abell`.
 - Build time reduced. (Pre-calculating directories and contentList before execution)
