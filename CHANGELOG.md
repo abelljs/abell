@@ -1,8 +1,8 @@
 # Changelog
 
 ## v0.2.2
-**BREAKING CHANGE** 
-Syntax for importing content changed.
+- **BREAKING CHANGE** 
+  Syntax for importing content changed.
 
 ```js
 {{ import_content '{{meta.$slug}}/index.md' }}
@@ -12,6 +12,9 @@ Syntax for importing content changed.
 ```js
 {{ $importContent(meta.$slug + '/index.md') }}
 ```
+
+- Update to [abell-renderer v0.1.4](https://github.com/abelljs/abell-renderer/releases/tag/v0.1.4)
+
 
 ## v0.2.1
 - **BREAKING CHANGE** Default folder to read content template changed from `[content]/index.abell` to `template/content.abell`.
