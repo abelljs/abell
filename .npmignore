@@ -1,4 +1,8 @@
 build/
 demo/
 src/
+tests/
 .debug
+.eslintrc.js
+.eslintignore
+.github/
