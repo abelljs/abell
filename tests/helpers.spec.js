@@ -17,12 +17,16 @@ describe('getDirectories()', () => {
 });
 
 describe('getAbellConfigs()', () => {
-  it('should return siteName from abell.config.js', () => {
+  before(() => {
     process.chdir('tests/resources/test_demo');
+  });
 
+  it('should return siteName from abell.config.js', () => {
     expect(getAbellConfigs().globalMeta.siteName)
       .to.equal('Abell Test Working!');
+  });
 
+  after(() => {
     process.chdir('../../..');
   });
 });

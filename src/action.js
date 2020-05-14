@@ -38,9 +38,9 @@ function build(programInfo) {
   rmdirRecursiveSync(programInfo.abellConfigs.destinationPath);
   fs.mkdirSync(programInfo.abellConfigs.destinationPath);
   
-  // Copy everything from src to dist except template folder and index.abell.
+  // Copy everything from src to dist except [$slug] folder and index.abell.
   copyFolderSync(programInfo.abellConfigs.sourcePath, programInfo.abellConfigs.destinationPath);
-  rmdirRecursiveSync(path.join(programInfo.abellConfigs.destinationPath, 'template'));
+  rmdirRecursiveSync(path.join(programInfo.abellConfigs.destinationPath, '[$slug]'));
   fs.unlinkSync(path.join(programInfo.abellConfigs.destinationPath, 'index.abell'));
 
 
@@ -117,7 +117,7 @@ function serve(programInfo) {
         const existingDestination = programInfo.abellConfigs.destinationPath;
         programInfo.abellConfigs = baseProgramInfo.abellConfigs;
         programInfo.abellConfigs.destinationPath = existingDestination;
-        programInfo.globalMeta = baseProgramInfo.globalMeta;
+        programInfo.vars.globalMeta = baseProgramInfo.vars.globalMeta;
 
         console.log('Abell configs changed 🤓');
 
@@ -137,14 +137,14 @@ function serve(programInfo) {
 
       if (
         filePath.endsWith('index' + programInfo.templateExtension) && 
-        directoryName === 'template'
+        directoryName === '[$slug]'
       ) {
         // Content template changed
         programInfo.contentTemplate = fs.readFileSync(
           path.join(
             programInfo.abellConfigs.sourcePath, 
-            'template', 
-            'content' + programInfo.templateExtension
+            '[$slug]', 
+            'index' + programInfo.templateExtension
           ), 
           'utf-8'
         );
@@ -171,10 +171,10 @@ function serve(programInfo) {
         } else if (filePath.endsWith('meta.json')) {
           // refetch meta and then build
           const meta = getContentMeta(directoryName, programInfo.abellConfigs.contentPath);
-          programInfo.globalMeta.contentMetaInfo[directoryName] = meta;
-          const indexToChange = programInfo.contentList
+          programInfo.vars.$contentObj[directoryName] = meta;
+          const indexToChange = programInfo.vars.$contentArray
             .findIndex(content => content.$slug == directoryName);
-          programInfo.contentList[indexToChange] = meta; 
+          programInfo.vars.$contentArray[indexToChange] = meta; 
           build(programInfo);
         } else {
           build(programInfo);

@@ -7,16 +7,21 @@ const {
 
 
 describe('getBaseProgramInfo()', () => {
-  it('should return the base info for program to execute', () => {
+  before(() => {
     process.chdir('tests/resources/test_demo');
+  });
 
+  it('should return the base info for program to execute', () => {
     expect(getBaseProgramInfo())
       .to.be.an('object')
       .to.have.keys([
-        'abellConfigs', 'contentTemplate', 'contentList', 
-        'contentDirectories', 'globalMeta', 'logs', 'templateExtension'
+        'abellConfigs', 'contentTemplate', 'vars',
+        'contentDirectories', 'logs', 'templateExtension'
       ]);
+  });
 
+
+  after(() => {
     process.chdir('../../..');
   });
 });

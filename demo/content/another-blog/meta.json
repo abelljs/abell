@@ -1,4 +1,5 @@
 {
   "title": "Another blog",
-  "description": "Amazing blog right"
+  "description": "Amazing blog right",
+  "foo": "bar"
 }

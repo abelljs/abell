@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.2.3
+- **BREAKING CHANGE**
+  `$contentList` changed to `$contentArray`
+- Refactoring of how variables are handled internally
+- `$contentObj` and `$slug` variables added
+- **BREAKING CHANGE**
+  `template/content.abell` changed to `[$slug]/index.abell`
+
 ## v0.2.2
 - **BREAKING CHANGE** 
   Syntax for importing content changed.
@@ -17,7 +25,8 @@
 
 
 ## v0.2.1
-- **BREAKING CHANGE** Default folder to read content template changed from `[content]/index.abell` to `template/content.abell`.
+- **BREAKING CHANGE** 
+  Default folder to read content template changed from `[content]/index.abell` to `template/content.abell`.
 - Build time reduced. (Pre-calculating directories and contentList before execution)
 - More accurate Build times. 
 - Error handling on Build Failures.

@@ -14,7 +14,7 @@
   <h1>{{ globalMeta.siteName.toUpperCase() }}</h1>
   <main>
     {{
-      $contentList
+      $contentArray
         .map(meta => `
           <article>
             <a href="${meta.$slug}"><h2>${meta.title}</h2></a>

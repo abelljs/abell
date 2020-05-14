@@ -7,14 +7,14 @@
 </head>
 <body>
   {{
-    const a = 3;
+    const a = 9;
     const b = 8;
   }}
   <header>Addition of numbers: {{ a + b }}</header>
-  <h1>{{ globalMeta.siteName.toUpperCase() }}</h1>
+  <h1>{{ globalMeta.siteName }}</h1>
   <main>
     {{
-      $contentList
+      $contentArray
         .map(meta => `
           <article>
             <a href="${meta.$slug}"><h2>${meta.title}</h2></a>

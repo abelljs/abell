@@ -24,9 +24,11 @@ const {
  * @property {import('./helpers.js').AbellConfigs} abellConfigs 
  *  - Configuration from abell.config.js file
  * @property {String} contentTemplate - string of the template from template/content.abell file
- * @property {[MetaInfo]} contentList - An array of all MetaInfo
+ * @property {Object} vars - all global variables in .abell files
+ * @property {[MetaInfo]} vars.$contentArray - An array of all MetaInfo
+ * @property {Object} vars.$contentObj - Content meta info object
+ * @property {Object} vars.globalMeta - meta info to be injected into .abell files
  * @property {Array} contentDirectories - List of names of all directories in content directory
- * @property {Object} globalMeta - meta info to be injected into .abell files
  * @property {String} logs - logs in the console ('minimum', 'complete')
  * @property {String} templateExtension - extension of input file ('.abell' default)
  * 
@@ -82,16 +84,16 @@ function getBaseProgramInfo() {
   // Get configured paths of destination and content
   const abellConfigs = getAbellConfigs();
   const contentDirectories = getDirectories(abellConfigs.contentPath);
-  const contentMetaInfo = getContentMetaAll(contentDirectories, abellConfigs.contentPath);
-  const contentList = Object.values(contentMetaInfo)
+  const $contentObj = getContentMetaAll(contentDirectories, abellConfigs.contentPath);
+  const $contentArray = Object.values($contentObj)
     .sort((a, b) => a.$createdAt.getTime() > b.$createdAt.getTime() ? -1 : 1);
 
 
   const contentTemplate = fs.readFileSync(
     path.join(
       abellConfigs.sourcePath, 
-      'template', 
-      ('content' + (abellConfigs.templateExtension || '.abell'))
+      '[$slug]', 
+      ('index' + (abellConfigs.templateExtension || '.abell'))
     ), 
     'utf-8'
   );
@@ -100,11 +102,11 @@ function getBaseProgramInfo() {
   const programInfo = {
     abellConfigs,
     contentTemplate,
-    contentList,
     contentDirectories,
-    globalMeta: {
-      ...abellConfigs.globalMeta, 
-      contentMetaInfo
+    vars: {
+      $contentArray,
+      $contentObj,
+      globalMeta: abellConfigs.globalMeta
     },
     logs: 'minimum',
     templateExtension: abellConfigs.templateExtension || '.abell'
@@ -171,10 +173,7 @@ function generateHTMLFile(filepath, programInfo) {
     'utf-8'
   );
 
-  const variables = {
-    $contentList: programInfo.contentList,
-    globalMeta: programInfo.globalMeta
-  };
+  const variables = programInfo.vars;
 
   const view = {
     ...variables,
@@ -212,9 +211,9 @@ function generateContentFile(contentSlug, programInfo) {
   createPathIfAbsent(path.join(programInfo.abellConfigs.destinationPath, contentSlug));
 
   const variables = {
-    globalMeta: programInfo.globalMeta,
-    meta: programInfo.globalMeta.contentMetaInfo[contentSlug],
-    $contentList: programInfo.contentList
+    ...programInfo.vars,
+    $slug: contentSlug,
+    meta: programInfo.vars.$contentObj[contentSlug]
   };
 
   const view = {

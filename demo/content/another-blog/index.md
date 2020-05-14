@@ -2,7 +2,7 @@
 
 {{ meta.$createdAt }}
 
-Hi this my another blog.
+{{ meta.description }}
 
 <b>Nice</b>
 
