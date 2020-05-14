@@ -30,7 +30,7 @@ describe('getBaseProgramInfo()', () => {
 describe('importAndRender()', () => {
   it('should return HTML of the md file in given path', () => {
     const shouldOutput = `
-      <h1>Abell Test Title Check</h1>
+      <h1 id="abell-test-title-check">Abell Test Title Check</h1>
       <p>Hi this my another blog.
         <b>Nice</b>
       </p>

@@ -7,6 +7,8 @@ const mdIt = new MarkdownIt({
   html: true
 });
 
+mdIt.use(require('markdown-it-anchor'));
+
 const { 
   createPathIfAbsent, 
   getAbellConfigs,
@@ -144,17 +146,13 @@ function copyContentAssets(from, to) {
  * @param {String} contentPath
  * @param {Object} variables
  * @param {Object} options
- * @param {String} options.extension
  * @return {String}
  */
-function importAndRender(mdPath, contentPath, variables, options = {extension: '.md'}) {
+function importAndRender(mdPath, contentPath, variables) {
   const fileContent = fs.readFileSync(path.join(contentPath, mdPath), 'utf-8');
-  let content = fileContent;
-  if (options.extension === '.md') {
-    // if markdown, convert it to HTML.
-    content = mdIt.render(fileContent);
-  }
-  return abellRenderer.render(content, variables); // Add variables to markdown
+  const mdWithValues = abellRenderer.render(fileContent, variables); // Add variables to markdown
+  const rendererdHTML = mdIt.render(mdWithValues);
+  return rendererdHTML;
 }
 
 /**

@@ -1,5 +1,8 @@
 # Changelog
 
+## v0.2.4
+- Build adds `id` to Markdown to HTML rendered content.
+
 ## v0.2.3
 - **BREAKING CHANGE**
   `$contentList` changed to `$contentArray`
