@@ -134,18 +134,24 @@ function copyContentAssets(from, to) {
 }
 
 /**
- * 1. Reads md file from given path 
- * 2. Converts md to html
+ * 1. Reads .md/.abell file from given path 
+ * 2. Converts it to html
  * 3. Adds variable to the new HTML and returns the HTML
  * 
  * @param {String} mdPath 
  * @param {String} contentPath
  * @param {Object} variables
+ * @param {Object} options
+ * @param {String} options.extension
  * @return {String}
  */
-function importMarkdown(mdPath, contentPath, variables) {
-  const markdown = fs.readFileSync(path.join(contentPath, mdPath), 'utf-8');
-  const content = mdIt.render(markdown);
+function importAndRender(mdPath, contentPath, variables, options = {extension: '.md'}) {
+  const fileContent = fs.readFileSync(path.join(contentPath, mdPath), 'utf-8');
+  let content = fileContent;
+  if (options.extension === '.md') {
+    // if markdown, convert it to HTML.
+    content = mdIt.render(fileContent);
+  }
   return abellRenderer.render(content, variables); // Add variables to markdown
 }
 
@@ -173,11 +179,11 @@ function generateHTMLFile(filepath, programInfo) {
   const view = {
     ...variables,
     $importContent: (path) => 
-      importMarkdown(
+      importAndRender(
         path, 
         programInfo.abellConfigs.contentPath, 
         variables
-      )
+      )    
   };
 
   const pageContent = abellRenderer.render(pageTemplate, view);
@@ -214,7 +220,7 @@ function generateContentFile(contentSlug, programInfo) {
   const view = {
     ...variables,
     $importContent: (path) => 
-      importMarkdown(
+      importAndRender(
         path, 
         programInfo.abellConfigs.contentPath, 
         variables
@@ -245,5 +251,5 @@ module.exports = {
   getBaseProgramInfo,
   generateContentFile,
   generateHTMLFile,
-  importMarkdown
+  importAndRender
 };

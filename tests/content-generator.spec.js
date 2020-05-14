@@ -2,7 +2,7 @@ const expect = require('chai').expect;
 
 const { 
   getBaseProgramInfo,
-  importMarkdown
+  importAndRender
 } = require('../src/content-generator.js');
 
 
@@ -22,7 +22,7 @@ describe('getBaseProgramInfo()', () => {
 });
 
 
-describe('importMarkdown()', () => {
+describe('importAndRender()', () => {
   it('should return HTML of the md file in given path', () => {
     const shouldOutput = `
       <h1>Abell Test Title Check</h1>
@@ -35,7 +35,7 @@ describe('importMarkdown()', () => {
     `;
 
     expect(
-      importMarkdown(
+      importAndRender(
         'another-blog/index.md', 
         'tests/resources/test_demo/content',
         {meta: {title: 'Abell Test Title Check'}}
