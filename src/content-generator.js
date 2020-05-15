@@ -2,12 +2,12 @@ const fs = require('fs');
 const path = require('path');
 
 const abellRenderer = require('abell-renderer');
-const MarkdownIt = require('markdown-it');
-const mdIt = new MarkdownIt({
+const {Remarkable} = require('remarkable');
+const md = new Remarkable({
   html: true
 });
 
-mdIt.use(require('markdown-it-anchor'));
+md.use(require('./remarkable-plugins/anchors.js'));
 
 const { 
   createPathIfAbsent, 
@@ -151,7 +151,7 @@ function copyContentAssets(from, to) {
 function importAndRender(mdPath, contentPath, variables) {
   const fileContent = fs.readFileSync(path.join(contentPath, mdPath), 'utf-8');
   const mdWithValues = abellRenderer.render(fileContent, variables); // Add variables to markdown
-  const rendererdHTML = mdIt.render(mdWithValues);
+  const rendererdHTML = md.render(mdWithValues);
   return rendererdHTML;
 }
 

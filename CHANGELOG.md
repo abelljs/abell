@@ -1,4 +1,6 @@
 # Changelog
+## v0.2.5
+- Migrated from `markdown-it` package to `remarkable`
 
 ## v0.2.4
 - Build adds `id` to Markdown to HTML rendered content.
