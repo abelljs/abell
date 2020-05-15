@@ -1,8 +1,9 @@
 const fs = require('fs');
 const path = require('path');
 
-const browserSync = require('browser-sync');
 const chokidar = require('chokidar');
+
+const ads = require('./abell-dev-server/server.js');
 
 const { 
   rmdirRecursiveSync,
@@ -66,7 +67,7 @@ function build(programInfo) {
  * Starts a dev-server!  
  * 1. The build parameters are first calculated in index.js 
  * 2. While building ProgramInfo we change destinationPath to .debug
- * 3. Starts a server browser sync
+ * 3. Starts a server abell-dev-server/server.js
  * 4. Chokidar starts watching over all the files in src and content dir
  * 5. The particular content is rebuild and a complete rebuild is used as fallback
  * 
@@ -77,18 +78,12 @@ function serve(programInfo) {
   build(programInfo);
 
   console.log('Starting your abell-dev-server 🤠...');
-  const bs = browserSync.create('abell-dev-server');
   
-  bs.init({
+  ads.create({
     port: programInfo.port,
-    server: programInfo.abellConfigs.destinationPath,
-    logLevel: 'silent',
-    logPrefix: 'abell-dev-server',
-    logConnections: false,
-    notify: false,
-    reloadDelay: 1000
+    socketPort: 3000,
+    path: programInfo.abellConfigs.destinationPath
   });
-
 
   const chokidarOptions = {
     ignoreInitial: true,
@@ -122,7 +117,7 @@ function serve(programInfo) {
         console.log('Abell configs changed 🤓');
 
         build(programInfo);
-        bs.reload();
+        ads.reload();
       });
   }
 
@@ -151,7 +146,7 @@ function serve(programInfo) {
       }
         
       build(programInfo);
-      bs.reload();
+      ads.reload();
     });
 
 
@@ -185,7 +180,7 @@ function serve(programInfo) {
         build(programInfo);
       }
 
-      bs.reload();
+      ads.reload();
     });
 
 

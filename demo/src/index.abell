@@ -8,7 +8,7 @@
 <body>
   {{
     const a = 9;
-    const b = 8;
+    const b = 5;
   }}
   <header>Addition of numbers: {{ a + b }}</header>
   <h1>{{ globalMeta.siteName }}</h1>
