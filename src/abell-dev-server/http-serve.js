@@ -33,6 +33,9 @@ const contentTypeMap = {
  * @param {Options} options
  */
 function server(req, res, socketCode, options) {
+  // eslint-disable-next-line
+  // Copied from https://stackoverflow.com/questions/16333790/node-js-quick-file-server-static-files-over-http 
+
   console.log(`${req.method} ${req.url}`);
 
   // parse URL
