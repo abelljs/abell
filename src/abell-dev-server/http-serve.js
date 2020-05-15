@@ -36,6 +36,11 @@ function server(req, res, socketCode, options) {
   // eslint-disable-next-line
   // Copied from https://stackoverflow.com/questions/16333790/node-js-quick-file-server-static-files-over-http 
 
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Request-Method', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET');
+  res.setHeader('Access-Control-Allow-Headers', '*');
+  
   console.log(`${req.method} ${req.url}`);
 
   // parse URL
@@ -65,8 +70,12 @@ function server(req, res, socketCode, options) {
   try {
     const data = fs.readFileSync(pathname);
     // if the file is found, set Content-type and send data
-    res.setHeader('Content-type', contentTypeMap[ext] || 'text/plain' );
-    res.end(data + socketCode);
+    let contentData = data;
+    if (ext === '.html') {
+      contentData += socketCode;
+    }
+    res.setHeader('Content-Type', contentTypeMap[ext] || 'text/plain' );
+    res.end(contentData);
   } catch (err) {
     res.statusCode = 500;
     res.end(`Error getting the file: ${err}.`);
