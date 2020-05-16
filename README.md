@@ -60,7 +60,7 @@ To test your blog, you can either [run your site locally](#1b-run-your-blog-loca
 Sample abell.config.js:
 ```js
 module.exports = {
-  sourcePath: 'src', // path of source where index.abell and template/content.abell are located
+  sourcePath: 'theme', // path of source where index.abell and [$slug]/index.abell are located
   destinationPath: 'dist', // Build destination
   contentPath: 'content', // Content Path which has .md 
   globalMeta: { // All the global variables
@@ -75,7 +75,7 @@ module.exports = {
 #### Variables in Abell
 
 Abell lets you use variables inside your .abell files. 
-- [Content Specific Variables](#content-specific-variables) that can be accessed from `./src/template/content.abell`.
+- [Content Specific Variables](#content-specific-variables) that can be accessed from `./theme/[$slug]/index.abell`.
 - There are [Global Variables](#global-variables) that can be accessed from any .abell files with `{{ globalMeta.<key> }}`.
 - [Predefined Variables](#predefined-variables)
 
@@ -91,7 +91,7 @@ Example `./content/<content-slug>/meta.json`
 }
 ```
 
-These variables can be accessed from `./src/template/content.abell` with `{{ meta.title }}`, `{{ meta.description }}`, `{{ meta.foo }}`
+These variables can be accessed from `./theme/[$slug]/index.abell` with `{{ meta.title }}`, `{{ meta.description }}`, `{{ meta.foo }}`
 
 ##### Global variables
 
@@ -111,7 +111,7 @@ List of predefined variables
 | meta.$slug       | Folder name of content, used as slug          | `my-cool-blog`           |
 | meta.$createdAt  | Date & Time of creation of content.           | `Sun Apr 30 2020`        |
 | meta.$modifiedAt | Date & Time of last modification of content.  | `Thu May 20 2020`        |
-| $contentList     | Array of all 'meta' values from content       | `[{title: 'Cool Blog', $slug: 'my-cool-blog'}, {title: 'Nice blog', $slug: 'nice-blog-69'}]` |
+| $contentArray     | Array of all 'meta' values from content       | `[{title: 'Cool Blog', $slug: 'my-cool-blog'}, {title: 'Nice blog', $slug: 'nice-blog-69'}]` |
 
 
 #### Importing Markdown as HTML
@@ -138,9 +138,9 @@ You can use JavaScript methods within `{{` and `}}` so to loop through an object
 *Note: The JavaScript you write inside `{{` and `}}` compiles on build time and runs in NodeJS context so you cannot use frontend JavaScript methods from DOM*
 
 ##### Example 1
-Let's say we have this object in variable `$contentList`
+Let's say we have this object in variable `$contentArray`
 ```js
-// $contentList
+// $contentArray
 [
   {
     title: 'Cool Blog', 
@@ -157,12 +157,12 @@ Let's say we have this object in variable `$contentList`
 ]
 ```
 
-We can loop `$contentList` with,
+We can loop `$contentArray` with,
 
 ```js
 <div class="article-container">
 {{ 
-  $contentList
+  $contentArray
     .map(meta => `
       <article>
         <a href="${meta.$slug}"><h2>${meta.title.toUpperCase()}</h2></a>

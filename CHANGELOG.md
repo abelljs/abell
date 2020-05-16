@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.2.7
+- **BREAKING CHANGE**
+  Default sourcePath changed from `src` to `theme`
+- Documentation update
+
 ## v0.2.6
 - `browser-sync` removed from dependency
 - New faster dev server written from complete scratch.

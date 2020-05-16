@@ -51,7 +51,7 @@ function getAbellConfigs() {
     console.log(boldRed('>> ') + err.message);
     abellConfig = {
       destinationPath: 'dist',
-      sourcePath: 'src',
+      sourcePath: 'theme',
       contentPath: 'content',
       globalMeta: {}
     };
