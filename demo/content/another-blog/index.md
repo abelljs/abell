@@ -4,8 +4,11 @@
 
 {{ meta.description }}
 
-<b>Nice</b>
+## Random heading
+<b>random bold text </b>
+
+*Italic text for no apparent reason*
 
 ```js
-const s = 'cool'
+const s = 'whatta amazing thing to do'
 ```

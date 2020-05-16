@@ -1,4 +1,9 @@
 # Changelog
+
+## v0.2.6
+- `browser-sync` removed from dependency
+- New faster dev server written from complete scratch.
+
 ## v0.2.5
 - Migrated from `markdown-it` package to `remarkable`
 
