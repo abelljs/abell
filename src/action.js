@@ -160,8 +160,11 @@ function serve(programInfo) {
         const directoryName = filePath
           .slice(programInfo.abellConfigs.contentPath.length + 1)
           .split('/')[0];
+
+        console.log(filePath);
         if (filePath.endsWith('index.md')) {
-          generateContentFile(directoryName, programInfo);
+          const contentData = generateContentFile(directoryName, programInfo);
+          ads.contentReplace({slug: directoryName, newContent: contentData});
           console.log(`...Built ${directoryName}`);
         } else if (filePath.endsWith('meta.json')) {
           // refetch meta and then build
@@ -171,16 +174,17 @@ function serve(programInfo) {
             .findIndex(content => content.$slug == directoryName);
           programInfo.vars.$contentArray[indexToChange] = meta; 
           build(programInfo);
+          ads.reload();
         } else {
           build(programInfo);
+          ads.reload();
         }
       } catch (err) {
         console.log('Something did not happen as expected, Falling back to complete build');
         console.log(err);
         build(programInfo);
+        ads.reload();
       }
-
-      ads.reload();
     });
 
 

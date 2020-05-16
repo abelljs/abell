@@ -8,6 +8,7 @@ const path = require('path');
  * @property {Number} port
  * @property {Number} socketPort
  * @property {String} path
+ * @property {String} logs - Possible values: complete, minimum, no
  */
 
 const contentTypeMap = {
@@ -41,7 +42,9 @@ function server(req, res, socketCode, options) {
   res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET');
   res.setHeader('Access-Control-Allow-Headers', '*');
   
-  console.log(`${req.method} ${req.url}`);
+  if (options.logs === 'complete') {
+    console.log(`${req.method} ${req.url}`);
+  }
 
   // parse URL
   const parsedUrl = url.parse(req.url);
@@ -88,12 +91,21 @@ function server(req, res, socketCode, options) {
  */
 function createServer(options) {
   const port = options.port || 9000;
-  const socketCode = `
+  const socketCode = /* html */`
   <script>
     const url = 'ws://localhost:${options.socketPort}';
     const connection = new WebSocket(url);
     connection.addEventListener('message', e => {
-      location.reload();
+      const data = JSON.parse(e.data);
+      if (data.message === 'abell-dev-server-reload') {
+        location.reload();
+      } else if (
+        data.message === 'abell-dev-server-content-replace' && 
+        location.href.includes(data.info.slug)
+      ) {
+        document.body.innerHTML = "";
+        document.write(data.info.newContent);
+      }
     });
   </script>
   `;

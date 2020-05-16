@@ -7,7 +7,7 @@
 </head>
 <body>
   {{
-    const a = 9;
+    const a = 10;
     const b = 5;
   }}
   <header>Addition of numbers: {{ a + b }}</header>

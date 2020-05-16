@@ -4,9 +4,10 @@
 
 {{ meta.description }}
 
-<b>ok cool</b>
+super cool no? OHAHA WTF COOL
+<b>okay </b>
 
-Woahhhh so cool!!
+Haha amazinggg!!
 
 ```js
 const s = 'cool'
