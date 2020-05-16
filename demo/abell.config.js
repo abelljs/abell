@@ -1,5 +1,5 @@
 module.exports = {
-  sourcePath: 'src',
+  sourcePath: 'theme',
   destinationPath: 'dist',
   contentPath: 'content',
   globalMeta: {

@@ -10,5 +10,5 @@
 *Italic text for no apparent reason*
 
 ```js
-const s = 'whatta amazing thing to do'
+const s = 'Hello, JS String!'
 ```
