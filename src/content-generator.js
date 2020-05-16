@@ -240,8 +240,6 @@ function generateContentFile(contentSlug, programInfo) {
     path.join(programInfo.abellConfigs.contentPath, contentSlug), 
     path.join(programInfo.abellConfigs.destinationPath, contentSlug)
   );
-
-  return contentHTML;
 }
 
 module.exports = {

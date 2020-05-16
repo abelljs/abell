@@ -96,15 +96,8 @@ function createServer(options) {
     const url = 'ws://localhost:${options.socketPort}';
     const connection = new WebSocket(url);
     connection.addEventListener('message', e => {
-      const data = JSON.parse(e.data);
-      if (data.message === 'abell-dev-server-reload') {
+      if (e.data === 'abell-dev-server-reload') {
         location.reload();
-      } else if (
-        data.message === 'abell-dev-server-content-replace' && 
-        location.href.includes(data.info.slug)
-      ) {
-        document.body.innerHTML = "";
-        document.write(data.info.newContent);
       }
     });
   </script>

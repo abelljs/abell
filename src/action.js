@@ -163,8 +163,7 @@ function serve(programInfo) {
 
         console.log(filePath);
         if (filePath.endsWith('index.md')) {
-          const contentData = generateContentFile(directoryName, programInfo);
-          ads.contentReplace({slug: directoryName, newContent: contentData});
+          generateContentFile(directoryName, programInfo);
           console.log(`...Built ${directoryName}`);
         } else if (filePath.endsWith('meta.json')) {
           // refetch meta and then build
@@ -174,11 +173,11 @@ function serve(programInfo) {
             .findIndex(content => content.$slug == directoryName);
           programInfo.vars.$contentArray[indexToChange] = meta; 
           build(programInfo);
-          ads.reload();
         } else {
           build(programInfo);
-          ads.reload();
         }
+
+        ads.reload();
       } catch (err) {
         console.log('Something did not happen as expected, Falling back to complete build');
         console.log(err);

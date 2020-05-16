@@ -4,11 +4,11 @@
 
 {{ meta.description }}
 
-super cool no? OHAHA WTF COOL
-<b>okay </b>
+## Random heading
+<b>random bold text </b>
 
-Haha amazinggg!!
+*Italic text for no apparent reason*
 
 ```js
-const s = 'cool'
+const s = 'whatta amazing thing to do'
 ```

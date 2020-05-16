@@ -24,7 +24,7 @@ function create(options) {
  */
 function reload() {
   if (server) {
-    server.send(JSON.stringify({message: 'abell-dev-server-reload'}));
+    server.send('abell-dev-server-reload');
   }
 }
 
@@ -34,7 +34,7 @@ function reload() {
  * @param {String} contentData.slug - slug of blog
  * @param {String} contentData.newContent - New content to add to body of the page.
  */
-function contentReplace(contentData) {
+function experimentalContentReplace(contentData) {
   if (server) {
     server.send(JSON.stringify({message: 'abell-dev-server-content-replace', info: contentData}));
   }
@@ -43,5 +43,5 @@ function contentReplace(contentData) {
 module.exports = {
   create,
   reload,
-  contentReplace
+  experimentalContentReplace
 };
