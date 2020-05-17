@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.2.9
+- Secretly supporting `ignoreInBuild` option in abell configs to remove files from destination (can be used to ignore files that are only required in build time)
+
 ## 0.2.8
 - **BREAKING CHANGE**
   Paths in `require` are now relative to the respective .abell files.
