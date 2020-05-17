@@ -53,7 +53,6 @@ function build(programInfo) {
     path.join(programInfo.abellConfigs.destinationPath, '[$slug]')
   );
 
-  // Delete all .abell files from dist folder
   abellFiles.map((filePath) => {
     fs.unlinkSync(
       path.join(programInfo.abellConfigs.destinationPath, `${filePath}.abell`)
@@ -70,7 +69,7 @@ function build(programInfo) {
    * TODO: Generate other HTML files from directory just like index.abell
    */
 
-  // GENERATE OTHER HTML FILES FROM ABELL
+  // GENERATE OTHER HTML FILES
   abellFiles.map((file) => {
     generateHTMLFile(file, programInfo);
     if (programInfo.logs == 'complete') console.log(`...Built ${file}\n`);

@@ -54,7 +54,6 @@ const recFindByExt = (base, ext, inputFiles, inputResult) => {
   return result;
 };
 
-// Returns all .abell files in src folder except for [$slug]
 const getAbellFiles = (sourcePath, extension) => {
   const absolutePaths = recFindByExt(sourcePath, extension.split('.')[1]);
   const relativePaths = absolutePaths
