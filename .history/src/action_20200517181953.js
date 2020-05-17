@@ -52,12 +52,9 @@ function build(programInfo) {
   rmdirRecursiveSync(
     path.join(programInfo.abellConfigs.destinationPath, '[$slug]')
   );
-
-  abellFiles.map((filePath) => {
-    fs.unlinkSync(
-      path.join(programInfo.abellConfigs.destinationPath, `${filePath}.abell`)
-    );
-  });
+  fs.unlinkSync(
+    path.join(programInfo.abellConfigs.destinationPath, 'index.abell')
+  );
 
   // GENERATE CONTENT HTML FILES
   for (const contentSlug of programInfo.contentDirectories) {
@@ -76,7 +73,7 @@ function build(programInfo) {
   });
 
   if (programInfo.logs == 'minimum') {
-    console.log(`${boldGreen('>>>')} Files built.. ✨`);
+console.log(`${boldGreen('>>>')} Files built.. ✨`);
   }
 }
 

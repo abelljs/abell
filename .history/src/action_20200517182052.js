@@ -53,11 +53,12 @@ function build(programInfo) {
     path.join(programInfo.abellConfigs.destinationPath, '[$slug]')
   );
 
-  abellFiles.map((filePath) => {
+  abellFiles.map(path => {
     fs.unlinkSync(
-      path.join(programInfo.abellConfigs.destinationPath, `${filePath}.abell`)
+      path.join(programInfo.abellConfigs.destinationPath, `${path}.abell`)
     );
-  });
+  })
+  
 
   // GENERATE CONTENT HTML FILES
   for (const contentSlug of programInfo.contentDirectories) {
@@ -76,7 +77,7 @@ function build(programInfo) {
   });
 
   if (programInfo.logs == 'minimum') {
-    console.log(`${boldGreen('>>>')} Files built.. ✨`);
+console.log(`${boldGreen('>>>')} Files built.. ✨`);
   }
 }
 

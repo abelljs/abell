@@ -1,5 +1,5 @@
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
 /**
  *
@@ -13,7 +13,7 @@ const path = require('path');
  */
 
 const relativeJoinedPath = (pathString) =>
-  path.join(process.cwd(), ...pathString.split('/'));
+  path.join(process.cwd(), ...pathString.split("/"));
 
 const getDirectories = (source) => {
   return fs.readdirSync(source).filter((dirent) => {
@@ -21,7 +21,7 @@ const getDirectories = (source) => {
   });
 };
 
-const rmdirRecursiveSync = function(pathToRemove) {
+const rmdirRecursiveSync = function (pathToRemove) {
   if (fs.existsSync(pathToRemove)) {
     fs.readdirSync(pathToRemove).forEach((file, index) => {
       const curPath = path.join(pathToRemove, file);
@@ -41,12 +41,12 @@ const recFindByExt = (base, ext, inputFiles, inputResult) => {
   const files = inputFiles || fs.readdirSync(base);
   let result = inputResult || [];
 
-  files.map(function(file) {
+  files.map(function (file) {
     const newbase = path.join(base, file);
     if (fs.statSync(newbase).isDirectory()) {
       result = recFindByExt(newbase, ext, fs.readdirSync(newbase), result);
     } else {
-      if (file.substr(-1 * (ext.length + 1)) == '.' + ext) {
+      if (file.substr(-1 * (ext.length + 1)) == "." + ext) {
         result.push(newbase);
       }
     }
@@ -55,7 +55,7 @@ const recFindByExt = (base, ext, inputFiles, inputResult) => {
 };
 
 const getAbellFiles = (sourcePath, extension) => {
-  const absolutePaths = recFindByExt(sourcePath, extension.split('.')[1]);
+  const absolutePaths = recFindByExt(sourcePath, extension.split(".")[1]);
   const relativePaths = absolutePaths
     .map((path) => {
       const pathWithoutExtension = path.split(extension)[0];
@@ -63,7 +63,8 @@ const getAbellFiles = (sourcePath, extension) => {
       return relativePath;
     })
     .filter((path) => {
-      return path.split('[$slug]').length === 1;
+      console.log(path.search("[$slug]"))
+      return path.search("[$slug]") !== -1;
     });
   return relativePaths;
 };
@@ -74,20 +75,19 @@ const getAbellFiles = (sourcePath, extension) => {
 function getAbellConfigs() {
   let abellConfig;
   try {
-    delete require.cache[path.join(process.cwd(), 'abell.config.js')];
-    abellConfig = require(path.join(process.cwd(), 'abell.config.js'));
+    delete require.cache[path.join(process.cwd(), "abell.config.js")];
+    abellConfig = require(path.join(process.cwd(), "abell.config.js"));
     if (Object.keys(abellConfig).length <= 0) {
       throw new Error(
-        `Something went wrong while fetching new configurations. 
-         Save again to refresh the dev server.`
+        "Something went wrong while fetching new configurations. Save again to refresh the dev server."
       ); // eslint-disable-line
     }
   } catch (err) {
-    console.log(boldRed('>> ') + err.message);
+    console.log(boldRed(">> ") + err.message);
     abellConfig = {
-      destinationPath: 'dist',
-      sourcePath: 'theme',
-      contentPath: 'content',
+      destinationPath: "dist",
+      sourcePath: "theme",
+      contentPath: "content",
       globalMeta: {},
     };
   }
@@ -134,8 +134,8 @@ function copyFolderSync(from, to) {
  */
 function exitHandler(options, exitCode) {
   if (options.cleanup) {
-    rmdirRecursiveSync('.debug');
-    console.log('\n\nBiee 🐨✌️\n');
+    rmdirRecursiveSync(".debug");
+    console.log("\n\nBiee 🐨✌️\n");
   }
   if (exitCode !== 0) console.log(exitCode);
   if (options.exit) process.exit();

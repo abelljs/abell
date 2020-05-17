@@ -54,18 +54,8 @@ const recFindByExt = (base, ext, inputFiles, inputResult) => {
   return result;
 };
 
-const getAbellFiles = (sourcePath, extension) => {
-  const absolutePaths = recFindByExt(sourcePath, extension.split('.')[1]);
-  const relativePaths = absolutePaths
-    .map((path) => {
-      const pathWithoutExtension = path.split(extension)[0];
-      const relativePath = pathWithoutExtension.split(`${sourcePath}/`)[1];
-      return relativePath;
-    })
-    .filter((path) => {
-      return path.split('[$slug]').length === 1;
-    });
-  return relativePaths;
+const getAbellFiles = (sourcePath) => {
+  return recFindByExt(sourcePath, 'abell');
 };
 
 /**
@@ -78,8 +68,7 @@ function getAbellConfigs() {
     abellConfig = require(path.join(process.cwd(), 'abell.config.js'));
     if (Object.keys(abellConfig).length <= 0) {
       throw new Error(
-        `Something went wrong while fetching new configurations. 
-         Save again to refresh the dev server.`
+        'Something went wrong while fetching new configurations. Save again to refresh the dev server.'
       ); // eslint-disable-line
     }
   } catch (err) {
