@@ -25,7 +25,8 @@ const {
  * @typedef {Object} ProgramInfo - Contains all the information required by the build to execute.
  * @property {import('./helpers.js').AbellConfigs} abellConfigs 
  *  - Configuration from abell.config.js file
- * @property {String} contentTemplate - string of the template from template/content.abell file
+ * @property {String} contentTemplate - string of the template from [$slug]/index.abell file
+ * @property {String} contentTemplatePath - path of the template (mostly [$slug]/index.abell file
  * @property {Object} vars - all global variables in .abell files
  * @property {[MetaInfo]} vars.$contentArray - An array of all MetaInfo
  * @property {Object} vars.$contentObj - Content meta info object
@@ -91,20 +92,19 @@ function getBaseProgramInfo() {
     .sort((a, b) => a.$createdAt.getTime() > b.$createdAt.getTime() ? -1 : 1);
 
 
-  const contentTemplate = fs.readFileSync(
-    path.join(
-      abellConfigs.sourcePath, 
-      '[$slug]', 
-      ('index' + (abellConfigs.templateExtension || '.abell'))
-    ), 
-    'utf-8'
+  const contentTemplatePath = path.join(
+    abellConfigs.sourcePath, 
+    '[$slug]', 
+    'index' + (abellConfigs.templateExtension || '.abell')
   );
+  const contentTemplate = fs.readFileSync(contentTemplatePath, 'utf-8');
 
 
   const programInfo = {
     abellConfigs,
     contentTemplate,
     contentDirectories,
+    contentTemplatePath,
     vars: {
       $contentArray,
       $contentObj,
@@ -180,10 +180,19 @@ function generateHTMLFile(filepath, programInfo) {
         path, 
         programInfo.abellConfigs.contentPath, 
         variables
-      )    
+      )
   };
 
-  const pageContent = abellRenderer.render(pageTemplate, view);
+  const pageContent = abellRenderer.render(
+    pageTemplate, 
+    view, 
+    {
+      basePath: path.join(
+        programInfo.abellConfigs.sourcePath, 
+        path.dirname(filepath)
+      )
+    }
+  );
 
   fs.writeFileSync(
     path.join(programInfo.abellConfigs.destinationPath, filepath + '.html'), 
@@ -225,7 +234,13 @@ function generateContentFile(contentSlug, programInfo) {
   };
 
   // render HTML of content
-  const contentHTML = abellRenderer.render(programInfo.contentTemplate, view);
+  const contentHTML = abellRenderer.render(
+    programInfo.contentTemplate, 
+    view,
+    {
+      basePath: path.dirname(programInfo.contentTemplatePath)
+    }
+  );
 
 
   // WRITE IT OUT!! YASSSSSS!!!

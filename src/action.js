@@ -135,14 +135,13 @@ function serve(programInfo) {
         directoryName === '[$slug]'
       ) {
         // Content template changed
-        programInfo.contentTemplate = fs.readFileSync(
-          path.join(
-            programInfo.abellConfigs.sourcePath, 
-            '[$slug]', 
-            'index' + programInfo.templateExtension
-          ), 
-          'utf-8'
-        );
+        programInfo.contentTemplate = fs.readFileSync(programInfo.contentTemplatePath, 'utf-8');
+      }
+
+      if (filePath.endsWith('.js')) {
+        // JS Files required in .abell file are cached by nodejs for instance
+        // so we remove the cache in case a js file is changed and is cached.
+        delete require.cache[filePath];
       }
         
       build(programInfo);
