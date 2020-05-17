@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.8
+- **BREAKING CHANGE**
+  Paths in `require` are now relative to the respective .abell files.
+
 ## v0.2.7
 - **BREAKING CHANGE**
   Default sourcePath changed from `src` to `theme`
