@@ -9,6 +9,7 @@ const path = require('path');
  * @property {String} destinationPath
  *  - Path to output destination (default 'dist', changes to 'debug' during dev-server)
  * @property {Object} globalMeta - Meta variables that are accessible globally in .abell files
+ * @property {Array} ignoreInBuild
  * 
  */
 
@@ -41,20 +42,28 @@ const rmdirRecursiveSync = function(pathToRemove) {
  */
 function getAbellConfigs() {
   let abellConfig;
+  const defaultConfigs = {
+    destinationPath: 'dist',
+    sourcePath: 'theme',
+    contentPath: 'content',
+    ignoreInBuild: [],
+    globalMeta: {}
+  };
+
   try {
+    // In dev-server, user may change the configs so in that case we should drop the old cache
     delete require.cache[path.join(process.cwd(), 'abell.config.js')];
-    abellConfig = require(path.join(process.cwd(), 'abell.config.js'));
+    abellConfig = {
+      ...defaultConfigs,
+      ...require(path.join(process.cwd(), 'abell.config.js'))
+    };
+
     if (Object.keys(abellConfig).length <= 0) {
       throw new Error('Something went wrong while fetching new configurations. Save again to refresh the dev server.'); // eslint-disable-line
     }
   } catch (err) {
     console.log(boldRed('>> ') + err.message);
-    abellConfig = {
-      destinationPath: 'dist',
-      sourcePath: 'theme',
-      contentPath: 'content',
-      globalMeta: {}
-    };
+    abellConfig = defaultConfigs;
   }
 
   const destinationPath = relativeJoinedPath(abellConfig.destinationPath);
@@ -80,15 +89,19 @@ const createPathIfAbsent = pathToCreate => {
  * 
  * @param {String} from - Path to copy from
  * @param {String} to - Path to copy to
+ * @param {Array} ignore - files/directories to ignore
  * @return {void}
  */
-function copyFolderSync(from, to) {
+function copyFolderSync(from, to, ignore = []) {
+  if (ignore.includes(from)) {
+    return;
+  };
   createPathIfAbsent(to);
   fs.readdirSync(from).forEach(element => {
     if (fs.lstatSync(path.join(from, element)).isFile()) {
       fs.copyFileSync(path.join(from, element), path.join(to, element));
     } else {
-      copyFolderSync(path.join(from, element), path.join(to, element));
+      copyFolderSync(path.join(from, element), path.join(to, element), ignore);
     }
   });
 }

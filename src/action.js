@@ -39,9 +39,25 @@ function build(programInfo) {
   rmdirRecursiveSync(programInfo.abellConfigs.destinationPath);
   fs.mkdirSync(programInfo.abellConfigs.destinationPath);
   
-  // Copy everything from src to dist except [$slug] folder and index.abell.
-  copyFolderSync(programInfo.abellConfigs.sourcePath, programInfo.abellConfigs.destinationPath);
-  rmdirRecursiveSync(path.join(programInfo.abellConfigs.destinationPath, '[$slug]'));
+  const ignoreCopying = [
+    path.join(programInfo.abellConfigs.sourcePath, '[$slug]'),
+    path.join(programInfo.abellConfigs.sourcePath, 'components'),
+    ...programInfo.abellConfigs.ignoreInBuild
+      .map(relativePath => 
+        path.join(programInfo.abellConfigs.sourcePath, relativePath)
+      )
+  ];
+
+  if (ignoreCopying.length > 2 && programInfo.logs === 'complete') {
+    console.log(`Not included in Build: ${ignoreCopying.slice(2).join(',')}`);
+  }
+  // Copy everything from src to dist except the ones mentioned in ignoreCopying.
+  copyFolderSync(
+    programInfo.abellConfigs.sourcePath, 
+    programInfo.abellConfigs.destinationPath,
+    ignoreCopying
+  );
+
   fs.unlinkSync(path.join(programInfo.abellConfigs.destinationPath, 'index.abell'));
 
 
