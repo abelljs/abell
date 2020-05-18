@@ -54,21 +54,17 @@ function build(programInfo) {
   );
 
   // Delete all .abell files from dist folder
-  abellFiles.map((filePath) => {
+  for (const file of abellFiles) {
     fs.unlinkSync(
-      path.join(programInfo.abellConfigs.destinationPath, `${filePath}.abell`)
+      path.join(programInfo.abellConfigs.destinationPath, `${file}.abell`)
     );
-  });
+  }
 
   // GENERATE CONTENT HTML FILES
   for (const contentSlug of programInfo.contentDirectories) {
     generateContentFile(contentSlug, programInfo);
     if (programInfo.logs == 'complete') console.log(`...Built ${contentSlug}`);
   }
-
-  /**
-   * TODO: Generate other HTML files from directory just like index.abell
-   */
 
   // GENERATE OTHER HTML FILES FROM ABELL
   abellFiles.map((file) => {

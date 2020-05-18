@@ -41,22 +41,22 @@ const recFindByExt = (base, ext, inputFiles, inputResult) => {
   const files = inputFiles || fs.readdirSync(base);
   let result = inputResult || [];
 
-  files.map(function(file) {
+  for (const file of files) {
     const newbase = path.join(base, file);
     if (fs.statSync(newbase).isDirectory()) {
       result = recFindByExt(newbase, ext, fs.readdirSync(newbase), result);
     } else {
-      if (file.substr(-1 * (ext.length + 1)) == '.' + ext) {
+      if (file.substr(-1 * (ext.length)) == ext) {
         result.push(newbase);
       }
     }
-  });
+  };
   return result;
 };
 
 // Returns all .abell files in src folder except for [$slug]
 const getAbellFiles = (sourcePath, extension) => {
-  const absolutePaths = recFindByExt(sourcePath, extension.split('.')[1]);
+  const absolutePaths = recFindByExt(sourcePath, extension);
   const relativePaths = absolutePaths
     .map((path) => {
       const pathWithoutExtension = path.split(extension)[0];
@@ -78,10 +78,7 @@ function getAbellConfigs() {
     delete require.cache[path.join(process.cwd(), 'abell.config.js')];
     abellConfig = require(path.join(process.cwd(), 'abell.config.js'));
     if (Object.keys(abellConfig).length <= 0) {
-      throw new Error(
-        `Something went wrong while fetching new configurations. 
-         Save again to refresh the dev server.`
-      ); // eslint-disable-line
+      throw new Error( `Something went wrong while fetching new configurations. Save again to refresh the dev server.` ); // eslint-disable-line
     }
   } catch (err) {
     console.log(boldRed('>> ') + err.message);
