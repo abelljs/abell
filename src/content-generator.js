@@ -12,7 +12,8 @@ md.use(require('./remarkable-plugins/anchors.js'));
 const { 
   createPathIfAbsent, 
   getAbellConfigs,
-  getDirectories
+  getDirectories,
+  execRegexOnAll
 } = require('./helpers.js');
 
 /** 
@@ -137,6 +138,7 @@ function copyContentAssets(from, to) {
   }
 }
 
+
 /**
  * 1. Reads .md/.abell file from given path 
  * 2. Converts it to html
@@ -166,10 +168,34 @@ function importAndRender(mdPath, contentPath, variables) {
  * @return {void}
  */
 function generateHTMLFile(filepath, programInfo) {
-  const pageTemplate = fs.readFileSync(
+  let pageTemplate = fs.readFileSync(
     path.join(programInfo.abellConfigs.sourcePath, filepath + programInfo.templateExtension), 
     'utf-8'
   );
+
+  if (filepath === 'index') {
+    // Add prefetch to index page
+    const regexToFetchPaths = 
+      /(?:<link +?rel=["']stylesheet['"] +?href=['"](.*?)['"])|(?:<script +?src=['"](.*?)['"])/g;
+
+    const {matches} = execRegexOnAll(regexToFetchPaths, programInfo.contentTemplate);
+
+    const headEndIndex = pageTemplate.indexOf('</head>');
+
+    pageTemplate = 
+      pageTemplate.slice(0, headEndIndex)
+      + `  <!-- Abell prefetch -->\n`
+      + matches.map(link => {
+        const [stylesheet, script] = link.slice(1);
+        if (stylesheet) {
+          return `  <link rel="prefetch" href="${stylesheet.replace('../', '')}" />`;
+        } else {
+          return `  <link rel="prefetch" href="${script.replace('../', '')}" />`;
+        }
+      }).join('\n')
+      + '\n\n'
+      + pageTemplate.slice(headEndIndex);
+  }
 
   const variables = programInfo.vars;
 

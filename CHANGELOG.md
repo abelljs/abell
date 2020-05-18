@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.2.10
+- **MAJOR UPDATE: Website Performance Improvements**
+  All links from content's template will be prefetched on the index page.
+
+## 0.2.9
+- Secretly supporting `ignoreInBuild` option in abell configs to remove files from destination (can be used to ignore files that are only required in build time)
+
 ## 0.2.8
 - **BREAKING CHANGE**
   Paths in `require` are now relative to the respective .abell files.
@@ -10,6 +17,7 @@
 - Documentation update
 
 ## v0.2.6
+**MAJOR UPDATE: Build Performance Improvements**
 - `browser-sync` removed from dependency
 - New faster dev server written from complete scratch.
 

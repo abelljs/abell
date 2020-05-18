@@ -43,15 +43,26 @@ function build(programInfo) {
   // Refresh dist
   rmdirRecursiveSync(programInfo.abellConfigs.destinationPath);
   fs.mkdirSync(programInfo.abellConfigs.destinationPath);
+  
+  const ignoreCopying = [
+    path.join(programInfo.abellConfigs.sourcePath, '[$slug]'),
+    path.join(programInfo.abellConfigs.sourcePath, 'components'),
+    ...programInfo.abellConfigs.ignoreInBuild
+      .map(relativePath => 
+        path.join(programInfo.abellConfigs.sourcePath, relativePath)
+      )
+  ];
 
-  // Copy everything from src to dist except [$slug] folder and index.abell.
+  if (ignoreCopying.length > 2 && programInfo.logs === 'complete') {
+    console.log(`Not included in Build: ${ignoreCopying.slice(2).join(',')}`);
+  }
+  // Copy everything from src to dist except the ones mentioned in ignoreCopying.
   copyFolderSync(
-    programInfo.abellConfigs.sourcePath,
-    programInfo.abellConfigs.destinationPath
+    programInfo.abellConfigs.sourcePath, 
+    programInfo.abellConfigs.destinationPath,
+    ignoreCopying
   );
-  rmdirRecursiveSync(
-    path.join(programInfo.abellConfigs.destinationPath, '[$slug]')
-  );
+
 
   // Delete all .abell files from dist folder
   for (const file of abellFiles) {
@@ -69,7 +80,7 @@ function build(programInfo) {
   // GENERATE OTHER HTML FILES FROM ABELL
   for (const file of abellFiles) {
     generateHTMLFile(file, programInfo);
-    if (programInfo.logs == 'complete') console.log(`...Built ${file}\n`);
+    if (programInfo.logs == 'complete') console.log(`...Built ${file}.html`);
   }
 
   if (programInfo.logs == 'minimum') {
