@@ -96,7 +96,7 @@ function getBaseProgramInfo() {
   const contentTemplatePath = path.join(
     abellConfigs.sourcePath, 
     '[$slug]', 
-    'index' + (abellConfigs.templateExtension || '.abell')
+    'index.abell'
   );
   const contentTemplate = fs.readFileSync(contentTemplatePath, 'utf-8');
 
@@ -111,8 +111,7 @@ function getBaseProgramInfo() {
       $contentObj,
       globalMeta: abellConfigs.globalMeta
     },
-    logs: 'minimum',
-    templateExtension: abellConfigs.templateExtension || '.abell'
+    logs: 'minimum'  
   };
 
   return programInfo;
@@ -169,7 +168,7 @@ function importAndRender(mdPath, contentPath, variables) {
  */
 function generateHTMLFile(filepath, programInfo) {
   let pageTemplate = fs.readFileSync(
-    path.join(programInfo.abellConfigs.sourcePath, filepath + programInfo.templateExtension), 
+    path.join(programInfo.abellConfigs.sourcePath, filepath + '.abell'), 
     'utf-8'
   );
 

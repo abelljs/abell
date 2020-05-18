@@ -16,7 +16,7 @@ describe('getBaseProgramInfo()', () => {
       .to.be.an('object')
       .to.have.keys([
         'abellConfigs', 'contentTemplate', 'vars', 'contentTemplatePath',
-        'contentDirectories', 'logs', 'templateExtension'
+        'contentDirectories', 'logs'
       ]);
   });
 

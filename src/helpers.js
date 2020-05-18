@@ -38,36 +38,31 @@ const rmdirRecursiveSync = function(pathToRemove) {
   }
 };
 
-const recFindByExt = (base, ext, inputFiles, inputResult) => {
+const recursiveFind = (base, ext, inputFiles, inputResult) => {
   const files = inputFiles || fs.readdirSync(base);
   let result = inputResult || [];
 
   for (const file of files) {
     const newbase = path.join(base, file);
     if (fs.statSync(newbase).isDirectory()) {
-      result = recFindByExt(newbase, ext, fs.readdirSync(newbase), result);
+      result = recursiveFind(newbase, ext, fs.readdirSync(newbase), result);
     } else {
       if (file.substr(-1 * (ext.length)) == ext) {
         result.push(newbase);
       }
     }
-  };
+  }
+  
   return result;
 };
 
 // Returns all .abell files in src folder except for [$slug]
 const getAbellFiles = (sourcePath, extension) => {
-  const absolutePaths = recFindByExt(sourcePath, extension);
-  const relativePaths = absolutePaths
-    .map((path) => {
-      const pathWithoutExtension = path.split(extension)[0];
-      const relativePath = pathWithoutExtension.split(`${sourcePath}/`)[1];
-      return relativePath;
-    })
-    .filter((path) => {
-      return path.split('[$slug]').length === 1;
-    });
-  return relativePaths;
+  const absolutePaths = recursiveFind(sourcePath, extension);
+  return absolutePaths
+    .map(absolutePath => 
+      absolutePath.slice(0, absolutePath.lastIndexOf('.'))
+    );
 };
 
 /**
@@ -130,10 +125,14 @@ function copyFolderSync(from, to, ignore = []) {
   };
   createPathIfAbsent(to);
   fs.readdirSync(from).forEach((element) => {
-    if (fs.lstatSync(path.join(from, element)).isFile()) {
-      fs.copyFileSync(path.join(from, element), path.join(to, element));
+    const fromElement = path.join(from, element);
+    const toElement = path.join(to, element);
+    if (fs.lstatSync(fromElement).isFile()) {
+      if (!ignore.includes(path.join(from, element))) {
+        fs.copyFileSync(fromElement, toElement);
+      }
     } else {
-      copyFolderSync(path.join(from, element), path.join(to, element), ignore);
+      copyFolderSync(fromElement, toElement, ignore);
     }
   });
 }

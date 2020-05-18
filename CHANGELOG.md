@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.2.11
+- Building all `.abell` files inside `theme` folder. (Thanks to [@akash-joshi](https://github.com/akash-joshi) for PR [#12](https://github.com/abelljs/abell/pull/12))
+- **BREAKING CHANGE**
+  Dropping option of `templateExtension` from `abell.config.js`
+- Tiny Refactor og ignoring files flow.
+
+
 ## 0.2.10
 - **MAJOR UPDATE: Website Performance Improvements**
   All links from content's template will be prefetched on the index page.

@@ -37,25 +37,22 @@ function build(programInfo) {
 
   const abellFiles = getAbellFiles(
     programInfo.abellConfigs.sourcePath,
-    programInfo.templateExtension
+    '.abell'
   );
 
   // Refresh dist
   rmdirRecursiveSync(programInfo.abellConfigs.destinationPath);
   fs.mkdirSync(programInfo.abellConfigs.destinationPath);
-  
   const ignoreCopying = [
     path.join(programInfo.abellConfigs.sourcePath, '[$slug]'),
     path.join(programInfo.abellConfigs.sourcePath, 'components'),
     ...programInfo.abellConfigs.ignoreInBuild
-      .map(relativePath => 
+      .map(relativePath =>
         path.join(programInfo.abellConfigs.sourcePath, relativePath)
-      )
+      ),
+    ...abellFiles.map(withoutExtension => withoutExtension + '.abell')
   ];
 
-  if (ignoreCopying.length > 2 && programInfo.logs === 'complete') {
-    console.log(`Not included in Build: ${ignoreCopying.slice(2).join(',')}`);
-  }
   // Copy everything from src to dist except the ones mentioned in ignoreCopying.
   copyFolderSync(
     programInfo.abellConfigs.sourcePath, 
@@ -63,15 +60,7 @@ function build(programInfo) {
     ignoreCopying
   );
 
-
-  // Delete all .abell files from dist folder
-  for (const file of abellFiles) {
-    fs.unlinkSync(
-      path.join(programInfo.abellConfigs.destinationPath, `${file}.abell`)
-    );
-  }
-
-  // GENERATE CONTENT HTML FILES
+  // GENERATE CONTENT's HTML FILES
   for (const contentSlug of programInfo.contentDirectories) {
     generateContentFile(contentSlug, programInfo);
     if (programInfo.logs == 'complete') console.log(`...Built ${contentSlug}`);
@@ -79,8 +68,17 @@ function build(programInfo) {
 
   // GENERATE OTHER HTML FILES FROM ABELL
   for (const file of abellFiles) {
-    generateHTMLFile(file, programInfo);
-    if (programInfo.logs == 'complete') console.log(`...Built ${file}.html`);
+    const relativePath = path.relative(programInfo.abellConfigs.sourcePath, file);
+    if (relativePath.includes('[$slug]')) {
+      continue;
+    }
+
+    // e.g generateHTMLFile('index', programInfo) will build theme/index.abell to dist/index.html
+    generateHTMLFile(relativePath, programInfo);
+
+    if (programInfo.logs == 'complete') {
+      console.log(`...Built ${relativePath}.html`);
+    }
   }
 
   if (programInfo.logs == 'minimum') {
@@ -156,7 +154,7 @@ function serve(programInfo) {
         .split('/')[0];
 
       if (
-        filePath.endsWith('index' + programInfo.templateExtension) &&
+        filePath.endsWith('index.abell') &&
         directoryName === '[$slug]'
       ) {
         // Content template changed
