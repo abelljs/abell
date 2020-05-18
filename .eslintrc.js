@@ -1,41 +1,41 @@
 module.exports = {
-  'env': {
-    'es6': true,
-    'node': true,
+  env: {
+    es6: true,
+    node: true,
   },
-  'extends': [
-    'google',
-  ],
-  'globals': {
-    'Atomics': 'readonly',
-    'SharedArrayBuffer': 'readonly',
+  extends: ['google', 'prettier'],
+  plugins: ['prettier'],
+  globals: {
+    Atomics: 'readonly',
+    SharedArrayBuffer: 'readonly',
   },
-  'parserOptions': {
-    'ecmaVersion': 2018,
+  parserOptions: {
+    ecmaVersion: 2018,
   },
-  'rules': {
+  rules: {
+    'prettier/prettier': ['error'],
     'comma-dangle': 0,
     'no-trailing-spaces': 0,
     'arrow-parens': 0,
     'operator-linebreak': [
-      'error', 'after', 
+      'error',
+      'after',
       {
-        'overrides': {'?': 'ignore', ':': 'ignore', '+': 'ignore'}
-      }
+        overrides: { '?': 'ignore', ':': 'ignore', '+': 'ignore' },
+      },
     ],
-    'indent': [
-      'error', 2, 
+    indent: [
+      'error',
+      2,
       {
-        'CallExpression': {'arguments': 'first'},
-        'ignoredNodes': [
-          'CallExpression > CallExpression', 
-          'CallExpression > MemberExpression'
+        CallExpression: { arguments: 'first' },
+        ignoredNodes: [
+          'CallExpression > CallExpression',
+          'CallExpression > MemberExpression',
         ],
-        'SwitchCase': 1
-      }
+        SwitchCase: 1,
+      },
     ],
-    'max-len': [
-      'error', {'code': 100}
-    ]
+    'max-len': ['error', { code: 100, ignoreComments: true }],
   },
 };

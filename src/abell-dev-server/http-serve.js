@@ -23,11 +23,11 @@ const contentTypeMap = {
   '.mp3': 'audio/mpeg',
   '.svg': 'image/svg+xml',
   '.pdf': 'application/pdf',
-  '.doc': 'application/msword'
+  '.doc': 'application/msword',
 };
 
 /**
- * 
+ *
  * @param {Request} req request object
  * @param {Response} res response object
  * @param {String} socketCode client-side code of web sockets
@@ -35,13 +35,13 @@ const contentTypeMap = {
  */
 function server(req, res, socketCode, options) {
   // eslint-disable-next-line
-  // Copied from https://stackoverflow.com/questions/16333790/node-js-quick-file-server-static-files-over-http 
+  // Copied from https://stackoverflow.com/questions/16333790/node-js-quick-file-server-static-files-over-http
 
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Request-Method', '*');
   res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET');
   res.setHeader('Access-Control-Allow-Headers', '*');
-  
+
   if (options.logs === 'complete') {
     console.log(`${req.method} ${req.url}`);
   }
@@ -77,7 +77,7 @@ function server(req, res, socketCode, options) {
     if (ext === '.html') {
       contentData += socketCode;
     }
-    res.setHeader('Content-Type', contentTypeMap[ext] || 'text/plain' );
+    res.setHeader('Content-Type', contentTypeMap[ext] || 'text/plain');
     res.end(contentData);
   } catch (err) {
     res.statusCode = 500;
@@ -86,12 +86,12 @@ function server(req, res, socketCode, options) {
 }
 
 /**
- * 
- * @param {Options} options 
+ *
+ * @param {Options} options
  */
 function createServer(options) {
   const port = options.port || 9000;
-  const socketCode = /* html */`
+  const socketCode = /* html */ `
   <script>
     const url = 'ws://localhost:${options.socketPort}';
     const connection = new WebSocket(url);
@@ -103,11 +103,12 @@ function createServer(options) {
   </script>
   `;
 
-  http.createServer((req, res) => server(req, res, socketCode, options))
+  http
+    .createServer((req, res) => server(req, res, socketCode, options))
     .listen(parseInt(port));
   console.log(`Server listening on port ${port}`);
 }
 
 module.exports = {
-  createServer
+  createServer,
 };

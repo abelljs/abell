@@ -10,7 +10,7 @@ const path = require('path');
  *  - Path to output destination (default 'dist', changes to 'debug' during dev-server)
  * @property {Object} globalMeta - Meta variables that are accessible globally in .abell files
  * @property {Array} ignoreInBuild
- * 
+ *
  */
 
 const relativeJoinedPath = (pathString) =>
@@ -22,7 +22,7 @@ const getDirectories = (source) => {
   });
 };
 
-const rmdirRecursiveSync = function(pathToRemove) {
+const rmdirRecursiveSync = function (pathToRemove) {
   if (fs.existsSync(pathToRemove)) {
     fs.readdirSync(pathToRemove).forEach((file, index) => {
       const curPath = path.join(pathToRemove, file);
@@ -47,22 +47,21 @@ const recursiveFind = (base, ext, inputFiles, inputResult) => {
     if (fs.statSync(newbase).isDirectory()) {
       result = recursiveFind(newbase, ext, fs.readdirSync(newbase), result);
     } else {
-      if (file.substr(-1 * (ext.length)) == ext) {
+      if (file.substr(-1 * ext.length) == ext) {
         result.push(newbase);
       }
     }
   }
-  
+
   return result;
 };
 
 // Returns all .abell files in src folder except for [$slug]
 const getAbellFiles = (sourcePath, extension) => {
   const absolutePaths = recursiveFind(sourcePath, extension);
-  return absolutePaths
-    .map(absolutePath => 
-      absolutePath.slice(0, absolutePath.lastIndexOf('.'))
-    );
+  return absolutePaths.map((absolutePath) =>
+    absolutePath.slice(0, absolutePath.lastIndexOf('.'))
+  );
 };
 
 /**
@@ -75,7 +74,7 @@ function getAbellConfigs() {
     sourcePath: 'theme',
     contentPath: 'content',
     ignoreInBuild: [],
-    globalMeta: {}
+    globalMeta: {},
   };
 
   try {
@@ -83,11 +82,13 @@ function getAbellConfigs() {
     delete require.cache[path.join(process.cwd(), 'abell.config.js')];
     abellConfig = {
       ...defaultConfigs,
-      ...require(path.join(process.cwd(), 'abell.config.js'))
+      ...require(path.join(process.cwd(), 'abell.config.js')),
     };
 
     if (Object.keys(abellConfig).length <= 0) {
-      throw new Error( `Something went wrong while fetching new configurations. Save again to refresh the dev server.` ); // eslint-disable-line
+      throw new Error( // eslint-disable-next-line
+        `Something went wrong while fetching new configurations. Save again to refresh the dev server.`
+      );
     }
   } catch (err) {
     console.log(boldRed('>> ') + err.message);
@@ -122,7 +123,7 @@ const createPathIfAbsent = (pathToCreate) => {
 function copyFolderSync(from, to, ignore = []) {
   if (ignore.includes(from)) {
     return;
-  };
+  }
   createPathIfAbsent(to);
   fs.readdirSync(from).forEach((element) => {
     const fromElement = path.join(from, element);
@@ -153,7 +154,7 @@ function exitHandler(options, exitCode) {
 
 /**
  * Captures groups from regex and executes RegEx.exec() function on all.
- * 
+ *
  * @param {regex} regex - Regular Expression to execute on.
  * @param {string} template - HTML Template in string.
  * @return {object} sandbox
@@ -163,12 +164,12 @@ function exitHandler(options, exitCode) {
 const execRegexOnAll = (regex, template) => {
   /** allMatches holds all the results of RegExp.exec() */
   const allMatches = [];
-  let match = regex.exec(template); 
+  let match = regex.exec(template);
   if (!match) {
-    return {matches: [], input: template};
+    return { matches: [], input: template };
   }
 
-  const {input} = match; 
+  const { input } = match;
 
   while (match !== null) {
     delete match.input;
@@ -176,11 +177,13 @@ const execRegexOnAll = (regex, template) => {
     match = regex.exec(template);
   }
 
-  return {matches: allMatches, input};
+  return { matches: allMatches, input };
 };
 
-const boldRed = (message) => `\u001b[1m\u001b[31m${message}\u001b[39m\u001b[22m`;
-const boldGreen = (message) => `\u001b[1m\u001b[32m${message}\u001b[39m\u001b[22m`;
+const boldRed = (message) =>
+  `\u001b[1m\u001b[31m${message}\u001b[39m\u001b[22m`;
+const boldGreen = (message) =>
+  `\u001b[1m\u001b[32m${message}\u001b[39m\u001b[22m`;
 const grey = (message) => `\u001b[90m${message}\u001b[39m`;
 
 module.exports = {

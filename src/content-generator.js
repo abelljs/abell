@@ -2,29 +2,29 @@ const fs = require('fs');
 const path = require('path');
 
 const abellRenderer = require('abell-renderer');
-const {Remarkable} = require('remarkable');
+const { Remarkable } = require('remarkable');
 const md = new Remarkable({
-  html: true
+  html: true,
 });
 
 md.use(require('./remarkable-plugins/anchors.js'));
 
-const { 
-  createPathIfAbsent, 
+const {
+  createPathIfAbsent,
   getAbellConfigs,
   getDirectories,
-  execRegexOnAll
+  execRegexOnAll,
 } = require('./helpers.js');
 
-/** 
- * 
+/**
+ *
  * @typedef {Object} MetaInfo - Meta information from meta.json file in content dir
  * @property {String} $slug - slug of content
  * @property {Date} $createdAt - Date object with time of content creation
  * @property {Date} $modifiedAt - Date object with time of last modification
- * 
+ *
  * @typedef {Object} ProgramInfo - Contains all the information required by the build to execute.
- * @property {import('./helpers.js').AbellConfigs} abellConfigs 
+ * @property {import('./helpers.js').AbellConfigs} abellConfigs
  *  - Configuration from abell.config.js file
  * @property {String} contentTemplate - string of the template from [$slug]/index.abell file
  * @property {String} contentTemplatePath - path of the template (mostly [$slug]/index.abell file
@@ -35,9 +35,8 @@ const {
  * @property {Array} contentDirectories - List of names of all directories in content directory
  * @property {String} logs - logs in the console ('minimum', 'complete')
  * @property {String} templateExtension - extension of input file ('.abell' default)
- * 
-*/
-
+ *
+ */
 
 /**
  * On given slug and base path of content folder,
@@ -49,21 +48,24 @@ const {
 function getContentMeta(contentSlug, contentPath) {
   let meta;
   try {
-    meta = JSON.parse(fs.readFileSync(path.join(contentPath, contentSlug, 'meta.json'), 'utf-8'));
+    meta = JSON.parse(
+      fs.readFileSync(path.join(contentPath, contentSlug, 'meta.json'), 'utf-8')
+    );
   } catch (err) {
-    meta = {title: contentSlug, description: `Hi, This is ${contentSlug}...`};
+    meta = { title: contentSlug, description: `Hi, This is ${contentSlug}...` };
   }
 
-  const {mtime, ctime} = fs.statSync(path.join(contentPath, contentSlug, 'index.md'));
+  const { mtime, ctime } = fs.statSync(
+    path.join(contentPath, contentSlug, 'index.md')
+  );
 
   return {
-    ...meta, 
+    ...meta,
     $slug: contentSlug,
     $modifiedAt: mtime,
-    $createdAt: ctime
+    $createdAt: ctime,
   };
 }
-
 
 /**
  * Returns meta informations of all the contents when directories is given
@@ -88,18 +90,20 @@ function getBaseProgramInfo() {
   // Get configured paths of destination and content
   const abellConfigs = getAbellConfigs();
   const contentDirectories = getDirectories(abellConfigs.contentPath);
-  const $contentObj = getContentMetaAll(contentDirectories, abellConfigs.contentPath);
-  const $contentArray = Object.values($contentObj)
-    .sort((a, b) => a.$createdAt.getTime() > b.$createdAt.getTime() ? -1 : 1);
-
+  const $contentObj = getContentMetaAll(
+    contentDirectories,
+    abellConfigs.contentPath
+  );
+  const $contentArray = Object.values($contentObj).sort((a, b) =>
+    a.$createdAt.getTime() > b.$createdAt.getTime() ? -1 : 1
+  );
 
   const contentTemplatePath = path.join(
-    abellConfigs.sourcePath, 
-    '[$slug]', 
+    abellConfigs.sourcePath,
+    '[$slug]',
     'index.abell'
   );
   const contentTemplate = fs.readFileSync(contentTemplatePath, 'utf-8');
-
 
   const programInfo = {
     abellConfigs,
@@ -109,16 +113,15 @@ function getBaseProgramInfo() {
     vars: {
       $contentArray,
       $contentObj,
-      globalMeta: abellConfigs.globalMeta
+      globalMeta: abellConfigs.globalMeta,
     },
-    logs: 'minimum'  
+    logs: 'minimum',
   };
 
   return programInfo;
 }
 
-
-/** 
+/**
  * @param {String} from - Path to copy from
  * @param {String} to - Path to paste to
  * Copy assets (images etc) from content folder (`content/my-cool-blog`) to destination folder
@@ -126,24 +129,21 @@ function getBaseProgramInfo() {
  */
 function copyContentAssets(from, to) {
   // Read names of files from contentSlug
-  const filesList = fs.readdirSync(from)
-    .filter(val => val !== 'index.md' && val !== 'meta.json');
+  const filesList = fs
+    .readdirSync(from)
+    .filter((val) => val !== 'index.md' && val !== 'meta.json');
 
   for (const filename of filesList) {
-    fs.copyFileSync(
-      path.join(from, filename), 
-      path.join(to, filename)
-    );
+    fs.copyFileSync(path.join(from, filename), path.join(to, filename));
   }
 }
 
-
 /**
- * 1. Reads .md/.abell file from given path 
+ * 1. Reads .md/.abell file from given path
  * 2. Converts it to html
  * 3. Adds variable to the new HTML and returns the HTML
- * 
- * @param {String} mdPath 
+ *
+ * @param {String} mdPath
  * @param {String} contentPath
  * @param {Object} variables
  * @param {Object} options
@@ -157,127 +157,126 @@ function importAndRender(mdPath, contentPath, variables) {
 }
 
 /**
- * 
+ *
  * 1. Read Template
  * 2. Render Template with abell-renderer and add variables
  * 3. Write to the destination.
- * 
+ *
  * @param {String} filepath - filepath relative to source directory
  * @param {ProgramInfo} programInfo - all the information required for build
  * @return {void}
  */
 function generateHTMLFile(filepath, programInfo) {
   let pageTemplate = fs.readFileSync(
-    path.join(programInfo.abellConfigs.sourcePath, filepath + '.abell'), 
+    path.join(programInfo.abellConfigs.sourcePath, filepath + '.abell'),
     'utf-8'
   );
 
   if (filepath === 'index') {
     // Add prefetch to index page
-    const regexToFetchPaths = 
-      /(?:<link +?rel=["']stylesheet['"] +?href=['"](.*?)['"])|(?:<script +?src=['"](.*?)['"])/g;
 
-    const {matches} = execRegexOnAll(regexToFetchPaths, programInfo.contentTemplate);
+    // eslint-disable-next-line
+    const regexToFetchPaths = /(?:<link +?rel=["']stylesheet['"] +?href=['"](.*?)['"])|(?:<script +?src=['"](.*?)['"])/g;
+
+    const { matches } = execRegexOnAll(
+      regexToFetchPaths,
+      programInfo.contentTemplate
+    );
 
     const headEndIndex = pageTemplate.indexOf('</head>');
 
-    pageTemplate = 
-      pageTemplate.slice(0, headEndIndex)
-      + `  <!-- Abell prefetch -->\n`
-      + matches.map(link => {
-        const [stylesheet, script] = link.slice(1);
-        if (stylesheet) {
-          return `  <link rel="prefetch" href="${stylesheet.replace('../', '')}" />`;
-        } else {
-          return `  <link rel="prefetch" href="${script.replace('../', '')}" />`;
-        }
-      }).join('\n')
-      + '\n\n'
-      + pageTemplate.slice(headEndIndex);
+    pageTemplate =
+      pageTemplate.slice(0, headEndIndex) +
+      `  <!-- Abell prefetch -->\n` +
+      matches
+        .map((link) => {
+          const [stylesheet, script] = link.slice(1);
+          if (stylesheet) {
+            return `  <link rel="prefetch" href="${stylesheet.replace(
+              '../',
+              ''
+            )}" />`;
+          } else {
+            return `  <link rel="prefetch" href="${script.replace(
+              '../',
+              ''
+            )}" />`;
+          }
+        })
+        .join('\n') +
+      '\n\n' +
+      pageTemplate.slice(headEndIndex);
   }
 
   const variables = programInfo.vars;
 
   const view = {
     ...variables,
-    $importContent: (path) => 
-      importAndRender(
-        path, 
-        programInfo.abellConfigs.contentPath, 
-        variables
-      )
+    $importContent: (path) =>
+      importAndRender(path, programInfo.abellConfigs.contentPath, variables),
   };
 
-  const pageContent = abellRenderer.render(
-    pageTemplate, 
-    view, 
-    {
-      basePath: path.join(
-        programInfo.abellConfigs.sourcePath, 
-        path.dirname(filepath)
-      )
-    }
-  );
+  const pageContent = abellRenderer.render(pageTemplate, view, {
+    basePath: path.join(
+      programInfo.abellConfigs.sourcePath,
+      path.dirname(filepath)
+    ),
+  });
 
   fs.writeFileSync(
-    path.join(programInfo.abellConfigs.destinationPath, filepath + '.html'), 
+    path.join(programInfo.abellConfigs.destinationPath, filepath + '.html'),
     pageContent
-  ); 
+  );
 }
-
 
 /**
  *  1. Create path
  *  2. Read Markdown
  *  3. Convert to HTML
  *  4. Render content HTML on programInfo.contentTemplate
- * 
+ *
  * @method generateContentFile
- * @param {String} contentSlug 
+ * @param {String} contentSlug
  * @param {ProgramInfo} programInfo all the information required for build
  * @return {void}
- * 
+ *
  */
 function generateContentFile(contentSlug, programInfo) {
   // Create Path of content if does not already exist
-  createPathIfAbsent(path.join(programInfo.abellConfigs.destinationPath, contentSlug));
+  createPathIfAbsent(
+    path.join(programInfo.abellConfigs.destinationPath, contentSlug)
+  );
 
   const variables = {
     ...programInfo.vars,
     $slug: contentSlug,
-    meta: programInfo.vars.$contentObj[contentSlug]
+    meta: programInfo.vars.$contentObj[contentSlug],
   };
 
   const view = {
     ...variables,
-    $importContent: (path) => 
-      importAndRender(
-        path, 
-        programInfo.abellConfigs.contentPath, 
-        variables
-      )
+    $importContent: (path) =>
+      importAndRender(path, programInfo.abellConfigs.contentPath, variables),
   };
 
   // render HTML of content
-  const contentHTML = abellRenderer.render(
-    programInfo.contentTemplate, 
-    view,
-    {
-      basePath: path.dirname(programInfo.contentTemplatePath)
-    }
-  );
-
+  const contentHTML = abellRenderer.render(programInfo.contentTemplate, view, {
+    basePath: path.dirname(programInfo.contentTemplatePath),
+  });
 
   // WRITE IT OUT!! YASSSSSS!!!
   fs.writeFileSync(
-    path.join(programInfo.abellConfigs.destinationPath, contentSlug, 'index.html'), 
+    path.join(
+      programInfo.abellConfigs.destinationPath,
+      contentSlug,
+      'index.html'
+    ),
     contentHTML
   );
 
-
   // Copy assets from content's folder to actual destination
   copyContentAssets(
-    path.join(programInfo.abellConfigs.contentPath, contentSlug), 
+    path.join(programInfo.abellConfigs.contentPath, contentSlug),
     path.join(programInfo.abellConfigs.destinationPath, contentSlug)
   );
 }
@@ -288,5 +287,5 @@ module.exports = {
   getBaseProgramInfo,
   generateContentFile,
   generateHTMLFile,
-  importAndRender
+  importAndRender,
 };

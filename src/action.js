@@ -46,16 +46,15 @@ function build(programInfo) {
   const ignoreCopying = [
     path.join(programInfo.abellConfigs.sourcePath, '[$slug]'),
     path.join(programInfo.abellConfigs.sourcePath, 'components'),
-    ...programInfo.abellConfigs.ignoreInBuild
-      .map(relativePath =>
-        path.join(programInfo.abellConfigs.sourcePath, relativePath)
-      ),
-    ...abellFiles.map(withoutExtension => withoutExtension + '.abell')
+    ...programInfo.abellConfigs.ignoreInBuild.map((relativePath) =>
+      path.join(programInfo.abellConfigs.sourcePath, relativePath)
+    ),
+    ...abellFiles.map((withoutExtension) => withoutExtension + '.abell'),
   ];
 
   // Copy everything from src to dist except the ones mentioned in ignoreCopying.
   copyFolderSync(
-    programInfo.abellConfigs.sourcePath, 
+    programInfo.abellConfigs.sourcePath,
     programInfo.abellConfigs.destinationPath,
     ignoreCopying
   );
@@ -68,7 +67,11 @@ function build(programInfo) {
 
   // GENERATE OTHER HTML FILES FROM ABELL
   for (const file of abellFiles) {
-    const relativePath = path.relative(programInfo.abellConfigs.sourcePath, file);
+    const relativePath = path.relative(
+      programInfo.abellConfigs.sourcePath,
+      file
+    );
+
     if (relativePath.includes('[$slug]')) {
       continue;
     }
@@ -153,10 +156,7 @@ function serve(programInfo) {
         .slice(programInfo.abellConfigs.sourcePath.length + 1)
         .split('/')[0];
 
-      if (
-        filePath.endsWith('index.abell') &&
-        directoryName === '[$slug]'
-      ) {
+      if (filePath.endsWith('index.abell') && directoryName === '[$slug]') {
         // Content template changed
         programInfo.contentTemplate = fs.readFileSync(
           programInfo.contentTemplatePath,
@@ -222,14 +222,14 @@ function serve(programInfo) {
     });
 
   // do something when app is closing
-  process.on('exit', exitHandler.bind(null, {cleanup: true}));
+  process.on('exit', exitHandler.bind(null, { cleanup: true }));
   // catches ctrl+c event
-  process.on('SIGINT', exitHandler.bind(null, {exit: true}));
+  process.on('SIGINT', exitHandler.bind(null, { exit: true }));
   // catches "kill pid" (for example: nodemon restart)
-  process.on('SIGUSR1', exitHandler.bind(null, {exit: true}));
-  process.on('SIGUSR2', exitHandler.bind(null, {exit: true}));
+  process.on('SIGUSR1', exitHandler.bind(null, { exit: true }));
+  process.on('SIGUSR2', exitHandler.bind(null, { exit: true }));
   // catches uncaught exceptions
-  process.on('uncaughtException', exitHandler.bind(null, {exit: true}));
+  process.on('uncaughtException', exitHandler.bind(null, { exit: true }));
 }
 
-module.exports = {build, serve};
+module.exports = { build, serve };

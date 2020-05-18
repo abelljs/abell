@@ -1,10 +1,9 @@
 const expect = require('chai').expect;
 
-const { 
+const {
   getBaseProgramInfo,
-  importAndRender
+  importAndRender,
 } = require('../src/content-generator.js');
-
 
 describe('getBaseProgramInfo()', () => {
   before(() => {
@@ -15,17 +14,19 @@ describe('getBaseProgramInfo()', () => {
     expect(getBaseProgramInfo())
       .to.be.an('object')
       .to.have.keys([
-        'abellConfigs', 'contentTemplate', 'vars', 'contentTemplatePath',
-        'contentDirectories', 'logs'
+        'abellConfigs',
+        'contentTemplate',
+        'vars',
+        'contentTemplatePath',
+        'contentDirectories',
+        'logs',
       ]);
   });
-
 
   after(() => {
     process.chdir('../../..');
   });
 });
-
 
 describe('importAndRender()', () => {
   it('should return HTML of the md file in given path', () => {
@@ -41,9 +42,9 @@ describe('importAndRender()', () => {
 
     expect(
       importAndRender(
-        'another-blog/index.md', 
+        'another-blog/index.md',
         'tests/resources/test_demo/content',
-        {meta: {title: 'Abell Test Title Check'}}
+        { meta: { title: 'Abell Test Title Check' } }
       ).replace(/[\n ]/g, '')
     ).to.equal(shouldOutput.replace(/[\n ]/g, ''));
   });
