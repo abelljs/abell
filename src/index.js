@@ -18,7 +18,7 @@ program
       programInfo.task = 'build';
       action.build(programInfo);
       const buildTime = new Date().getTime() - buildStartTime;
-      console.log(`${boldGreen('>>>')} Abell Build complete (Built in ${buildTime}ms) 🚀✨\n\n`);
+      console.log(`\n\n${boldGreen('>>>')} Abell Build complete (Built in ${buildTime}ms) 🚀✨\n\n`);
     } catch (err) {
       console.log(err);
       console.log(`\n\n${boldRed('>>>')} Abell Build Failed 😭 \n`);
