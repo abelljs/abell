@@ -74,7 +74,7 @@ function getAbellConfigs() {
     sourcePath: 'theme',
     contentPath: 'content',
     ignoreInBuild: [],
-    globalMeta: {},
+    globalMeta: {}
   };
 
   try {
@@ -82,7 +82,7 @@ function getAbellConfigs() {
     delete require.cache[path.join(process.cwd(), 'abell.config.js')];
     abellConfig = {
       ...defaultConfigs,
-      ...require(path.join(process.cwd(), 'abell.config.js')),
+      ...require(path.join(process.cwd(), 'abell.config.js'))
     };
 
     if (Object.keys(abellConfig).length <= 0) {
@@ -103,7 +103,7 @@ function getAbellConfigs() {
     ...abellConfig,
     destinationPath,
     sourcePath,
-    contentPath,
+    contentPath
   };
 }
 
@@ -197,5 +197,5 @@ module.exports = {
   execRegexOnAll,
   boldGreen,
   boldRed,
-  grey,
+  grey
 };

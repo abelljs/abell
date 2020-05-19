@@ -10,14 +10,14 @@ const {
   copyFolderSync,
   exitHandler,
   boldGreen,
-  getAbellFiles,
+  getAbellFiles
 } = require('./helpers.js');
 
 const {
   generateContentFile,
   generateHTMLFile,
   getBaseProgramInfo,
-  getContentMeta,
+  getContentMeta
 } = require('./content-generator');
 
 /**
@@ -49,7 +49,7 @@ function build(programInfo) {
     ...programInfo.abellConfigs.ignoreInBuild.map((relativePath) =>
       path.join(programInfo.abellConfigs.sourcePath, relativePath)
     ),
-    ...abellFiles.map((withoutExtension) => withoutExtension + '.abell'),
+    ...abellFiles.map((withoutExtension) => withoutExtension + '.abell')
   ];
 
   // Copy everything from src to dist except the ones mentioned in ignoreCopying.
@@ -108,15 +108,15 @@ function serve(programInfo) {
   ads.create({
     port: programInfo.port,
     socketPort: 3000,
-    path: programInfo.abellConfigs.destinationPath,
+    path: programInfo.abellConfigs.destinationPath
   });
 
   const chokidarOptions = {
     ignoreInitial: true,
     awaitWriteFinish: {
       stabilityThreshold: 600,
-      pollInterval: 100,
-    },
+      pollInterval: 100
+    }
   };
 
   // Print ports on screen
@@ -201,9 +201,9 @@ function serve(programInfo) {
             programInfo.abellConfigs.contentPath
           );
           programInfo.vars.$contentObj[directoryName] = meta;
-          const indexToChange = programInfo.vars.$contentArray.findIndex(
-            (content) => content.$slug == directoryName
-          );
+          // prettier-ignore
+          const indexToChange = programInfo.vars.$contentArray
+            .findIndex((content) => content.$slug == directoryName);
           programInfo.vars.$contentArray[indexToChange] = meta;
           build(programInfo);
         } else {

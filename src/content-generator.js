@@ -4,7 +4,7 @@ const path = require('path');
 const abellRenderer = require('abell-renderer');
 const { Remarkable } = require('remarkable');
 const md = new Remarkable({
-  html: true,
+  html: true
 });
 
 md.use(require('./remarkable-plugins/anchors.js'));
@@ -13,7 +13,7 @@ const {
   createPathIfAbsent,
   getAbellConfigs,
   getDirectories,
-  execRegexOnAll,
+  execRegexOnAll
 } = require('./helpers.js');
 
 /**
@@ -63,7 +63,7 @@ function getContentMeta(contentSlug, contentPath) {
     ...meta,
     $slug: contentSlug,
     $modifiedAt: mtime,
-    $createdAt: ctime,
+    $createdAt: ctime
   };
 }
 
@@ -113,9 +113,9 @@ function getBaseProgramInfo() {
     vars: {
       $contentArray,
       $contentObj,
-      globalMeta: abellConfigs.globalMeta,
+      globalMeta: abellConfigs.globalMeta
     },
-    logs: 'minimum',
+    logs: 'minimum'
   };
 
   return programInfo;
@@ -213,14 +213,14 @@ function generateHTMLFile(filepath, programInfo) {
   const view = {
     ...variables,
     $importContent: (path) =>
-      importAndRender(path, programInfo.abellConfigs.contentPath, variables),
+      importAndRender(path, programInfo.abellConfigs.contentPath, variables)
   };
 
   const pageContent = abellRenderer.render(pageTemplate, view, {
     basePath: path.join(
       programInfo.abellConfigs.sourcePath,
       path.dirname(filepath)
-    ),
+    )
   });
 
   fs.writeFileSync(
@@ -250,18 +250,18 @@ function generateContentFile(contentSlug, programInfo) {
   const variables = {
     ...programInfo.vars,
     $slug: contentSlug,
-    meta: programInfo.vars.$contentObj[contentSlug],
+    meta: programInfo.vars.$contentObj[contentSlug]
   };
 
   const view = {
     ...variables,
     $importContent: (path) =>
-      importAndRender(path, programInfo.abellConfigs.contentPath, variables),
+      importAndRender(path, programInfo.abellConfigs.contentPath, variables)
   };
 
   // render HTML of content
   const contentHTML = abellRenderer.render(programInfo.contentTemplate, view, {
-    basePath: path.dirname(programInfo.contentTemplatePath),
+    basePath: path.dirname(programInfo.contentTemplatePath)
   });
 
   // WRITE IT OUT!! YASSSSSS!!!
@@ -287,5 +287,5 @@ module.exports = {
   getBaseProgramInfo,
   generateContentFile,
   generateHTMLFile,
-  importAndRender,
+  importAndRender
 };

@@ -2,7 +2,7 @@ const expect = require('chai').expect;
 
 const {
   getBaseProgramInfo,
-  importAndRender,
+  importAndRender
 } = require('../src/content-generator.js');
 
 describe('getBaseProgramInfo()', () => {
@@ -19,7 +19,7 @@ describe('getBaseProgramInfo()', () => {
         'vars',
         'contentTemplatePath',
         'contentDirectories',
-        'logs',
+        'logs'
       ]);
   });
 
@@ -44,7 +44,9 @@ describe('importAndRender()', () => {
       importAndRender(
         'another-blog/index.md',
         'tests/resources/test_demo/content',
-        { meta: { title: 'Abell Test Title Check' } }
+        {
+          meta: { title: 'Abell Test Title Check' }
+        }
       ).replace(/[\n ]/g, '')
     ).to.equal(shouldOutput.replace(/[\n ]/g, ''));
   });

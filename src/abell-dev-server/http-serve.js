@@ -23,7 +23,7 @@ const contentTypeMap = {
   '.mp3': 'audio/mpeg',
   '.svg': 'image/svg+xml',
   '.pdf': 'application/pdf',
-  '.doc': 'application/msword',
+  '.doc': 'application/msword'
 };
 
 /**
@@ -110,5 +110,5 @@ function createServer(options) {
 }
 
 module.exports = {
-  createServer,
+  createServer
 };

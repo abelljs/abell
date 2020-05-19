@@ -13,6 +13,7 @@
   "scripts": {
     "test": "mocha --recursive \"./tests/*.js\"",
     "eslint": "eslint .",
+    "prettier": "prettier --write \"**/*.js\"",
     "build": "node build/build.main.js",
     "dev:build": "cd demo && node ../src/index.js build",
     "dev:serve": "cd demo && node ../src/index.js serve",
@@ -50,7 +51,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "eslint . --fix && npm run eslint"
+      "pre-commit": "npm run prettier && eslint . --fix && npm run eslint"
     }
   }
 }

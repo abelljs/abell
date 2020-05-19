@@ -1,16 +1,16 @@
 module.exports = {
   env: {
     es6: true,
-    node: true,
+    node: true
   },
   extends: ['google', 'prettier'],
   plugins: ['prettier'],
   globals: {
     Atomics: 'readonly',
-    SharedArrayBuffer: 'readonly',
+    SharedArrayBuffer: 'readonly'
   },
   parserOptions: {
-    ecmaVersion: 2018,
+    ecmaVersion: 2018
   },
   rules: {
     'prettier/prettier': ['error'],
@@ -21,8 +21,8 @@ module.exports = {
       'error',
       'after',
       {
-        overrides: { '?': 'ignore', ':': 'ignore', '+': 'ignore' },
-      },
+        overrides: { '?': 'ignore', ':': 'ignore', '+': 'ignore' }
+      }
     ],
     indent: [
       'error',
@@ -31,11 +31,11 @@ module.exports = {
         CallExpression: { arguments: 'first' },
         ignoredNodes: [
           'CallExpression > CallExpression',
-          'CallExpression > MemberExpression',
+          'CallExpression > MemberExpression'
         ],
-        SwitchCase: 1,
-      },
+        SwitchCase: 1
+      }
     ],
-    'max-len': ['error', { code: 100, ignoreComments: true }],
-  },
+    'max-len': ['error', { code: 80, ignoreComments: true }]
+  }
 };

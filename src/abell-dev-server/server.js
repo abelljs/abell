@@ -39,7 +39,7 @@ function experimentalContentReplace(contentData) {
     server.send(
       JSON.stringify({
         message: 'abell-dev-server-content-replace',
-        info: contentData,
+        info: contentData
       })
     );
   }
@@ -48,5 +48,5 @@ function experimentalContentReplace(contentData) {
 module.exports = {
   create,
   reload,
-  experimentalContentReplace,
+  experimentalContentReplace
 };
