@@ -176,7 +176,7 @@ function generateHTMLFile(filepath, programInfo) {
     // Add prefetch to index page
 
     // eslint-disable-next-line
-    const regexToFetchPaths = /(?:<link +?rel=["']stylesheet['"] +?href=['"](.*?)['"])|(?:<script +?src=['"](.*?)['"])/g;
+    const regexToFetchPaths = /(?:<link +?rel=["']stylesheet['"] +?href=['"](.*?)['"])|(?:<script +?src=['"](.*?)['"])|(?:<link.+?href=["'](.*?)["'].+?as=["'](.*?)["'])/gs;
 
     const { matches } = execRegexOnAll(
       regexToFetchPaths,
@@ -191,10 +191,27 @@ function generateHTMLFile(filepath, programInfo) {
       `  <!-- Abell prefetch -->\n` +
       matches
         .map((link) => {
-          const [stylesheet, script] = link.slice(1);
+          let stylesheet;
+          let script;
+          // stylesheet or script have a value if link is straighforward
+          // (e.g <link rel="stylesheet" href="style.css">)
+          ([stylesheet, script] = link.slice(1));
+          // In some cases, user may have a little trickier links
+          // (e.g <link rel="preload" href="next.js" as="script")
+          if (!stylesheet && !script) {
+            try {
+              if (link[4] === 'style' && link[3].includes('.css')) {
+                stylesheet = link[3];
+              } else if (link[4] === 'script' && link[3].includes('.js')) {
+                script = link[3];
+              }
+            } catch (err) {
+              console.log(">> Could not recognize preloads, skipping the option..."); // eslint-disable-line max-len
+            }
+          }
           if (stylesheet) {
             return `  <link rel="prefetch" href="${stylesheet.replace('../','./')}" as="style" />`; // eslint-disable-line max-len
-          } else {
+          } else if (script) {
             return `  <link rel="prefetch" href="${script.replace('../', './')}" as="script" />`; // eslint-disable-line max-len
           }
         })

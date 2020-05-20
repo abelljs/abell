@@ -9,6 +9,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <link rel="stylesheet" href="../styles/style.css"/>
   <title>{{ meta.title }} | {{ globalMeta.siteName }}</title>
+
+  <link rel="stylesheet" href="cool.css" />
+  <link 
+    rel="prefetch" 
+    href="nice.css" 
+    as="style" 
+  />
+  <link rel="prefetch" href="ok.js" as="script" />
 </head>
 <body>
   <section id="blog-container">
