@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.14
+
+- Prefetch now recognizes the links that are preloaded in the next page.
+
 ## 0.2.13
 
 - Forgot to add .vscode to npmignore in last update and my vscode configs went with the package 😭😭
