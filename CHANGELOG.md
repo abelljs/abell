@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.13
+
+- Forgot to add .vscode to npmignore in last update and my vscode configs went with the package 😭😭
+
 ## 0.2.12
 
 - Added `as=<type>` to prefetched links during build-time
