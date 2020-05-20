@@ -185,6 +185,7 @@ function generateHTMLFile(filepath, programInfo) {
 
     const headEndIndex = pageTemplate.indexOf('</head>');
 
+    // prettier-ignore
     pageTemplate =
       pageTemplate.slice(0, headEndIndex) +
       `  <!-- Abell prefetch -->\n` +
@@ -192,15 +193,9 @@ function generateHTMLFile(filepath, programInfo) {
         .map((link) => {
           const [stylesheet, script] = link.slice(1);
           if (stylesheet) {
-            return `  <link rel="prefetch" href="${stylesheet.replace(
-              '../',
-              ''
-            )}" />`;
+            return `  <link rel="prefetch" href="${stylesheet.replace('../','./')}" as="style" />`; // eslint-disable-line max-len
           } else {
-            return `  <link rel="prefetch" href="${script.replace(
-              '../',
-              ''
-            )}" />`;
+            return `  <link rel="prefetch" href="${script.replace('../', './')}" as="script" />`; // eslint-disable-line max-len
           }
         })
         .join('\n') +
