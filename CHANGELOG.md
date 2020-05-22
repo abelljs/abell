@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.15
+
+- Having `[$slug]/index.abell` is no more neccessary.
+
 ## 0.2.14
 
 - Prefetch now recognizes the links that are preloaded in the next page.

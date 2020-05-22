@@ -103,11 +103,15 @@ function getBaseProgramInfo() {
     '[$slug]',
     'index.abell'
   );
-  const contentTemplate = fs.readFileSync(contentTemplatePath, 'utf-8');
+
+  let contentTemplate;
+  if (fs.existsSync(contentTemplatePath)) {
+    contentTemplate = fs.readFileSync(contentTemplatePath, 'utf-8');
+  }
 
   const programInfo = {
     abellConfigs,
-    contentTemplate,
+    contentTemplate: contentTemplate || null,
     contentDirectories,
     contentTemplatePath,
     vars: {

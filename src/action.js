@@ -60,9 +60,13 @@ function build(programInfo) {
   );
 
   // GENERATE CONTENT's HTML FILES
-  for (const contentSlug of programInfo.contentDirectories) {
-    generateContentFile(contentSlug, programInfo);
-    if (programInfo.logs == 'complete') console.log(`...Built ${contentSlug}`);
+  if (fs.existsSync(programInfo.contentTemplatePath)) {
+    for (const contentSlug of programInfo.contentDirectories) {
+      generateContentFile(contentSlug, programInfo);
+      if (programInfo.logs == 'complete') {
+        console.log(`...Built ${contentSlug}`);
+      }
+    }
   }
 
   // GENERATE OTHER HTML FILES FROM ABELL
@@ -114,7 +118,7 @@ function serve(programInfo) {
   const chokidarOptions = {
     ignoreInitial: true,
     awaitWriteFinish: {
-      stabilityThreshold: 600,
+      stabilityThreshold: 100,
       pollInterval: 100
     }
   };
