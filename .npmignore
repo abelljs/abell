@@ -7,3 +7,5 @@ tests/
 .eslintignore
 .github/
 .vscode/
+.prettierrc
+.prettierignore
