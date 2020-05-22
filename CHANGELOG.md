@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.16
+
+- Fix for dev-server not having right content-type of `.mjs` files.
+
 ## 0.2.15
 
 - Having `[$slug]/index.abell` is no more neccessary.

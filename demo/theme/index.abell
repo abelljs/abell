@@ -25,5 +25,6 @@
     }}
   </main>
   <footer></footer>
+  <script src="./test.mjs" type="module"></script>
 </body>
 </html>
