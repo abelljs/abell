@@ -89,14 +89,20 @@ function getContentMetaAll(contentDirectories, contentPath) {
 function getBaseProgramInfo() {
   // Get configured paths of destination and content
   const abellConfigs = getAbellConfigs();
-  const contentDirectories = getDirectories(abellConfigs.contentPath);
-  const $contentObj = getContentMetaAll(
-    contentDirectories,
-    abellConfigs.contentPath
-  );
-  const $contentArray = Object.values($contentObj).sort((a, b) =>
-    a.$createdAt.getTime() > b.$createdAt.getTime() ? -1 : 1
-  );
+  let contentDirectories;
+  let $contentObj;
+  let $contentArray;
+
+  if (fs.existsSync(abellConfigs.contentPath)) {
+    contentDirectories = getDirectories(abellConfigs.contentPath);
+    $contentObj = getContentMetaAll(
+      contentDirectories,
+      abellConfigs.contentPath
+    );
+    $contentArray = Object.values($contentObj).sort((a, b) =>
+      a.$createdAt.getTime() > b.$createdAt.getTime() ? -1 : 1
+    );
+  }
 
   const contentTemplatePath = path.join(
     abellConfigs.sourcePath,
@@ -112,11 +118,11 @@ function getBaseProgramInfo() {
   const programInfo = {
     abellConfigs,
     contentTemplate: contentTemplate || null,
-    contentDirectories,
+    contentDirectories: contentDirectories || [],
     contentTemplatePath,
     vars: {
-      $contentArray,
-      $contentObj,
+      $contentArray: $contentArray || [],
+      $contentObj: $contentObj || {},
       globalMeta: abellConfigs.globalMeta
     },
     logs: 'minimum'

@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.17
+
+- Having `content` directory is no more neccessary. Ability to build a static site which is not dependent on markdown content.
+
 ## 0.2.16
 
 - Fix for dev-server not having right content-type of `.mjs` files.
