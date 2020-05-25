@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.2.18
+
+- **BUG FIX**
+  Caching of files required from `.abell` files during dev-server fixed. Now Auto-refresh will work on required files as well.
+
 ## 0.2.17
 
 - Having `content` directory is no more neccessary. Ability to build a static site which is not dependent on markdown content.

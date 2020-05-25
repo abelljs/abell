@@ -152,13 +152,25 @@ function serve(programInfo) {
       });
   }
 
-  // Watch 'src'
+  // Watch 'theme'
   chokidar
     .watch(programInfo.abellConfigs.sourcePath, chokidarOptions)
     .on('all', (event, filePath) => {
-      const directoryName = filePath
-        .slice(programInfo.abellConfigs.sourcePath.length + 1)
-        .split('/')[0];
+      const directoryName = path.dirname(
+        path.relative(programInfo.abellConfigs.sourcePath, filePath)
+      );
+
+      const isFileCached = require.cache[filePath];
+      if (isFileCached) {
+        console.log(
+          `>> Refreshing ${path.relative(
+            programInfo.abellConfigs.sourcePath,
+            filePath
+          )} from cache`
+        );
+
+        delete require.cache[filePath];
+      }
 
       if (filePath.endsWith('index.abell') && directoryName === '[$slug]') {
         // Content template changed

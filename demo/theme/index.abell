@@ -1,3 +1,6 @@
+{{
+  const site = require('./site.json');
+}}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,6 +13,8 @@
     const a = 10;
     const b = 1;
   }}
+
+  {{ site.greet }}
   <header>Addition of numbers: {{ a + b }}</header>
   <h1>{{ globalMeta.siteName }}</h1>
   <main>
