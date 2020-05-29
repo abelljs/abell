@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.2.19
+
+- Warnings are displayed in yellow color
+- abell-renderer updated to 0.1.10 [Changelog of Abell Renderer](https://github.com/abelljs/abell-renderer/releases/tag/v0.1.10)
+
 ## 0.2.18
 
 - **BUG FIX**

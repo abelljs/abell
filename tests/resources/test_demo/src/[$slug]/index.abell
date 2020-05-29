@@ -1,3 +1,7 @@
+{{
+  const testData = require('../data/testdata.json');
+}}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,5 +17,8 @@
   <section id="blog-container">
     {{ $importContent(`${meta.$slug}/index.md`) }}
   </section>
+  <div class="test-data-output">
+    {{ testData.test }}
+  </div>
 </body>
 </html>

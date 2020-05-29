@@ -242,7 +242,8 @@ function generateHTMLFile(filepath, programInfo) {
     basePath: path.join(
       programInfo.abellConfigs.sourcePath,
       path.dirname(filepath)
-    )
+    ),
+    allowRequire: true
   });
 
   fs.writeFileSync(
@@ -283,7 +284,8 @@ function generateContentFile(contentSlug, programInfo) {
 
   // render HTML of content
   const contentHTML = abellRenderer.render(programInfo.contentTemplate, view, {
-    basePath: path.dirname(programInfo.contentTemplatePath)
+    basePath: path.dirname(programInfo.contentTemplatePath),
+    allowRequire: true
   });
 
   // WRITE IT OUT!! YASSSSSS!!!
