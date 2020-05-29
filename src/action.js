@@ -217,6 +217,14 @@ function serve(programInfo) {
             programInfo.abellConfigs.contentPath
           );
           programInfo.vars.$contentObj[directoryName] = meta;
+
+          // prettier-ignore
+          programInfo.vars.$contentArray = 
+            Object.values(programInfo.vars.$contentObj)
+              .sort((a, b) =>
+                a.$createdAt.getTime() > b.$createdAt.getTime() ? -1 : 1
+              );
+
           // prettier-ignore
           const indexToChange = programInfo.vars.$contentArray
             .findIndex((content) => content.$slug == directoryName);

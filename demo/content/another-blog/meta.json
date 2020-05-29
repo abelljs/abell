@@ -1,5 +1,6 @@
 {
   "title": "Another blog",
   "description": "Amazing blog right",
-  "foo": "bar"
+  "foo": "bar",
+  "$createdAt": "May 9 2020"
 }

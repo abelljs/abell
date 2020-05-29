@@ -17,26 +17,21 @@ describe('action.build()', () => {
     programInfo.task = 'build';
     build(programInfo);
 
-    const expectedIndex = fs
-      .readFileSync('expected_dist/index.html', 'utf8')
-      .replace(/ |\n/g, '');
-    const builtIndex = fs
-      .readFileSync('dist/index.html', 'utf8')
-      .replace(/ |\n/g, '');
-
+    const expectedIndex = fs.readFileSync('expected_dist/index.html', 'utf8');
+    const builtIndex = fs.readFileSync('dist/index.html', 'utf8');
     expect(builtIndex).to.equal(expectedIndex);
 
     const allBlogs = getDirectories('expected_dist');
     expect(allBlogs).to.have.members(['another-blog', 'my-first-blog']);
 
-    const expectedBlogContent = fs
-      .readFileSync('expected_dist/another-blog/index.html', 'utf8')
-      .replace(/ |\n/g, '');
-
-    const builtBlogContent = fs
-      .readFileSync('dist/another-blog/index.html', 'utf8')
-      .replace(/ |\n/g, '');
-
+    const expectedBlogContent = fs.readFileSync(
+      'expected_dist/another-blog/index.html',
+      'utf8'
+    );
+    const builtBlogContent = fs.readFileSync(
+      'dist/another-blog/index.html',
+      'utf8'
+    );
     expect(builtBlogContent).to.equal(expectedBlogContent);
   });
 

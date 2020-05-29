@@ -47,17 +47,40 @@ const {
  */
 function getContentMeta(contentSlug, contentPath) {
   let meta;
+
+  const defaultMeta = {
+    title: contentSlug,
+    description: `Hi, This is ${contentSlug}...`
+  };
+
   try {
-    meta = JSON.parse(
-      fs.readFileSync(path.join(contentPath, contentSlug, 'meta.json'), 'utf-8')
-    );
+    meta = {
+      ...defaultMeta,
+      ...JSON.parse(
+        fs.readFileSync(
+          path.join(contentPath, contentSlug, 'meta.json'),
+          'utf-8'
+        )
+      )
+    };
   } catch (err) {
-    meta = { title: contentSlug, description: `Hi, This is ${contentSlug}...` };
+    meta = defaultMeta;
   }
 
-  const { mtime, ctime } = fs.statSync(
+  let mtime;
+  let ctime;
+
+  ({ mtime, ctime } = fs.statSync(
     path.join(contentPath, contentSlug, 'index.md')
-  );
+  ));
+
+  if (meta.$createdAt) {
+    ctime = new Date(meta.$createdAt);
+  }
+
+  if (meta.$modifiedAt) {
+    mtime = new Date(meta.$modifiedAt);
+  }
 
   return {
     ...meta,
