@@ -1,6 +1,10 @@
 # Changelog
 
-## 0.2.19
+## 0.2.20
+
+- Way to overwrite `$createdAt` and `$modifiedAt` values from `meta.json` in content. Resolved #14
+
+## 0.2.19 [Not Released on NPM]
 
 - Warnings are displayed in yellow color
 - abell-renderer updated to 0.1.10 [Changelog of Abell Renderer](https://github.com/abelljs/abell-renderer/releases/tag/v0.1.10)

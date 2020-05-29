@@ -9,11 +9,9 @@
   <br/><br/>
 </p>
 
-
-
 ## 📖 Documentation
 
-*This documentation is only for the people who want to contribute or just want to try it out for fun. Abell should not be used for production applications yet.*
+_This documentation is only for the people who want to contribute or just want to try it out for fun. Abell should not be used for production applications yet._
 
 ### Table of Content
 
@@ -35,14 +33,15 @@
 - [Changelog](#changelog)
 
 ### 1. Create your site
+
 Deploy to netlify button below will create copy of [Abell Starter Project](https://github.com/abelljs/abell-starter-minima) in your GitHub and will deploy it to [Netlify](http://netlify.com/) and boom! that's it 🎉
 
 [![Deploy to Netlify Button](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/abelljs/abell-starter-minima)
 
-REMEMBER! ***ABELL IS NOT READY!*** SO DON'T GET TOO EXCITED TO CREATE AN ACTUAL PRODUCTION BLOG WITH THIS.
-
+REMEMBER! **_ABELL IS NOT READY!_** SO DON'T GET TOO EXCITED TO CREATE AN ACTUAL PRODUCTION BLOG WITH THIS.
 
 #### Write/Edit Content
+
 You can edit markdown files from `./content` directory in your repo to edit content.
 
 To test your blog, you can either [run your site locally](#1b-run-your-blog-locally) or open your site's github repository in [CodeSandbox](http://codesandbox.io/)
@@ -57,32 +56,37 @@ To test your blog, you can either [run your site locally](#1b-run-your-blog-loca
 ### 2. Abell Guide
 
 #### Abell Configs
+
 Sample abell.config.js:
+
 ```js
 module.exports = {
   sourcePath: 'theme', // path of source where index.abell and [$slug]/index.abell are located
   destinationPath: 'dist', // Build destination
-  contentPath: 'content', // Content Path which has .md 
-  globalMeta: { // All the global variables
-    siteName: 'Abell Demo', 
+  contentPath: 'content', // Content Path which has .md
+  globalMeta: {
+    // All the global variables
+    siteName: 'Abell Demo',
     author: 'Saurabh Daware',
     foo: 'bar'
   }
-}
+};
 ```
-
 
 #### Variables in Abell
 
-Abell lets you use variables inside your .abell files. 
+Abell lets you use variables inside your .abell files.
+
 - [Content Specific Variables](#content-specific-variables) that can be accessed from `./theme/[$slug]/index.abell`.
 - There are [Global Variables](#global-variables) that can be accessed from any .abell files with `{{ globalMeta.<key> }}`.
 - [Predefined Variables](#predefined-variables)
 
 ##### Content specific variables
+
 Your content may sometimes have meta data like title, og:image, etc. which is dynamic (different for different content). You can set this meta info from `./content/<content-slug>/meta.json`.
 
 Example `./content/<content-slug>/meta.json`
+
 ```json
 {
   "title": "Another blog",
@@ -91,35 +95,50 @@ Example `./content/<content-slug>/meta.json`
 }
 ```
 
-These variables can be accessed from `./theme/[$slug]/index.abell` with `{{ meta.title }}`, `{{ meta.description }}`, `{{ meta.foo }}`
+These variables can be accessed from `./theme/[$slug]/index.abell` with `{{ meta.title }}`, `{{ meta.description }}`, `{{ meta.foo }}`.
+
+Content also has predefined variables that are mentioned in [predefined variables section](#predefined-variables)
 
 ##### Global variables
 
 You can add your variables in `globalMeta` property inside `abell.config.js` file and access those variables from .abell files with `{{ globalMeta.<key> }}` (e.g `{{ globalMeta.siteTitle }}`)
 
-
 ##### Predefined variables
 
-In addition to Content Specific Variables and Global Variables, Abell has some predefined variables to provide required meta data about the content. 
+In addition to Content Specific Variables and Global Variables, Abell has some predefined variables to provide required meta data about the content.
 
 Predefined variables start with `$` and are accessible from `.abell` files.
 
 List of predefined variables
 
-| Variables        | description                                   | Example Value          |
-|------------------|-----------------------------------------------|------------------------|
-| meta.$slug       | Folder name of content, used as slug          | `my-cool-blog`           |
-| meta.$createdAt  | Date & Time of creation of content.           | `Sun Apr 30 2020`        |
-| meta.$modifiedAt | Date & Time of last modification of content.  | `Thu May 20 2020`        |
-| $contentArray     | Array of all 'meta' values from content       | `[{title: 'Cool Blog', $slug: 'my-cool-blog'}, {title: 'Nice blog', $slug: 'nice-blog-69'}]` |
+| Variables         | description                                  | Example Value                                                                                |
+| ----------------- | -------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| meta.\$slug       | Folder name of content, used as slug         | `my-cool-blog`                                                                               |
+| meta.\$createdAt  | Date & Time of creation of content.          | `Sun Apr 30 2020`                                                                            |
+| meta.\$modifiedAt | Date & Time of last modification of content. | `Thu May 20 2020`                                                                            |
+| \$contentArray    | Array of all 'meta' values from content      | `[{title: 'Cool Blog', $slug: 'my-cool-blog'}, {title: 'Nice blog', $slug: 'nice-blog-69'}]` |
 
+Predefined variables `meta.$createdAt` and `meta.$modifiedAt` can have unexpected changes in some cases, thus for more stable dates, you can overwrite these values by adding new values to the `meta.json` file in `content/:slug/meta.json`
+
+Example `./content/:slug/meta.json`
+
+```json
+{
+  "title": "Another blog",
+  "description": "Amazing blog right",
+  "$createdAt": "May 20 2020",
+  "modifiedAt": "May 22 2020"
+}
+```
 
 #### Importing Markdown as HTML
+
 You can import markdown files as HTML in .abell files using `$importContent(path)` function.
 
-In this function, paths are relative to 'content' directory. 
+In this function, paths are relative to 'content' directory.
 
 **Example:**
+
 ```jsx
   <section id="blog-container">
     {{ $importContent(meta.$slug + '/index.md') }}
@@ -130,38 +149,39 @@ This will import the markdown as HTML from `./content/my-blog/index.md`. (where 
 
 #### Loops in Abell
 
-
-Starting from v0.1.12, Abell uses [abell-renderer](https://github.com/abelljs/abell-renderer) for rendering. 
+Starting from v0.1.12, Abell uses [abell-renderer](https://github.com/abelljs/abell-renderer) for rendering.
 
 You can use JavaScript methods within `{{` and `}}` so to loop through an object and generate HTML, you can use `.map()` method from JavaScript.
 
-*Note: The JavaScript you write inside `{{` and `}}` compiles on build time and runs in NodeJS context so you cannot use frontend JavaScript methods from DOM*
+_Note: The JavaScript you write inside `{{` and `}}` compiles on build time and runs in NodeJS context so you cannot use frontend JavaScript methods from DOM_
 
 ##### Example 1
+
 Let's say we have this object in variable `$contentArray`
+
 ```js
 // $contentArray
 [
   {
-    title: 'Cool Blog', 
+    title: 'Cool Blog',
     $slug: 'my-cool-blog',
     $createdAt: 'Sun Apr 30 2020',
     $modifiedAt: 'Wed May 10 2020'
-  }, 
+  },
   {
-    title: 'Nice blog', 
+    title: 'Nice blog',
     $slug: 'nice-blog-69',
     $createdAt: 'Sun Apr 06 2069',
     $modifiedAt: 'Wed May 09 2069'
   }
-]
+];
 ```
 
 We can loop `$contentArray` with,
 
 ```js
 <div class="article-container">
-{{ 
+{{
   $contentArray
     .map(meta => `
       <article>
@@ -174,6 +194,7 @@ We can loop `$contentArray` with,
 ```
 
 **outputs:**
+
 ```html
 <div class="article-container">
   <article>
@@ -187,19 +208,17 @@ We can loop `$contentArray` with,
 </div>
 ```
 
-
 ##### Example 2
 
-
 Let's say we have `globalMeta.foo` as,
-```js
-['Hi I am 1', 'John Doe', 'Lorem Ipsum']
-```
 
+```js
+['Hi I am 1', 'John Doe', 'Lorem Ipsum'];
+```
 
 ```js
 <div>
-  {{ 
+  {{
     globalMeta.foo
       .map(content => `<b>${content}<b>`)
       .join('')
@@ -208,6 +227,7 @@ Let's say we have `globalMeta.foo` as,
 ```
 
 **outputs:**
+
 ```html
 <div>
   <b>Hi I am 1</b>
@@ -223,27 +243,28 @@ You can also use other JavaScript methods within `{{` `}}`
 This repository contains the code that builds the Abell Website. If you want you can also contribute to other repositories in this organization that deal with starter-templates, vscode extension for .abell files, etc.
 
 #### Local Setup of Abell Builder
+
 - Fork this repository
 - `git clone {url of your fork}`
 - `cd abell`
 - `npm install` to install dependencies
-- `npm run dev:build` to build static site! 
+- `npm run dev:build` to build static site!
 
 and you will have your website in `./demo/dist`
 
 To run a DEV server, you can run `npm run dev:serve` which will serve the website on `localhost`
 
 #### Creating Pull Request
+
 - Create a branch with name of feature you are working on. (e.g. `feat-abell-config`, `fix-serve-fails`, etc)
 - Make changes in your locally cloned fork
 - Send Pull Request from your branch to master of main repository.
 
-`npm run dev:build` is equivalent to `abell build` and `npm run dev:serve` is equivalent to `abell serve` 
+`npm run dev:build` is equivalent to `abell build` and `npm run dev:serve` is equivalent to `abell serve`
 
 ### Changelog
 
 Changelogs are maintained in [CHANGELOG.md](CHANGELOG.md)
-
 
 ---
 
