@@ -1,8 +1,10 @@
 <!---
 To check the checkbox add 'x' inside brackets
 
-[x] Feature
-[ ] Bug Fix
+- [ ] Feature
+- [x] Bug Fix
+- [ ] Refactor
+
 -->
 
 ## What type of PR is this?
@@ -11,6 +13,8 @@ To check the checkbox add 'x' inside brackets
 - [ ] Bug Fix
 - [ ] Refactor
 - [ ] Documentation Update
+
+<!-- Describe what your PR does and steps to check it -->
 
 ## Description
 
