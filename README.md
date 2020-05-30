@@ -13,6 +13,8 @@
 
 _This documentation is only for the people who want to contribute or just want to try it out for fun. Abell should not be used for production applications yet._
 
+For Locally setting up the repository and Contribution Guidelines, check out [CONTRIBUTING.md](CONTRIBUTING.md)
+
 ### Table of Content
 
 - [Create your site](#1-create-your-site)
@@ -27,9 +29,6 @@ _This documentation is only for the people who want to contribute or just want t
   - [Loops in Abell](#loops-in-abell)
     - [Example 1](#example-1)
     - [Example 2](#example-2)
-- [Contributing to Abell](#3-contributing-to-abell)
-  - [Local Setup of Abell Builder](#local-setup-of-abell-builder)
-  - [Creating Pull Request](#creating-pull-request)
 - [Changelog](#changelog)
 
 ### 1. Create your site
@@ -237,30 +236,6 @@ Let's say we have `globalMeta.foo` as,
 ```
 
 You can also use other JavaScript methods within `{{` `}}`
-
-### 3. Contributing to Abell
-
-This repository contains the code that builds the Abell Website. If you want you can also contribute to other repositories in this organization that deal with starter-templates, vscode extension for .abell files, etc.
-
-#### Local Setup of Abell Builder
-
-- Fork this repository
-- `git clone {url of your fork}`
-- `cd abell`
-- `npm install` to install dependencies
-- `npm run dev:build` to build static site!
-
-and you will have your website in `./demo/dist`
-
-To run a DEV server, you can run `npm run dev:serve` which will serve the website on `localhost`
-
-#### Creating Pull Request
-
-- Create a branch with name of feature you are working on. (e.g. `feat-abell-config`, `fix-serve-fails`, etc)
-- Make changes in your locally cloned fork
-- Send Pull Request from your branch to master of main repository.
-
-`npm run dev:build` is equivalent to `abell build` and `npm run dev:serve` is equivalent to `abell serve`
 
 ### Changelog
 
