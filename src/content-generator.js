@@ -190,6 +190,59 @@ function importAndRender(mdPath, contentPath, variables) {
 }
 
 /**
+ * Prefetchs links from given template and adds it to next template.
+ * @param {Object} options
+ * @param {String} options.from String of HTML/Abell template to fetch links from
+ * @param {String} options.addTo String of HTML/ABELL template to add prefetch into
+ *
+ * @return {String}
+ */
+function prefetchLinksAndAddToPage({ from, addTo }) {
+  const pageTemplate = addTo;
+
+  // eslint-disable-next-line
+  const regexToFetchPaths = /(?:<link +?rel=["']stylesheet['"] +?href=['"](.*?)['"])|(?:<script +?src=['"](.*?)['"])|(?:<link.+?href=["'](.*?)["'].+?as=["'](.*?)["'])/gs;
+  const { matches } = execRegexOnAll(regexToFetchPaths, from);
+  const headEndIndex = pageTemplate.indexOf('</head>');
+
+  // prettier-ignore
+  const newPageTemplate =
+    pageTemplate.slice(0, headEndIndex) +
+    `  <!-- Abell prefetch -->\n` +
+    matches
+      .map((link) => {
+        let stylesheet;
+        let script;
+        // stylesheet or script have a value if link is straighforward
+        // (e.g <link rel="stylesheet" href="style.css">)
+        ([stylesheet, script] = link.slice(1));
+        // In some cases, user may have a little trickier links
+        // (e.g <link rel="preload" href="next.js" as="script")
+        if (!stylesheet && !script) {
+          try {
+            if (link[4] === 'style' && link[3].includes('.css')) {
+              stylesheet = link[3];
+            } else if (link[4] === 'script' && link[3].includes('.js')) {
+              script = link[3];
+            }
+          } catch (err) {
+            console.log(">> Could not recognize preloads, skipping the option..."); // eslint-disable-line max-len
+          }
+        }
+        if (stylesheet) {
+          return `  <link rel="prefetch" href="${stylesheet.replace('../','./')}" as="style" />`; // eslint-disable-line max-len
+        } else if (script) {
+          return `  <link rel="prefetch" href="${script.replace('../', './')}" as="script" />`; // eslint-disable-line max-len
+        }
+      })
+      .join('\n') +
+    '\n\n' +
+    pageTemplate.slice(headEndIndex);
+
+  return newPageTemplate;
+}
+
+/**
  *
  * 1. Read Template
  * 2. Render Template with abell-renderer and add variables
@@ -207,50 +260,10 @@ function generateHTMLFile(filepath, programInfo) {
 
   if (filepath === 'index') {
     // Add prefetch to index page
-
-    // eslint-disable-next-line
-    const regexToFetchPaths = /(?:<link +?rel=["']stylesheet['"] +?href=['"](.*?)['"])|(?:<script +?src=['"](.*?)['"])|(?:<link.+?href=["'](.*?)["'].+?as=["'](.*?)["'])/gs;
-
-    const { matches } = execRegexOnAll(
-      regexToFetchPaths,
-      programInfo.contentTemplate
-    );
-
-    const headEndIndex = pageTemplate.indexOf('</head>');
-
-    // prettier-ignore
-    pageTemplate =
-      pageTemplate.slice(0, headEndIndex) +
-      `  <!-- Abell prefetch -->\n` +
-      matches
-        .map((link) => {
-          let stylesheet;
-          let script;
-          // stylesheet or script have a value if link is straighforward
-          // (e.g <link rel="stylesheet" href="style.css">)
-          ([stylesheet, script] = link.slice(1));
-          // In some cases, user may have a little trickier links
-          // (e.g <link rel="preload" href="next.js" as="script")
-          if (!stylesheet && !script) {
-            try {
-              if (link[4] === 'style' && link[3].includes('.css')) {
-                stylesheet = link[3];
-              } else if (link[4] === 'script' && link[3].includes('.js')) {
-                script = link[3];
-              }
-            } catch (err) {
-              console.log(">> Could not recognize preloads, skipping the option..."); // eslint-disable-line max-len
-            }
-          }
-          if (stylesheet) {
-            return `  <link rel="prefetch" href="${stylesheet.replace('../','./')}" as="style" />`; // eslint-disable-line max-len
-          } else if (script) {
-            return `  <link rel="prefetch" href="${script.replace('../', './')}" as="script" />`; // eslint-disable-line max-len
-          }
-        })
-        .join('\n') +
-      '\n\n' +
-      pageTemplate.slice(headEndIndex);
+    pageTemplate = prefetchLinksAndAddToPage({
+      from: programInfo.contentTemplate,
+      addTo: pageTemplate
+    });
   }
 
   const variables = programInfo.vars;
@@ -334,5 +347,6 @@ module.exports = {
   getBaseProgramInfo,
   generateContentFile,
   generateHTMLFile,
-  importAndRender
+  importAndRender,
+  prefetchLinksAndAddToPage
 };
