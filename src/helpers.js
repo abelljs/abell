@@ -108,9 +108,16 @@ function getAbellConfigs() {
 }
 
 const createPathIfAbsent = (pathToCreate) => {
-  if (!fs.existsSync(pathToCreate)) {
-    fs.mkdirSync(pathToCreate);
-  }
+  // prettier-ignore
+  pathToCreate
+    .split(path.sep)
+    .reduce((prevPath, folder) => {
+      const currentPath = path.join(prevPath, folder, path.sep);
+      if (!fs.existsSync(currentPath)) {
+        fs.mkdirSync(currentPath);
+      }
+      return currentPath;
+    }, '');
 };
 
 /**
