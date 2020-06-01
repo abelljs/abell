@@ -59,6 +59,12 @@ function build(programInfo) {
     ignoreCopying
   );
 
+  /** Before Build plugins */
+  for (const pluginPath of programInfo.abellConfigs.plugins) {
+    const currentPlugin = require(pluginPath);
+    currentPlugin.beforeBuild(programInfo);
+  }
+
   // GENERATE CONTENT's HTML FILES
   if (fs.existsSync(programInfo.contentTemplatePath)) {
     for (const contentSlug of programInfo.contentDirectories) {
@@ -76,9 +82,7 @@ function build(programInfo) {
       file
     );
 
-    if (relativePath.includes('[$slug]')) {
-      continue;
-    }
+    if (relativePath.includes('[$slug]')) continue;
 
     // e.g generateHTMLFile('index', programInfo) will build theme/index.abell to dist/index.html
     generateHTMLFile(relativePath, programInfo);
@@ -86,6 +90,12 @@ function build(programInfo) {
     if (programInfo.logs == 'complete') {
       console.log(`...Built ${relativePath}.html`);
     }
+  }
+
+  /** After Build plugins */
+  for (const pluginPath of programInfo.abellConfigs.plugins) {
+    const currentPlugin = require(pluginPath);
+    currentPlugin.afterBuild(programInfo);
   }
 
   if (programInfo.logs == 'minimum') {

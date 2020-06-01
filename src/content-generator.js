@@ -29,7 +29,7 @@ const {
  * @property {String} contentTemplate - string of the template from [$slug]/index.abell file
  * @property {String} contentTemplatePath - path of the template (mostly [$slug]/index.abell file
  * @property {Object} vars - all global variables in .abell files
- * @property {[MetaInfo]} vars.$contentArray - An array of all MetaInfo
+ * @property {MetaInfo[]} vars.$contentArray - An array of all MetaInfo
  * @property {Object} vars.$contentObj - Content meta info object
  * @property {Object} vars.globalMeta - meta info to be injected into .abell files
  * @property {Array} contentDirectories - List of names of all directories in content directory

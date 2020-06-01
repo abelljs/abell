@@ -8,8 +8,9 @@ const path = require('path');
  * @property {String} sourcePath - Path to source directory (default 'src')
  * @property {String} destinationPath
  *  - Path to output destination (default 'dist', changes to 'debug' during dev-server)
+ * @property {String[]} plugins - Array of abell plugins.
  * @property {Object} globalMeta - Meta variables that are accessible globally in .abell files
- * @property {Array} ignoreInBuild
+ * @property {String[]} ignoreInBuild
  *
  */
 
@@ -80,9 +81,23 @@ function getAbellConfigs() {
   try {
     // In dev-server, user may change the configs so in that case we should drop the old cache
     delete require.cache[path.join(process.cwd(), 'abell.config.js')];
+    const requiredConfig = require(path.join(process.cwd(), 'abell.config.js'));
+
+    let mappedPlugins = [];
+    if (requiredConfig.plugins && requiredConfig.plugins.length > 0) {
+      mappedPlugins = requiredConfig.plugins.map((plugin) => {
+        if (plugin.startsWith('plugin')) {
+          return path.join(process.cwd(), plugin);
+        }
+
+        return plugin;
+      });
+    }
+
     abellConfig = {
       ...defaultConfigs,
-      ...require(path.join(process.cwd(), 'abell.config.js'))
+      ...requiredConfig,
+      plugins: mappedPlugins
     };
 
     if (Object.keys(abellConfig).length <= 0) {
