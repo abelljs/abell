@@ -38,30 +38,27 @@ const rmdirRecursiveSync = function (pathToRemove) {
   }
 };
 
-const recursiveFind = (base, ext, inputFiles, inputResult) => {
+const recursiveFindFiles = (base, ext, inputFiles, inputResult) => {
   const files = inputFiles || fs.readdirSync(base);
   let result = inputResult || [];
 
   for (const file of files) {
     const newbase = path.join(base, file);
     if (fs.statSync(newbase).isDirectory()) {
-      result = recursiveFind(newbase, ext, fs.readdirSync(newbase), result);
+      result = recursiveFindFiles(
+        newbase,
+        ext,
+        fs.readdirSync(newbase),
+        result
+      );
     } else {
-      if (file.substr(-1 * ext.length) == ext) {
-        result.push(newbase);
+      if (file.endsWith(ext)) {
+        result.push(newbase.slice(0, newbase.lastIndexOf('.')));
       }
     }
   }
 
   return result;
-};
-
-// Returns all .abell files in src folder except for [$slug]
-const getAbellFiles = (sourcePath, extension) => {
-  const absolutePaths = recursiveFind(sourcePath, extension);
-  return absolutePaths.map((absolutePath) =>
-    absolutePath.slice(0, absolutePath.lastIndexOf('.'))
-  );
 };
 
 /**
@@ -195,9 +192,9 @@ const grey = (message) => `\u001b[90m${message}\u001b[39m`;
 const yellow = (message) => `\u001b[1m\u001b[33m${message}\u001b[39m\u001b[22m`;
 
 module.exports = {
-  getAbellFiles,
   getDirectories,
   rmdirRecursiveSync,
+  recursiveFindFiles,
   getAbellConfigs,
   createPathIfAbsent,
   copyFolderSync,

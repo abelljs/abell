@@ -10,7 +10,7 @@ const {
   copyFolderSync,
   exitHandler,
   boldGreen,
-  getAbellFiles
+  recursiveFindFiles
 } = require('./helpers.js');
 
 const {
@@ -35,7 +35,7 @@ const {
 function build(programInfo) {
   if (programInfo.logs == 'complete') console.log('\n>> Abell Build Started\n');
 
-  const abellFiles = getAbellFiles(
+  const abellFiles = recursiveFindFiles(
     programInfo.abellConfigs.sourcePath,
     '.abell'
   );

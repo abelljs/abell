@@ -12,8 +12,8 @@ md.use(require('./remarkable-plugins/anchors.js'));
 const {
   createPathIfAbsent,
   getAbellConfigs,
-  getDirectories,
-  execRegexOnAll
+  execRegexOnAll,
+  recursiveFindFiles
 } = require('./helpers.js');
 
 /**
@@ -117,7 +117,13 @@ function getBaseProgramInfo() {
   let $contentArray;
 
   if (fs.existsSync(abellConfigs.contentPath)) {
-    contentDirectories = getDirectories(abellConfigs.contentPath);
+    contentDirectories = recursiveFindFiles(
+      abellConfigs.contentPath,
+      'index.md'
+    ).map((file) => {
+      return path.dirname(path.relative(abellConfigs.contentPath, file));
+    });
+
     $contentObj = getContentMetaAll(
       contentDirectories,
       abellConfigs.contentPath
