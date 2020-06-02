@@ -47,6 +47,8 @@ const {
  */
 function getContentMeta(contentSlug, contentPath) {
   let meta;
+  let mtime;
+  let ctime;
 
   const defaultMeta = {
     title: contentSlug,
@@ -67,20 +69,12 @@ function getContentMeta(contentSlug, contentPath) {
     meta = defaultMeta;
   }
 
-  let mtime;
-  let ctime;
-
   ({ mtime, ctime } = fs.statSync(
     path.join(contentPath, contentSlug, 'index.md')
   ));
 
-  if (meta.$createdAt) {
-    ctime = new Date(meta.$createdAt);
-  }
-
-  if (meta.$modifiedAt) {
-    mtime = new Date(meta.$modifiedAt);
-  }
+  if (meta.$createdAt) ctime = new Date(meta.$createdAt);
+  if (meta.$modifiedAt) mtime = new Date(meta.$modifiedAt);
 
   return {
     ...meta,
