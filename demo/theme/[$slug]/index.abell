@@ -8,10 +8,11 @@
   <meta name="og:description" content="{{ meta.description }}"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>{{ meta.title }} | {{ globalMeta.siteName }}</title>
+  <link rel="stylesheet" href="../styles/index.css" />
 </head>
 <body>
   <section id="blog-container">
-    {{ $importContent(meta.$slug + '/index.md') }}
+    {{ $importContent(meta.$path + '/index.md') }}
   </section>
 </body>
 </html>

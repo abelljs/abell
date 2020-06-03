@@ -61,10 +61,10 @@ function build(programInfo) {
 
   // GENERATE CONTENT's HTML FILES
   if (fs.existsSync(programInfo.contentTemplatePath)) {
-    for (const contentSlug of programInfo.contentDirectories) {
-      generateContentFile(contentSlug, programInfo);
+    for (const contentPath of programInfo.contentDirectories) {
+      generateContentFile(contentPath, programInfo);
       if (programInfo.logs == 'complete') {
-        console.log(`...Built ${contentSlug}`);
+        console.log(`...Built ${contentPath}`);
       }
     }
   }
