@@ -166,12 +166,14 @@ function getBaseProgramInfo() {
  * @param {String} mdPath
  * @param {String} contentPath
  * @param {Object} variables
- * @param {Object} options
  * @return {String}
  */
 function importAndRender(mdPath, contentPath, variables) {
   const fileContent = fs.readFileSync(path.join(contentPath, mdPath), 'utf-8');
-  const mdWithValues = abellRenderer.render(fileContent, variables); // Add variables to markdown
+  const mdWithValues = abellRenderer.render(fileContent, variables, {
+    allowRequire: true,
+    basePath: path.join(contentPath, path.dirname(mdPath))
+  }); // Add variables to markdown
   const rendererdHTML = md.render(mdWithValues);
   return rendererdHTML;
 }
