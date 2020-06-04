@@ -95,18 +95,18 @@ describe('execRegexOnAll()', () => {
 
 describe('addPrefixInHTMLPaths()', () => {
   it('should add prefix to HTML paths', () => {
-    const template = `
+    const template = /* html */ `
       <link rel="preload" href="one.css" />
-      <a href='two.html' />
-      <a href='https://google.com/hi.html' />
+      <a href='two.html'></a>
+      <a href='https://google.com/hi.html'></a>
       <img src="three.png" />
     `;
     // prettier-ignore
     expect(addPrefixInHTMLPaths(template, '..'))
-      .to.equal(`
+      .to.equal(/* html */ `
       <link rel="preload" href="../one.css" />
-      <a href='../two.html' />
-      <a href='https://google.com/hi.html' />
+      <a href='../two.html'></a>
+      <a href='https://google.com/hi.html'></a>
       <img src="../three.png" />
     `)
   });
