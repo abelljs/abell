@@ -17,22 +17,31 @@ describe('action.build()', () => {
     programInfo.task = 'build';
     build(programInfo);
 
-    const expectedIndex = fs.readFileSync('expected_dist/index.html', 'utf8');
-    const builtIndex = fs.readFileSync('dist/index.html', 'utf8');
-    expect(builtIndex).to.equal(expectedIndex);
+    const assertMap = [
+      {
+        built: fs.readFileSync('dist/index.html', 'utf8'),
+        expected: fs.readFileSync('expected_dist/index.html', 'utf8')
+      },
+      {
+        built: fs.readFileSync('dist/another-blog/index.html', 'utf8'),
+        expected: fs.readFileSync(
+          'expected_dist/another-blog/index.html',
+          'utf8'
+        )
+      },
+      {
+        built: fs.existsSync('dist/another-blog/assets/nice.txt'),
+        expected: fs.existsSync('expected_dist/another-blog/assets/nice.txt')
+      }
+    ];
 
-    const allBlogs = getDirectories('expected_dist');
-    expect(allBlogs).to.have.members(['another-blog', 'my-first-blog']);
+    for (const { built, expected } of assertMap) {
+      expect(built).to.equal(expected);
+    }
 
-    const expectedBlogContent = fs.readFileSync(
-      'expected_dist/another-blog/index.html',
-      'utf8'
+    expect(getDirectories('expected_dist')).to.have.members(
+      getDirectories('content')
     );
-    const builtBlogContent = fs.readFileSync(
-      'dist/another-blog/index.html',
-      'utf8'
-    );
-    expect(builtBlogContent).to.equal(expectedBlogContent);
   });
 
   after(() => {
