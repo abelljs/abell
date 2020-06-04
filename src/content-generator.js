@@ -14,7 +14,8 @@ const {
   getAbellConfigs,
   prefetchLinksAndAddToPage,
   recursiveFindFiles,
-  addPrefixInHTMLPaths
+  addPrefixInHTMLPaths,
+  copyFolderSync
 } = require('./helpers.js');
 
 /**
@@ -158,23 +159,6 @@ function getBaseProgramInfo() {
 }
 
 /**
- * @param {String} from - Path to copy from
- * @param {String} to - Path to paste to
- * Copy assets (images etc) from content folder (`content/my-cool-blog`) to destination folder
- * @return {void}
- */
-function copyContentAssets(from, to) {
-  // Read names of files from contentSlug
-  const filesList = fs
-    .readdirSync(from)
-    .filter((val) => val !== 'index.md' && val !== 'meta.json');
-
-  for (const filename of filesList) {
-    fs.copyFileSync(path.join(from, filename), path.join(to, filename));
-  }
-}
-
-/**
  * 1. Reads .md/.abell file from given path
  * 2. Converts it to html
  * 3. Adds variable to the new HTML and returns the HTML
@@ -293,11 +277,20 @@ function generateContentFile(contentDir, programInfo) {
     contentHTML
   );
 
-  // Copy assets from content's folder to actual destination
-  copyContentAssets(
-    path.join(programInfo.abellConfigs.contentPath, contentDir),
-    path.join(programInfo.abellConfigs.destinationPath, contentDir)
+  const fromPath = path.join(
+    programInfo.abellConfigs.contentPath,
+    contentDir,
+    'assets'
   );
+  const toPath = path.join(
+    programInfo.abellConfigs.destinationPath,
+    contentDir,
+    'assets'
+  );
+
+  if (fs.existsSync(fromPath)) {
+    copyFolderSync(fromPath, toPath);
+  }
 }
 
 module.exports = {
