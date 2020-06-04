@@ -206,15 +206,14 @@ function serve(programInfo) {
           .slice(programInfo.abellConfigs.contentPath.length + 1)
           .split('/')[0];
 
-        console.log(filePath);
         if (filePath.endsWith('index.md')) {
           generateContentFile(directoryName, programInfo);
           console.log(`...Built ${directoryName}`);
         } else if (filePath.endsWith('meta.json')) {
           // refetch meta and then build
           const meta = getContentMeta(
-            directoryName,
-            programInfo.abellConfigs.contentPath
+            programInfo.abellConfigs.contentPath,
+            directoryName
           );
           programInfo.vars.$contentObj[directoryName] = meta;
 
