@@ -209,7 +209,14 @@ function serve(programInfo) {
         if (filePath.endsWith('index.md')) {
           generateContentFile(directoryName, programInfo);
           console.log(`...Built ${directoryName}`);
-        } else if (filePath.endsWith('meta.json')) {
+        } else if (
+          filePath.endsWith('meta.json') ||
+          filePath.endsWith('meta.js')
+        ) {
+          if (filePath.endsWith('meta.js')) {
+            delete require.cache[filePath];
+          }
+
           // refetch meta and then build
           const meta = getContentMeta(
             programInfo.abellConfigs.contentPath,

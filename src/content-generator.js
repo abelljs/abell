@@ -63,7 +63,6 @@ function getContentMeta(contentPath, contentDir) {
       fs.readFileSync(path.join(contentPath, contentDir, 'meta.json'), 'utf-8')
     );
   } else if (fs.existsSync(path.join(contentPath, contentDir, 'meta.js'))) {
-    delete require.cache[path.join(contentPath, contentDir, 'meta.js')];
     metaData = require(path.join(contentPath, contentDir, 'meta.js'));
   }
 

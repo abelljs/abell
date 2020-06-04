@@ -1,7 +1,7 @@
 function Theme(meta) {
   return /* html */ `
     <div class="theme-container">
-      ${meta}
+      ${meta} yo
     </div> 
   `.trim();
 }
