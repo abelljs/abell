@@ -32,13 +32,13 @@
   },
   "homepage": "https://github.com/abelljs/abell#readme",
   "dependencies": {
-    "abell-renderer": "^0.1.10",
     "chokidar": "^3.4.0",
     "commander": "^5.0.0",
     "remarkable": "^2.0.0",
     "ws": "^7.3.0"
   },
   "devDependencies": {
+    "abell-renderer": "^0.1.11",
     "chai": "^4.2.0",
     "eslint": "^7.0.0",
     "eslint-config-google": "^0.14.0",

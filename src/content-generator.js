@@ -48,7 +48,6 @@ const {
  * @return {MetaInfo}
  */
 function getContentMeta(contentPath, contentDir) {
-  let meta;
   let mtime;
   let ctime;
 
@@ -58,19 +57,20 @@ function getContentMeta(contentPath, contentDir) {
     description: `Hi, This is ${slug}...`
   };
 
-  try {
-    meta = {
-      ...defaultMeta,
-      ...JSON.parse(
-        fs.readFileSync(
-          path.join(contentPath, contentDir, 'meta.json'),
-          'utf-8'
-        )
-      )
-    };
-  } catch (err) {
-    meta = defaultMeta;
+  let metaData = {};
+  if (fs.existsSync(path.join(contentPath, contentDir, 'meta.json'))) {
+    metaData = JSON.parse(
+      fs.readFileSync(path.join(contentPath, contentDir, 'meta.json'), 'utf-8')
+    );
+  } else if (fs.existsSync(path.join(contentPath, contentDir, 'meta.js'))) {
+    delete require.cache[path.join(contentPath, contentDir, 'meta.js')];
+    metaData = require(path.join(contentPath, contentDir, 'meta.js'));
   }
+
+  const meta = {
+    ...defaultMeta,
+    ...metaData
+  };
 
   ({ mtime, ctime } = fs.statSync(
     path.join(contentPath, contentDir, 'index.md')
@@ -170,10 +170,7 @@ function getBaseProgramInfo() {
  */
 function importAndRender(mdPath, contentPath, variables) {
   const fileContent = fs.readFileSync(path.join(contentPath, mdPath), 'utf-8');
-  const mdWithValues = abellRenderer.render(fileContent, variables, {
-    allowRequire: true,
-    basePath: path.join(contentPath, path.dirname(mdPath))
-  }); // Add variables to markdown
+  const mdWithValues = abellRenderer.render(fileContent, variables); // Add variables to markdown
   const rendererdHTML = md.render(mdWithValues);
   return rendererdHTML;
 }
