@@ -207,8 +207,18 @@ function serve(programInfo) {
           .split('/')[0];
 
         if (filePath.endsWith('index.md')) {
-          generateContentFile(directoryName, programInfo);
-          console.log(`...Built ${directoryName}`);
+          try {
+            generateContentFile(directoryName, programInfo);
+            console.log(`...Built ${directoryName}`);
+          } catch (err) {
+            build(programInfo);
+            console.log(
+              `...Built ${path.relative(
+                programInfo.abellConfigs.contentPath,
+                filePath
+              )}`
+            );
+          }
         } else if (
           filePath.endsWith('meta.json') ||
           filePath.endsWith('meta.js')
