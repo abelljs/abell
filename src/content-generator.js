@@ -24,6 +24,8 @@ const {
  * @property {String} $slug - slug of content
  * @property {Date} $createdAt - Date object with time of content creation
  * @property {Date} $modifiedAt - Date object with time of last modification
+ * @property {String} $path - String of path
+ * @property {String} $root - Prefix to root
  *
  * @typedef {Object} ProgramInfo - Contains all the information required by the build to execute.
  * @property {import('./helpers.js').AbellConfigs} abellConfigs
@@ -83,7 +85,11 @@ function getContentMeta(contentPath, contentDir) {
     $slug: slug,
     $modifiedAt: mtime,
     $createdAt: ctime,
-    $path: contentDir
+    $path: contentDir,
+    $root: contentDir
+      .split(path.sep)
+      .map((dir) => '..')
+      .join(path.sep)
   };
 }
 
