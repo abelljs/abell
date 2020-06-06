@@ -199,7 +199,7 @@ function prefetchLinksAndAddToPage({ from, addTo }) {
   const regexToFetchPaths = /(?:<link +?rel=["']stylesheet['"] +?href=['"](.*?)['"])|(?:<script +?src=['"](.*?)['"])|(?:<link.+?href=["'](.*?)["'].+?as=["'](.*?)["'])/gs;
   const { matches } = execRegexOnAll(regexToFetchPaths, from);
   const headEndIndex = pageTemplate.indexOf('</head>');
-
+  if (headEndIndex < 0) return pageTemplate; // does not have </head>
   // prettier-ignore
   const newPageTemplate =
     pageTemplate.slice(0, headEndIndex) +
