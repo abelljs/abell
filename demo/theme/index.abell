@@ -22,7 +22,7 @@
       $contentArray
         .map(meta => `
           <article>
-            <a href="${meta.$slug}"><h2>${meta.title}</h2></a>
+            <a href="${meta.$path}"><h2>${meta.title} (${meta.$path})</h2></a>
             <p>Created at: ${meta.$createdAt.toDateString() }</p>
             <p class="article-description">${meta.description}</p>
           </article>

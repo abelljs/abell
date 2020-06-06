@@ -123,9 +123,11 @@ function getBaseProgramInfo() {
     contentDirectories = recursiveFindFiles(
       abellConfigs.contentPath,
       'index.md'
-    ).map((file) => {
-      return path.dirname(path.relative(abellConfigs.contentPath, file));
-    });
+    )
+      .map((file) => {
+        return path.dirname(path.relative(abellConfigs.contentPath, file));
+      })
+      .filter((fileDirectories) => fileDirectories !== '.');
 
     $contentObj = getContentMetaAll(
       contentDirectories,
@@ -255,21 +257,18 @@ function generateContentFile(contentDir, programInfo) {
     $importContent: (path) =>
       importAndRender(path, programInfo.abellConfigs.contentPath, variables)
   };
-  let contentAbellTemplate = programInfo.contentTemplate;
+  // render HTML of content
+  let contentHTML = abellRenderer.render(programInfo.contentTemplate, view, {
+    basePath: path.dirname(programInfo.contentTemplatePath),
+    allowRequire: true
+  });
+
   if (contentDir.includes(path.sep)) {
     const pathPrefixArr = contentDir.split(path.sep).map((dir) => '..');
     pathPrefixArr.pop();
     const pathPrefix = pathPrefixArr.join(path.sep);
-    contentAbellTemplate = addPrefixInHTMLPaths(
-      contentAbellTemplate,
-      pathPrefix
-    );
+    contentHTML = addPrefixInHTMLPaths(contentHTML, pathPrefix);
   }
-  // render HTML of content
-  const contentHTML = abellRenderer.render(contentAbellTemplate, view, {
-    basePath: path.dirname(programInfo.contentTemplatePath),
-    allowRequire: true
-  });
 
   // WRITE IT OUT!! YASSSSSS!!!
   fs.writeFileSync(
