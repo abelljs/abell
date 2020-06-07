@@ -8,7 +8,8 @@ const { exitHandler, boldGreen } = require('./helpers.js');
 const {
   generateContentFile,
   getBaseProgramInfo,
-  getContentMeta
+  getContentMeta,
+  loadContent
 } = require('./content-generator');
 const build = require('./build.js');
 /**
@@ -124,13 +125,23 @@ function serve(programInfo) {
       );
 
       if (event !== 'change') {
-        console.log('Add/Adddir/something else happened');
+        const { contentDirectories, $contentArray, $contentObj } = loadContent(
+          programInfo.abellConfigs.contentPath
+        );
+        programInfo.contentDirectories = contentDirectories;
+        programInfo.vars.$contentArray = $contentArray;
+        programInfo.vars.$contentObj = $contentObj;
+
+        build(programInfo);
+        ads.reload();
+
+        return;
       }
 
       try {
-        const directoryName = filePath
-          .slice(programInfo.abellConfigs.contentPath.length + 1)
-          .split('/')[0];
+        const directoryName = path.dirname(
+          path.relative(programInfo.abellConfigs.contentPath, filePath)
+        );
 
         if (filePath.endsWith('index.md')) {
           try {
