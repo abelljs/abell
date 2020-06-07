@@ -30,8 +30,8 @@ const {
  * @typedef {Object} ProgramInfo - Contains all the information required by the build to execute.
  * @property {import('./helpers.js').AbellConfigs} abellConfigs
  *  - Configuration from abell.config.js file
- * @property {String} contentTemplate - string of the template from [$slug]/index.abell file
- * @property {String} contentTemplatePath - path of the template (mostly [$slug]/index.abell file
+ * @property {String} contentTemplate - string of the template from [$path]/index.abell file
+ * @property {String} contentTemplatePath - path of the template (mostly [$path]/index.abell file
  * @property {Object} vars - all global variables in .abell files
  * @property {MetaInfo[]} vars.$contentArray - An array of all MetaInfo
  * @property {Object} vars.$contentObj - Content meta info object
@@ -147,7 +147,7 @@ function getBaseProgramInfo() {
 
   const contentTemplatePath = path.join(
     abellConfigs.sourcePath,
-    '[$slug]',
+    '[$path]',
     'index.abell'
   );
 
@@ -255,7 +255,7 @@ function generateContentFile(contentDir, programInfo) {
 
   const variables = {
     ...programInfo.vars,
-    $slug: programInfo.vars.$contentObj[contentDir].$slug,
+    $path: programInfo.vars.$contentObj[contentDir].$path,
     meta: programInfo.vars.$contentObj[contentDir]
   };
 

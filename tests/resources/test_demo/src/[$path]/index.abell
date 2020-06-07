@@ -15,7 +15,7 @@
 </head>
 <body>
   <section id="blog-container">
-    {{ $importContent(`${meta.$slug}/index.md`) }}
+    {{ $importContent(`${meta.$path}/index.md`) }}
   </section>
   <div class="test-data-output">
     {{ testData.test }}

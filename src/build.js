@@ -37,7 +37,7 @@ function build(programInfo) {
   rmdirRecursiveSync(programInfo.abellConfigs.destinationPath);
   fs.mkdirSync(programInfo.abellConfigs.destinationPath);
   const ignoreCopying = [
-    path.join(programInfo.abellConfigs.sourcePath, '[$slug]'),
+    path.dirname(programInfo.contentTemplatePath),
     path.join(programInfo.abellConfigs.sourcePath, 'components'),
     ...programInfo.abellConfigs.ignoreInBuild.map((relativePath) =>
       path.join(programInfo.abellConfigs.sourcePath, relativePath)
@@ -69,7 +69,7 @@ function build(programInfo) {
       file
     );
 
-    if (relativePath.includes('[$slug]')) {
+    if (relativePath.includes('[$path]')) {
       continue;
     }
 

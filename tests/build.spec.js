@@ -2,7 +2,6 @@ const fs = require('fs');
 const expect = require('chai').expect;
 
 const build = require('../src/build.js');
-const { getDirectories } = require('../src/helpers.js');
 const { getBaseProgramInfo } = require('../src/content-generator.js');
 
 describe('build()', () => {
@@ -30,6 +29,16 @@ describe('build()', () => {
         )
       },
       {
+        built: fs.readFileSync(
+          'dist/my-first-blog/sub-blog/index.html',
+          'utf8'
+        ),
+        expected: fs.readFileSync(
+          'expected_dist/my-first-blog/sub-blog/index.html',
+          'utf8'
+        )
+      },
+      {
         built: fs.existsSync('dist/another-blog/assets/nice.txt'),
         expected: fs.existsSync('expected_dist/another-blog/assets/nice.txt')
       }
@@ -39,8 +48,8 @@ describe('build()', () => {
       expect(built).to.equal(expected);
     }
 
-    expect(getDirectories('expected_dist')).to.have.members(
-      getDirectories('content')
+    expect(fs.readdirSync('expected_dist')).to.have.members(
+      fs.readdirSync('dist')
     );
   });
 

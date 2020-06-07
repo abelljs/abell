@@ -95,7 +95,7 @@ function serve(programInfo) {
         delete require.cache[filePath];
       }
 
-      if (filePath.endsWith('index.abell') && directoryName === '[$slug]') {
+      if (filePath.endsWith('index.abell') && directoryName === '[$path]') {
         // Content template changed
         programInfo.contentTemplate = fs.readFileSync(
           programInfo.contentTemplatePath,
