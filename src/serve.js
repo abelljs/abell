@@ -4,7 +4,7 @@ const path = require('path');
 const chokidar = require('chokidar');
 
 const ads = require('./abell-dev-server/server.js');
-const { exitHandler, boldGreen } = require('./helpers.js');
+const { exitHandler, boldGreen, boldRed } = require('./helpers.js');
 const {
   generateContentFile,
   getBaseProgramInfo,
@@ -55,76 +55,76 @@ function serve(programInfo) {
   console.log('='.repeat(process.stdout.columns));
 
   const abellConfigsPath = path.join(process.cwd(), 'abell.config.js');
-  if (fs.existsSync(abellConfigsPath)) {
-    // Watch abell.config.js
-    chokidar
-      .watch(abellConfigsPath, chokidarOptions)
-      .on('change', (filePath) => {
-        const baseProgramInfo = getBaseProgramInfo();
-        // destination should be unchanged while serving.
-        // So we keep existing destination in temp variable.
-        const existingDestination = programInfo.abellConfigs.destinationPath;
-        programInfo.abellConfigs = baseProgramInfo.abellConfigs;
-        programInfo.abellConfigs.destinationPath = existingDestination;
-        programInfo.vars.globalMeta = baseProgramInfo.vars.globalMeta;
 
-        console.log('Abell configs changed 🤓');
+  /* Event handlers */
+  const onAbellConfigChanged = (filePath) => {
+    const baseProgramInfo = getBaseProgramInfo();
+    // destination should be unchanged while serving.
+    // So we keep existing destination in temp variable.
+    const existingDestination = programInfo.abellConfigs.destinationPath;
+    programInfo.abellConfigs = baseProgramInfo.abellConfigs;
+    programInfo.abellConfigs.destinationPath = existingDestination;
+    programInfo.vars.globalMeta = baseProgramInfo.vars.globalMeta;
 
-        build(programInfo);
-        ads.reload();
-      });
-  }
+    console.log('Abell configs changed 🤓');
 
-  // Watch 'theme'
-  chokidar
-    .watch(programInfo.abellConfigs.sourcePath, chokidarOptions)
-    .on('all', (event, filePath) => {
-      const directoryName = path.dirname(
-        path.relative(programInfo.abellConfigs.sourcePath, filePath)
+    build(programInfo);
+    ads.reload();
+  };
+
+  const onThemeChanged = (event, filePath) => {
+    const directoryName = path.dirname(
+      path.relative(programInfo.abellConfigs.sourcePath, filePath)
+    );
+
+    const isFileCached = require.cache[filePath];
+    if (isFileCached) {
+      console.log(
+        `>> Refreshing ${path.relative(
+          programInfo.abellConfigs.sourcePath,
+          filePath
+        )} from cache`
       );
 
-      const isFileCached = require.cache[filePath];
-      if (isFileCached) {
-        console.log(
-          `>> Refreshing ${path.relative(
-            programInfo.abellConfigs.sourcePath,
-            filePath
-          )} from cache`
-        );
+      delete require.cache[filePath];
+    }
 
-        delete require.cache[filePath];
-      }
+    if (filePath.endsWith('index.abell') && directoryName === '[$path]') {
+      // Content template changed
+      programInfo.contentTemplate = fs.readFileSync(
+        programInfo.contentTemplatePath,
+        'utf-8'
+      );
+    }
 
-      if (filePath.endsWith('index.abell') && directoryName === '[$path]') {
-        // Content template changed
-        programInfo.contentTemplate = fs.readFileSync(
-          programInfo.contentTemplatePath,
-          'utf-8'
-        );
-      }
+    if (filePath.endsWith('.js')) {
+      // JS Files required in .abell file are cached by nodejs for instance
+      // so we remove the cache in case a js file is changed and is cached.
+      delete require.cache[filePath];
+    }
 
-      if (filePath.endsWith('.js')) {
-        // JS Files required in .abell file are cached by nodejs for instance
-        // so we remove the cache in case a js file is changed and is cached.
-        delete require.cache[filePath];
-      }
-
+    try {
       build(programInfo);
       ads.reload();
-    });
+    } catch (err) {
+      if (err.message.includes('is not defined')) {
+        console.log(err.stack);
+        console.error(`${boldRed('>> Build Failed 😭')} ${err}`);
+      }
+    }
+  };
 
-  // Watch 'content'
-  chokidar
-    .watch(programInfo.abellConfigs.contentPath, chokidarOptions)
-    .on('all', (event, filePath) => {
-      console.log(
-        `>> Event '${event}' emitted from ${path.relative(
-          process.cwd(),
-          filePath
-        )}`
-      );
+  const onContentChanged = (event, filePath) => {
+    console.log(
+      `>> Event '${event}' emitted from ${path.relative(
+        process.cwd(),
+        filePath
+      )}`
+    );
 
+    try {
       if (event !== 'change') {
+        // If anything but change happens, add, addDir, unlink etc. We recalculate directories
         const { contentDirectories, $contentArray, $contentObj } = loadContent(
           programInfo.abellConfigs.contentPath
         );
@@ -138,65 +138,76 @@ function serve(programInfo) {
         return;
       }
 
-      try {
-        const directoryName = path.dirname(
-          path.relative(programInfo.abellConfigs.contentPath, filePath)
-        );
+      const directoryName = path.dirname(
+        path.relative(programInfo.abellConfigs.contentPath, filePath)
+      );
 
-        if (filePath.endsWith('index.md')) {
-          try {
-            generateContentFile(directoryName, programInfo);
-            console.log(`...Built ${directoryName}`);
-          } catch (err) {
-            build(programInfo);
-            console.log(
-              `...Built ${path.relative(
-                programInfo.abellConfigs.contentPath,
-                filePath
-              )}`
-            );
-          }
-        } else if (
-          filePath.endsWith('meta.json') ||
-          filePath.endsWith('meta.js')
-        ) {
-          if (filePath.endsWith('meta.js')) {
-            delete require.cache[filePath];
-          }
-
-          // refetch meta and then build
-          const meta = getContentMeta(
-            programInfo.abellConfigs.contentPath,
-            directoryName
-          );
-          programInfo.vars.$contentObj[directoryName] = meta;
-
-          // prettier-ignore
-          programInfo.vars.$contentArray = 
-            Object.values(programInfo.vars.$contentObj)
-              .sort((a, b) =>
-                a.$createdAt.getTime() > b.$createdAt.getTime() ? -1 : 1
-              );
-
-          // prettier-ignore
-          const indexToChange = programInfo.vars.$contentArray
-            .findIndex((content) => content.$slug == directoryName);
-          programInfo.vars.$contentArray[indexToChange] = meta;
-          build(programInfo);
-        } else {
-          build(programInfo);
+      if (filePath.endsWith('index.md')) {
+        generateContentFile(directoryName, programInfo);
+        console.log(`...Built ${directoryName}`);
+      } else if (
+        filePath.endsWith('meta.json') ||
+        filePath.endsWith('meta.js')
+      ) {
+        if (filePath.endsWith('meta.js')) {
+          // js files are cached by require (we read json with fs.read so they are not cached)
+          delete require.cache[filePath];
         }
 
-        ads.reload();
-      } catch (err) {
+        // refetch meta and then build
+        const meta = getContentMeta(
+          programInfo.abellConfigs.contentPath,
+          directoryName
+        );
+        programInfo.vars.$contentObj[directoryName] = meta;
+
+        // prettier-ignore
+        programInfo.vars.$contentArray = 
+          Object.values(programInfo.vars.$contentObj)
+            .sort((a, b) =>
+              a.$createdAt.getTime() > b.$createdAt.getTime() ? -1 : 1
+            );
+
+        // prettier-ignore
+        const indexToChange = programInfo.vars.$contentArray
+          .findIndex((content) => content.$slug == directoryName);
+        programInfo.vars.$contentArray[indexToChange] = meta;
+        build(programInfo);
+      } else {
+        build(programInfo);
+      }
+
+      ads.reload();
+    } catch (err) {
+      if (err.message.includes('is not defined')) {
+        console.log(err);
+        console.error(`${boldRed('>> Build Failed 😭')} ${err}`);
+      } else {
         console.log(
           'Something did not happen as expected, Falling back to complete build'
         );
-        console.log(err);
         build(programInfo);
         ads.reload();
       }
-    });
+    }
+  };
+
+  if (fs.existsSync(abellConfigsPath)) {
+    // Watch abell.config.js
+    chokidar
+      .watch(abellConfigsPath, chokidarOptions)
+      .on('change', onAbellConfigChanged);
+  }
+
+  // Watch 'theme'
+  chokidar
+    .watch(programInfo.abellConfigs.sourcePath, chokidarOptions)
+    .on('all', onThemeChanged);
+
+  // Watch 'content'
+  chokidar
+    .watch(programInfo.abellConfigs.contentPath, chokidarOptions)
+    .on('all', onContentChanged);
 
   // do something when app is closing
   process.on('exit', exitHandler.bind(null, { cleanup: true }));
