@@ -123,6 +123,10 @@ function serve(programInfo) {
         )}`
       );
 
+      if (event !== 'change') {
+        console.log('Add/Adddir/something else happened');
+      }
+
       try {
         const directoryName = filePath
           .slice(programInfo.abellConfigs.contentPath.length + 1)

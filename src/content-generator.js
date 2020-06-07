@@ -109,6 +109,26 @@ function getContentMetaAll(contentDirectories, contentPath) {
 }
 
 /**
+ * @param {String} contentPath
+ * @return {Object} contentInfo
+ * @return {String[]} contentInfo.contentDirectories
+ * @return {Object} contentInfo.$contentObj
+ * @return {MetaInfo[]} contentInfo.$contentArray
+ */
+function loadContent(contentPath) {
+  const contentDirectories = recursiveFindFiles(contentPath, 'index.md')
+    .map((file) => path.dirname(path.relative(contentPath, file)))
+    .filter((fileDirectories) => fileDirectories !== '.');
+
+  const $contentObj = getContentMetaAll(contentDirectories, contentPath);
+  const $contentArray = Object.values($contentObj).sort((a, b) =>
+    a.$createdAt.getTime() > b.$createdAt.getTime() ? -1 : 1
+  );
+
+  return { contentDirectories, $contentObj, $contentArray };
+}
+
+/**
  * Returns the basic information needed for build execution
  * @return {ProgramInfo}
  */
@@ -120,22 +140,9 @@ function getBaseProgramInfo() {
   let $contentArray;
 
   if (fs.existsSync(abellConfigs.contentPath)) {
-    contentDirectories = recursiveFindFiles(
-      abellConfigs.contentPath,
-      'index.md'
-    )
-      .map((file) => {
-        return path.dirname(path.relative(abellConfigs.contentPath, file));
-      })
-      .filter((fileDirectories) => fileDirectories !== '.');
-
-    $contentObj = getContentMetaAll(
-      contentDirectories,
+    ({ contentDirectories, $contentObj, $contentArray } = loadContent(
       abellConfigs.contentPath
-    );
-    $contentArray = Object.values($contentObj).sort((a, b) =>
-      a.$createdAt.getTime() > b.$createdAt.getTime() ? -1 : 1
-    );
+    ));
   }
 
   const contentTemplatePath = path.join(
@@ -299,6 +306,7 @@ function generateContentFile(contentDir, programInfo) {
 module.exports = {
   getContentMeta,
   getContentMetaAll,
+  loadContent,
   getBaseProgramInfo,
   generateContentFile,
   generateHTMLFile,
