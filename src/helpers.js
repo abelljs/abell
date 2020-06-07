@@ -10,7 +10,7 @@ const path = require('path');
  *  - Path to output destination (default 'dist', changes to 'debug' during dev-server)
  * @property {String[]} plugins - Array of abell plugins.
  * @property {Object} globalMeta - Meta variables that are accessible globally in .abell files
- * @property {String[]} ignoreInBuild
+ * @property {String[]} ignoreInDist
  *
  */
 
@@ -71,7 +71,7 @@ function getAbellConfigs() {
     destinationPath: 'dist',
     sourcePath: 'theme',
     contentPath: 'content',
-    ignoreInBuild: [],
+    ignoreInDist: [],
     globalMeta: {}
   };
 

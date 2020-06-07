@@ -38,7 +38,7 @@ function build(programInfo) {
   fs.mkdirSync(programInfo.abellConfigs.destinationPath);
   const ignoreCopying = [
     path.dirname(programInfo.contentTemplatePath),
-    ...programInfo.abellConfigs.ignoreInBuild.map((relativePath) =>
+    ...programInfo.abellConfigs.ignoreInDist.map((relativePath) =>
       path.join(programInfo.abellConfigs.sourcePath, relativePath)
     ),
     ...abellFiles.map((withoutExtension) => withoutExtension + '.abell')
