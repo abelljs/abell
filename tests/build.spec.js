@@ -1,11 +1,11 @@
 const fs = require('fs');
 const expect = require('chai').expect;
 
-const { build } = require('../src/action.js');
+const build = require('../src/build.js');
 const { getDirectories } = require('../src/helpers.js');
 const { getBaseProgramInfo } = require('../src/content-generator.js');
 
-describe('action.build()', () => {
+describe('build()', () => {
   before(() => {
     process.chdir('tests/resources/test_demo');
   });

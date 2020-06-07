@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
-const action = require('./action');
+const build = require('./build.js');
+const serve = require('./serve.js');
 const program = require('commander');
 
 const { getBaseProgramInfo } = require('./content-generator');
@@ -14,7 +15,7 @@ program.command('build').action(() => {
     const programInfo = getBaseProgramInfo();
     programInfo.logs = 'complete';
     programInfo.task = 'build';
-    action.build(programInfo);
+    build(programInfo);
     const buildTime = new Date().getTime() - buildStartTime;
     console.log(
       `\n\n${boldGreen(
@@ -45,9 +46,9 @@ program
     programInfo.logs = 'minimum';
     programInfo.abellConfigs.destinationPath = '.debug';
 
-    action.serve(programInfo);
+    serve(programInfo);
   });
 
 program.parse(process.argv);
 
-module.exports = action;
+module.exports = { build, serve };

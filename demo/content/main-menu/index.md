@@ -1,1 +1,1 @@
-huh?
+I am the first page of menu
