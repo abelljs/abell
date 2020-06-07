@@ -108,8 +108,8 @@ function serve(programInfo) {
       ads.reload();
     } catch (err) {
       if (err.message.includes('is not defined')) {
-        console.log(err.stack);
-        console.error(`${boldRed('>> Build Failed 😭')} ${err}`);
+        console.log(err);
+        console.error(`${boldRed('>> Build Failed 😭')} ${err.message}`);
       }
     }
   };
