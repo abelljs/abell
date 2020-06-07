@@ -83,7 +83,7 @@ function getAbellConfigs() {
     let mappedPlugins = [];
     if (requiredConfig.plugins && requiredConfig.plugins.length > 0) {
       mappedPlugins = requiredConfig.plugins.map((plugin) => {
-        if (plugin.startsWith('plugin')) {
+        if (fs.existsSync(path.join(process.cwd(), plugin))) {
           return path.join(process.cwd(), plugin);
         }
 

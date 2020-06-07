@@ -14,7 +14,7 @@
     const b = 1;
   }}
 
-  {{ sites.greet }}
+  {{ site.greet }}
   <header>Addition of numbers: {{ a + b }}</header>
   <h1>{{ globalMeta.siteName }}</h1>
   <main>

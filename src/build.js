@@ -55,7 +55,15 @@ function build(programInfo) {
   /** Before Build plugins */
   for (const pluginPath of programInfo.abellConfigs.plugins) {
     const currentPlugin = require(pluginPath);
-    currentPlugin.beforeBuild(programInfo);
+    if (currentPlugin.beforeBuild) {
+      if (programInfo.logs === 'complete') {
+        console.log(
+          '>> Plugin BeforeBuild: Executing ' +
+            path.relative(process.cwd(), pluginPath)
+        );
+      }
+      currentPlugin.beforeBuild(programInfo);
+    }
   }
 
   // GENERATE CONTENT's HTML FILES
@@ -90,7 +98,15 @@ function build(programInfo) {
   /** After Build plugins */
   for (const pluginPath of programInfo.abellConfigs.plugins) {
     const currentPlugin = require(pluginPath);
-    currentPlugin.afterBuild(programInfo);
+    if (currentPlugin.afterBuild) {
+      if (programInfo.logs === 'complete') {
+        console.log(
+          '>> Plugin AfterBuild: Executing ' +
+            path.relative(process.cwd(), pluginPath)
+        );
+      }
+      currentPlugin.afterBuild(programInfo);
+    }
   }
 
   if (programInfo.logs == 'minimum') {
