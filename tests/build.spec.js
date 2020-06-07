@@ -12,7 +12,7 @@ describe('build()', () => {
   // eslint-disable-next-line max-len
   it('should execute build and the dist output should contain same output as expected_dist', () => {
     const programInfo = getBaseProgramInfo();
-    programInfo.logs = 'complete';
+    programInfo.logs = 'none';
     programInfo.task = 'build';
     build(programInfo);
 
