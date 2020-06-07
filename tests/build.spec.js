@@ -12,7 +12,7 @@ describe('build()', () => {
   // eslint-disable-next-line max-len
   it('should execute build and the dist output should contain same output as expected_dist', () => {
     const programInfo = getBaseProgramInfo();
-    programInfo.logs = 'none';
+    programInfo.logs = 'complete';
     programInfo.task = 'build';
     build(programInfo);
 
@@ -47,6 +47,8 @@ describe('build()', () => {
     for (const { built, expected } of assertMap) {
       expect(built).to.equal(expected);
     }
+
+    expect(fs.existsSync('./dist/built-by-plugin.json')).to.equal(true);
 
     expect(fs.readdirSync('expected_dist')).to.have.members(
       fs.readdirSync('dist')

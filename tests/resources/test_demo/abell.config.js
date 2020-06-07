@@ -5,5 +5,6 @@ module.exports = {
   ignoreInBuild: ['data'],
   globalMeta: {
     siteName: 'Abell Test Working!'
-  }
+  },
+  plugins: ['plugins/test-plugin.js']
 };
