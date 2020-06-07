@@ -52,6 +52,20 @@ function build(programInfo) {
     ignoreCopying
   );
 
+  /** Before Build plugins */
+  for (const pluginPath of programInfo.abellConfigs.plugins) {
+    const currentPlugin = require(pluginPath);
+    if (currentPlugin.beforeBuild) {
+      if (programInfo.logs === 'complete') {
+        console.log(
+          '>> Plugin BeforeBuild: Executing ' +
+            path.relative(process.cwd(), pluginPath)
+        );
+      }
+      currentPlugin.beforeBuild(programInfo);
+    }
+  }
+
   // GENERATE CONTENT's HTML FILES
   if (fs.existsSync(programInfo.contentTemplatePath)) {
     for (const contentPath of programInfo.contentDirectories) {
@@ -78,6 +92,20 @@ function build(programInfo) {
 
     if (programInfo.logs == 'complete') {
       console.log(`...Built ${relativePath}.html`);
+    }
+  }
+
+  /** After Build plugins */
+  for (const pluginPath of programInfo.abellConfigs.plugins) {
+    const currentPlugin = require(pluginPath);
+    if (currentPlugin.afterBuild) {
+      if (programInfo.logs === 'complete') {
+        console.log(
+          '>> Plugin AfterBuild: Executing ' +
+            path.relative(process.cwd(), pluginPath)
+        );
+      }
+      currentPlugin.afterBuild(programInfo);
     }
   }
 

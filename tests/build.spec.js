@@ -48,6 +48,8 @@ describe('build()', () => {
       expect(built).to.equal(expected);
     }
 
+    expect(fs.existsSync('./dist/built-by-plugin.json')).to.equal(true);
+
     expect(fs.readdirSync('expected_dist')).to.have.members(
       fs.readdirSync('dist')
     );
