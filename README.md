@@ -60,7 +60,7 @@ Sample abell.config.js:
 
 ```js
 module.exports = {
-  sourcePath: 'theme', // path of source where index.abell and [$slug]/index.abell are located
+  sourcePath: 'theme', // path of source where index.abell and [$path]/index.abell are located
   destinationPath: 'dist', // Build destination
   contentPath: 'content', // Content Path which has .md
   globalMeta: {
@@ -76,7 +76,7 @@ module.exports = {
 
 Abell lets you use variables inside your .abell files.
 
-- [Content Specific Variables](#content-specific-variables) that can be accessed from `./theme/[$slug]/index.abell`.
+- [Content Specific Variables](#content-specific-variables) that can be accessed from `./theme/[$path]/index.abell`.
 - There are [Global Variables](#global-variables) that can be accessed from any .abell files with `{{ globalMeta.<key> }}`.
 - [Predefined Variables](#predefined-variables)
 
@@ -94,7 +94,7 @@ Example `./content/<content-slug>/meta.json`
 }
 ```
 
-These variables can be accessed from `./theme/[$slug]/index.abell` with `{{ meta.title }}`, `{{ meta.description }}`, `{{ meta.foo }}`.
+These variables can be accessed from `./theme/[$path]/index.abell` with `{{ meta.title }}`, `{{ meta.description }}`, `{{ meta.foo }}`.
 
 Content also has predefined variables that are mentioned in [predefined variables section](#predefined-variables)
 
