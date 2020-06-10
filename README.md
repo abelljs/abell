@@ -6,10 +6,9 @@
   <b><a href="https://abelljs.org">https://abelljs.org</a></b><br/>
   <b>NOT READY ENOUGH TO USE IN PRODUCTION. ☠️</b>
 </p>
-
-<p align="center">
-  a JavaScript based static-site-generator to help you create JSON, Markdown, or static-data based websites with minimal setup. <br/>Built on top of <a href="https://github.com/abelljs/abell-renderer">abelljs/abell-renderer</a>.
-  <br/><br/>
+<br/>
+<p align="left">
+  a JavaScript based static-site-generator to help you create JSON, Markdown, or static-data based websites with minimal setup. Built on top of <a href="https://github.com/abelljs/abell-renderer">abelljs/abell-renderer</a>.
 </p>
 
 ## 📖 Installation
