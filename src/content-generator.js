@@ -217,6 +217,11 @@ function generateHTMLFile(filepath, programInfo) {
 
   const view = {
     ...variables,
+    $root: filepath
+      .split(path.sep)
+      .map((dir) => '..')
+      .slice(1)
+      .join(path.sep),
     $importContent: (path) =>
       importAndRender(path, programInfo.abellConfigs.contentPath, variables)
   };
@@ -228,6 +233,10 @@ function generateHTMLFile(filepath, programInfo) {
     ),
     allowRequire: true
   });
+
+  createPathIfAbsent(
+    path.join(programInfo.abellConfigs.destinationPath, path.dirname(filepath))
+  );
 
   fs.writeFileSync(
     path.join(programInfo.abellConfigs.destinationPath, filepath + '.html'),
@@ -253,10 +262,12 @@ function generateContentFile(contentDir, programInfo) {
     path.join(programInfo.abellConfigs.destinationPath, contentDir)
   );
 
+  const currentContentData = programInfo.vars.$contentObj[contentDir];
   const variables = {
     ...programInfo.vars,
-    $path: programInfo.vars.$contentObj[contentDir].$path,
-    meta: programInfo.vars.$contentObj[contentDir]
+    $path: currentContentData.$path,
+    $root: currentContentData.$root,
+    meta: currentContentData
   };
 
   const view = {

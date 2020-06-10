@@ -17,6 +17,7 @@
 <body>
   <section id="blog-container">
     {{ $importContent(meta.$path + '/index.md') }}
+    {{ $root }}
   </section>
 </body>
 </html>
