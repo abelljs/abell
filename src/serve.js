@@ -77,18 +77,6 @@ function serve(programInfo) {
       path.relative(programInfo.abellConfigs.sourcePath, filePath)
     );
 
-    const isFileCached = require.cache[filePath];
-    if (isFileCached) {
-      console.log(
-        `>> Refreshing ${path.relative(
-          programInfo.abellConfigs.sourcePath,
-          filePath
-        )} from cache`
-      );
-
-      delete require.cache[filePath];
-    }
-
     if (filePath.endsWith('index.abell') && directoryName === '[$path]') {
       // Content template changed
       programInfo.contentTemplate = fs.readFileSync(
@@ -100,7 +88,15 @@ function serve(programInfo) {
     if (filePath.endsWith('.js')) {
       // JS Files required in .abell file are cached by nodejs for instance
       // so we remove the cache in case a js file is changed and is cached.
-      delete require.cache[filePath];
+      const localCaches = Object.keys(require.cache).filter((filePath) => {
+        return !path
+          .relative(programInfo.abellConfigs.sourcePath, filePath)
+          .startsWith('..');
+      });
+
+      localCaches.forEach((cachedFile) => {
+        delete require.cache[cachedFile];
+      });
     }
 
     try {
