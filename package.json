@@ -1,6 +1,6 @@
 {
   "name": "abell",
-  "version": "0.2.20",
+  "version": "0.3.0-beta.1",
   "description": "Abell is a static blog generator that generates blog in Vanilla JavaScript",
   "funding": {
     "type": "patreon",
@@ -32,7 +32,7 @@
   },
   "homepage": "https://github.com/abelljs/abell#readme",
   "dependencies": {
-    "abell-renderer": "^0.1.10",
+    "abell-renderer": "^0.1.12",
     "chokidar": "^3.4.0",
     "commander": "^5.0.0",
     "remarkable": "^2.0.0",

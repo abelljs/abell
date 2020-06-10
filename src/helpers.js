@@ -8,8 +8,8 @@ const path = require('path');
  * @property {String} sourcePath - Path to source directory (default 'src')
  * @property {String} destinationPath
  *  - Path to output destination (default 'dist', changes to 'debug' during dev-server)
+ * @property {String[]} plugins - Array of abell plugins.
  * @property {Object} globalMeta - Meta variables that are accessible globally in .abell files
- * @property {Array} ignoreInBuild
  *
  */
 
@@ -38,30 +38,27 @@ const rmdirRecursiveSync = function (pathToRemove) {
   }
 };
 
-const recursiveFind = (base, ext, inputFiles, inputResult) => {
+const recursiveFindFiles = (base, ext, inputFiles, inputResult) => {
   const files = inputFiles || fs.readdirSync(base);
   let result = inputResult || [];
 
   for (const file of files) {
     const newbase = path.join(base, file);
     if (fs.statSync(newbase).isDirectory()) {
-      result = recursiveFind(newbase, ext, fs.readdirSync(newbase), result);
+      result = recursiveFindFiles(
+        newbase,
+        ext,
+        fs.readdirSync(newbase),
+        result
+      );
     } else {
-      if (file.substr(-1 * ext.length) == ext) {
-        result.push(newbase);
+      if (file.endsWith(ext)) {
+        result.push(newbase.slice(0, newbase.lastIndexOf('.')));
       }
     }
   }
 
   return result;
-};
-
-// Returns all .abell files in src folder except for [$slug]
-const getAbellFiles = (sourcePath, extension) => {
-  const absolutePaths = recursiveFind(sourcePath, extension);
-  return absolutePaths.map((absolutePath) =>
-    absolutePath.slice(0, absolutePath.lastIndexOf('.'))
-  );
 };
 
 /**
@@ -73,16 +70,29 @@ function getAbellConfigs() {
     destinationPath: 'dist',
     sourcePath: 'theme',
     contentPath: 'content',
-    ignoreInBuild: [],
     globalMeta: {}
   };
 
   try {
     // In dev-server, user may change the configs so in that case we should drop the old cache
     delete require.cache[path.join(process.cwd(), 'abell.config.js')];
+    const requiredConfig = require(path.join(process.cwd(), 'abell.config.js'));
+
+    let mappedPlugins = [];
+    if (requiredConfig.plugins && requiredConfig.plugins.length > 0) {
+      mappedPlugins = requiredConfig.plugins.map((plugin) => {
+        if (fs.existsSync(path.join(process.cwd(), plugin))) {
+          return path.join(process.cwd(), plugin);
+        }
+
+        return plugin;
+      });
+    }
+
     abellConfig = {
       ...defaultConfigs,
-      ...require(path.join(process.cwd(), 'abell.config.js'))
+      ...requiredConfig,
+      plugins: mappedPlugins
     };
 
     if (Object.keys(abellConfig).length <= 0) {
@@ -125,22 +135,32 @@ const createPathIfAbsent = (pathToCreate) => {
  * @param {String} from - Path to copy from
  * @param {String} to - Path to copy to
  * @param {Array} ignore - files/directories to ignore
+ * @param {Boolean} ignoreEmptyDirs - Ignore empty directories while copying
  * @return {void}
  */
-function copyFolderSync(from, to, ignore = []) {
+function copyFolderSync(from, to, ignore = [], ignoreEmptyDirs = true) {
   if (ignore.includes(from)) {
     return;
   }
+  const fromDirectories = fs.readdirSync(from);
+
   createPathIfAbsent(to);
-  fs.readdirSync(from).forEach((element) => {
+  fromDirectories.forEach((element) => {
     const fromElement = path.join(from, element);
     const toElement = path.join(to, element);
     if (fs.lstatSync(fromElement).isFile()) {
-      if (!ignore.includes(path.join(from, element))) {
+      if (!ignore.includes(fromElement)) {
         fs.copyFileSync(fromElement, toElement);
       }
     } else {
       copyFolderSync(fromElement, toElement, ignore);
+      if (fs.existsSync(toElement) && ignoreEmptyDirs) {
+        try {
+          fs.rmdirSync(toElement);
+        } catch (err) {
+          if (err.code !== 'ENOTEMPTY') throw err;
+        }
+      }
     }
   });
 }
@@ -187,6 +207,84 @@ const execRegexOnAll = (regex, template) => {
   return { matches: allMatches, input };
 };
 
+/**
+ * Prefetchs links from given template and adds it to next template.
+ * @param {Object} options
+ * @param {String} options.from String of HTML/Abell template to fetch links from
+ * @param {String} options.addTo String of HTML/ABELL template to add prefetch into
+ *
+ * @return {String}
+ */
+function prefetchLinksAndAddToPage({ from, addTo }) {
+  const pageTemplate = addTo;
+
+  // eslint-disable-next-line
+  const regexToFetchPaths = /(?:<link +?rel=["']stylesheet['"] +?href=['"](.*?)['"])|(?:<script +?src=['"](.*?)['"])|(?:<link.+?href=["'](.*?)["'].+?as=["'](.*?)["'])/gs;
+  const { matches } = execRegexOnAll(regexToFetchPaths, from);
+  const headEndIndex = pageTemplate.indexOf('</head>');
+  if (headEndIndex < 0) return pageTemplate; // does not have </head>
+  // prettier-ignore
+  const newPageTemplate =
+    pageTemplate.slice(0, headEndIndex) +
+    `  <!-- Abell prefetch -->\n` +
+    matches
+      .map((link) => {
+        let stylesheet;
+        let script;
+        // stylesheet or script have a value if link is straighforward
+        // (e.g <link rel="stylesheet" href="style.css">)
+        ([stylesheet, script] = link.slice(1));
+        // In some cases, user may have a little trickier links
+        // (e.g <link rel="preload" href="next.js" as="script")
+        if (!stylesheet && !script) {
+          try {
+            if (link[4] === 'style' && link[3].includes('.css')) {
+              stylesheet = link[3];
+            } else if (link[4] === 'script' && link[3].includes('.js')) {
+              script = link[3];
+            }
+          } catch (err) {
+            console.log(">> Could not recognize preloads, skipping the option..."); // eslint-disable-line max-len
+          }
+        }
+        if (stylesheet) {
+          return `  <link rel="prefetch" href="${stylesheet.replace('../','./')}" as="style" />`; // eslint-disable-line max-len
+        } else if (script) {
+          return `  <link rel="prefetch" href="${script.replace('../', './')}" as="script" />`; // eslint-disable-line max-len
+        }
+      })
+      .join('\n') +
+    '\n\n' +
+    pageTemplate.slice(headEndIndex);
+
+  return newPageTemplate;
+}
+
+/**
+ *
+ * @param {String} htmlTemplate
+ * @param {String} prefix
+ * @return {String}
+ */
+function addPrefixInHTMLPaths(htmlTemplate, prefix) {
+  const { matches, input } = execRegexOnAll(
+    / (?:href|src)=["'`](.*?)["'`]/g,
+    htmlTemplate
+  );
+
+  let output = '';
+  let lastIndex = 0;
+  for (const match of matches) {
+    if (match[1].startsWith('http') || match[1].startsWith('//')) continue;
+    const indexToAddOn = match.index + match[0].indexOf(match[1]);
+    output += input.slice(lastIndex, indexToAddOn) + prefix + '/';
+    lastIndex = indexToAddOn;
+  }
+  output += input.slice(lastIndex);
+
+  return output;
+}
+
 const boldRed = (message) =>
   `\u001b[1m\u001b[31m${message}\u001b[39m\u001b[22m`;
 const boldGreen = (message) =>
@@ -195,14 +293,16 @@ const grey = (message) => `\u001b[90m${message}\u001b[39m`;
 const yellow = (message) => `\u001b[1m\u001b[33m${message}\u001b[39m\u001b[22m`;
 
 module.exports = {
-  getAbellFiles,
   getDirectories,
   rmdirRecursiveSync,
+  recursiveFindFiles,
   getAbellConfigs,
   createPathIfAbsent,
   copyFolderSync,
   exitHandler,
   execRegexOnAll,
+  prefetchLinksAndAddToPage,
+  addPrefixInHTMLPaths,
   boldGreen,
   boldRed,
   grey,

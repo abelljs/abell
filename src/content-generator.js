@@ -12,8 +12,10 @@ md.use(require('./remarkable-plugins/anchors.js'));
 const {
   createPathIfAbsent,
   getAbellConfigs,
-  getDirectories,
-  execRegexOnAll
+  prefetchLinksAndAddToPage,
+  recursiveFindFiles,
+  addPrefixInHTMLPaths,
+  copyFolderSync
 } = require('./helpers.js');
 
 /**
@@ -22,14 +24,16 @@ const {
  * @property {String} $slug - slug of content
  * @property {Date} $createdAt - Date object with time of content creation
  * @property {Date} $modifiedAt - Date object with time of last modification
+ * @property {String} $path - String of path
+ * @property {String} $root - Prefix to root
  *
  * @typedef {Object} ProgramInfo - Contains all the information required by the build to execute.
  * @property {import('./helpers.js').AbellConfigs} abellConfigs
  *  - Configuration from abell.config.js file
- * @property {String} contentTemplate - string of the template from [$slug]/index.abell file
- * @property {String} contentTemplatePath - path of the template (mostly [$slug]/index.abell file
+ * @property {String} contentTemplate - string of the template from [$path]/index.abell file
+ * @property {String} contentTemplatePath - path of the template (mostly [$path]/index.abell file
  * @property {Object} vars - all global variables in .abell files
- * @property {[MetaInfo]} vars.$contentArray - An array of all MetaInfo
+ * @property {MetaInfo[]} vars.$contentArray - An array of all MetaInfo
  * @property {Object} vars.$contentObj - Content meta info object
  * @property {Object} vars.globalMeta - meta info to be injected into .abell files
  * @property {Array} contentDirectories - List of names of all directories in content directory
@@ -41,52 +45,51 @@ const {
 /**
  * On given slug and base path of content folder,
  * returns object with all the meta information
- * @param {string} contentSlug slug of content
  * @param {string} contentPath path to content directory
+ * @param {string} contentDir slug of content
  * @return {MetaInfo}
  */
-function getContentMeta(contentSlug, contentPath) {
-  let meta;
-
-  const defaultMeta = {
-    title: contentSlug,
-    description: `Hi, This is ${contentSlug}...`
-  };
-
-  try {
-    meta = {
-      ...defaultMeta,
-      ...JSON.parse(
-        fs.readFileSync(
-          path.join(contentPath, contentSlug, 'meta.json'),
-          'utf-8'
-        )
-      )
-    };
-  } catch (err) {
-    meta = defaultMeta;
-  }
-
+function getContentMeta(contentPath, contentDir) {
   let mtime;
   let ctime;
 
+  const slug = path.basename(contentDir);
+  const defaultMeta = {
+    title: slug,
+    description: `Hi, This is ${slug}...`
+  };
+
+  let metaData = {};
+  if (fs.existsSync(path.join(contentPath, contentDir, 'meta.json'))) {
+    metaData = JSON.parse(
+      fs.readFileSync(path.join(contentPath, contentDir, 'meta.json'), 'utf-8')
+    );
+  } else if (fs.existsSync(path.join(contentPath, contentDir, 'meta.js'))) {
+    metaData = require(path.join(contentPath, contentDir, 'meta.js'));
+  }
+
+  const meta = {
+    ...defaultMeta,
+    ...metaData
+  };
+
   ({ mtime, ctime } = fs.statSync(
-    path.join(contentPath, contentSlug, 'index.md')
+    path.join(contentPath, contentDir, 'index.md')
   ));
 
-  if (meta.$createdAt) {
-    ctime = new Date(meta.$createdAt);
-  }
-
-  if (meta.$modifiedAt) {
-    mtime = new Date(meta.$modifiedAt);
-  }
+  if (meta.$createdAt) ctime = new Date(meta.$createdAt);
+  if (meta.$modifiedAt) mtime = new Date(meta.$modifiedAt);
 
   return {
     ...meta,
-    $slug: contentSlug,
+    $slug: slug,
     $modifiedAt: mtime,
-    $createdAt: ctime
+    $createdAt: ctime,
+    $path: contentDir,
+    $root: contentDir
+      .split(path.sep)
+      .map((dir) => '..')
+      .join(path.sep)
   };
 }
 
@@ -98,11 +101,31 @@ function getContentMeta(contentSlug, contentPath) {
  */
 function getContentMetaAll(contentDirectories, contentPath) {
   const contentMetaInfo = {};
-  for (const contentSlug of contentDirectories) {
-    contentMetaInfo[contentSlug] = getContentMeta(contentSlug, contentPath);
+  for (const contentDir of contentDirectories) {
+    contentMetaInfo[contentDir] = getContentMeta(contentPath, contentDir);
   }
 
   return contentMetaInfo;
+}
+
+/**
+ * @param {String} contentPath
+ * @return {Object} contentInfo
+ * @return {String[]} contentInfo.contentDirectories
+ * @return {Object} contentInfo.$contentObj
+ * @return {MetaInfo[]} contentInfo.$contentArray
+ */
+function loadContent(contentPath) {
+  const contentDirectories = recursiveFindFiles(contentPath, 'index.md')
+    .map((file) => path.dirname(path.relative(contentPath, file)))
+    .filter((fileDirectories) => fileDirectories !== '.');
+
+  const $contentObj = getContentMetaAll(contentDirectories, contentPath);
+  const $contentArray = Object.values($contentObj).sort((a, b) =>
+    a.$createdAt.getTime() > b.$createdAt.getTime() ? -1 : 1
+  );
+
+  return { contentDirectories, $contentObj, $contentArray };
 }
 
 /**
@@ -117,19 +140,14 @@ function getBaseProgramInfo() {
   let $contentArray;
 
   if (fs.existsSync(abellConfigs.contentPath)) {
-    contentDirectories = getDirectories(abellConfigs.contentPath);
-    $contentObj = getContentMetaAll(
-      contentDirectories,
+    ({ contentDirectories, $contentObj, $contentArray } = loadContent(
       abellConfigs.contentPath
-    );
-    $contentArray = Object.values($contentObj).sort((a, b) =>
-      a.$createdAt.getTime() > b.$createdAt.getTime() ? -1 : 1
-    );
+    ));
   }
 
   const contentTemplatePath = path.join(
     abellConfigs.sourcePath,
-    '[$slug]',
+    '[$path]',
     'index.abell'
   );
 
@@ -155,23 +173,6 @@ function getBaseProgramInfo() {
 }
 
 /**
- * @param {String} from - Path to copy from
- * @param {String} to - Path to paste to
- * Copy assets (images etc) from content folder (`content/my-cool-blog`) to destination folder
- * @return {void}
- */
-function copyContentAssets(from, to) {
-  // Read names of files from contentSlug
-  const filesList = fs
-    .readdirSync(from)
-    .filter((val) => val !== 'index.md' && val !== 'meta.json');
-
-  for (const filename of filesList) {
-    fs.copyFileSync(path.join(from, filename), path.join(to, filename));
-  }
-}
-
-/**
  * 1. Reads .md/.abell file from given path
  * 2. Converts it to html
  * 3. Adds variable to the new HTML and returns the HTML
@@ -179,7 +180,6 @@ function copyContentAssets(from, to) {
  * @param {String} mdPath
  * @param {String} contentPath
  * @param {Object} variables
- * @param {Object} options
  * @return {String}
  */
 function importAndRender(mdPath, contentPath, variables) {
@@ -187,59 +187,6 @@ function importAndRender(mdPath, contentPath, variables) {
   const mdWithValues = abellRenderer.render(fileContent, variables); // Add variables to markdown
   const rendererdHTML = md.render(mdWithValues);
   return rendererdHTML;
-}
-
-/**
- * Prefetchs links from given template and adds it to next template.
- * @param {Object} options
- * @param {String} options.from String of HTML/Abell template to fetch links from
- * @param {String} options.addTo String of HTML/ABELL template to add prefetch into
- *
- * @return {String}
- */
-function prefetchLinksAndAddToPage({ from, addTo }) {
-  const pageTemplate = addTo;
-
-  // eslint-disable-next-line
-  const regexToFetchPaths = /(?:<link +?rel=["']stylesheet['"] +?href=['"](.*?)['"])|(?:<script +?src=['"](.*?)['"])|(?:<link.+?href=["'](.*?)["'].+?as=["'](.*?)["'])/gs;
-  const { matches } = execRegexOnAll(regexToFetchPaths, from);
-  const headEndIndex = pageTemplate.indexOf('</head>');
-
-  // prettier-ignore
-  const newPageTemplate =
-    pageTemplate.slice(0, headEndIndex) +
-    `  <!-- Abell prefetch -->\n` +
-    matches
-      .map((link) => {
-        let stylesheet;
-        let script;
-        // stylesheet or script have a value if link is straighforward
-        // (e.g <link rel="stylesheet" href="style.css">)
-        ([stylesheet, script] = link.slice(1));
-        // In some cases, user may have a little trickier links
-        // (e.g <link rel="preload" href="next.js" as="script")
-        if (!stylesheet && !script) {
-          try {
-            if (link[4] === 'style' && link[3].includes('.css')) {
-              stylesheet = link[3];
-            } else if (link[4] === 'script' && link[3].includes('.js')) {
-              script = link[3];
-            }
-          } catch (err) {
-            console.log(">> Could not recognize preloads, skipping the option..."); // eslint-disable-line max-len
-          }
-        }
-        if (stylesheet) {
-          return `  <link rel="prefetch" href="${stylesheet.replace('../','./')}" as="style" />`; // eslint-disable-line max-len
-        } else if (script) {
-          return `  <link rel="prefetch" href="${script.replace('../', './')}" as="script" />`; // eslint-disable-line max-len
-        }
-      })
-      .join('\n') +
-    '\n\n' +
-    pageTemplate.slice(headEndIndex);
-
-  return newPageTemplate;
 }
 
 /**
@@ -270,6 +217,11 @@ function generateHTMLFile(filepath, programInfo) {
 
   const view = {
     ...variables,
+    $root: filepath
+      .split(path.sep)
+      .map((dir) => '..')
+      .slice(1)
+      .join(path.sep),
     $importContent: (path) =>
       importAndRender(path, programInfo.abellConfigs.contentPath, variables)
   };
@@ -281,6 +233,10 @@ function generateHTMLFile(filepath, programInfo) {
     ),
     allowRequire: true
   });
+
+  createPathIfAbsent(
+    path.join(programInfo.abellConfigs.destinationPath, path.dirname(filepath))
+  );
 
   fs.writeFileSync(
     path.join(programInfo.abellConfigs.destinationPath, filepath + '.html'),
@@ -295,21 +251,23 @@ function generateHTMLFile(filepath, programInfo) {
  *  4. Render content HTML on programInfo.contentTemplate
  *
  * @method generateContentFile
- * @param {String} contentSlug
+ * @param {String} contentDir
  * @param {ProgramInfo} programInfo all the information required for build
  * @return {void}
  *
  */
-function generateContentFile(contentSlug, programInfo) {
+function generateContentFile(contentDir, programInfo) {
   // Create Path of content if does not already exist
   createPathIfAbsent(
-    path.join(programInfo.abellConfigs.destinationPath, contentSlug)
+    path.join(programInfo.abellConfigs.destinationPath, contentDir)
   );
 
+  const currentContentData = programInfo.vars.$contentObj[contentDir];
   const variables = {
     ...programInfo.vars,
-    $slug: contentSlug,
-    meta: programInfo.vars.$contentObj[contentSlug]
+    $path: currentContentData.$path,
+    $root: currentContentData.$root,
+    meta: currentContentData
   };
 
   const view = {
@@ -317,36 +275,51 @@ function generateContentFile(contentSlug, programInfo) {
     $importContent: (path) =>
       importAndRender(path, programInfo.abellConfigs.contentPath, variables)
   };
-
   // render HTML of content
-  const contentHTML = abellRenderer.render(programInfo.contentTemplate, view, {
+  let contentHTML = abellRenderer.render(programInfo.contentTemplate, view, {
     basePath: path.dirname(programInfo.contentTemplatePath),
     allowRequire: true
   });
+
+  if (contentDir.includes(path.sep)) {
+    const pathPrefixArr = contentDir.split(path.sep).map((dir) => '..');
+    pathPrefixArr.pop();
+    const pathPrefix = pathPrefixArr.join(path.sep);
+    contentHTML = addPrefixInHTMLPaths(contentHTML, pathPrefix);
+  }
 
   // WRITE IT OUT!! YASSSSSS!!!
   fs.writeFileSync(
     path.join(
       programInfo.abellConfigs.destinationPath,
-      contentSlug,
+      contentDir,
       'index.html'
     ),
     contentHTML
   );
 
-  // Copy assets from content's folder to actual destination
-  copyContentAssets(
-    path.join(programInfo.abellConfigs.contentPath, contentSlug),
-    path.join(programInfo.abellConfigs.destinationPath, contentSlug)
+  const fromPath = path.join(
+    programInfo.abellConfigs.contentPath,
+    contentDir,
+    'assets'
   );
+  const toPath = path.join(
+    programInfo.abellConfigs.destinationPath,
+    contentDir,
+    'assets'
+  );
+
+  if (fs.existsSync(fromPath)) {
+    copyFolderSync(fromPath, toPath);
+  }
 }
 
 module.exports = {
   getContentMeta,
   getContentMetaAll,
+  loadContent,
   getBaseProgramInfo,
   generateContentFile,
   generateHTMLFile,
-  importAndRender,
-  prefetchLinksAndAddToPage
+  importAndRender
 };

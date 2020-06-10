@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
-const action = require('./action');
+const build = require('./build.js');
+const serve = require('./serve.js');
 const program = require('commander');
 
 const { getBaseProgramInfo } = require('./content-generator');
@@ -14,7 +15,7 @@ program.command('build').action(() => {
     const programInfo = getBaseProgramInfo();
     programInfo.logs = 'complete';
     programInfo.task = 'build';
-    action.build(programInfo);
+    build(programInfo);
     const buildTime = new Date().getTime() - buildStartTime;
     console.log(
       `\n\n${boldGreen(
@@ -38,16 +39,18 @@ program.command('build').action(() => {
 program
   .command('serve')
   .option('--port [port]', 'Serve on different port')
+  .option('--socket-port [socketPort]', 'Serve on different port')
   .action((command) => {
     const programInfo = getBaseProgramInfo();
     programInfo.port = command.port || 5000;
+    programInfo.socketPort = command.socketPort || 3000;
     programInfo.task = 'serve';
     programInfo.logs = 'minimum';
     programInfo.abellConfigs.destinationPath = '.debug';
 
-    action.serve(programInfo);
+    serve(programInfo);
   });
 
 program.parse(process.argv);
 
-module.exports = action;
+module.exports = { build, serve };

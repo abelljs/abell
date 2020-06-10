@@ -1,11 +1,11 @@
 # Contributing to Abell
 
-This repository contains the code that builds the Abell Website. If you want you can also contribute to other repositories in this organization that deal with starter-templates, vscode extension for .abell files, etc.
+This repository contains the code that builds the Abell Website. The code that renders `.abell` files is in [abelljs/abell-renderer](https://github.com/abelljs/abell-renderer). There are also other repositories in this organization that deal with starter-templates, vscode extension for .abell files, etc.
 
 ## Local Setup of Abell Builder
 
 - Fork this repository
-- `git clone {url of your fork}`
+- `git clone <url of your fork>`
 - `cd abell`
 - `npm install` to install dependencies
 - `npm run dev:build` to build static site!

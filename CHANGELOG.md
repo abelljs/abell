@@ -1,5 +1,22 @@
 # Changelog
 
+## 0.3.0
+
+- We now support plugins 🎉 [Example: https://github.com/saurabhdaware/abell-sitemap-plugin](<[#15](https://github.com/abelljs/abell/issues/15)>)
+- Nested folders in `content` now maintain structure (Resolved Issue [#19](https://github.com/abelljs/abell/issues/19))
+- **BREAKING CHANGE** All assets should be inside `content/<slug>/assets/` folder ([#22](https://github.com/abelljs/abell/issues/22))
+- Keeping dev-server alive when not defined errors occur (Patially fixes [#16](https://github.com/abelljs/abell/issues/16))
+- Keeping dev-server alive when new blog added/deleted (Fixed [#23](https://github.com/abelljs/abell/issues/23))
+- Refresh cache in dev-server to avoid display of old data ([#26](https://github.com/abelljs/abell/issues/26))
+- Crash on `content/index.md` change fix (Issue [#21](https://github.com/abelljs/abell/issues/21))
+- Removed `ignoreInDist`, will be auto-calculated depending on which files are required (Resolves [#25](https://github.com/abelljs/abell/issues/25))
+- Refactoring
+- Ability to change socket ports with `abell serve --socket-port 3000 --port 5000`
+- **BREAKING CHANGE** `./theme/[$slug]/index.abell` changed to `./theme/[$path]/index.abell`
+- TODO: Add root in all files.
+- Fix of nested .abell files in `theme`
+- Added `$root` to global variables in all `.abell` files.
+
 ## 0.2.20
 
 - Way to overwrite `$createdAt` and `$modifiedAt` values from `meta.json` in content. Resolved #14

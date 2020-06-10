@@ -5,7 +5,7 @@
 <html lang="en">
 <head>
   <meta name="og:title" content="demo abell" />
-  <!-- <link rel="stylesheet" href="style.css" /> -->
+  <link rel="stylesheet" href="./styles/index.css" />
   <title>{{ globalMeta.siteName }}</title>
 </head>
 <body>
@@ -22,7 +22,7 @@
       $contentArray
         .map(meta => `
           <article>
-            <a href="${meta.$slug}"><h2>${meta.title}</h2></a>
+            <a href="${meta.$path}"><h2>${meta.title} (${meta.$path})</h2></a>
             <p>Created at: ${meta.$createdAt.toDateString() }</p>
             <p class="article-description">${meta.description}</p>
           </article>
