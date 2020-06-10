@@ -15,7 +15,7 @@
   <main>
     {{
       $contentArray
-        .sort((a, b) => a.$slug - b.$slug)
+        .sort((a, b) => a.title > b.title ? 1 : -1)
         .map(meta => `
           <article>
             <a href="${meta.$slug}"><h2>${meta.title}</h2></a>
