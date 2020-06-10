@@ -39,9 +39,11 @@ program.command('build').action(() => {
 program
   .command('serve')
   .option('--port [port]', 'Serve on different port')
+  .option('--socket-port [socketPort]', 'Serve on different port')
   .action((command) => {
     const programInfo = getBaseProgramInfo();
     programInfo.port = command.port || 5000;
+    programInfo.socketPort = command.socketPort || 3000;
     programInfo.task = 'serve';
     programInfo.logs = 'minimum';
     programInfo.abellConfigs.destinationPath = '.debug';
