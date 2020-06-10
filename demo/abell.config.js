@@ -4,6 +4,5 @@ module.exports = {
   contentPath: 'content', // content path that has markdown files
   globalMeta: {
     siteName: 'Abell Demo'
-  },
-  ignoreInDist: ['data']
+  }
 };

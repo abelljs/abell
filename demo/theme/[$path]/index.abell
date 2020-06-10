@@ -1,3 +1,7 @@
+{{
+  const data = require('../data/notgoingtodist.js');
+}}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

@@ -10,7 +10,6 @@ const path = require('path');
  *  - Path to output destination (default 'dist', changes to 'debug' during dev-server)
  * @property {String[]} plugins - Array of abell plugins.
  * @property {Object} globalMeta - Meta variables that are accessible globally in .abell files
- * @property {String[]} ignoreInDist
  *
  */
 
@@ -71,7 +70,6 @@ function getAbellConfigs() {
     destinationPath: 'dist',
     sourcePath: 'theme',
     contentPath: 'content',
-    ignoreInDist: [],
     globalMeta: {}
   };
 
@@ -137,22 +135,32 @@ const createPathIfAbsent = (pathToCreate) => {
  * @param {String} from - Path to copy from
  * @param {String} to - Path to copy to
  * @param {Array} ignore - files/directories to ignore
+ * @param {Boolean} ignoreEmptyDirs - Ignore empty directories while copying
  * @return {void}
  */
-function copyFolderSync(from, to, ignore = []) {
+function copyFolderSync(from, to, ignore = [], ignoreEmptyDirs = true) {
   if (ignore.includes(from)) {
     return;
   }
+  const fromDirectories = fs.readdirSync(from);
+
   createPathIfAbsent(to);
-  fs.readdirSync(from).forEach((element) => {
+  fromDirectories.forEach((element) => {
     const fromElement = path.join(from, element);
     const toElement = path.join(to, element);
     if (fs.lstatSync(fromElement).isFile()) {
-      if (!ignore.includes(path.join(from, element))) {
+      if (!ignore.includes(fromElement)) {
         fs.copyFileSync(fromElement, toElement);
       }
     } else {
       copyFolderSync(fromElement, toElement, ignore);
+      if (fs.existsSync(toElement) && ignoreEmptyDirs) {
+        try {
+          fs.rmdirSync(toElement);
+        } catch (err) {
+          if (err.code !== 'ENOTEMPTY') throw err;
+        }
+      }
     }
   });
 }

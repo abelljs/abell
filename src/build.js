@@ -36,20 +36,6 @@ function build(programInfo) {
   // Refresh dist
   rmdirRecursiveSync(programInfo.abellConfigs.destinationPath);
   fs.mkdirSync(programInfo.abellConfigs.destinationPath);
-  const ignoreCopying = [
-    path.dirname(programInfo.contentTemplatePath),
-    ...programInfo.abellConfigs.ignoreInDist.map((relativePath) =>
-      path.join(programInfo.abellConfigs.sourcePath, relativePath)
-    ),
-    ...abellFiles.map((withoutExtension) => withoutExtension + '.abell')
-  ];
-
-  // Copy everything from src to dist except the ones mentioned in ignoreCopying.
-  copyFolderSync(
-    programInfo.abellConfigs.sourcePath,
-    programInfo.abellConfigs.destinationPath,
-    ignoreCopying
-  );
 
   /** Before Build plugins */
   for (const pluginPath of programInfo.abellConfigs.plugins) {
@@ -93,6 +79,26 @@ function build(programInfo) {
       console.log(`...Built ${relativePath}.html`);
     }
   }
+
+  const importedFiles = Object.keys(require.cache).filter(
+    (importedFile) =>
+      !path
+        .relative(programInfo.abellConfigs.sourcePath, importedFile)
+        .startsWith('..')
+  );
+
+  const ignoreCopying = [
+    path.dirname(programInfo.contentTemplatePath),
+    ...importedFiles,
+    ...abellFiles.map((withoutExtension) => withoutExtension + '.abell')
+  ];
+
+  // Copy everything from src to dist except the ones mentioned in ignoreCopying.
+  copyFolderSync(
+    programInfo.abellConfigs.sourcePath,
+    programInfo.abellConfigs.destinationPath,
+    ignoreCopying
+  );
 
   /** After Build plugins */
   for (const pluginPath of programInfo.abellConfigs.plugins) {
