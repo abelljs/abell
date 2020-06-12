@@ -70,6 +70,7 @@ function getAbellConfigs() {
     destinationPath: 'dist',
     sourcePath: 'theme',
     contentPath: 'content',
+    plugins: [],
     globalMeta: {}
   };
 
