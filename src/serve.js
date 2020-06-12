@@ -85,7 +85,7 @@ function serve(programInfo) {
       );
     }
 
-    if (filePath.endsWith('.js')) {
+    if (filePath.endsWith('.js') || filePath.endsWith('.json')) {
       // JS Files required in .abell file are cached by nodejs for instance
       // so we remove the cache in case a js file is changed and is cached.
       const localCaches = Object.keys(require.cache).filter((filePath) => {
