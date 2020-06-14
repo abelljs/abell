@@ -140,7 +140,7 @@
 
 Migration to [abell-renderer](https://github.com/abelljs/abell-renderer) v0.1.0
 
-...Detailed ChangeLog at [abell-renderer v0.1.x Changelog](https://github.com/abelljs/abell-renderer/blob/master/CHANGELOG.md#v010)
+...Detailed ChangeLog at [abell-renderer v0.1.x Changelog](https://github.com/abelljs/abell-renderer/blob/main/CHANGELOG.md#v010)
 
 ## v0.1.15
 

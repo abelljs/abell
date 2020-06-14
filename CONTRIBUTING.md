@@ -20,4 +20,4 @@ To run a DEV server, you can run `npm run dev:serve` which will serve the websit
 
 - Create a branch with name of feature you are working on. (e.g. `feat-abell-config`, `fix-serve-fails`, etc)
 - Make changes in your locally cloned fork
-- Send Pull Request from your branch to master of main repository.
+- Send Pull Request from your branch to main of main repository.
