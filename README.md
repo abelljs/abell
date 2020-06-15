@@ -11,7 +11,7 @@
   a JavaScript based static-site-generator to help you create JSON, Markdown, or static-data based websites with minimal setup. Built on top of <a href="https://github.com/abelljs/abell-renderer">abelljs/abell-renderer</a>.
 </p>
 
-## 📖 Installation
+## 📖 &nbsp; Installation
 
 _This documentation is only for the people who want to contribute or just want to try it out for fun. Abell should not be used for production applications yet._
 
@@ -23,15 +23,15 @@ npm run dev
 
 Check out https://abelljs.org for complete documentation.
 
-### 🕐 &nbsp;Changelog
+### 🕐 &nbsp; Changelog
 
 Changelogs are maintained in [CHANGELOG.md](CHANGELOG.md)
 
-### 🤗 &nbsp;Contributing
+### 🤗 &nbsp; Contributing
 
 We would love to have contributions! The contributing guidelines along with local setup guide is mentioned in [CONTRIBUTING.md](CONTRIBUTING.md)
 
-### 💙 &nbsp;Related Repositories
+### 💙 &nbsp; Related Repositories
 
 - [abelljs/abell-website](https://github.com/abelljs/abell-website): Code of Documentation website of Abell (https://abelljs.org)
 - [abelljs/abell-renderer](https://github.com/abelljs/abell-renderer): Low-level API that deals with rendering of `.abell` files.
