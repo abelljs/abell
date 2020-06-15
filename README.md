@@ -23,15 +23,15 @@ npm run dev
 
 Check out https://abelljs.org for complete documentation.
 
-### 🕐 Changelog
+### 🕐 &nbsp;Changelog
 
 Changelogs are maintained in [CHANGELOG.md](CHANGELOG.md)
 
-### 🤗 Contributing
+### 🤗 &nbsp;Contributing
 
 We would love to have contributions! The contributing guidelines along with local setup guide is mentioned in [CONTRIBUTING.md](CONTRIBUTING.md)
 
-### 💙 Related Repositories
+### 💙 &nbsp;Related Repositories
 
 - [abelljs/abell-website](https://github.com/abelljs/abell-website): Code of Documentation website of Abell (https://abelljs.org)
 - [abelljs/abell-renderer](https://github.com/abelljs/abell-renderer): Low-level API that deals with rendering of `.abell` files.
