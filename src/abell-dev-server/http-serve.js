@@ -54,8 +54,10 @@ function server(req, res, socketCode, options) {
   // based on the URL path, extract the file extention. e.g. .js, .doc, ...
   let ext = path.parse(pathname).ext;
   // maps file extention to MIME typere
-  if (ext === '') {
+  if (ext === '' && fs.existsSync(pathname + '.html')) {
+    // cleanURLs: if path is /example, it will request the /example.html
     ext = '.html';
+    pathname = pathname + '.html';
   }
 
   if (!fs.existsSync(pathname)) {
@@ -67,7 +69,8 @@ function server(req, res, socketCode, options) {
 
   // if is a directory search for index file matching the extention
   if (fs.statSync(pathname).isDirectory()) {
-    pathname += '/index' + ext;
+    ext = '.html';
+    pathname += '/index.html';
   }
 
   // read file from file system
