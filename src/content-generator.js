@@ -143,16 +143,19 @@ function getBaseProgramInfo() {
     ));
   }
 
-  const contentTemplatePaths = recursiveFindFiles(
-    path.join(abellConfigs.sourcePath, '[$path]'),
-    '.abell'
-  );
+  let contentTemplatePaths = [];
+  if (fs.existsSync(path.join(abellConfigs.sourcePath, '[$path]'))) {
+    contentTemplatePaths = recursiveFindFiles(
+      path.join(abellConfigs.sourcePath, '[$path]'),
+      '.abell'
+    );
+  }
 
-  let contentIndexTemplate;
   const indexContentFilePath = contentTemplatePaths.find((templatePath) =>
     templatePath.endsWith('[$path]/index')
   );
 
+  let contentIndexTemplate;
   if (indexContentFilePath) {
     contentIndexTemplate = fs.readFileSync(
       indexContentFilePath + '.abell',
