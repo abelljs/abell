@@ -16,6 +16,7 @@
 - TODO: Add root in all files.
 - Fix of nested .abell files in `theme`
 - Added `$root` to global variables in all `.abell` files.
+- Multiple templates (Resolved [#31](https://github.com/abelljs/abell/issues/31))
 
 ## 0.2.20
 
