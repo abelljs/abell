@@ -13,7 +13,6 @@
 - Refactoring
 - Ability to change socket ports with `abell serve --socket-port 3000 --port 5000`
 - **BREAKING CHANGE** `./theme/[$slug]/index.abell` changed to `./theme/[$path]/index.abell`
-- TODO: Add root in all files.
 - Fix of nested .abell files in `theme`
 - Added `$root` to global variables in all `.abell` files.
 - Multiple templates (Resolved [#31](https://github.com/abelljs/abell/issues/31))
