@@ -73,9 +73,7 @@ function getContentMeta(contentPath, contentDir) {
     ...metaData
   };
 
-  ({ mtime, ctime } = fs.statSync(
-    path.join(contentPath, contentDir, 'index.md')
-  ));
+  ({ mtime, ctime } = fs.statSync(path.join(contentPath, contentDir)));
 
   if (meta.$createdAt) ctime = new Date(meta.$createdAt);
   if (meta.$modifiedAt) mtime = new Date(meta.$modifiedAt);
@@ -116,7 +114,7 @@ function getContentMetaAll(contentDirectories, contentPath) {
  * @return {MetaInfo[]} contentInfo.$contentArray
  */
 function loadContent(contentPath) {
-  const contentDirectories = recursiveFindFiles(contentPath, 'index.md')
+  const contentDirectories = recursiveFindFiles(contentPath, '.md')
     .map((file) => path.dirname(path.relative(contentPath, file)))
     .filter((fileDirectories) => fileDirectories !== '.');
 

@@ -16,7 +16,7 @@
 </head>
 <body>
   <section id="blog-container">
-    {{ $importContent(meta.$path + '/index.md') }}
+    {{ meta.$slug === 'my-first-blog' ? $importContent(meta.$path + '/new.md') : $importContent(meta.$path + '/index.md') }}
     {{ $root }}
   </section>
 </body>

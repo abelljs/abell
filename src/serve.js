@@ -138,7 +138,7 @@ function serve(programInfo) {
         path.relative(programInfo.abellConfigs.contentPath, filePath)
       );
 
-      if (filePath.endsWith('index.md')) {
+      if (filePath.endsWith('.md')) {
         generateContentFile(directoryName, programInfo);
         console.log(`...Built ${directoryName}`);
       } else if (
