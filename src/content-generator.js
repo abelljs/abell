@@ -30,8 +30,8 @@ const {
  * @typedef {Object} ProgramInfo - Contains all the information required by the build to execute.
  * @property {import('./helpers.js').AbellConfigs} abellConfigs
  *  - Configuration from abell.config.js file
- * @property {String} contentTemplate - string of the template from [$path]/index.abell file
- * @property {String} contentTemplatePath - path of the template (mostly [$path]/index.abell file
+ * @property {String} contentIndexTemplate - string of the template from [$path]/index.abell file
+ * @property {String} contentTemplatePaths - path of the template (mostly [$path]/index.abell file
  * @property {Object} vars - all global variables in .abell files
  * @property {MetaInfo[]} vars.$contentArray - An array of all MetaInfo
  * @property {Object} vars.$contentObj - Content meta info object
@@ -143,22 +143,28 @@ function getBaseProgramInfo() {
     ));
   }
 
-  const contentTemplatePath = path.join(
-    abellConfigs.sourcePath,
-    '[$path]',
-    'index.abell'
+  const contentTemplatePaths = recursiveFindFiles(
+    path.join(abellConfigs.sourcePath, '[$path]'),
+    '.abell'
   );
 
-  let contentTemplate;
-  if (fs.existsSync(contentTemplatePath)) {
-    contentTemplate = fs.readFileSync(contentTemplatePath, 'utf-8');
+  let contentIndexTemplate;
+  const indexContentFilePath = contentTemplatePaths.find((templatePath) =>
+    templatePath.endsWith('index')
+  );
+
+  if (indexContentFilePath) {
+    contentIndexTemplate = fs.readFileSync(
+      indexContentFilePath + '.abell',
+      'utf-8'
+    );
   }
 
   const programInfo = {
     abellConfigs,
-    contentTemplate: contentTemplate || null,
+    contentIndexTemplate: contentIndexTemplate || null,
     contentDirectories: contentDirectories || [],
-    contentTemplatePath,
+    contentTemplatePaths,
     vars: {
       $contentArray: $contentArray || [],
       $contentObj: $contentObj || {},
@@ -206,7 +212,7 @@ function generateHTMLFile(filepath, programInfo) {
   if (filepath === 'index') {
     // Add prefetch to index page
     pageTemplate = prefetchLinksAndAddToPage({
-      from: programInfo.contentTemplate,
+      from: programInfo.contentIndexTemplate,
       addTo: pageTemplate
     });
   }
@@ -250,15 +256,21 @@ function generateHTMLFile(filepath, programInfo) {
  *
  * @method generateContentFile
  * @param {String} contentDir
+ * @param {String} contentTemplatePath
  * @param {ProgramInfo} programInfo all the information required for build
  * @return {void}
  *
  */
-function generateContentFile(contentDir, programInfo) {
+function generateContentFile(contentDir, contentTemplatePath, programInfo) {
   // Create Path of content if does not already exist
   createPathIfAbsent(
     path.join(programInfo.abellConfigs.destinationPath, contentDir)
   );
+
+  let contentTemplate = programInfo.contentIndexTemplate;
+  if (!contentTemplatePath.endsWith(`[$path]${path.sep}index`)) {
+    contentTemplate = fs.readFileSync(contentTemplatePath + '.abell', 'utf-8');
+  }
 
   const currentContentData = programInfo.vars.$contentObj[contentDir];
   const variables = {
@@ -274,8 +286,8 @@ function generateContentFile(contentDir, programInfo) {
       importAndRender(path, programInfo.abellConfigs.contentPath, variables)
   };
   // render HTML of content
-  let contentHTML = abellRenderer.render(programInfo.contentTemplate, view, {
-    basePath: path.dirname(programInfo.contentTemplatePath),
+  let contentHTML = abellRenderer.render(contentTemplate, view, {
+    basePath: path.dirname(contentTemplatePath),
     allowRequire: true
   });
 
@@ -286,12 +298,17 @@ function generateContentFile(contentDir, programInfo) {
     contentHTML = addPrefixInHTMLPaths(contentHTML, pathPrefix);
   }
 
+  const relativeOutputPath = path.relative(
+    path.join(programInfo.abellConfigs.sourcePath, '[$path]'),
+    contentTemplatePath
+  );
+
   // WRITE IT OUT!! YASSSSSS!!!
   fs.writeFileSync(
     path.join(
       programInfo.abellConfigs.destinationPath,
       contentDir,
-      'index.html'
+      relativeOutputPath + '.html'
     ),
     contentHTML
   );
