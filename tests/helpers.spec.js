@@ -8,18 +8,32 @@ const {
   createPathIfAbsent,
   execRegexOnAll,
   addPrefixInHTMLPaths,
-  prefetchLinksAndAddToPage
+  prefetchLinksAndAddToPage,
+  recursiveFindFiles
 } = require('../src/helpers.js');
 
 describe('getDirectories()', () => {
   it('should return folder name in array when called on test directory', () => {
-    const ifInputArray = getDirectories('tests/resources/test_getDirectories');
-    const shouldOutputArray = ['test1', 'test3'];
-
     // prettier-ignore
-    expect(ifInputArray)
+    expect(getDirectories('tests/resources/test_getDirectories'))
       .to.be.an('array')
-      .that.has.members(shouldOutputArray);
+      .that.has.members(['test1', 'test3']);
+  });
+});
+
+describe('recursiveFindFiles()', () => {
+  // eslint-disable-next-line max-len
+  it('should return paths of all files in test_recursiveFindFiles directory', () => {
+    // prettier-ignore
+    // eslint-disable-next-line max-len
+    expect(recursiveFindFiles('tests/resources/test_recursiveFindFiles', '.abell'))
+      .to.be.an('array')
+      .that.has.members([
+        'tests/resources/test_recursiveFindFiles/deep/moredeep/jkl',
+        'tests/resources/test_recursiveFindFiles/ghi',
+        'tests/resources/test_recursiveFindFiles/one/abc',
+        'tests/resources/test_recursiveFindFiles/two/def'
+      ]);
   });
 });
 

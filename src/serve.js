@@ -79,10 +79,7 @@ function serve(programInfo) {
 
     if (filePath.endsWith('index.abell') && directoryName === '[$path]') {
       // Content template changed
-      programInfo.contentTemplate = fs.readFileSync(
-        programInfo.contentTemplatePath,
-        'utf-8'
-      );
+      programInfo.contentIndexTemplate = fs.readFileSync(filePath, 'utf-8');
     }
 
     if (filePath.endsWith('.js') || filePath.endsWith('.json')) {
@@ -139,8 +136,17 @@ function serve(programInfo) {
       );
 
       if (filePath.endsWith('.md')) {
-        generateContentFile(directoryName, programInfo);
-        console.log(`...Built ${directoryName}`);
+        for (const contentTemplatePath of programInfo.contentTemplatePaths) {
+          generateContentFile(directoryName, contentTemplatePath, programInfo);
+          console.log(
+            `...Built ${path
+              .relative(
+                programInfo.abellConfigs.sourcePath,
+                contentTemplatePath
+              )
+              .replace('[$path]', directoryName)}.html`
+          );
+        }
       } else if (
         filePath.endsWith('meta.json') ||
         filePath.endsWith('meta.js')

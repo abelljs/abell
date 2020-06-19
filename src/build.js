@@ -52,11 +52,13 @@ function build(programInfo) {
   }
 
   // GENERATE CONTENT's HTML FILES
-  if (fs.existsSync(programInfo.contentTemplatePath)) {
-    for (const contentPath of programInfo.contentDirectories) {
-      generateContentFile(contentPath, programInfo);
-      if (programInfo.logs == 'complete') {
-        console.log(`...Built ${contentPath}`);
+  if (programInfo.contentTemplatePaths.length > 0) {
+    for (const contentTemplatePath of programInfo.contentTemplatePaths) {
+      for (const contentPath of programInfo.contentDirectories) {
+        generateContentFile(contentPath, contentTemplatePath, programInfo);
+        if (programInfo.logs == 'complete') {
+          console.log(`...Built ${contentPath}`);
+        }
       }
     }
   }
@@ -88,9 +90,10 @@ function build(programInfo) {
   );
 
   const ignoreCopying = [
-    path.dirname(programInfo.contentTemplatePath),
     ...importedFiles,
-    ...abellFiles.map((withoutExtension) => withoutExtension + '.abell')
+    ...[...abellFiles, ...programInfo.contentTemplatePaths].map(
+      (withoutExtension) => withoutExtension + '.abell'
+    )
   ];
 
   // Copy everything from src to dist except the ones mentioned in ignoreCopying.
