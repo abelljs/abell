@@ -150,7 +150,7 @@ function getBaseProgramInfo() {
 
   let contentIndexTemplate;
   const indexContentFilePath = contentTemplatePaths.find((templatePath) =>
-    templatePath.endsWith('index')
+    templatePath.endsWith('[$path]/index')
   );
 
   if (indexContentFilePath) {
