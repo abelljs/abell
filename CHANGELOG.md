@@ -2,7 +2,7 @@
 
 ## 0.3.0
 
-- We now support plugins 🎉 [Example: https://github.com/saurabhdaware/abell-sitemap-plugin](<[#15](https://github.com/abelljs/abell/issues/15)>)
+- We now support plugins 🎉 Example: [https://github.com/saurabhdaware/abell-sitemap-plugin](https://github.com/saurabhdaware/abell-sitemap-plugin) (Issue [#15](https://github.com/abelljs/abell/issues/15))
 - Nested folders in `content` now maintain structure (Resolved Issue [#19](https://github.com/abelljs/abell/issues/19))
 - **BREAKING CHANGE** All assets should be inside `content/<slug>/assets/` folder ([#22](https://github.com/abelljs/abell/issues/22))
 - Keeping dev-server alive when not defined errors occur (Patially fixes [#16](https://github.com/abelljs/abell/issues/16))
