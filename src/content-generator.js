@@ -165,7 +165,7 @@ function getBaseProgramInfo() {
 
   const programInfo = {
     abellConfigs,
-    contentIndexTemplate: contentIndexTemplate || null,
+    contentIndexTemplate: contentIndexTemplate || '',
     contentDirectories: contentDirectories || [],
     contentTemplatePaths,
     vars: {
