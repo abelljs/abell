@@ -6,16 +6,12 @@ const {
   copyFolderSync,
   boldGreen,
   recursiveFindFiles
-} = require('./helpers.js');
+} = require('../utils/helpers.js');
 
 const {
   generateContentFile,
   generateHTMLFile
-} = require('./content-generator');
-
-/**
- * @typedef {import('./content-generator').ProgramInfo} ProgramInfo
- */
+} = require('../utils/build-utils');
 
 /**
  * Builds the static site!

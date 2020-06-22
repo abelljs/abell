@@ -7,7 +7,7 @@ const md = new Remarkable({
   html: true
 });
 
-md.use(require('./remarkable-plugins/anchors.js'));
+md.use(require('../remarkable-plugins/anchors.js'));
 
 const {
   createPathIfAbsent,
@@ -17,30 +17,6 @@ const {
   addPrefixInHTMLPaths,
   copyFolderSync
 } = require('./helpers.js');
-
-/**
- *
- * @typedef {Object} MetaInfo - Meta information from meta.json file in content dir
- * @property {String} $slug - slug of content
- * @property {Date} $createdAt - Date object with time of content creation
- * @property {Date} $modifiedAt - Date object with time of last modification
- * @property {String} $path - String of path
- * @property {String} $root - Prefix to root
- *
- * @typedef {Object} ProgramInfo - Contains all the information required by the build to execute.
- * @property {import('./helpers.js').AbellConfigs} abellConfigs
- *  - Configuration from abell.config.js file
- * @property {String} contentIndexTemplate - string of the template from [$path]/index.abell file
- * @property {String} contentTemplatePaths - path of the template (mostly [$path]/index.abell file
- * @property {Object} vars - all global variables in .abell files
- * @property {MetaInfo[]} vars.$contentArray - An array of all MetaInfo
- * @property {Object} vars.$contentObj - Content meta info object
- * @property {Object} vars.globalMeta - meta info to be injected into .abell files
- * @property {Array} contentDirectories - List of names of all directories in content directory
- * @property {String} logs - logs in the console ('minimum', 'complete')
- * @property {String} templateExtension - extension of input file ('.abell' default)
- *
- */
 
 /**
  * On given slug and base path of content folder,

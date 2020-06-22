@@ -6,9 +6,9 @@
     "type": "patreon",
     "url": "https://patreon.com/saurabhdaware"
   },
-  "main": "dist/index.js",
+  "main": "bin/abell.js",
   "bin": {
-    "abell": "dist/index.js"
+    "abell": "bin/abell.js"
   },
   "scripts": {
     "test": "mocha --recursive \"./tests/*.js\"",

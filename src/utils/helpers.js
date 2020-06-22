@@ -1,18 +1,6 @@
 const fs = require('fs');
 const path = require('path');
 
-/**
- *
- * @typedef {Object} AbellConfigs - Configurations from abell.config.js
- * @property {String} contentPath - Path to content directory (default 'content')
- * @property {String} sourcePath - Path to source directory (default 'src')
- * @property {String} destinationPath
- *  - Path to output destination (default 'dist', changes to 'debug' during dev-server)
- * @property {String[]} plugins - Array of abell plugins.
- * @property {Object} globalMeta - Meta variables that are accessible globally in .abell files
- *
- */
-
 const relativeJoinedPath = (pathString) =>
   path.join(process.cwd(), ...pathString.split('/'));
 

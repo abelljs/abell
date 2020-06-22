@@ -1,11 +1,9 @@
-#!/usr/bin/env node
-
-const build = require('./build.js');
-const serve = require('./serve.js');
+const build = require('./commands/build.js');
+const serve = require('./commands/serve.js');
 const program = require('commander');
 
-const { getBaseProgramInfo } = require('./content-generator');
-const { boldGreen, boldRed, grey } = require('./helpers.js');
+const { getBaseProgramInfo } = require('./utils/build-utils');
+const { boldGreen, boldRed, grey } = require('./utils/helpers.js');
 
 program.version(require('../package.json').version);
 
@@ -52,5 +50,3 @@ program
   });
 
 program.parse(process.argv);
-
-module.exports = { build, serve };

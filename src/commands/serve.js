@@ -3,18 +3,15 @@ const path = require('path');
 
 const chokidar = require('chokidar');
 
-const ads = require('./abell-dev-server/server.js');
-const { exitHandler, boldGreen, boldRed } = require('./helpers.js');
+const ads = require('../abell-dev-server/server.js');
+const { exitHandler, boldGreen, boldRed } = require('../utils/helpers.js');
 const {
   generateContentFile,
   getBaseProgramInfo,
   getContentMeta,
   loadContent
-} = require('./content-generator');
+} = require('../utils/build-utils');
 const build = require('./build.js');
-/**
- * @typedef {import('./content-generator').ProgramInfo} ProgramInfo
- */
 
 /**
  * Starts a dev-server!
