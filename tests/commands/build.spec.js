@@ -18,25 +18,29 @@ describe('build()', () => {
 
     const assertMap = [
       {
-        built: fs.readFileSync('dist/index.html', 'utf8'),
-        expected: fs.readFileSync('expected_dist/index.html', 'utf8')
+        built: fs.readFileSync('dist/index.html', 'utf8').replace(/ /g, ''),
+        expected: fs
+          .readFileSync('expected_dist/index.html', 'utf8')
+          .replace(/ /g, '')
       },
       {
-        built: fs.readFileSync('dist/another-blog/index.html', 'utf8'),
-        expected: fs.readFileSync(
-          'expected_dist/another-blog/index.html',
-          'utf8'
-        )
+        built: fs
+          .readFileSync('dist/another-blog/index.html', 'utf8')
+          .replace(/ /g, ''),
+        expected: fs
+          .readFileSync('expected_dist/another-blog/index.html', 'utf8')
+          .replace(/ /g, '')
       },
       {
-        built: fs.readFileSync(
-          'dist/my-first-blog/sub-blog/index.html',
-          'utf8'
-        ),
-        expected: fs.readFileSync(
-          'expected_dist/my-first-blog/sub-blog/index.html',
-          'utf8'
-        )
+        built: fs
+          .readFileSync('dist/my-first-blog/sub-blog/index.html', 'utf8')
+          .replace(/ /g, ''),
+        expected: fs
+          .readFileSync(
+            'expected_dist/my-first-blog/sub-blog/index.html',
+            'utf8'
+          )
+          .replace(/ /g, '')
       },
       {
         built: fs.existsSync('dist/another-blog/assets/nice.txt'),

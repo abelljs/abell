@@ -21,7 +21,10 @@ describe('recursiveFindFiles()', () => {
         'tests/resources/test_recursiveFindFiles/ghi',
         'tests/resources/test_recursiveFindFiles/one/abc',
         'tests/resources/test_recursiveFindFiles/two/def'
-      ]);
+      ].map(nonCrossPlatformPaths => 
+          nonCrossPlatformPaths.replace(/\//g, path.sep)
+        )
+      );
   });
 });
 
