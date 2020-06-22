@@ -1,6 +1,10 @@
 const fs = require('fs');
 const path = require('path');
 
+/**
+ * @typedef {import('./typedefs').AbellConfigs}
+ */
+
 const relativeJoinedPath = (pathString) =>
   path.join(process.cwd(), ...pathString.split('/'));
 

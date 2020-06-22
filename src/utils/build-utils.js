@@ -19,6 +19,11 @@ const {
 } = require('./helpers.js');
 
 /**
+ * @typedef {import('./typedefs.js').MetaInfo}
+ * @typedef {import('./typedefs.js').ProgramInfo}
+ */
+
+/**
  * On given slug and base path of content folder,
  * returns object with all the meta information
  * @param {string} contentPath path to content directory
