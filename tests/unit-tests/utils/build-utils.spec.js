@@ -3,11 +3,11 @@ const expect = require('chai').expect;
 const {
   getBaseProgramInfo,
   importAndRender
-} = require('../../src/utils/build-utils.js');
+} = require('../../../src/utils/build-utils.js');
 
 describe('getBaseProgramInfo()', () => {
   before(() => {
-    process.chdir('tests/resources/test_demo');
+    process.chdir('tests/unit-tests/resources/test_demo');
   });
 
   it('should return the base info for program to execute', () => {
@@ -24,7 +24,7 @@ describe('getBaseProgramInfo()', () => {
   });
 
   after(() => {
-    process.chdir('../../..');
+    process.chdir('../../../..');
   });
 });
 
@@ -43,7 +43,7 @@ describe('importAndRender()', () => {
     expect(
       importAndRender(
         'another-blog/index.md',
-        'tests/resources/test_demo/content',
+        'tests/unit-tests/resources/test_demo/content',
         {
           meta: { title: 'Abell Test Title Check' }
         }

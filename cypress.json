@@ -1,0 +1,9 @@
+{
+  "fixturesFolder": false,
+  "integrationFolder": "tests/cypress/e2e",
+  "pluginsFile": false,
+  "screenshotsFolder": "tests/cypress/screenshots",
+  "videosFolder": "tests/cypress/videos",
+  "supportFile": false,
+  "video": false
+}

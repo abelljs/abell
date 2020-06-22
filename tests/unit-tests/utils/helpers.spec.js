@@ -7,20 +7,20 @@ const {
   createPathIfAbsent,
   execRegexOnAll,
   recursiveFindFiles
-} = require('../../src/utils/helpers.js');
+} = require('../../../src/utils/helpers.js');
 
 describe('recursiveFindFiles()', () => {
   // eslint-disable-next-line max-len
   it('should return paths of all files in test_recursiveFindFiles directory', () => {
     // prettier-ignore
     // eslint-disable-next-line max-len
-    expect(recursiveFindFiles('tests/resources/test_recursiveFindFiles', '.abell'))
+    expect(recursiveFindFiles('tests/unit-tests/resources/test_recursiveFindFiles', '.abell'))
       .to.be.an('array')
       .that.has.members([
-        'tests/resources/test_recursiveFindFiles/deep/moredeep/jkl',
-        'tests/resources/test_recursiveFindFiles/ghi',
-        'tests/resources/test_recursiveFindFiles/one/abc',
-        'tests/resources/test_recursiveFindFiles/two/def'
+        'tests/unit-tests/resources/test_recursiveFindFiles/deep/moredeep/jkl',
+        'tests/unit-tests/resources/test_recursiveFindFiles/ghi',
+        'tests/unit-tests/resources/test_recursiveFindFiles/one/abc',
+        'tests/unit-tests/resources/test_recursiveFindFiles/two/def'
       ].map(nonCrossPlatformPaths => 
           nonCrossPlatformPaths.replace(/\//g, path.sep)
         )
@@ -30,7 +30,7 @@ describe('recursiveFindFiles()', () => {
 
 describe('getAbellConfigs()', () => {
   before(() => {
-    process.chdir('tests/resources/test_demo');
+    process.chdir('tests/unit-tests/resources/test_demo');
   });
 
   it('should return siteName from abell.config.js', () => {
@@ -40,13 +40,13 @@ describe('getAbellConfigs()', () => {
   });
 
   after(() => {
-    process.chdir('../../..');
+    process.chdir('../../../..');
   });
 });
 
 describe('createPathIfAbsent()', () => {
   before(() => {
-    process.chdir('tests/resources/test_demo');
+    process.chdir('tests/unit-tests/resources/test_demo');
   });
 
   it('should create /newly/created/path if it is not present', () => {
@@ -60,7 +60,7 @@ describe('createPathIfAbsent()', () => {
   });
 
   after(() => {
-    process.chdir('../../..');
+    process.chdir('../../../..');
   });
 });
 

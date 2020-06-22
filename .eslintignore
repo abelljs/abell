@@ -1,3 +1,4 @@
 dist/
 demo/
 tests/resources/
+tests/cypress/

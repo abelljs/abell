@@ -1,12 +1,12 @@
 const fs = require('fs');
 const expect = require('chai').expect;
 
-const build = require('../../src/commands/build.js');
-const { getBaseProgramInfo } = require('../../src/utils/build-utils.js');
+const build = require('../../../src/commands/build.js');
+const { getBaseProgramInfo } = require('../../../src/utils/build-utils.js');
 
 describe('build()', () => {
   before(() => {
-    process.chdir('tests/resources/test_demo');
+    process.chdir('tests/unit-tests/resources/test_demo');
   });
 
   // eslint-disable-next-line max-len
@@ -60,6 +60,6 @@ describe('build()', () => {
   });
 
   after(() => {
-    process.chdir('../../..');
+    process.chdir('../../../..');
   });
 });

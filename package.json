@@ -11,12 +11,15 @@
     "abell": "bin/abell.js"
   },
   "scripts": {
-    "test": "mocha --recursive \"./tests/**/*.js\"",
+    "test": "mocha --recursive \"./tests/unit-tests/**/*.js\"",
+    "e2e": "cypress run",
     "eslint": "eslint .",
     "prettier": "prettier --write \"**/*.js\"",
+    "format": "npm run prettier",
     "dev:build": "cd demo && node ../bin/abell.js build",
     "dev:serve": "cd demo && node ../bin/abell.js serve",
     "dev": "npm run dev:serve",
+    "cy": "cypress open",
     "prepublishOnly": "npm run eslint && npm test"
   },
   "repository": {
@@ -39,6 +42,7 @@
   },
   "devDependencies": {
     "chai": "^4.2.0",
+    "cypress": "^4.8.0",
     "eslint": "^7.0.0",
     "eslint-config-google": "^0.14.0",
     "eslint-config-prettier": "^6.11.0",
