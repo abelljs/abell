@@ -6,18 +6,18 @@
     "type": "patreon",
     "url": "https://patreon.com/saurabhdaware"
   },
-  "main": "bin/abell.js",
+  "main": "src/main.js",
   "bin": {
     "abell": "bin/abell.js"
   },
   "scripts": {
-    "test": "mocha --recursive \"./tests/*.js\"",
+    "test": "mocha --recursive \"./tests/**/*.js\"",
     "eslint": "eslint .",
     "prettier": "prettier --write \"**/*.js\"",
     "dev:build": "cd demo && node ../bin/abell.js build",
     "dev:serve": "cd demo && node ../bin/abell.js serve",
     "dev": "npm run dev:serve",
-    "prepublishOnly": "npm run eslint && npm test && npm run build"
+    "prepublishOnly": "npm run eslint && npm test"
   },
   "repository": {
     "type": "git",

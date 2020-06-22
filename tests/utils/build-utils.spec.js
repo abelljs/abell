@@ -3,7 +3,7 @@ const expect = require('chai').expect;
 const {
   getBaseProgramInfo,
   importAndRender
-} = require('../src/content-generator.js');
+} = require('../../src/utils/build-utils.js');
 
 describe('getBaseProgramInfo()', () => {
   before(() => {

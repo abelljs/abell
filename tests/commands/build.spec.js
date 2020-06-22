@@ -1,8 +1,8 @@
 const fs = require('fs');
 const expect = require('chai').expect;
 
-const build = require('../src/build.js');
-const { getBaseProgramInfo } = require('../src/content-generator.js');
+const build = require('../../src/commands/build.js');
+const { getBaseProgramInfo } = require('../../src/utils/build-utils.js');
 
 describe('build()', () => {
   before(() => {
