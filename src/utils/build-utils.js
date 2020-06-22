@@ -12,11 +12,14 @@ md.use(require('./remarkable-plugins/anchors.js'));
 const {
   createPathIfAbsent,
   getAbellConfigs,
-  prefetchLinksAndAddToPage,
   recursiveFindFiles,
-  addPrefixInHTMLPaths,
   copyFolderSync
 } = require('./helpers.js');
+
+const {
+  addPrefixInHTMLPaths,
+  prefetchLinksAndAddToPage
+} = require('./transformations.js');
 
 /**
  * @typedef {import('./typedefs.js').MetaInfo}

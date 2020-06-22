@@ -3,7 +3,6 @@ const path = require('path');
 const expect = require('chai').expect;
 
 const {
-  getDirectories,
   getAbellConfigs,
   createPathIfAbsent,
   execRegexOnAll,
@@ -11,15 +10,6 @@ const {
   prefetchLinksAndAddToPage,
   recursiveFindFiles
 } = require('../src/helpers.js');
-
-describe('getDirectories()', () => {
-  it('should return folder name in array when called on test directory', () => {
-    // prettier-ignore
-    expect(getDirectories('tests/resources/test_getDirectories'))
-      .to.be.an('array')
-      .that.has.members(['test1', 'test3']);
-  });
-});
 
 describe('recursiveFindFiles()', () => {
   // eslint-disable-next-line max-len

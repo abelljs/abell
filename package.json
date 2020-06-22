@@ -14,9 +14,8 @@
     "test": "mocha --recursive \"./tests/*.js\"",
     "eslint": "eslint .",
     "prettier": "prettier --write \"**/*.js\"",
-    "build": "node build/build.main.js",
-    "dev:build": "cd demo && node ../src/index.js build",
-    "dev:serve": "cd demo && node ../src/index.js serve",
+    "dev:build": "cd demo && node ../bin/abell.js build",
+    "dev:serve": "cd demo && node ../bin/abell.js serve",
     "dev": "npm run dev:serve",
     "prepublishOnly": "npm run eslint && npm test && npm run build"
   },
