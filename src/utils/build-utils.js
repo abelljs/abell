@@ -7,7 +7,7 @@ const md = new Remarkable({
   html: true
 });
 
-md.use(require('../remarkable-plugins/anchors.js'));
+md.use(require('./remarkable-plugins/anchors.js'));
 
 const {
   createPathIfAbsent,

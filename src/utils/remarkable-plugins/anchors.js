@@ -1,4 +1,11 @@
 /**
+ * We use remarkable to parse markdown to HTML.
+ *
+ * This plugin adds id attribute to headlines in markdown.
+ *
+ */
+
+/**
  * Turns 'Hello World' to 'hello-world'
  * @param {String} headerContent
  * @return {String}
