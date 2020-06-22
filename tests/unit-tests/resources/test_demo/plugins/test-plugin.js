@@ -7,7 +7,7 @@ const afterBuild = (programInfo) => {
   fs.writeFileSync(
     path.join(programInfo.abellConfigs.destinationPath, 'built-by-plugin.json'),
     JSON.stringify(programInfo.vars.$contentObj, {}, 2)
-  )
-}
+  );
+};
 
-module.exports = { afterBuild }
+module.exports = { afterBuild };
