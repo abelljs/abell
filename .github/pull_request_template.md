@@ -1,10 +1,7 @@
 <!---
 To check the checkbox add 'x' inside brackets
-
-- [ ] Feature
-- [x] Bug Fix
-- [ ] Refactor
-
+E.g:
+- [x] Feature
 -->
 
 ## What type of PR is this?

@@ -1,24 +1,27 @@
 {
   "name": "abell",
-  "version": "0.3.0",
+  "version": "0.3.1-alpha.1",
   "description": "Abell is a static blog generator that generates blog in Vanilla JavaScript",
   "funding": {
     "type": "patreon",
     "url": "https://patreon.com/saurabhdaware"
   },
-  "main": "dist/index.js",
+  "main": "src/main.js",
   "bin": {
-    "abell": "dist/index.js"
+    "abell": "bin/abell.js"
   },
   "scripts": {
-    "test": "mocha --recursive \"./tests/*.js\"",
+    "test:unit": "mocha --recursive \"./tests/unit-tests/**/*.js\"",
+    "test:e2e": "cypress run",
+    "test": "npm run test:unit && echo \">> For e2e test, Run\nnpm run test-server\nnpm run test:e2e \"",
+    "start": "cd demo && node ../bin/abell.js build && serve dist",
+    "test-server": "node tests/cypress/scripts/build-test-examples.js && serve tests/cypress/examples",
+    "dev": "echo \"1. Execute 'npm link' \n2. 'cd demo'\n3. 'abell serve' \"",
     "eslint": "eslint .",
     "prettier": "prettier --write \"**/*.js\"",
-    "build": "node build/build.main.js",
-    "dev:build": "cd demo && node ../src/index.js build",
-    "dev:serve": "cd demo && node ../src/index.js serve",
-    "dev": "npm run dev:serve",
-    "prepublishOnly": "npm run eslint && npm test && npm run build"
+    "format": "npm run prettier",
+    "cy": "cypress open",
+    "prepublishOnly": "npm run eslint && npm test"
   },
   "repository": {
     "type": "git",
@@ -30,7 +33,7 @@
   "bugs": {
     "url": "https://github.com/abelljs/abell/issues"
   },
-  "homepage": "https://github.com/abelljs/abell#readme",
+  "homepage": "https://abelljs.org",
   "dependencies": {
     "abell-renderer": "^0.1.12",
     "chokidar": "^3.4.0",
@@ -40,14 +43,15 @@
   },
   "devDependencies": {
     "chai": "^4.2.0",
+    "cypress": "^4.8.0",
     "eslint": "^7.0.0",
     "eslint-config-google": "^0.14.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.3",
-    "fs-extra": "^9.0.0",
     "husky": "^4.2.5",
     "mocha": "^7.1.2",
-    "prettier": "^2.0.5"
+    "prettier": "^2.0.5",
+    "serve": "^11.3.2"
   },
   "husky": {
     "hooks": {
