@@ -8,4 +8,5 @@ tests/
 .vscode/
 .prettierrc
 .prettierignore
+cypress.json
 CODE_OF_CONDUCT.md
