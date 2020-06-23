@@ -23,15 +23,23 @@ npm run dev
 
 Check out https://abelljs.org for complete documentation.
 
-### 🕐 &nbsp; Changelog
+### 🕐 Changelog
 
 Changelogs are maintained in [CHANGELOG.md](CHANGELOG.md)
 
-### 🤗 &nbsp; Contributing
+### 🤗 Local Installation & Contributing
+
+- Fork [abelljs/abell](https://github.com/abelljs/abell)
+- `git clone https://github.com/:github-username/abell`
+- `cd abell`
+- `npm install` - to install dependencies
+- `npm link` - This will add the current directory to global packages.
+- `cd demo` - Directory `demo` has a demo abell project.
+- `abell build` to build project or `abell serve` to start dev server.
 
 We would love to have contributions! The contributing guidelines along with local setup guide is mentioned in [CONTRIBUTING.md](CONTRIBUTING.md)
 
-### 💙 &nbsp; Related Repositories
+### 💙 Related Repositories
 
 - [abelljs/abell-website](https://github.com/abelljs/abell-website): Code of Documentation website of Abell (https://abelljs.org)
 - [abelljs/abell-renderer](https://github.com/abelljs/abell-renderer): Low-level API that deals with rendering of `.abell` files.
