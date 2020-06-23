@@ -16,6 +16,12 @@
 - Make changes in your locally cloned fork
 - Send Pull Request from your branch to `main` branch.
 
+## Running Automated Tests
+
+Automated tests help us know if the changed code breaks something in the existing projects.
+
+These automated tests will automatically run on Pull Request but if you want to run them locally before making a PR, you can follow [Testing Guide](https://github.com/abelljs/abell/tree/main/tests/README.md) to run tests locally.
+
 ## Detailed Guide to Code
 
 Abell is a static-site-generator so you can think of this as a script that
