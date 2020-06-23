@@ -10,5 +10,11 @@ const shell = `
 `;
 
 exec(shell, (err, stdout, stderr) => {
+  if (err) throw err;
+  if (stderr) throw stderr;
+  if (stdout.includes('Abell Build Failed')) {
+    console.log(stdout);
+    throw new Error("Build failed (More logs above)");
+  }
   console.log(stdout);
 })

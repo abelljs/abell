@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-context('Build Standard template with deep routes and content', () => {
+context('Build Standard template with deep routes and content (examples/standard/)', () => {
   beforeEach(() => {
     cy.visit('/standard/dist')
   })
@@ -25,6 +25,7 @@ context('Build Standard template with deep routes and content', () => {
       .should('contain', '')
   })
 
+  // TODO: Make this more accurate
   it('should render information of all the content from $contentArray', () => {
     const contentMetaEls = cy.get('[data-cy="contentarray-container"]').children();
     contentMetaEls.should('have.length', 4);

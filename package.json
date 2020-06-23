@@ -13,9 +13,9 @@
   "scripts": {
     "test:unit": "mocha --recursive \"./tests/unit-tests/**/*.js\"",
     "test:e2e": "cypress run",
-    "test": "echo \" \n\n>> Make sure you're running 'npm run test-server'\n\n\n \" && npm run test:unit && npm run test:e2e",
+    "test": "npm run test:unit && echo \">> For e2e test, Run\nnpm run test-server\nnpm run test:e2e \"",
     "start": "cd demo && node ../bin/abell.js build && serve dist",
-    "test-server": "node tests/cypress/scripts/build-all-examples.js && serve tests/cypress/examples/",
+    "test-server": "node tests/cypress/scripts/build-test-examples.js && serve tests/cypress/examples",
     "dev": "echo \"1. Execute 'npm link' \n2. 'cd demo'\n3. 'abell serve' \"",
     "eslint": "eslint .",
     "prettier": "prettier --write \"**/*.js\"",
@@ -52,8 +52,7 @@
     "husky": "^4.2.5",
     "mocha": "^7.1.2",
     "prettier": "^2.0.5",
-    "serve": "^11.3.2",
-    "start-server-and-test": "^1.11.0"
+    "serve": "^11.3.2"
   },
   "husky": {
     "hooks": {
