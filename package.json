@@ -11,14 +11,15 @@
     "abell": "bin/abell.js"
   },
   "scripts": {
-    "test": "mocha --recursive \"./tests/unit-tests/**/*.js\"",
-    "e2e": "cypress run",
+    "test:unit": "mocha --recursive \"./tests/unit-tests/**/*.js\"",
+    "test:e2e": "cypress run",
+    "test": "echo \" \n\n>> Make sure you're running 'npm run test-server'\n\n\n \" && npm run test:unit && npm run test:e2e",
+    "start": "cd demo && node ../bin/abell.js build && serve dist",
+    "test-server": "node tests/cypress/scripts/build-all-examples.js && serve tests/cypress/examples/",
+    "dev": "echo \"1. Execute 'npm link' \n2. 'cd demo'\n3. 'abell serve' \"",
     "eslint": "eslint .",
     "prettier": "prettier --write \"**/*.js\"",
     "format": "npm run prettier",
-    "dev:build": "cd demo && node ../bin/abell.js build",
-    "dev:serve": "cd demo && node ../bin/abell.js serve",
-    "dev": "npm run dev:serve",
     "cy": "cypress open",
     "prepublishOnly": "npm run eslint && npm test"
   },
@@ -32,7 +33,7 @@
   "bugs": {
     "url": "https://github.com/abelljs/abell/issues"
   },
-  "homepage": "https://github.com/abelljs/abell#readme",
+  "homepage": "https://abelljs.org",
   "dependencies": {
     "abell-renderer": "^0.1.12",
     "chokidar": "^3.4.0",
@@ -50,7 +51,9 @@
     "fs-extra": "^9.0.0",
     "husky": "^4.2.5",
     "mocha": "^7.1.2",
-    "prettier": "^2.0.5"
+    "prettier": "^2.0.5",
+    "serve": "^11.3.2",
+    "start-server-and-test": "^1.11.0"
   },
   "husky": {
     "hooks": {

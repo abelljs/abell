@@ -1,0 +1,46 @@
+{{
+  const site = require('./site.json');
+}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="./styles/index.css" />
+  <title>{{ globalMeta.siteName }}</title>
+</head>
+<body>
+  {{
+    const a = 10;
+    const b = 1;
+  }}
+  <main>
+    <section>
+      JS Test <span data-cy="js-in-abell-test">{{ a + b }}</span>
+    </section>
+    <section>
+      Include from JSON Test <span data-cy="include-from-json-test">{{ site.greet }}</span>
+    </section>
+    <section>
+      globalMeta Test <span data-cy="globalmeta-test">{{ globalMeta.siteName }}</span>
+    </section>
+    <section>
+      $root test <span data-cy="root-test">{{ $root }}</span>
+    </section>
+    <section>
+      $contentArray Test
+      <div data-cy="contentarray-container">
+        {{
+          $contentArray
+            .map(meta => `
+              <div>
+                <span class="data-title">${meta.title} (${meta.$path})</span>
+                <span class="data-createdat">${meta.$createdAt}</span>
+                <span class="data-modifiedat">${meta.$modifiedAt}</span>
+                <span class="data-foo">${meta.foo}</span>
+              </div>
+            `).join('');
+        }}
+      </div>
+  </main>
+  <script src="./test.mjs" type="module"></script>
+</body>
+</html>

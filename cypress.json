@@ -4,6 +4,7 @@
   "pluginsFile": false,
   "screenshotsFolder": "tests/cypress/screenshots",
   "videosFolder": "tests/cypress/videos",
+  "baseUrl": "http://localhost:5000",
   "supportFile": false,
   "video": false
 }
