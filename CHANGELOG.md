@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.3.2
+
+- Run-time bug fix for windows (by [@anuraghazra](https://github.com/anuraghazra))
+
+## 0.3.1
+
+- Run bug fix when content is empty (by [@Judionit](https://github.com/Judionit))
+- Complete refactor and added e2e tests
+
 ## 0.3.0
 
 - We now support plugins 🎉 Example: [https://github.com/saurabhdaware/abell-sitemap-plugin](https://github.com/saurabhdaware/abell-sitemap-plugin) (Issue [#15](https://github.com/abelljs/abell/issues/15))
