@@ -1,1 +1,0 @@
-# Inside the new blog

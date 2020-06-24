@@ -1,0 +1,11 @@
+{{
+  const siteData = require('./siteData.json');
+}}
+<html>
+  <head>
+    <title>{{ siteData.title }}</title>
+  </head>
+  <body>
+    {{ siteData.greet }}
+  </body>
+</html>

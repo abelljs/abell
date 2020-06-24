@@ -34,7 +34,7 @@ Changelogs are maintained in [CHANGELOG.md](CHANGELOG.md)
 - `cd abell`
 - `npm install` - to install dependencies
 - `npm link` - This will add the current directory to global packages.
-- `cd demo` - Directory `demo` has a demo abell project.
+- `cd examples/main` - Directory `examples` has sample abell projects.
 - `abell build` to build project or `abell serve` to start dev server.
 
 We would love to have contributions! The contributing guidelines along with local setup guide is mentioned in [CONTRIBUTING.md](CONTRIBUTING.md)
