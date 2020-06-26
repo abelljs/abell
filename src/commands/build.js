@@ -33,20 +33,6 @@ function build(programInfo) {
   rmdirRecursiveSync(programInfo.abellConfigs.destinationPath);
   fs.mkdirSync(programInfo.abellConfigs.destinationPath);
 
-  /** Before Build plugins */
-  for (const pluginPath of programInfo.abellConfigs.plugins) {
-    const currentPlugin = require(pluginPath);
-    if (currentPlugin.beforeBuild) {
-      if (programInfo.logs === 'complete') {
-        console.log(
-          '>> Plugin BeforeBuild: Executing ' +
-            path.relative(process.cwd(), pluginPath)
-        );
-      }
-      currentPlugin.beforeBuild(programInfo);
-    }
-  }
-
   // GENERATE CONTENT's HTML FILES
   if (programInfo.contentTemplatePaths.length > 0) {
     for (const contentTemplatePath of programInfo.contentTemplatePaths) {

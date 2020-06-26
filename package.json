@@ -38,6 +38,7 @@
     "abell-renderer": "^0.1.14",
     "chokidar": "^3.4.0",
     "commander": "^5.0.0",
+    "node-fetch": "^2.6.0",
     "remarkable": "^2.0.0",
     "ws": "^7.3.0"
   },

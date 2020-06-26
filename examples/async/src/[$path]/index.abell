@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="description" content="{{ meta.description }}"/>
+  <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon" />
+
+  <meta name="og:title" content="{{ meta.title }}"/>
+  <meta name="og:description" content="{{ meta.description }}"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <link rel="stylesheet" href="../styles/blog.css"/>
+
+  <title>{{ meta.title }} | {{ globalMeta.siteName }}</title>
+
+  <style>
+    /* inlined-css for fast load */
+    main {
+      padding: 100px 200px;
+    }
+
+    @media (max-width: 768px) {
+      main {
+        padding: 40px 20px;
+      }
+    }
+
+  </style>
+</head>
+<body>
+  <main>
+    <div class="blog-container">
+      <div class="content">
+        {{ $importContent(`${meta.$path}/index.md`) }}
+      </div>
+    </div>
+    <hr/>
+    <br/><br/>
+  </main>
+</body>
+</html>
