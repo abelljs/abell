@@ -1,19 +1,42 @@
+const path = require('path');
 const build = require('./commands/build.js');
 const serve = require('./commands/serve.js');
 const program = require('commander');
 
 const { getBaseProgramInfo } = require('./utils/build-utils');
-const { boldGreen, boldRed, grey } = require('./utils/helpers.js');
+const { grey, boldRed, boldGreen } = require('./utils/helpers.js');
 
 program.version(require('../package.json').version);
 
-program.command('build').action(() => {
+program.command('build').action(async () => {
   try {
     const buildStartTime = new Date().getTime();
-    const programInfo = getBaseProgramInfo();
+
+    let programInfo = getBaseProgramInfo();
+
+    /** Before Build plugins */
+    for await (const pluginPath of programInfo.abellConfigs.plugins) {
+      const currentPlugin = require(pluginPath);
+      if (currentPlugin.beforeBuild) {
+        console.log(
+          '>> Plugin BeforeBuild: Executing ' +
+            path.relative(process.cwd(), pluginPath)
+        );
+        await currentPlugin.beforeBuild(programInfo);
+      }
+    }
+
+    /**
+     getBaseProgram again after making sure
+     async operations are done and "contents"  
+     folder have all the data
+    */
+    programInfo = getBaseProgramInfo();
+
     programInfo.logs = 'complete';
     programInfo.task = 'build';
     build(programInfo);
+
     const buildTime = new Date().getTime() - buildStartTime;
     console.log(
       `\n\n${boldGreen(

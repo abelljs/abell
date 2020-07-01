@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Welcome to the {{ globalMeta.siteName }}, A blog by {{ globalMeta.name }}" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles/index.css">
+  <title>{{ globalMeta.siteName }}</title>
+</head>
+<body>
+  <header>
+    <h1>{{ globalMeta.siteName }}</h1>
+    <div class="header-bio">
+      Abell Minima is a starter blog built with Abell. <br/>This template is designed and maintained by <b>{{ globalMeta.name }}</b> you can follow them on <a href="https://twitter.com/{{ globalMeta.twitter }}">Twitter @{{ globalMeta.twitter }}</a>.
+    </div>
+  </header>
+  <main>
+    <div class="article-container">
+      {{
+        $contentArray
+          .map(meta => `
+            <article class="shadow">
+              <a href="${meta.$path}/">
+                <h2>${meta.title}</h2>
+                <div class="article-date"><small>${meta.$createdAt.toDateString()}</small></div>
+                <p class="article-description">${meta.description}</p>
+              </a>
+            </article>
+          `)
+          .join('')
+      }}
+    </div>
+  </main>
+</body>
+</html>
