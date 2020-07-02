@@ -2,7 +2,8 @@ const expect = require('chai').expect;
 
 const {
   getBaseProgramInfo,
-  importAndRender
+  importAndRender,
+  loadContent
 } = require('../../../src/utils/build-utils.js');
 
 describe('getBaseProgramInfo()', () => {
@@ -21,6 +22,34 @@ describe('getBaseProgramInfo()', () => {
         'contentDirectories',
         'logs'
       ]);
+  });
+
+  after(() => {
+    process.chdir('../../../..');
+  });
+});
+
+
+describe('loadContent()', () => {
+  before(() => {
+    process.chdir('tests/unit-tests/resources/test_demo');
+  });
+
+  it('should return all the information about the content', () => {
+    const {
+      contentDirectories, 
+      $contentObj
+    } = loadContent('./content');
+
+    expect(contentDirectories).to.eql([
+      'another-blog',
+      'my-first-blog',
+      'my-first-blog/sub-blog'
+    ]);
+
+    expect($contentObj['my-first-blog/sub-blog'].$root)
+      .to.equal('../..')
+
   });
 
   after(() => {
