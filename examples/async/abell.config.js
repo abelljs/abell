@@ -1,4 +1,4 @@
 module.exports = {
   sourcePath: 'src',
-  plugins: ['./plugins/source-gh.js']
+  plugins: ['./plugins/index.js']
 };

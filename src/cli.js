@@ -1,9 +1,10 @@
+const fs = require('fs');
 const path = require('path');
 const build = require('./commands/build.js');
 const serve = require('./commands/serve.js');
 const program = require('commander');
 
-const { getBaseProgramInfo } = require('./utils/build-utils');
+const { getBaseProgramInfo, loadContent } = require('./utils/build-utils');
 const { grey, boldRed, boldGreen } = require('./utils/helpers.js');
 
 program.version(require('../package.json').version);
@@ -12,7 +13,7 @@ program.command('build').action(async () => {
   try {
     const buildStartTime = new Date().getTime();
 
-    let programInfo = getBaseProgramInfo();
+    const programInfo = getBaseProgramInfo();
 
     /** Before Build plugins */
     for await (const pluginPath of programInfo.abellConfigs.plugins) {
@@ -22,16 +23,20 @@ program.command('build').action(async () => {
           '>> Plugin BeforeBuild: Executing ' +
             path.relative(process.cwd(), pluginPath)
         );
+
         await currentPlugin.beforeBuild(programInfo);
       }
     }
 
-    /**
-     getBaseProgram again after making sure
-     async operations are done and "contents"  
-     folder have all the data
-    */
-    programInfo = getBaseProgramInfo();
+    if (fs.existsSync(programInfo.abellConfigs.contentPath)) {
+      const { contentDirectories, $contentObj, $contentArray } = loadContent(
+        programInfo.abellConfigs.contentPath
+      );
+
+      programInfo.contentDirectories = contentDirectories;
+      programInfo.vars.$contentObj = $contentObj;
+      programInfo.vars.$contentArray = $contentArray;
+    }
 
     programInfo.logs = 'complete';
     programInfo.task = 'build';
@@ -63,6 +68,17 @@ program
   .option('--socket-port [socketPort]', 'Serve on different port')
   .action((command) => {
     const programInfo = getBaseProgramInfo();
+
+    if (fs.existsSync(programInfo.abellConfigs.contentPath)) {
+      const { contentDirectories, $contentObj, $contentArray } = loadContent(
+        programInfo.abellConfigs.contentPath
+      );
+
+      programInfo.contentDirectories = contentDirectories;
+      programInfo.vars.$contentObj = $contentObj;
+      programInfo.vars.$contentArray = $contentArray;
+    }
+
     programInfo.port = command.port || 5000;
     programInfo.socketPort = command.socketPort || 3000;
     programInfo.task = 'serve';
