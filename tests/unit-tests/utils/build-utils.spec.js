@@ -47,6 +47,8 @@ describe('loadContent()', () => {
       'my-first-blog/sub-blog'
     ]);
 
+    expect($contentObj['another-blog'].$root).to.equal('..')
+
     expect($contentObj['my-first-blog/sub-blog'].$root)
       .to.equal('../..')
 
