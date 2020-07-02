@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{{ globalMeta.siteName }}</title>
+  </head>
+  <body>
+    <section>
+      <h2>Content</h2>
+      {{
+        $contentArray
+          .map(meta => `
+            <div>${meta.$slug}</div>
+          `)
+          .join('')
+      }}
+    </section>
+  </body>
+</html>
