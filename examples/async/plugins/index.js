@@ -1,9 +1,14 @@
-const fetch = require('node-fetch');
+async function wait(time) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, time);
+  })
+}
 
 const beforeBuild = async (programInfo) => {
   console.log(programInfo);
-  await fetch('https://saurabhdaware.in').then(res => res.text());
-  console.log('Still before build');
+  console.log('Expected to wait here for 2seconds');
+  await wait(2000);
+  console.log('Still build did not happen');
 };
 
 module.exports = { beforeBuild };
