@@ -1,3 +1,4 @@
+const path = require('path');
 const expect = require('chai').expect;
 
 const {
@@ -44,7 +45,7 @@ describe('loadContent()', () => {
     expect(contentDirectories).to.eql([
       'another-blog',
       'my-first-blog',
-      'my-first-blog/sub-blog'
+      `my-first-blog${path.sep}sub-blog`
     ]);
 
     expect($contentObj['another-blog'].$root).to.equal('..')
