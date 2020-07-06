@@ -85,20 +85,6 @@ function build(programInfo) {
     ignoreCopying
   );
 
-  /** After Build plugins */
-  for (const pluginPath of programInfo.abellConfigs.plugins) {
-    const currentPlugin = require(pluginPath);
-    if (currentPlugin.afterBuild) {
-      if (programInfo.logs === 'complete') {
-        console.log(
-          '>> Plugin AfterBuild: Executing ' +
-            path.relative(process.cwd(), pluginPath)
-        );
-      }
-      currentPlugin.afterBuild(programInfo);
-    }
-  }
-
   if (programInfo.logs == 'minimum') {
     console.log(`${boldGreen('>>>')} Files built.. ✨`);
   }

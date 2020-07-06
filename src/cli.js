@@ -1,32 +1,16 @@
 const fs = require('fs');
-const path = require('path');
 const build = require('./commands/build.js');
 const serve = require('./commands/serve.js');
 const program = require('commander');
 
-const { getBaseProgramInfo, loadContent } = require('./utils/build-utils');
+const { getBaseProgramInfo, loadContent } = require('./utils/build-utils.js');
 const { grey, boldRed, boldGreen } = require('./utils/helpers.js');
+const {
+  executeAfterBuildPlugins,
+  executeBeforeBuildPlugins
+} = require('./utils/plugin-utils.js');
 
 program.version(require('../package.json').version);
-
-/**
- *
- * @param {ProgramInfo} programInfo
- */
-async function executeBeforeBuildPlugins(programInfo) {
-  /** Before Build plugins */
-  for (const pluginPath of programInfo.abellConfigs.plugins) {
-    const currentPlugin = require(pluginPath);
-    if (currentPlugin.beforeBuild) {
-      console.log(
-        '>> Plugin BeforeBuild: Executing ' +
-          path.relative(process.cwd(), pluginPath)
-      );
-
-      await currentPlugin.beforeBuild(programInfo);
-    }
-  }
-}
 
 /**
  * Executed on `abell build`
@@ -52,6 +36,7 @@ async function onBuildCommand() {
     programInfo.logs = 'complete';
     programInfo.task = 'build';
     build(programInfo);
+    executeAfterBuildPlugins(programInfo);
 
     const buildTime = new Date().getTime() - buildStartTime;
     console.log(
@@ -98,6 +83,7 @@ async function onServeCommand(command) {
   programInfo.abellConfigs.destinationPath = '.debug';
 
   serve(programInfo);
+  executeAfterBuildPlugins(programInfo);
 }
 
 /**
