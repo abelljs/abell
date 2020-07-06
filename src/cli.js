@@ -1,19 +1,43 @@
+const fs = require('fs');
 const build = require('./commands/build.js');
 const serve = require('./commands/serve.js');
 const program = require('commander');
 
-const { getBaseProgramInfo } = require('./utils/build-utils');
-const { boldGreen, boldRed, grey } = require('./utils/helpers.js');
+const { getBaseProgramInfo, loadContent } = require('./utils/build-utils.js');
+const { grey, boldRed, boldGreen } = require('./utils/helpers.js');
+const {
+  executeAfterBuildPlugins,
+  executeBeforeBuildPlugins
+} = require('./utils/plugin-utils.js');
 
 program.version(require('../package.json').version);
 
-program.command('build').action(() => {
+/**
+ * Executed on `abell build`
+ */
+async function onBuildCommand() {
   try {
     const buildStartTime = new Date().getTime();
+
     const programInfo = getBaseProgramInfo();
+
+    await executeBeforeBuildPlugins(programInfo);
+
+    if (fs.existsSync(programInfo.abellConfigs.contentPath)) {
+      const { contentDirectories, $contentObj, $contentArray } = loadContent(
+        programInfo.abellConfigs.contentPath
+      );
+
+      programInfo.contentDirectories = contentDirectories;
+      programInfo.vars.$contentObj = $contentObj;
+      programInfo.vars.$contentArray = $contentArray;
+    }
+
     programInfo.logs = 'complete';
     programInfo.task = 'build';
     build(programInfo);
+    executeAfterBuildPlugins(programInfo);
+
     const buildTime = new Date().getTime() - buildStartTime;
     console.log(
       `\n\n${boldGreen(
@@ -32,21 +56,46 @@ program.command('build').action(() => {
       )}\n\n`
     );
   }
-});
+}
+
+/**
+ * Executed on `abell serve`
+ * @param {Object} command
+ */
+async function onServeCommand(command) {
+  const programInfo = getBaseProgramInfo();
+  await executeBeforeBuildPlugins(programInfo);
+
+  if (fs.existsSync(programInfo.abellConfigs.contentPath)) {
+    const { contentDirectories, $contentObj, $contentArray } = loadContent(
+      programInfo.abellConfigs.contentPath
+    );
+
+    programInfo.contentDirectories = contentDirectories;
+    programInfo.vars.$contentObj = $contentObj;
+    programInfo.vars.$contentArray = $contentArray;
+  }
+
+  programInfo.port = command.port || 5000;
+  programInfo.socketPort = command.socketPort || 3000;
+  programInfo.task = 'serve';
+  programInfo.logs = 'minimum';
+  programInfo.abellConfigs.destinationPath = '.debug';
+
+  serve(programInfo);
+  executeAfterBuildPlugins(programInfo);
+}
+
+/**
+ * Command Handlers
+ */
+
+program.command('build').action(onBuildCommand);
 
 program
   .command('serve')
   .option('--port [port]', 'Serve on different port')
   .option('--socket-port [socketPort]', 'Serve on different port')
-  .action((command) => {
-    const programInfo = getBaseProgramInfo();
-    programInfo.port = command.port || 5000;
-    programInfo.socketPort = command.socketPort || 3000;
-    programInfo.task = 'serve';
-    programInfo.logs = 'minimum';
-    programInfo.abellConfigs.destinationPath = '.debug';
+  .action(onServeCommand);
 
-    serve(programInfo);
-  });
-
-program.parse(process.argv);
+program.parse(process.argv); // required for commander to parse arguments

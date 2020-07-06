@@ -9,7 +9,10 @@
       {{
         $contentArray
           .map(meta => `
-            <div>${meta.$slug}</div>
+            <div>
+              ${meta.title}
+              <a href="${meta.$path}/">${meta.$path}</a>
+            </div>
           `)
           .join('')
       }}

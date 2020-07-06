@@ -117,15 +117,6 @@ function loadContent(contentPath) {
 function getBaseProgramInfo() {
   // Get configured paths of destination and content
   const abellConfigs = getAbellConfigs();
-  let contentDirectories;
-  let $contentObj;
-  let $contentArray;
-
-  if (fs.existsSync(abellConfigs.contentPath)) {
-    ({ contentDirectories, $contentObj, $contentArray } = loadContent(
-      abellConfigs.contentPath
-    ));
-  }
 
   let contentTemplatePaths = [];
   if (fs.existsSync(path.join(abellConfigs.sourcePath, '[$path]'))) {
@@ -150,11 +141,11 @@ function getBaseProgramInfo() {
   const programInfo = {
     abellConfigs,
     contentIndexTemplate: contentIndexTemplate || '',
-    contentDirectories: contentDirectories || [],
+    contentDirectories: [],
     contentTemplatePaths,
     vars: {
-      $contentArray: $contentArray || [],
-      $contentObj: $contentObj || {},
+      $contentArray: [],
+      $contentObj: {},
       globalMeta: abellConfigs.globalMeta
     },
     logs: 'minimum'

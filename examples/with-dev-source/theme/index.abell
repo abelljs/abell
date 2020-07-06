@@ -1,0 +1,14 @@
+{{ const devArticles = require('./data/articles.json') }}
+
+<html>
+<body>
+{{
+  devArticles.map((article) => `
+    <article>
+      <h2>${article.title}</h2>
+      URL: <a href="${article.url}">${article.url}</a>
+    </article>
+  `).join('');
+}}
+</body>
+</html>
