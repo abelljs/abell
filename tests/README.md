@@ -9,10 +9,10 @@ Make sure you have dependencies installed (`npm install`) to run the tests.
 npm run test:unit
 ```
 
-Running this on root level will run tests from `tests/unit-tests/` directory.
+Running this on root level will run tests from `tests/` directory.
 
 
-We use [mocha](https://mochajs.org/) and [chai](https://www.chaijs.com/) for writing unit tests and they follow similar directory structure like `src/`.
+We use [mocha](https://mochajs.org/) and [chai](https://www.chaijs.com/) for writing unit tests.
 
 
 ## End-to-end Test

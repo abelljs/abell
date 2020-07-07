@@ -1,3 +1,0 @@
-# {{ meta.title }}
-
-{{ meta.$createdAt }}

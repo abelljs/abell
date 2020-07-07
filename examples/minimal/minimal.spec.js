@@ -1,7 +1,7 @@
 const path = require('path');
 
 const { expect } = require('chai');
-const { preTestSetup, getSelector } = require('../../tests/utils/test-utils.js')
+const { preTestSetup, getSelector } = require('../../tests/utils/test-helpers.js')
 
 const TEST_MAP = {
   'index.html': [

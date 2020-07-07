@@ -5,11 +5,11 @@ const {
   getBaseProgramInfo,
   importAndRender,
   loadContent
-} = require('../../../src/utils/build-utils.js');
+} = require('../src/utils/build-utils.js');
 
 describe('getBaseProgramInfo()', () => {
   before(() => {
-    process.chdir('tests/unit-tests/resources/test_demo');
+    process.chdir('tests/resources/test_demo');
   });
 
   it('should return the base info for program to execute', () => {
@@ -26,14 +26,14 @@ describe('getBaseProgramInfo()', () => {
   });
 
   after(() => {
-    process.chdir('../../../..');
+    process.chdir('../../..')
   });
 });
 
 
 describe('loadContent()', () => {
   before(() => {
-    process.chdir('tests/unit-tests/resources/test_demo');
+    process.chdir('tests/resources/test_demo');
   });
 
   it('should return all the information about the content', () => {
@@ -56,7 +56,7 @@ describe('loadContent()', () => {
   });
 
   after(() => {
-    process.chdir('../../../..');
+    process.chdir('../../..')
   });
 });
 
@@ -75,7 +75,7 @@ describe('importAndRender()', () => {
     expect(
       importAndRender(
         'another-blog/index.md',
-        'tests/unit-tests/resources/test_demo/content',
+        'tests/resources/test_demo/content',
         {
           meta: { title: 'Abell Test Title Check' }
         }
