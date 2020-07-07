@@ -1,11 +1,7 @@
 {{
-  const siteData = require('./siteData.json');
+  const a = 4;
+  const b = 9;
 }}
 <html>
-  <head>
-    <title>{{ siteData.title }}</title>
-  </head>
-  <body>
-    {{ siteData.greet }}
-  </body>
+  <body><span data-cy="add-value">{{ a + b }}</span></body>
 </html>

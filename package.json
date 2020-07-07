@@ -13,7 +13,7 @@
   "scripts": {
     "test:unit": "mocha --recursive \"./tests/unit-tests/**/*.js\"",
     "test:e2e": "cypress run",
-    "test": "npm run test:unit && echo \">> For e2e test, Run\nnpm run test-server\nnpm run test:e2e \"",
+    "test": "mocha --recursive \"./examples/**/*.spec.js\" \"./tests/unit-tests/**/*.spec.js\"",
     "start": "cd examples/main && node ../../bin/abell.js build && serve dist",
     "test-server": "node tests/cypress/scripts/build-test-examples.js && serve tests/cypress/examples",
     "dev": "echo \"1. Execute 'npm link' \n2. 'cd examples/main'\n3. 'abell serve' \"",
@@ -43,7 +43,7 @@
   },
   "devDependencies": {
     "chai": "^4.2.0",
-    "cypress": "^4.8.0",
+    "cheerio": "^1.0.0-rc.3",
     "eslint": "^7.0.0",
     "eslint-config-google": "^0.14.0",
     "eslint-config-prettier": "^6.11.0",
