@@ -3,7 +3,7 @@ const expect = require('chai').expect;
 const {
   prefetchLinksAndAddToPage,
   addPrefixInHTMLPaths
-} = require('../../../src/utils/transformations.js');
+} = require('../src/utils/transformations.js');
 
 describe('addPrefixInHTMLPaths()', () => {
   it('should add prefix to HTML paths', () => {
