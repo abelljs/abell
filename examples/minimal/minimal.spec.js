@@ -15,7 +15,7 @@ describe('examples/minimal', () => {
     })
 
     it('should render executed JavaScript even without content', () => {
-      expect($('[data-cy="add-value"]').html())
+      expect($('[data-test="add-value"]').html())
         .to.equal(String(13));
     })
 

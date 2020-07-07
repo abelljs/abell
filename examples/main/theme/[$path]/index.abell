@@ -4,11 +4,11 @@
 <body>
   <main>
     <section id="blog-container">
-      <span data-cy="root-test">{{ $root }}</span>
-      <span data-cy="path-test">{{ meta.$path }}</span>
-      <span data-cy="slug-test">{{ meta.$slug }}</span>
+      <span data-test="root-test">{{ $root }}</span>
+      <span data-test="path-test">{{ meta.$path }}</span>
+      <span data-test="slug-test">{{ meta.$slug }}</span>
     </section>
-    <section data-cy="blog-content">
+    <section data-test="blog-content">
       {{ $importContent(`${meta.$path}/index.md`) }}
     </section>
   </main>

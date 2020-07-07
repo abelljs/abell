@@ -14,20 +14,20 @@
   }}
   <main>
     <section>
-      JS Test <span data-cy="js-in-abell-test">{{ a + b }}</span>
+      JS Test <span data-test="js-in-abell-test">{{ a + b }}</span>
     </section>
     <section>
-      Include from JSON Test <span data-cy="include-from-json-test">{{ site.greet }}</span>
+      Include from JSON Test <span data-test="include-from-json-test">{{ site.greet }}</span>
     </section>
     <section>
-      globalMeta Test <span data-cy="globalmeta-test">{{ globalMeta.siteName }}</span>
+      globalMeta Test <span data-test="globalmeta-test">{{ globalMeta.siteName }}</span>
     </section>
     <section>
-      $root test <span data-cy="root-test">{{ $root }}</span>
+      $root test <span data-test="root-test">{{ $root }}</span>
     </section>
     <section>
       $contentArray Test
-      <div data-cy="contentarray-container">
+      <div data-test="contentarray-container">
         {{
           $contentArray
             .map(meta => `

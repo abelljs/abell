@@ -3,5 +3,5 @@
   const b = 9;
 }}
 <html>
-  <body><span data-cy="add-value">{{ a + b }}</span></body>
+  <body><span data-test="add-value">{{ a + b }}</span></body>
 </html>
