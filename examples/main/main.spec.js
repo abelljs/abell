@@ -36,7 +36,7 @@ describe('examples/main', () => {
 
     it('should render all the article meta info into container', () => {
       const expectedTitles = [
-        'sub-blog (new-blog/sub-blog)',
+        `sub-blog (new-blog${path.sep}sub-blog)`,
         'new-blog (new-blog)',
         'My First Blog (my-first-blog)',
         'Another blog (another-blog)'
