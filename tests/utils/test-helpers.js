@@ -8,7 +8,10 @@ const cheerio = require('cheerio');
 async function preTestSetup(exampleName) {
   const {stderr, stdout} = await exec(`cd examples/${exampleName} && node ../../bin/abell.js build`);
   if (stderr) throw new Error(stderr);
-  if (stdout.includes('Abell Build Failed')) throw new Error(stdout);
+  if (stdout.includes('Abell Build Failed')) {
+    console.log(stdout);
+    throw new Error(`>> Build Fail for examples/${exampleName}, Scroll up for logs.`);
+  }
 }
 
 function getSelector(outPath) {
