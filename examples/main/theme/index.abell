@@ -28,6 +28,7 @@
     <section>
       $contentArray Test
       <div data-test="contentarray-container">
+        {{ console.log($contentArray) }}
         {{
           $contentArray
             .map(meta => `

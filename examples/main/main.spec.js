@@ -33,6 +33,20 @@ describe('examples/main', () => {
       expect($('[data-test="root-test"]').html())
         .to.equal('');
     })
+
+    it('should render all the article meta info into container', () => {
+      const expectedTitles = [
+        'sub-blog (new-blog/sub-blog)',
+        'new-blog (new-blog)',
+        'My First Blog (my-first-blog)',
+        'Another blog (another-blog)'
+      ]
+
+      $('[data-test="contentarray-container"] > div').each(function(index, element) {
+        expect($(this).children('span.data-title').html())
+          .to.equal(expectedTitles[index]);
+      })
+    })
   })
 });
 
