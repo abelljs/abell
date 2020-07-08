@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.3
+
+- Support for async plugins (with the help of [@anuraghazra](https://github.com/anuraghazra))
+- Tests Refactor (Migration to Cheerio based tests)
+
 ## 0.3.2
 
 - Run-time bug fix for windows (by [@anuraghazra](https://github.com/anuraghazra))
