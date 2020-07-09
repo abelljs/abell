@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.4
+
+- Markdown anchors fix to match dev.to's markdown syntax.
+
 ## 0.3.3
 
 - Support for async plugins (with the help of [@anuraghazra](https://github.com/anuraghazra))
