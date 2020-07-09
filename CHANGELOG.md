@@ -3,6 +3,7 @@
 ## 0.3.4
 
 - Markdown anchors fix to match dev.to's markdown syntax.
+- Auto-linking of URLs added.
 
 ## 0.3.3
 
