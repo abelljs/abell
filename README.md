@@ -30,14 +30,16 @@ Changelogs are maintained in [CHANGELOG.md](CHANGELOG.md)
 ### 🤗 Local Installation & Contributing
 
 - Fork [abelljs/abell](https://github.com/abelljs/abell)
-- `git clone https://github.com/:github-username/abell`
-- `cd abell`
+- `git clone https://github.com/:github-username/abell` ⏬
+- `cd abell` 
 - `npm install` - to install dependencies
 - `npm link` - This will add the current directory to global packages.
 - `cd examples/main` - Directory `examples` has sample abell projects.
 - `abell build` to build project or `abell serve` to start dev server.
 
 We would love to have contributions! The contributing guidelines along with local setup guide is mentioned in [CONTRIBUTING.md](CONTRIBUTING.md)
+
+__Don't forget to shower your love with a ⭐ on this repo if you found this useful__
 
 ### 💙 Related Repositories
 
@@ -49,3 +51,4 @@ We would love to have contributions! The contributing guidelines along with loca
 [<img alt="Buy me a Coffee Button" width=200 src="https://c5.patreon.com/external/logo/become_a_patron_button.png">](https://www.patreon.com/bePatron?u=31891872) &nbsp; [<img alt="Buy me a Coffee Button" width=200 src="https://cdn.buymeacoffee.com/buttons/default-yellow.png">](https://www.buymeacoffee.com/saurabhdaware)
 
 If you want to know the status and get updates you can follow me on [Twitter @saurabhcodes](https://twitter.com/saurabhcodes)
+
