@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.5
+
+- Auto-linking removed. (The library used was too heavy (20kb). Need to find alternative)
+
 ## 0.3.4
 
 - Markdown anchors fix to match dev.to's markdown syntax.

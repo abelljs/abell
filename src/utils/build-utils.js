@@ -3,14 +3,12 @@ const path = require('path');
 
 const abellRenderer = require('abell-renderer');
 const { Remarkable } = require('remarkable');
-const { linkify } = require('remarkable/linkify');
 
 const md = new Remarkable({
   html: true
 });
 
 md.use(require('./remarkable-plugins/anchors.js'));
-md.use(linkify);
 
 const {
   createPathIfAbsent,

@@ -1,6 +1,6 @@
 {
   "name": "abell",
-  "version": "0.3.4",
+  "version": "0.3.5",
   "description": "Abell is a static blog generator that generates blog in Vanilla JavaScript",
   "funding": {
     "type": "patreon",
