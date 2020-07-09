@@ -13,6 +13,7 @@ const {
 
 const build = require('./commands/build.js');
 const serve = require('./commands/serve.js');
+require('./utils/typedefs.js'); // Adds typedefs which can be imported from plugins
 
 // Exports
 module.exports = {
