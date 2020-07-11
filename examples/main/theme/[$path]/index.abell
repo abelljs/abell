@@ -9,7 +9,7 @@
       <span data-test="slug-test">{{ meta.$slug }}</span>
     </section>
     <section data-test="blog-content">
-      {{ $importContent(`${meta.$path}/index.md`) }}
+      {{ $importContent(undefined + '/index.md') }}
     </section>
   </main>
 </body>
