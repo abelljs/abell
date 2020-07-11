@@ -176,7 +176,7 @@ function importAndRender(mdPath, contentPath, variables) {
     return rendererdHTML;
   } catch (err) {
     throw new Error(`
-      Error in {{ $contentPath() }} at ['$path']/index.abell\n
+      Error in {{ $importContent() }} at ['$path']/index.abell\n
       ${mdPath} does not exist!
     `);
   }
