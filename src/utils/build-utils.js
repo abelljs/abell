@@ -166,10 +166,20 @@ function getBaseProgramInfo() {
  * @return {String}
  */
 function importAndRender(mdPath, contentPath, variables) {
-  const fileContent = fs.readFileSync(path.join(contentPath, mdPath), 'utf-8');
-  const mdWithValues = abellRenderer.render(fileContent, variables); // Add variables to markdown
-  const rendererdHTML = md.render(mdWithValues);
-  return rendererdHTML;
+  try {
+    const fileContent = fs.readFileSync(
+      path.join(contentPath, mdPath),
+      'utf-8'
+    );
+    const mdWithValues = abellRenderer.render(fileContent, variables); // Add variables to markdown
+    const rendererdHTML = md.render(mdWithValues);
+    return rendererdHTML;
+  } catch (err) {
+    throw new Error(`
+      Error in {{ $importContent() }} at ['$path']/index.abell\n
+      ${mdPath} does not exist!
+    `);
+  }
 }
 
 /**
