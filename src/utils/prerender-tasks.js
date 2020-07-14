@@ -6,16 +6,15 @@ const { getAbellConfigs } = require('./build-utils.js');
  */
 function getProgramInfo() {
   // Get configured paths of destination and content
-  const abellConfigs = getAbellConfigs();
+  const abellConfig = getAbellConfigs();
 
   const programInfo = {
-    abellConfigs,
-    vars: {
-      $contentArray: [],
-      $contentObj: {},
-      globalMeta: abellConfigs.globalMeta
-    },
-    logs: 'minimum'
+    abellConfig,
+    contentTree: {},
+    templateTree: {},
+    logs: 'minimum',
+    port: 5000,
+    socketPort: 3000
   };
 
   return programInfo;

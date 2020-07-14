@@ -1,5 +1,5 @@
 const program = require('commander');
-const { getProgramInfo } = require('./utils/prerender-reads.js');
+const { getProgramInfo } = require('./utils/prerender-tasks.js');
 
 // const { getBaseProgramInfo }
 
