@@ -1,4 +1,5 @@
 const { getAbellConfig } = require('./build-utils.js');
+const { recursiveFindFiles } = require('./general-helpers.js');
 
 /**
  * Returns the basic information needed for build execution
@@ -22,10 +23,20 @@ function getProgramInfo() {
 
 /**
  * Builds Source Content tree
+ * @param {ProgramInfo} programInfo
  * @return {ContentTree}
  */
-function buildSourceContentTree() {
+function buildSourceContentTree(programInfo) {
   // Build the tree which has all information about content
+  const mdFiles = recursiveFindFiles(
+    programInfo.abellConfig.contentPath,
+    'index.md'
+  );
+
+  console.log(mdFiles);
+  // TODO:
+  // Build a tree where we can add nodes to add content to Abell
+  // This will help in building plugins
   return {
     foo: 'bar'
   };

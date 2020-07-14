@@ -61,7 +61,7 @@ function recursiveFindFiles(
       );
     } else {
       if (file.endsWith(ext)) {
-        result.push(newbase.slice(0, newbase.lastIndexOf('.')));
+        result.push(newbase);
       }
     }
   }

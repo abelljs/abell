@@ -18,7 +18,7 @@ async function onBuildCommand() {
   const programInfo = getProgramInfo();
   console.log(programInfo);
   // Execute beforeBuild plugins and pass programInfo
-  programInfo.contentTree = buildSourceContentTree();
+  programInfo.contentTree = buildSourceContentTree(programInfo);
   console.log(programInfo.contentTree);
 }
 
