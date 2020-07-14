@@ -70,64 +70,6 @@ function recursiveFindFiles(
 }
 
 /**
- * Reads and returns content of abell.config.js
- * @return {AbellConfigs}
- */
-function getAbellConfigs() {
-  let abellConfig;
-  const defaultConfigs = {
-    destinationPath: 'dist',
-    sourcePath: 'theme',
-    contentPath: 'content',
-    plugins: [],
-    globalMeta: {}
-  };
-
-  try {
-    // In dev-server, user may change the configs so in that case we should drop the old cache
-    delete require.cache[path.join(process.cwd(), 'abell.config.js')];
-    const requiredConfig = require(path.join(process.cwd(), 'abell.config.js'));
-
-    let mappedPlugins = [];
-    if (requiredConfig.plugins && requiredConfig.plugins.length > 0) {
-      mappedPlugins = requiredConfig.plugins.map((plugin) => {
-        if (fs.existsSync(path.join(process.cwd(), plugin))) {
-          return path.join(process.cwd(), plugin);
-        }
-
-        return plugin;
-      });
-    }
-
-    abellConfig = {
-      ...defaultConfigs,
-      ...requiredConfig,
-      plugins: mappedPlugins
-    };
-
-    if (Object.keys(abellConfig).length <= 0) {
-      throw new Error( // eslint-disable-next-line
-        `Something went wrong while fetching new configurations. Save again to refresh the dev server.`
-      );
-    }
-  } catch (err) {
-    console.log(yellow('>> ') + err.message);
-    abellConfig = defaultConfigs;
-  }
-
-  const destinationPath = getAbsolutePath(abellConfig.destinationPath);
-  const sourcePath = getAbsolutePath(abellConfig.sourcePath);
-  const contentPath = getAbsolutePath(abellConfig.contentPath);
-
-  return {
-    ...abellConfig,
-    destinationPath,
-    sourcePath,
-    contentPath
-  };
-}
-
-/**
  * Recursively creates the path
  * @param {String} pathToCreate path that you want to create
  */
@@ -221,23 +163,38 @@ const execRegexOnAll = (regex, template) => {
   return { matches: allMatches, input };
 };
 
-const boldRed = (message) =>
-  `\u001b[1m\u001b[31m${message}\u001b[39m\u001b[22m`;
-const boldGreen = (message) =>
-  `\u001b[1m\u001b[32m${message}\u001b[39m\u001b[22m`;
-const grey = (message) => `\u001b[90m${message}\u001b[39m`;
-const yellow = (message) => `\u001b[1m\u001b[33m${message}\u001b[39m\u001b[22m`;
+/**
+ * console.log for errors, logs with error styles
+ * @param {String} errorMessage message to log
+ * @return {Void}
+ */
+const logError = (errorMessage) =>
+  console.log(`${colors.boldRed('>>>')} ${errorMessage}`);
+
+/**
+ * console.log for warnings, logs with warning styles
+ * @param {String} errorMessage message to log
+ * @return {Void}
+ */
+const logWarning = (errorMessage) =>
+  console.log(`${colors.yellow('>>>')} ${errorMessage}`);
+
+const colors = {
+  green: (message) => `\u001b[90m${message}\u001b[39m`,
+  yellow: (message) => `\u001b[1m\u001b[33m${message}\u001b[39m\u001b[22m`,
+  boldRed: (message) => `\u001b[1m\u001b[31m${message}\u001b[39m\u001b[22m`,
+  boldGreen: (message) => `\u001b[1m\u001b[32m${message}\u001b[39m\u001b[22m`
+};
 
 module.exports = {
+  getAbsolutePath,
   rmdirRecursiveSync,
   recursiveFindFiles,
-  getAbellConfigs,
   createPathIfAbsent,
   copyFolderSync,
   exitHandler,
   execRegexOnAll,
-  boldGreen,
-  boldRed,
-  grey,
-  yellow
+  logError,
+  logWarning,
+  colors
 };
