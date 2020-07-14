@@ -1,4 +1,4 @@
-const { getAbellConfigs } = require('./build-utils.js');
+const { getAbellConfig } = require('./build-utils.js');
 
 /**
  * Returns the basic information needed for build execution
@@ -6,7 +6,7 @@ const { getAbellConfigs } = require('./build-utils.js');
  */
 function getProgramInfo() {
   // Get configured paths of destination and content
-  const abellConfig = getAbellConfigs();
+  const abellConfig = getAbellConfig();
 
   const programInfo = {
     abellConfig,
@@ -22,9 +22,13 @@ function getProgramInfo() {
 
 /**
  * Builds Source Content tree
+ * @return {ContentTree}
  */
 function buildSourceContentTree() {
   // Build the tree which has all information about content
+  return {
+    foo: 'bar'
+  };
 }
 
 /**

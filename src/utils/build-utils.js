@@ -13,7 +13,7 @@ function getMeta() {
  * Reads and returns content of abell.config.js
  * @return {AbellConfigs}
  */
-function getAbellConfigs() {
+function getAbellConfig() {
   let abellConfig;
   const defaultConfigs = {
     destinationPath: 'dist',
@@ -61,4 +61,4 @@ function getAbellConfigs() {
   };
 }
 
-module.exports = { getAbellConfigs, getMeta };
+module.exports = { getAbellConfig, getMeta };

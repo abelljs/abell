@@ -1,5 +1,8 @@
 const program = require('commander');
-const { getProgramInfo } = require('./utils/prerender-tasks.js');
+const {
+  getProgramInfo,
+  buildSourceContentTree
+} = require('./utils/prerender-tasks.js');
 
 // const { getBaseProgramInfo }
 
@@ -14,6 +17,9 @@ async function onBuildCommand() {
   // const buildStartTime = new Date().getTime();
   const programInfo = getProgramInfo();
   console.log(programInfo);
+  // Execute beforeBuild plugins and pass programInfo
+  programInfo.contentTree = buildSourceContentTree();
+  console.log(programInfo.contentTree);
 }
 
 // Listeners
