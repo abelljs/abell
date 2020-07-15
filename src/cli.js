@@ -18,8 +18,9 @@ async function onBuildCommand() {
   const programInfo = getProgramInfo();
   console.log(programInfo);
   // Execute beforeBuild plugins and pass programInfo
-  programInfo.contentTree = buildSourceContentTree(programInfo);
-  console.log(programInfo.contentTree);
+  programInfo.contentTree = buildSourceContentTree(
+    programInfo.abellConfig.contentPath
+  );
 }
 
 // Listeners

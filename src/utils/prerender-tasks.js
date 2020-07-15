@@ -1,4 +1,6 @@
-const { getAbellConfig } = require('./build-utils.js');
+const path = require('path');
+
+const { getAbellConfig, getContentMeta } = require('./build-utils.js');
 const { recursiveFindFiles } = require('./general-helpers.js');
 
 /**
@@ -23,17 +25,22 @@ function getProgramInfo() {
 
 /**
  * Builds Source Content tree
- * @param {ProgramInfo} programInfo
+ * @param {String} contentPath
  * @return {ContentTree}
  */
-function buildSourceContentTree(programInfo) {
+function buildSourceContentTree(contentPath) {
   // Build the tree which has all information about content
-  const mdFiles = recursiveFindFiles(
-    programInfo.abellConfig.contentPath,
+  const relativeSlugs = recursiveFindFiles(
+    contentPath,
     'index.md'
-  );
+  ).map((mdPath) => path.dirname(path.relative(contentPath, mdPath)));
 
-  console.log(mdFiles);
+  const source = {};
+  for (const slug of relativeSlugs) {
+    source[slug] = getContentMeta(slug, { contentPath });
+  }
+
+  console.log(source);
   // TODO:
   // Build a tree where we can add nodes to add content to Abell
   // This will help in building plugins
