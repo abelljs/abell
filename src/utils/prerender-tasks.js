@@ -13,7 +13,7 @@ function getProgramInfo() {
 
   const programInfo = {
     abellConfig,
-    contentTree: {},
+    contentTree: buildSourceContentTree(abellConfig.contentPath),
     templateTree: {},
     logs: 'minimum',
     port: 5000,
@@ -35,17 +35,29 @@ function buildSourceContentTree(contentPath) {
     'index.md'
   ).map((mdPath) => path.dirname(path.relative(contentPath, mdPath)));
 
+  // Create a source object with slugs as keys and their meta values as properties
   const source = {};
   for (const slug of relativeSlugs) {
     source[slug] = getContentMeta(slug, { contentPath });
   }
 
-  console.log(source);
-  // TODO:
-  // Build a tree where we can add nodes to add content to Abell
-  // This will help in building plugins
+  return source;
+}
+
+/**
+ *
+ * @param {PluginNode} pluginNode Similar to meta info but includes content as well
+ * @return {MetaInfo}
+ */
+function getSourceNodeFromPluginNode(pluginNode) {
   return {
-    foo: 'bar'
+    ...pluginNode,
+    $path: pluginNode.slug,
+    $slug: pluginNode.slug,
+    $createdAt: pluginNode.createdAt,
+    $modifiedAt: pluginNode.modifiedAt || pluginNode.createdAt,
+    $root: '..',
+    $source: 'plugin'
   };
 }
 
@@ -59,5 +71,6 @@ function buildTemplateTree() {
 module.exports = {
   getProgramInfo,
   buildSourceContentTree,
-  buildTemplateTree
+  buildTemplateTree,
+  getSourceNodeFromPluginNode
 };

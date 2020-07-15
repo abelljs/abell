@@ -1,8 +1,10 @@
 const program = require('commander');
 const {
   getProgramInfo,
-  buildSourceContentTree
+  getSourceNodeFromPluginNode
 } = require('./utils/prerender-tasks.js');
+
+const { executeBeforeBuildPlugins } = require('./utils/plugin-utils.js');
 
 // const { getBaseProgramInfo }
 
@@ -16,11 +18,16 @@ async function onBuildCommand() {
   // - Get all information of template in template tree
   // const buildStartTime = new Date().getTime();
   const programInfo = getProgramInfo();
+
+  // createContent function that goes to plugins
+  const createContent = (pluginNode) => {
+    programInfo.contentTree[pluginNode.slug] = getSourceNodeFromPluginNode(
+      pluginNode
+    );
+  };
+
+  await executeBeforeBuildPlugins(programInfo, { createContent });
   console.log(programInfo);
-  // Execute beforeBuild plugins and pass programInfo
-  programInfo.contentTree = buildSourceContentTree(
-    programInfo.abellConfig.contentPath
-  );
 }
 
 // Listeners

@@ -7,7 +7,7 @@ const { getAbsolutePath, logWarning } = require('./general-helpers.js');
  * @param {String} slug - slug of the content
  * @param {Object} options
  * @param {String} options.contentPath - mostly 'content', directory that has content.
- * @return {Meta}
+ * @return {MetaInfo}
  */
 function getContentMeta(slug, { contentPath }) {
   // Reads meta.json of given slug
