@@ -24,6 +24,13 @@ function generateSite(programInfo) {
   fs.mkdirSync(programInfo.abellConfig.outputPath);
 
   for (const template of Object.values(programInfo.templateTree)) {
+    if (template.shouldLoop) {
+      for (const content of Object.values(programInfo.contentTree)) {
+        console.log(content.$path);
+      }
+      continue;
+    }
+
     console.log(template.$path);
   }
 }
