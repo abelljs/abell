@@ -18,9 +18,16 @@ function getContentMeta(slug, { contentPath }) {
   let mtime;
   let ctime;
 
+  // slug variable includes deep paths when the content is nested.
+  // onlySlug will only have slug of the last folder.
+  let onlySlug = slug;
+  if (slug.includes(path.sep)) {
+    onlySlug = slug.slice(slug.lastIndexOf(path.sep) + 1);
+  }
+
   const defaultMeta = {
-    title: slug,
-    description: `Hi, This is ${slug}...`
+    title: onlySlug,
+    description: `Hi, This is ${onlySlug}...`
   };
 
   // Read data defined in meta.json or meta.js file of content
@@ -41,13 +48,6 @@ function getContentMeta(slug, { contentPath }) {
 
   if (definedMetaData.$modifiedAt) {
     mtime = new Date(definedMetaData.$modifiedAt);
-  }
-
-  // slug variable includes deep paths when the content is nested.
-  // onlySlug will only have slug of the last folder.
-  let onlySlug = slug;
-  if (slug.includes(path.sep)) {
-    onlySlug = slug.slice(slug.lastIndexOf(path.sep) + 1);
   }
 
   return {
@@ -176,11 +176,13 @@ function buildTemplateTree(themePath) {
     theme[relativePath] = {
       shouldLoop,
       $path: relativePath,
-      $root: path
-        .dirname(relativePath)
-        .split(path.sep)
-        .map(() => '..')
-        .join(path.sep)
+      $root: path.dirname(relativePath).includes(path.sep)
+        ? path
+            .dirname(relativePath)
+            .split(path.sep)
+            .map(() => '..')
+            .join(path.sep)
+        : ''
     };
   }
 
@@ -195,6 +197,8 @@ function buildTemplateTree(themePath) {
 function getSourceNodeFromPluginNode(pluginNode) {
   return {
     ...pluginNode,
+    title: pluginNode.title || pluginNode.slug,
+    description: pluginNode.description || `This is ${pluginNode.slug}...`,
     $path: pluginNode.slug,
     $slug: pluginNode.slug,
     $createdAt: pluginNode.createdAt,
@@ -204,11 +208,39 @@ function getSourceNodeFromPluginNode(pluginNode) {
   };
 }
 
+/**
+ * 1. Reads .md/.abell file from given path
+ * 2. Converts it to html
+ * 3. Adds variable to the new HTML and returns the HTML
+ *
+ * @param {String} mdPath
+ * @param {String} contentPath
+ * @param {Object} variables
+ * @return {String}
+ */
+function renderMarkdown(mdPath, contentPath, variables) {
+  try {
+    const fileContent = fs.readFileSync(
+      path.join(contentPath, mdPath),
+      'utf-8'
+    );
+    const mdWithValues = abellRenderer.render(fileContent, variables); // Add variables to markdown
+    const rendererdHTML = md.render(mdWithValues);
+    return rendererdHTML;
+  } catch (err) {
+    throw new Error(`
+      Error in {{ $importContent() }} at ['$path']/index.abell\n
+      ${mdPath} does not exist!
+    `);
+  }
+}
+
 module.exports = {
   getAbellConfig,
   getContentMeta,
   getProgramInfo,
   buildSourceContentTree,
   buildTemplateTree,
-  getSourceNodeFromPluginNode
+  getSourceNodeFromPluginNode,
+  renderMarkdown
 };

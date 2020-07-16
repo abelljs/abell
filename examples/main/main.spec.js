@@ -39,7 +39,8 @@ describe('examples/main', () => {
         `sub-blog (new-blog${path.sep}sub-blog)`,
         'new-blog (new-blog)',
         'My First Blog (my-first-blog)',
-        'Another blog (another-blog)'
+        'Another blog (another-blog)',
+        'hello-custom-blog (hello-custom-blog)'
       ]
 
       $('[data-test="contentarray-container"] > div').each(function(index, element) {

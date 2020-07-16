@@ -14,6 +14,15 @@ const getAbsolutePath = (pathString) =>
   path.join(process.cwd(), ...pathString.split('/'));
 
 /**
+ * Replaces extension in path
+ * @param {String} filePath
+ * @param {String} newExtension new extension to replace with e.g -> .html
+ * @return {String}
+ */
+const replaceExtension = (filePath, newExtension) =>
+  filePath.slice(0, filePath.lastIndexOf('.')) + newExtension;
+
+/**
  * Removes the folder
  * @param {String} pathToRemove path to the directory which you want to remove
  */
@@ -188,6 +197,7 @@ const colors = {
 
 module.exports = {
   getAbsolutePath,
+  replaceExtension,
   rmdirRecursiveSync,
   recursiveFindFiles,
   createPathIfAbsent,

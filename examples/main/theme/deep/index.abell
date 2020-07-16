@@ -1,1 +1,1 @@
-<body>ok {{ $root }}</body>
+<body>ok {{ Abell.$root }}</body>
