@@ -8,7 +8,7 @@ const {
   createPathIfAbsent,
   replaceExtension
 } = require('./general-helpers');
-const { renderMarkdown } = require('./build-utils.js');
+const { renderMarkdown, md } = require('./build-utils.js');
 
 /**
  * Creates HTML file from given parameters
@@ -37,11 +37,16 @@ function createHTMLFile(templateObj, programInfo, options) {
       (a, b) => b.$createdAt.getTime() - a.$createdAt.getTime()
     ),
     contentObj: programInfo.contentTree,
-    $root: templateObj.$root,
-    $path: templateObj.$path
+    root: templateObj.$root,
+    href: templateObj.$path
   };
 
-  console.log(templateObj);
+  if (options.isContent) {
+    // Extra variables when building content
+    Abell.root = options.content.$root;
+    Abell.href = options.content.$path;
+    Abell.meta = options.content;
+  }
 
   const view = {
     Abell: {
@@ -50,6 +55,16 @@ function createHTMLFile(templateObj, programInfo, options) {
         renderMarkdown(mdPath, programInfo.abellConfig.contentPath, { Abell })
     }
   };
+
+  if (options.isContent && options.content.$source === 'plugin') {
+    if (options.content.content) {
+      view.Abell.importContent = () => md.render(options.content.content);
+    } else {
+      console.log(
+        `>> Content ${options.content.$slug} does not have a markdown content`
+      );
+    }
+  }
 
   const htmlOut = abellRenderer.render(abellTemplate, view, {
     allowRequire: true,
@@ -62,15 +77,16 @@ function createHTMLFile(templateObj, programInfo, options) {
   createPathIfAbsent(
     path.join(
       programInfo.abellConfig.outputPath,
-      path.dirname(templateObj.$path)
+      path.dirname(templateObj.$path).replace('[$path]', Abell.href)
     )
   );
 
   const outPath = path.join(
     programInfo.abellConfig.outputPath,
-    replaceExtension(templateObj.$path, '.html')
+    replaceExtension(templateObj.$path, '.html').replace('[$path]', Abell.href)
   );
 
+  console.log(outPath);
   fs.writeFileSync(outPath, htmlOut);
 }
 
@@ -90,7 +106,7 @@ function generateSite(programInfo) {
     if (template.shouldLoop) {
       for (const content of Object.values(programInfo.contentTree)) {
         // loop over content
-        console.log(content);
+        createHTMLFile(template, programInfo, { isContent: true, content });
       }
       continue;
     }

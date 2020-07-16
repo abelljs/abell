@@ -1,5 +1,12 @@
 const fs = require('fs');
 const path = require('path');
+const abellRenderer = require('abell-renderer');
+const { Remarkable } = require('remarkable');
+
+const md = new Remarkable({
+  html: true
+});
+
 const {
   recursiveFindFiles,
   getAbsolutePath,
@@ -224,14 +231,15 @@ function renderMarkdown(mdPath, contentPath, variables) {
       path.join(contentPath, mdPath),
       'utf-8'
     );
+    console.log(fileContent);
     const mdWithValues = abellRenderer.render(fileContent, variables); // Add variables to markdown
     const rendererdHTML = md.render(mdWithValues);
     return rendererdHTML;
   } catch (err) {
-    throw new Error(`
-      Error in {{ $importContent() }} at ['$path']/index.abell\n
-      ${mdPath} does not exist!
-    `);
+    console.log(
+      `Error in {{ $importContent() }} at ['$path']/index.abell\n${mdPath} may not exist! Look log below for more details` // eslint-disable-line
+    );
+    throw err;
   }
 }
 
@@ -242,5 +250,6 @@ module.exports = {
   buildSourceContentTree,
   buildTemplateTree,
   getSourceNodeFromPluginNode,
-  renderMarkdown
+  renderMarkdown,
+  md
 };

@@ -1,6 +1,6 @@
-# {{ meta.title }}
+# {{ Abell.meta.title }}
 
-{{ meta.$createdAt }}
+{{ Abell.meta.$createdAt }}
 
-{{ meta.description }}
+{{ Abell.meta.description }}
 

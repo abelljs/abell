@@ -1,3 +1,3 @@
 # Inside the new blog
 
-{{ $root }}
+{{ Abell.root }}
