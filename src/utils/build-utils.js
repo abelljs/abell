@@ -1,6 +1,10 @@
 const fs = require('fs');
 const path = require('path');
-const { getAbsolutePath, logWarning } = require('./general-helpers.js');
+const {
+  recursiveFindFiles,
+  getAbsolutePath,
+  logWarning
+} = require('./general-helpers.js');
 
 /**
  * Reads meta.json and adds additional meta values.
@@ -68,8 +72,8 @@ function getContentMeta(slug, { contentPath }) {
 function getAbellConfig() {
   let abellConfig;
   const defaultConfigs = {
-    destinationPath: 'dist',
-    sourcePath: 'theme',
+    outputPath: 'dist',
+    themePath: 'theme',
     contentPath: 'content',
     plugins: [],
     globalMeta: {}
@@ -101,16 +105,110 @@ function getAbellConfig() {
     abellConfig = defaultConfigs;
   }
 
-  const destinationPath = getAbsolutePath(abellConfig.destinationPath);
-  const sourcePath = getAbsolutePath(abellConfig.sourcePath);
+  const outputPath = getAbsolutePath(abellConfig.outputPath);
+  const themePath = getAbsolutePath(abellConfig.themePath);
   const contentPath = getAbsolutePath(abellConfig.contentPath);
 
   return {
     ...abellConfig,
-    destinationPath,
-    sourcePath,
+    outputPath,
+    themePath,
     contentPath
   };
 }
 
-module.exports = { getAbellConfig, getContentMeta };
+/**
+ * Returns the basic information needed for build execution
+ * @return {ProgramInfo}
+ */
+function getProgramInfo() {
+  // Get configured paths of destination and content
+  const abellConfig = getAbellConfig();
+
+  const programInfo = {
+    abellConfig,
+    contentTree: buildSourceContentTree(abellConfig.contentPath),
+    templateTree: buildTemplateTree(abellConfig.themePath),
+    logs: 'minimum',
+    port: 5000,
+    socketPort: 3000
+  };
+
+  return programInfo;
+}
+
+/**
+ * Builds Source Content tree
+ * @param {String} contentPath
+ * @return {ContentTree}
+ */
+function buildSourceContentTree(contentPath) {
+  // Build the tree which has all information about content
+  const relativeSlugs = recursiveFindFiles(
+    contentPath,
+    'index.md'
+  ).map((mdPath) => path.dirname(path.relative(contentPath, mdPath)));
+
+  // Create a source object with slugs as keys and their meta values as properties
+  const source = {};
+  for (const slug of relativeSlugs) {
+    source[slug] = getContentMeta(slug, { contentPath });
+  }
+
+  return source;
+}
+
+/**
+ * Build template tree
+ * @param {String} themePath - path to directory that has theme source
+ * @return {String[]}
+ */
+function buildTemplateTree(themePath) {
+  // Builds tree with all information of .abell files
+  const abellTemplatesInTheme = recursiveFindFiles(themePath, '.abell');
+  const theme = {};
+  for (const template of abellTemplatesInTheme) {
+    const relativePath = path.relative(themePath, template);
+    const shouldLoop = path.dirname(relativePath).endsWith('[$path]')
+      ? true
+      : false;
+
+    theme[relativePath] = {
+      shouldLoop,
+      $path: relativePath,
+      $root: path
+        .dirname(relativePath)
+        .split(path.sep)
+        .map(() => '..')
+        .join(path.sep)
+    };
+  }
+
+  return theme;
+}
+
+/**
+ *
+ * @param {PluginNode} pluginNode Similar to meta info but includes content as well
+ * @return {MetaInfo}
+ */
+function getSourceNodeFromPluginNode(pluginNode) {
+  return {
+    ...pluginNode,
+    $path: pluginNode.slug,
+    $slug: pluginNode.slug,
+    $createdAt: pluginNode.createdAt,
+    $modifiedAt: pluginNode.modifiedAt || pluginNode.createdAt,
+    $root: '..',
+    $source: 'plugin'
+  };
+}
+
+module.exports = {
+  getAbellConfig,
+  getContentMeta,
+  getProgramInfo,
+  buildSourceContentTree,
+  buildTemplateTree,
+  getSourceNodeFromPluginNode
+};

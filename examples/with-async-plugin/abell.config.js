@@ -1,4 +1,4 @@
 module.exports = {
-  sourcePath: 'src',
+  themePath: 'src',
   plugins: ['./plugins/index.js']
 };

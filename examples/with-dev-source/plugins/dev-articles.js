@@ -11,7 +11,7 @@ async function beforeBuild(programInfo){
     )
   
   fs.writeFileSync(
-    `${programInfo.abellConfigs.sourcePath}/data/articles.json`, 
+    `${programInfo.abellConfigs.themePath}/data/articles.json`, 
     JSON.stringify(sortedArticles, undefined, 2)
   )
 

@@ -5,7 +5,7 @@ const afterBuild = (programInfo) => {
   if (programInfo.task === 'serve') return;
 
   fs.writeFileSync(
-    path.join(programInfo.abellConfigs.destinationPath, 'built-by-plugin.json'),
+    path.join(programInfo.abellConfigs.outputPath, 'built-by-plugin.json'),
     JSON.stringify(programInfo.vars.$contentObj, {}, 2)
   );
 };

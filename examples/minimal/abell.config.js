@@ -1,3 +1,3 @@
 module.exports = {
-  sourcePath: 'src'
+  themePath: 'src'
 };

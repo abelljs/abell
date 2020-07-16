@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.4.0 (Includes BREAKING CHANGES)
+
+### Breaking Changes
+
+- `sourcePath` changed to `themePath`
+- `destinationPath` changed to `outputPath`
+- `programInfo.abellConfigs` changed to `programInfo.abellConfig`
+
+### Non-breaking Changes
+
+- Added `createContent` function for beforeBuild plugins that lets plugin developers create source plugin with ease.
+
 ## 0.3.5
 
 - Auto-linking removed. (The library used was too heavy (20kb). Need to find alternative)
