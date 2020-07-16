@@ -7,6 +7,10 @@
 - `sourcePath` changed to `themePath`
 - `destinationPath` changed to `outputPath`
 - `programInfo.abellConfigs` changed to `programInfo.abellConfig`
+- All variables will now be inside `Abell` object.
+  - `globalMeta` -> `Abell.globalMeta`
+  - `$contentArray` -> `Abell.contentArray`
+  - `$root` and `$path` -> `Abell.$root` and `Abell.$path`
 
 ### Non-breaking Changes
 
