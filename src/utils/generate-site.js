@@ -6,6 +6,7 @@ const abellRenderer = require('abell-renderer');
 const {
   rmdirRecursiveSync,
   createPathIfAbsent,
+  copyFolderSync,
   replaceExtension
 } = require('./general-helpers');
 const { renderMarkdown, md } = require('./build-utils.js');
@@ -86,7 +87,6 @@ function createHTMLFile(templateObj, programInfo, options) {
     replaceExtension(templateObj.$path, '.html').replace('[$path]', Abell.href)
   );
 
-  console.log(outPath);
   fs.writeFileSync(outPath, htmlOut);
 }
 
@@ -113,6 +113,27 @@ function generateSite(programInfo) {
 
     createHTMLFile(template, programInfo, {});
   }
+
+  const importedFiles = Object.keys(require.cache).filter(
+    (importedFile) =>
+      !path
+        .relative(programInfo.abellConfig.themePath, importedFile)
+        .startsWith('..')
+  );
+
+  const ignoreCopying = [
+    ...importedFiles,
+    ...Object.keys(programInfo.templateTree).map((relativePath) =>
+      path.join(programInfo.abellConfig.themePath, relativePath)
+    )
+  ];
+
+  // Copy everything from src to dist except the ones mentioned in ignoreCopying.
+  copyFolderSync(
+    programInfo.abellConfig.themePath,
+    programInfo.abellConfig.outputPath,
+    ignoreCopying
+  );
 }
 
 module.exports = { createHTMLFile, generateSite };

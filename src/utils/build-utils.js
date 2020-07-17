@@ -231,7 +231,6 @@ function renderMarkdown(mdPath, contentPath, variables) {
       path.join(contentPath, mdPath),
       'utf-8'
     );
-    console.log(fileContent);
     const mdWithValues = abellRenderer.render(fileContent, variables); // Add variables to markdown
     const rendererdHTML = md.render(mdWithValues);
     return rendererdHTML;
