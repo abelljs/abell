@@ -87,7 +87,25 @@ function createHTMLFile(templateObj, programInfo, options) {
     replaceExtension(templateObj.$path, '.html').replace('[$path]', Abell.href)
   );
 
+  // Write into .html file
   fs.writeFileSync(outPath, htmlOut);
+
+  if (options.isContent && options.content) {
+    const fromPath = path.join(
+      programInfo.abellConfig.contentPath,
+      options.content.$path,
+      'assets'
+    );
+    const toPath = path.join(
+      programInfo.abellConfig.outputPath,
+      options.content.$path,
+      'assets'
+    );
+
+    if (fs.existsSync(fromPath)) {
+      copyFolderSync(fromPath, toPath);
+    }
+  }
 }
 
 /**
@@ -114,6 +132,8 @@ function generateSite(programInfo) {
     createHTMLFile(template, programInfo, {});
   }
 
+  // We have to ignore all the files that are require()d inside .abell file
+  // So we find these files in require cache
   const importedFiles = Object.keys(require.cache).filter(
     (importedFile) =>
       !path
