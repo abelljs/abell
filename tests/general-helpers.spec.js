@@ -3,11 +3,10 @@ const path = require('path');
 const expect = require('chai').expect;
 
 const {
-  getAbellConfigs,
   createPathIfAbsent,
   execRegexOnAll,
   recursiveFindFiles
-} = require('../src/utils/helpers.js');
+} = require('../src/utils/general-helpers.js');
 
 describe('recursiveFindFiles()', () => {
   // eslint-disable-next-line max-len
@@ -17,30 +16,14 @@ describe('recursiveFindFiles()', () => {
     expect(recursiveFindFiles('tests/resources/test_recursiveFindFiles', '.abell'))
       .to.be.an('array')
       .that.has.members([
-        'tests/resources/test_recursiveFindFiles/deep/moredeep/jkl',
-        'tests/resources/test_recursiveFindFiles/ghi',
-        'tests/resources/test_recursiveFindFiles/one/abc',
-        'tests/resources/test_recursiveFindFiles/two/def'
+        'tests/resources/test_recursiveFindFiles/deep/moredeep/jkl.abell',
+        'tests/resources/test_recursiveFindFiles/ghi.abell',
+        'tests/resources/test_recursiveFindFiles/one/abc.abell',
+        'tests/resources/test_recursiveFindFiles/two/def.abell'
       ].map(nonCrossPlatformPaths => 
           nonCrossPlatformPaths.replace(/\//g, path.sep)
         )
       );
-  });
-});
-
-describe('getAbellConfigs()', () => {
-  before(() => {
-    process.chdir('tests/resources/test_demo');
-  });
-
-  it('should return siteName from abell.config.js', () => {
-    // prettier-ignore
-    expect(getAbellConfigs().globalMeta.siteName)
-      .to.equal('Abell Test Working!');
-  });
-
-  after(() => {
-    process.chdir('../../..')
   });
 });
 

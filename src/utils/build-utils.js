@@ -10,8 +10,11 @@ const md = new Remarkable({
 const {
   recursiveFindFiles,
   getAbsolutePath,
-  logWarning
+  logWarning,
+  anchorsPlugin
 } = require('./general-helpers.js');
+
+md.use(anchorsPlugin);
 
 /**
  * Reads meta.json and adds additional meta values.
@@ -150,6 +153,9 @@ function getProgramInfo() {
  * @return {ContentTree}
  */
 function buildSourceContentTree(contentPath) {
+  if (!fs.existsSync(contentPath)) {
+    return {};
+  }
   // Build the tree which has all information about content
   const relativeSlugs = recursiveFindFiles(
     contentPath,

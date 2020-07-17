@@ -173,6 +173,34 @@ const execRegexOnAll = (regex, template) => {
 };
 
 /**
+ * We use remarkable to parse markdown to HTML.
+ */
+
+/**
+ * Turns 'Hello World' to 'hello-world'
+ * @param {String} headerContent
+ * @return {String}
+ */
+function toSlug(headerContent) {
+  return headerContent
+    .toLowerCase()
+    .replace(
+      /[\!\"\#\$\%\&\'\(\)\*\+\,\.\/\:\;\<\=\>\?\@\\\^\_\{\|\}\~\-]/g,
+      ''
+    )
+    .replace(/\s/g, '-');
+}
+
+/**
+ * @param {Object} md
+ */
+function anchorsPlugin(md) {
+  md.renderer.rules.heading_open = function (tokens, idx) {
+    return `<h${tokens[idx].hLevel} id="${toSlug(tokens[idx + 1].content)}">`;
+  };
+}
+
+/**
  * console.log for errors, logs with error styles
  * @param {String} errorMessage message to log
  * @return {Void}
@@ -204,6 +232,7 @@ module.exports = {
   copyFolderSync,
   exitHandler,
   execRegexOnAll,
+  anchorsPlugin,
   logError,
   logWarning,
   colors
