@@ -91,6 +91,7 @@ function createHTMLFile(templateObj, programInfo, options) {
   fs.writeFileSync(outPath, htmlOut);
 
   if (options.isContent && options.content) {
+    // Copy 'assets' folder from content, if exist.
     const fromPath = path.join(
       programInfo.abellConfig.contentPath,
       options.content.$path,
