@@ -9,7 +9,11 @@ const {
   copyFolderSync,
   replaceExtension
 } = require('./general-helpers');
-const { renderMarkdown, md } = require('./build-utils.js');
+const {
+  renderMarkdown,
+  md,
+  addPrefixInHTMLPaths
+} = require('./build-utils.js');
 
 /**
  * Creates HTML file from given parameters
@@ -58,8 +62,12 @@ function createHTMLFile(templateObj, programInfo, options) {
   };
 
   if (options.isContent && options.content.$source === 'plugin') {
-    if (options.content.content) {
-      view.Abell.importContent = () => md.render(options.content.content);
+    if (options.content.markdownContent) {
+      // If it comes from plugin, content is supposed to have markdownContent property
+      // In this case, we override importContent to always return the rendererd content
+      // from plugin.
+      view.Abell.importContent = () =>
+        md.render(options.content.markdownContent);
     } else {
       console.log(
         `>> Content ${options.content.$slug} does not have a markdown content`
@@ -67,13 +75,17 @@ function createHTMLFile(templateObj, programInfo, options) {
     }
   }
 
-  const htmlOut = abellRenderer.render(abellTemplate, view, {
+  let htmlOut = abellRenderer.render(abellTemplate, view, {
     allowRequire: true,
     basePath: path.join(
       programInfo.abellConfig.themePath,
       path.dirname(templateObj.$path)
     )
   });
+
+  if (options.isContent && options.content.$path.includes(path.sep)) {
+    htmlOut = addPrefixInHTMLPaths(htmlOut, options.content.$root.slice(0, -3));
+  }
 
   createPathIfAbsent(
     path.join(

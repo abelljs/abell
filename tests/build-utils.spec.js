@@ -5,7 +5,8 @@ const {
   getProgramInfo,
   renderMarkdown,
   buildSourceContentTree,
-  getAbellConfig
+  getAbellConfig,
+  addPrefixInHTMLPaths
 } = require('../src/utils/build-utils.js');
 
 describe('getProgramInfo()', () => {
@@ -17,12 +18,12 @@ describe('getProgramInfo()', () => {
     expect(getProgramInfo())
       .to.be.an('object')
       .to.have.keys([
-        'abellConfigs',
-        'contentIndexTemplate',
-        'vars',
-        'contentTemplatePaths',
-        'contentDirectories',
-        'logs'
+        'abellConfig',
+        'contentTree',
+        'templateTree',
+        'port',
+        'logs',
+        'socketPort'
       ]);
   });
 
@@ -97,5 +98,24 @@ describe('renderMarkdown()', () => {
         }
       ).replace(/[\n ]/g, '')
     ).to.equal(shouldOutput.replace(/[\n ]/g, ''));
+  });
+});
+
+describe('addPrefixInHTMLPaths()', () => {
+  it('should add prefix to HTML paths', () => {
+    const template = /* html */ `
+      <link rel="preload" href="one.css" />
+      <a href='two.html'></a>
+      <a href='https://google.com/hi.html'></a>
+      <img src="three.png" />
+    `;
+    // prettier-ignore
+    expect(addPrefixInHTMLPaths(template, '..'))
+      .to.equal(/* html */ `
+      <link rel="preload" href="../one.css" />
+      <a href='../two.html'></a>
+      <a href='https://google.com/hi.html'></a>
+      <img src="../three.png" />
+    `)
   });
 });
