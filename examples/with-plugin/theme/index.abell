@@ -1,3 +1,6 @@
+{{
+  const { globalMeta, contentArray } = Abell;
+}}
 <!DOCTYPE html>
 <html>
   <head>
@@ -7,9 +10,9 @@
     <section>
       <h2>Content</h2>
       {{
-        $contentArray
+        contentArray
           .map(meta => `
-            <div>${meta.$slug}</div>
+            <div data-test="meta-slug">${meta.$slug}</div>
           `)
           .join('')
       }}

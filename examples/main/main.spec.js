@@ -40,7 +40,6 @@ describe('examples/main', () => {
         'new-blog (new-blog)',
         'My First Blog (my-first-blog)',
         'Another blog (another-blog)',
-        'hello-custom-blog (hello-custom-blog)'
       ]
 
       $('[data-test="contentarray-container"] > div').each(function(index, element) {

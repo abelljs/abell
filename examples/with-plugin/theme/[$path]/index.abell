@@ -1,11 +1,14 @@
+{{
+  const { globalMeta, meta, importContent } = Abell;
+}}
 <!DOCTYPE html>
 <html>
   <head>
     <title>{{ globalMeta.siteName }} - {{ meta.title }} </title>
   </head>
   <body>
-    <section>
-    {{ $importContent(`${meta.$path}/index.md`) }}
+    <section data-test="blog-content">
+    {{ importContent(`${meta.$path}/index.md`) }}
     </section>
   </body>
 </html>
