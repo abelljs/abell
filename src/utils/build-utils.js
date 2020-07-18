@@ -11,10 +11,107 @@ const {
   recursiveFindFiles,
   getAbsolutePath,
   logWarning,
-  anchorsPlugin
+  anchorsPlugin,
+  execRegexOnAll
 } = require('./general-helpers.js');
 
 md.use(anchorsPlugin);
+
+// Functions!
+
+/**
+ * Returns the basic information needed for build execution
+ * @return {ProgramInfo}
+ */
+function getProgramInfo() {
+  // Get configured paths of destination and content
+  const abellConfig = getAbellConfig();
+
+  const programInfo = {
+    abellConfig,
+    contentTree: buildSourceContentTree(abellConfig.contentPath),
+    templateTree: buildTemplateTree(abellConfig.themePath),
+    logs: 'minimum',
+    port: 5000,
+    socketPort: 3000
+  };
+
+  return programInfo;
+}
+
+/**
+ * Builds Source Content tree
+ * @param {String} contentPath
+ * @return {ContentTree}
+ */
+function buildSourceContentTree(contentPath) {
+  if (!fs.existsSync(contentPath)) {
+    return {};
+  }
+  // Build the tree which has all information about content
+  const relativeSlugs = recursiveFindFiles(
+    contentPath,
+    'index.md'
+  ).map((mdPath) => path.dirname(path.relative(contentPath, mdPath)));
+
+  // Create a source object with slugs as keys and their meta values as properties
+  const source = {};
+  for (const slug of relativeSlugs) {
+    source[slug] = getContentMeta(slug, { contentPath });
+  }
+
+  return source;
+}
+
+/**
+ * Build template tree
+ * @param {String} themePath - path to directory that has theme source
+ * @return {String[]}
+ */
+function buildTemplateTree(themePath) {
+  // Builds tree with all information of .abell files
+  const abellTemplatesInTheme = recursiveFindFiles(themePath, '.abell');
+  const theme = {};
+  for (const template of abellTemplatesInTheme) {
+    const relativePath = path.relative(themePath, template);
+    const shouldLoop = path.dirname(relativePath).endsWith('[$path]')
+      ? true
+      : false;
+
+    theme[relativePath] = {
+      shouldLoop,
+      $path: relativePath,
+      $root: path.dirname(relativePath).includes(path.sep)
+        ? path
+            .dirname(relativePath)
+            .split(path.sep)
+            .map(() => '..')
+            .join(path.sep)
+        : ''
+    };
+  }
+
+  return theme;
+}
+
+/**
+ *
+ * @param {PluginNode} pluginNode Similar to meta info but includes content as well
+ * @return {MetaInfo}
+ */
+function getSourceNodeFromPluginNode(pluginNode) {
+  return {
+    ...pluginNode,
+    title: pluginNode.title || pluginNode.slug,
+    description: pluginNode.description || `This is ${pluginNode.slug}...`,
+    $path: pluginNode.slug,
+    $slug: pluginNode.slug,
+    $createdAt: pluginNode.createdAt,
+    $modifiedAt: pluginNode.modifiedAt || pluginNode.createdAt,
+    $root: '..',
+    $source: 'plugin'
+  };
+}
 
 /**
  * Reads meta.json and adds additional meta values.
@@ -128,100 +225,6 @@ function getAbellConfig() {
 }
 
 /**
- * Returns the basic information needed for build execution
- * @return {ProgramInfo}
- */
-function getProgramInfo() {
-  // Get configured paths of destination and content
-  const abellConfig = getAbellConfig();
-
-  const programInfo = {
-    abellConfig,
-    contentTree: buildSourceContentTree(abellConfig.contentPath),
-    templateTree: buildTemplateTree(abellConfig.themePath),
-    logs: 'minimum',
-    port: 5000,
-    socketPort: 3000
-  };
-
-  return programInfo;
-}
-
-/**
- * Builds Source Content tree
- * @param {String} contentPath
- * @return {ContentTree}
- */
-function buildSourceContentTree(contentPath) {
-  if (!fs.existsSync(contentPath)) {
-    return {};
-  }
-  // Build the tree which has all information about content
-  const relativeSlugs = recursiveFindFiles(
-    contentPath,
-    'index.md'
-  ).map((mdPath) => path.dirname(path.relative(contentPath, mdPath)));
-
-  // Create a source object with slugs as keys and their meta values as properties
-  const source = {};
-  for (const slug of relativeSlugs) {
-    source[slug] = getContentMeta(slug, { contentPath });
-  }
-
-  return source;
-}
-
-/**
- * Build template tree
- * @param {String} themePath - path to directory that has theme source
- * @return {String[]}
- */
-function buildTemplateTree(themePath) {
-  // Builds tree with all information of .abell files
-  const abellTemplatesInTheme = recursiveFindFiles(themePath, '.abell');
-  const theme = {};
-  for (const template of abellTemplatesInTheme) {
-    const relativePath = path.relative(themePath, template);
-    const shouldLoop = path.dirname(relativePath).endsWith('[$path]')
-      ? true
-      : false;
-
-    theme[relativePath] = {
-      shouldLoop,
-      $path: relativePath,
-      $root: path.dirname(relativePath).includes(path.sep)
-        ? path
-            .dirname(relativePath)
-            .split(path.sep)
-            .map(() => '..')
-            .join(path.sep)
-        : ''
-    };
-  }
-
-  return theme;
-}
-
-/**
- *
- * @param {PluginNode} pluginNode Similar to meta info but includes content as well
- * @return {MetaInfo}
- */
-function getSourceNodeFromPluginNode(pluginNode) {
-  return {
-    ...pluginNode,
-    title: pluginNode.title || pluginNode.slug,
-    description: pluginNode.description || `This is ${pluginNode.slug}...`,
-    $path: pluginNode.slug,
-    $slug: pluginNode.slug,
-    $createdAt: pluginNode.createdAt,
-    $modifiedAt: pluginNode.modifiedAt || pluginNode.createdAt,
-    $root: '..',
-    $source: 'plugin'
-  };
-}
-
-/**
  * 1. Reads .md/.abell file from given path
  * 2. Converts it to html
  * 3. Adds variable to the new HTML and returns the HTML
@@ -248,13 +251,39 @@ function renderMarkdown(mdPath, contentPath, variables) {
   }
 }
 
+/**
+ * Adds right prefix to paths if folder's level is deep
+ * @param {String} htmlTemplate
+ * @param {String} prefix
+ * @return {String}
+ */
+function addPrefixInHTMLPaths(htmlTemplate, prefix) {
+  const { matches, input } = execRegexOnAll(
+    / (?:href|src)=["'`](.*?)["'`]/g,
+    htmlTemplate
+  );
+
+  let output = '';
+  let lastIndex = 0;
+  for (const match of matches) {
+    if (match[1].startsWith('http') || match[1].startsWith('//')) continue;
+    const indexToAddOn = match.index + match[0].indexOf(match[1]);
+    output += input.slice(lastIndex, indexToAddOn) + prefix + '/';
+    lastIndex = indexToAddOn;
+  }
+  output += input.slice(lastIndex);
+
+  return output;
+}
+
 module.exports = {
-  getAbellConfig,
-  getContentMeta,
   getProgramInfo,
   buildSourceContentTree,
   buildTemplateTree,
   getSourceNodeFromPluginNode,
+  getAbellConfig,
+  getContentMeta,
   renderMarkdown,
+  addPrefixInHTMLPaths,
   md
 };
