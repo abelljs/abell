@@ -8,12 +8,12 @@ const md = new Remarkable({
 });
 
 const {
-  recursiveFindFiles,
-  getAbsolutePath,
   logWarning,
   anchorsPlugin,
   execRegexOnAll
 } = require('./general-helpers.js');
+
+const { recursiveFindFiles, getAbsolutePath } = require('./abell-fs.js');
 
 md.use(anchorsPlugin);
 

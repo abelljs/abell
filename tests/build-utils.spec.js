@@ -11,7 +11,7 @@ const {
 
 describe('getProgramInfo()', () => {
   before(() => {
-    process.chdir('tests/resources/test_demo');
+    process.chdir('tests/test-utils/resources/test_demo');
   });
 
   it('should return the base info for program to execute', () => {
@@ -28,14 +28,14 @@ describe('getProgramInfo()', () => {
   });
 
   after(() => {
-    process.chdir('../../..')
+    process.chdir('../../../..')
   });
 });
 
 
 describe('buildSourceContentTree()', () => {
   before(() => {
-    process.chdir('tests/resources/test_demo');
+    process.chdir('tests/test-utils/resources/test_demo');
   });
 
   it('should return all the information about the content', () => {
@@ -55,14 +55,14 @@ describe('buildSourceContentTree()', () => {
   });
 
   after(() => {
-    process.chdir('../../..')
+    process.chdir('../../../..')
   });
 });
 
 
 describe('getAbellConfig()', () => {
   before(() => {
-    process.chdir('tests/resources/test_demo');
+    process.chdir('tests/test-utils/resources/test_demo');
   });
 
   it('should return siteName from abell.config.js', () => {
@@ -72,7 +72,7 @@ describe('getAbellConfig()', () => {
   });
 
   after(() => {
-    process.chdir('../../..')
+    process.chdir('../../../..')
   });
 });
 
@@ -92,7 +92,7 @@ describe('renderMarkdown()', () => {
     expect(
       renderMarkdown(
         'another-blog/index.md',
-        'tests/resources/test_demo/content',
+        'tests/test-utils/resources/test_demo/content',
         {
           meta: { title: 'Abell Test Title Check' }
         }

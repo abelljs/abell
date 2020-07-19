@@ -1,7 +1,7 @@
 const path = require('path');
 
 const { expect } = require('chai');
-const { preTestSetup, getSelector } = require('../../tests/utils/test-helpers.js')
+const { preTestSetup, getSelector } = require('../../tests/test-utils/test-helpers.js')
 
 describe('examples/minimal', () => {
   before(async () => {
