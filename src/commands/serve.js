@@ -31,7 +31,6 @@ function serve(programInfo) {
 
   ads.create({
     port: programInfo.port,
-    socketPort: programInfo.socketPort,
     path: programInfo.abellConfigs.destinationPath
   });
 
@@ -50,7 +49,6 @@ function serve(programInfo) {
     `${boldGreen('Local: ')} http://localhost:${programInfo.port} \n\n`
   );
   console.log('='.repeat(process.stdout.columns));
-  console.log('>> Web Socket Server running at port ' + programInfo.socketPort);
   const abellConfigsPath = path.join(process.cwd(), 'abell.config.js');
 
   /* Event handlers */

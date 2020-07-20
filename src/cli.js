@@ -77,7 +77,6 @@ async function onServeCommand(command) {
   }
 
   programInfo.port = command.port || 5000;
-  programInfo.socketPort = command.socketPort || 3000;
   programInfo.task = 'serve';
   programInfo.logs = 'minimum';
   programInfo.abellConfigs.destinationPath = '.debug';
@@ -95,7 +94,6 @@ program.command('build').action(onBuildCommand);
 program
   .command('serve')
   .option('--port [port]', 'Serve on different port')
-  .option('--socket-port [socketPort]', 'Serve on different port')
   .action(onServeCommand);
 
 program.parse(process.argv); // required for commander to parse arguments

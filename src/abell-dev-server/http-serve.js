@@ -6,7 +6,6 @@ const path = require('path');
 /**
  * @typedef {Object} Options
  * @property {Number} port
- * @property {Number} socketPort
  * @property {String} path
  * @property {String} logs - Possible values: complete, minimum, no
  */
@@ -92,12 +91,13 @@ function server(req, res, socketCode, options) {
 /**
  *
  * @param {Options} options
+ * @return {Object} httpServer
  */
 function createServer(options) {
   const port = options.port || 9000;
   const socketCode = /* html */ `
   <script>
-    const url = 'ws://localhost:${options.socketPort}';
+    const url = 'ws://localhost:${port}';
     const connection = new WebSocket(url);
     connection.addEventListener('message', e => {
       if (e.data === 'abell-dev-server-reload') {
@@ -107,10 +107,12 @@ function createServer(options) {
   </script>
   `;
 
-  http
+  const httpServer = http
     .createServer((req, res) => server(req, res, socketCode, options))
     .listen(parseInt(port));
   console.log(`Server listening on port ${port}`);
+
+  return httpServer;
 }
 
 module.exports = {

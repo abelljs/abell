@@ -7,11 +7,10 @@ let wss;
  * Creates server
  * @param {Object} options
  * @param {Number} options.port
- * @param {Number} options.socketPort
  */
 function create(options) {
-  createServer(options);
-  wss = new WebSocket.Server({ port: options.socketPort || 8080 });
+  const httpServer = createServer(options);
+  wss = new WebSocket.Server({ server: httpServer });
   console.log('Socket Server Listening...');
   wss.on('connection', (ws) => {
     if (!server) console.log('>> Watcher Connected');
