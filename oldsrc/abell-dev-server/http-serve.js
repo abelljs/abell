@@ -6,6 +6,7 @@ const path = require('path');
 /**
  * @typedef {Object} Options
  * @property {Number} port
+ * @property {Number} socketPort
  * @property {String} path
  * @property {String} logs - Possible values: complete, minimum, no
  */
@@ -91,7 +92,6 @@ function server(req, res, socketCode, options) {
 /**
  *
  * @param {Options} options
- * @return {Object} httpServer
  */
 function createServer(options) {
   const port = options.port || 9000;
@@ -107,14 +107,13 @@ function createServer(options) {
   </script>
   `;
 
-  const httpServer = http
+  http
     .createServer((req, res) => server(req, res, socketCode, options))
     .listen(parseInt(port));
   console.log(`Server listening on port ${port}`);
-
-  return httpServer;
 }
 
 module.exports = {
-  createServer
+  createServer,
+  server
 };
