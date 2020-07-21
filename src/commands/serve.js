@@ -1,8 +1,9 @@
 const fs = require('fs');
 const path = require('path');
 
-const ads = require('../abell-dev-server');
+const chokidar = require('chokidar');
 
+const ads = require('../abell-dev-server');
 const {
   getProgramInfo,
   getSourceNodeFromPluginNode
@@ -11,7 +12,8 @@ const {
 const {
   executeBeforeBuildPlugins,
   executeAfterBuildPlugins,
-  colors
+  colors,
+  exitHandler
 } = require('../utils/general-helpers.js');
 
 const { generateSite } = require('../utils/generate-site.js');
@@ -27,7 +29,7 @@ function runDevServer(programInfo) {
 
   ads.create({
     port: programInfo.port,
-    path: programInfo.abellConfig.destinationPath
+    path: programInfo.abellConfig.outputPath
   });
 
   const chokidarOptions = {
@@ -49,7 +51,7 @@ function runDevServer(programInfo) {
   /** WATCHERS!! */
 
   const onAbellConfigChanged = (filePath) => {
-    console.log('Abell configs changed ⚙️');
+    console.log('Abell Config Changed ⚙️');
     // Read New abell.config.js
     // set globalMeta to programInfo
   };
@@ -59,7 +61,40 @@ function runDevServer(programInfo) {
     // build source tree again
   };
 
-  console.log(programInfo);
+  const onContentChanged = (event, filePath) => {
+    console.log('Content Changed 📄');
+    // build content tree again
+  };
+
+  // Listeners
+  const configPath = path.join(process.cwd(), 'abell.config.js');
+
+  if (fs.existsSync(configPath)) {
+    chokidar
+      .watch(configPath, chokidarOptions)
+      .on('change', onAbellConfigChanged);
+  }
+
+  if (fs.existsSync(programInfo.abellConfig.contentPath)) {
+    chokidar
+      .watch(programInfo.abellConfig.contentPath, chokidarOptions)
+      .on('all', onContentChanged);
+  }
+
+  chokidar
+    .watch(programInfo.abellConfig.themePath, chokidarOptions)
+    .on('all', onThemeChanged);
+
+  /** EXIT HANDLER */
+  // do something when app is closing
+  process.on('exit', exitHandler.bind(null, { cleanup: true }));
+  // catches ctrl+c event
+  process.on('SIGINT', exitHandler.bind(null, { exit: true }));
+  // catches "kill pid" (for example: nodemon restart)
+  process.on('SIGUSR1', exitHandler.bind(null, { exit: true }));
+  process.on('SIGUSR2', exitHandler.bind(null, { exit: true }));
+  // catches uncaught exceptions
+  process.on('uncaughtException', exitHandler.bind(null, { exit: true }));
 }
 
 /**
@@ -86,7 +121,7 @@ async function serve(command) {
   programInfo.port = command.port || 5000;
   programInfo.task = 'serve';
   programInfo.logs = 'minimum';
-  programInfo.abellConfig.destinationPath = '.debug';
+  programInfo.abellConfig.outputPath = '.debug';
 
   runDevServer(programInfo);
   executeAfterBuildPlugins(programInfo);
