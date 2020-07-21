@@ -64,7 +64,6 @@ function runDevServer(programInfo) {
   };
 
   const onThemeChanged = (event, filePath) => {
-    // rebuild template tree
     console.log('Theme Changed 💅');
 
     // if file is js or json, we have to make sure the file is not in require cache
@@ -79,13 +78,30 @@ function runDevServer(programInfo) {
       );
     }
 
-    generateSite(programInfo);
-    ads.reload();
+    try {
+      generateSite(programInfo);
+      ads.reload();
+    } catch (err) {
+      if (err.message.includes('is not defined')) {
+        console.log(err);
+        console.error(`${colors.boldRed('>> Build Failed 😭')} ${err.message}`);
+      }
+    }
   };
 
+  /**
+   * 1. if meta.json changed, rebuild contentTree
+   * 2. if content add/remove, rebuild contentTree
+   * 3. if .md changed, rebuild HTML page of that particular blog
+   * @param {Event} event
+   * @param {String} filePath
+   */
   const onContentChanged = (event, filePath) => {
-    console.log('Content Changed 📄');
-    // build content tree again
+    // build content tree again on add/remove
+
+    console.log(
+      `📄 >> Event '${event}' in ${path.relative(process.cwd(), filePath)}`
+    );
   };
 
   /** LISTENERS! */

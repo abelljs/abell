@@ -18,7 +18,7 @@ const {
 
 /**
  * Creates HTML file from given parameters
- * @param {Object} templateObj content of .abell file
+ * @param {TemplateTree} templateObj template tree of .abell file
  * @param {ProgramInfo} programInfo path of the output HTML file
  * @param {Object} options
  */
