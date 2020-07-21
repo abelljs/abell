@@ -22,8 +22,7 @@ describe('getProgramInfo()', () => {
         'contentTree',
         'templateTree',
         'port',
-        'logs',
-        'socketPort'
+        'logs'
       ]);
   });
 
