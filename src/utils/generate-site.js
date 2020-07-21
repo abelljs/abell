@@ -43,14 +43,14 @@ function createHTMLFile(templateObj, programInfo, options) {
       (a, b) => b.$createdAt.getTime() - a.$createdAt.getTime()
     ),
     contentObj: programInfo.contentTree,
-    root: templateObj.$root,
-    href: templateObj.$path
+    $root: templateObj.$root,
+    $path: templateObj.$path
   };
 
   if (options.isContent) {
     // Extra variables when building content
-    Abell.root = options.content.$root;
-    Abell.href = options.content.$path;
+    Abell.$root = options.content.$root;
+    Abell.$path = options.content.$path;
     Abell.meta = options.content;
   }
 
@@ -91,13 +91,13 @@ function createHTMLFile(templateObj, programInfo, options) {
   createPathIfAbsent(
     path.join(
       programInfo.abellConfig.outputPath,
-      path.dirname(templateObj.$path).replace('[$path]', Abell.href)
+      path.dirname(templateObj.$path).replace('[$path]', Abell.$path)
     )
   );
 
   const outPath = path.join(
     programInfo.abellConfig.outputPath,
-    replaceExtension(templateObj.$path, '.html').replace('[$path]', Abell.href)
+    replaceExtension(templateObj.$path, '.html').replace('[$path]', Abell.$path)
   );
 
   // Write into .html file
