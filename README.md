@@ -30,12 +30,13 @@ Changelogs are maintained in [CHANGELOG.md](CHANGELOG.md)
 ### 🤗 Local Installation & Contributing
 
 - Fork [abelljs/abell](https://github.com/abelljs/abell)
-- `git clone https://github.com/:github-username/abell`
-- `cd abell`
-- `npm install` - to install dependencies
-- `npm link` - This will add the current directory to global packages.
+- `git clone https://github.com/:github-username/abell` # Get a copy of the codebase in your codebase
+- `cd abell` # Change to the folder
+- `npm install` # This command installs all the dependencies
+- `npm link` # This command will add the current directory to global packages.
 - `cd examples/main` - Directory `examples` has sample abell projects.
-- `abell build` to build project or `abell serve` to start dev server.
+- `abell build` # command to build project or
+- `abell serve` # command to start dev server.
 
 We would love to have contributions! The contributing guidelines along with local setup guide is mentioned in [CONTRIBUTING.md](CONTRIBUTING.md)
 

@@ -16,6 +16,13 @@
 
 - Added `createContent` function for beforeBuild plugins that lets plugin developers create source plugin with ease.
 
+## 0.3.6
+
+- Single port dev-server ([#55](https://github.com/abelljs/abell/pull/55))
+- typedefs added to export for plugins
+- Understandable message when markdown path does not exist (Thanks to [@judicaelandria](https://github.com/judicaelandria) for [#48](https://github.com/abelljs/abell/pull/48))
+- Contributing steps in README update (by [@smaranjitghose](https://github.com/smaranjitghose) in [#50](https://github.com/abelljs/abell/pull/50))
+
 ## 0.3.5
 
 - Auto-linking removed. (The library used was too heavy (20kb). Need to find alternative)
