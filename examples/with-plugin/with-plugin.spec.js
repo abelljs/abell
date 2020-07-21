@@ -26,7 +26,7 @@ describe('examples/with-plugin', () => {
         .to.equal('hello-custom-blog');
     })
 
-    it('should render slug of blog from plugin into the div', () => {
+    it('should render h1 of blog from content into the output html', () => {
       expect($.content('[data-test="blog-content"] > #hello').html())
         .to.equal('Hello');
     })
