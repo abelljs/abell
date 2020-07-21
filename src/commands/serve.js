@@ -6,6 +6,8 @@ const chokidar = require('chokidar');
 const ads = require('../abell-dev-server');
 const {
   getProgramInfo,
+  getAbellConfig,
+  buildTemplateTree,
   getSourceNodeFromPluginNode
 } = require('../utils/build-utils.js');
 
@@ -13,7 +15,8 @@ const {
   executeBeforeBuildPlugins,
   executeAfterBuildPlugins,
   colors,
-  exitHandler
+  exitHandler,
+  clearLocalRequireCache
 } = require('../utils/general-helpers.js');
 
 const { generateSite } = require('../utils/generate-site.js');
@@ -51,14 +54,33 @@ function runDevServer(programInfo) {
   /** WATCHERS!! */
 
   const onAbellConfigChanged = (filePath) => {
-    console.log('Abell Config Changed ⚙️');
     // Read New abell.config.js
     // set globalMeta to programInfo
+    console.log('Abell Config Changed ⚙️');
+    const newAbellConfig = getAbellConfig();
+    programInfo.abellConfig.globalMeta = newAbellConfig.globalMeta;
+    generateSite(programInfo);
+    ads.reload();
   };
 
   const onThemeChanged = (event, filePath) => {
+    // rebuild template tree
     console.log('Theme Changed 💅');
-    // build source tree again
+
+    // if file is js or json, we have to make sure the file is not in require cache
+    if (filePath.endsWith('.js') || filePath.endsWith('.json')) {
+      clearLocalRequireCache(programInfo.abellConfig.themePath);
+    }
+
+    // if new file is added/removed, we have to recalculate template tree
+    if (event !== 'change') {
+      programInfo.templateTree = buildTemplateTree(
+        programInfo.abellConfig.themePath
+      );
+    }
+
+    generateSite(programInfo);
+    ads.reload();
   };
 
   const onContentChanged = (event, filePath) => {
@@ -66,7 +88,7 @@ function runDevServer(programInfo) {
     // build content tree again
   };
 
-  // Listeners
+  /** LISTENERS! */
   const configPath = path.join(process.cwd(), 'abell.config.js');
 
   if (fs.existsSync(configPath)) {

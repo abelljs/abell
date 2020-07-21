@@ -41,6 +41,18 @@ function executeAfterBuildPlugins(programInfo) {
 }
 
 /**
+ * Clears the local files from require cache
+ * @param {String} themePath
+ */
+function clearLocalRequireCache(themePath) {
+  Object.keys(require.cache)
+    .filter((filePath) => !path.relative(themePath, filePath).startsWith('..'))
+    .forEach((cachedFile) => {
+      delete require.cache[cachedFile];
+    });
+}
+
+/**
  * Called before exit from cli,
  * @param {Object} options
  * @param {Number} exitCode
@@ -127,6 +139,7 @@ const colors = {
 module.exports = {
   executeBeforeBuildPlugins,
   executeAfterBuildPlugins,
+  clearLocalRequireCache,
   exitHandler,
   execRegexOnAll,
   anchorsPlugin,

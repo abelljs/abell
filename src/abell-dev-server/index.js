@@ -22,7 +22,7 @@ function create(options) {
  */
 function reload() {
   if (socketServer) {
-    socketServer.send('abell-dev-socketServer-reload');
+    socketServer.send('abell-dev-server-reload');
   }
 }
 
