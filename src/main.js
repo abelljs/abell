@@ -17,6 +17,30 @@
  * @property {String[]} plugins - Array of abell plugins.
  * @property {Object} globalMeta - Meta variables that are accessible globally in .abell files
  *
+ * @typedef {Object} MetaInfo - Meta information from meta.json file in content dir
+ * @property {String} $slug - slug of content
+ * @property {String} $source - Source 'local' or 'plugin'
+ * @property {Date} $createdAt - Date object with time of content creation
+ * @property {Date} $modifiedAt - Date object with time of last modification
+ * @property {String} $path - String of path
+ * @property {String} $root - Prefix to root
+ *
+ * @typedef {Object} TemplateObj
+ * @property {Boolean} shouldLoop - should loop over template to create content
+ * @property {String} $path - path of the current file
+ * @property {String} $root - path to the root directory
+ *
+ * @typedef {Object.<String, MetaInfo>} ContentTree
+ *
+ * @typedef {Object.<String, TemplateObj>} TemplateTree
+ *
+ * @typedef {Object} ProgramInfo
+ * @property {AbellConfig} abellConfig
+ * @property {ContentTree} contentTree
+ * @property {TemplateTree} templateTree
+ * @property {String} logs - 'minimum', 'complete'
+ * @property {Number} port - port of the dev server
+ *
  */
 
 const { generateSite, createHTMLFile } = require('./utils/generate-site.js');

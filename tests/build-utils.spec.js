@@ -4,7 +4,7 @@ const expect = require('chai').expect;
 const {
   getProgramInfo,
   renderMarkdown,
-  buildSourceContentTree,
+  buildContentTree,
   getAbellConfig,
   addPrefixInHTMLPaths
 } = require('../src/utils/build-utils.js');
@@ -33,13 +33,13 @@ describe('getProgramInfo()', () => {
 });
 
 
-describe('buildSourceContentTree()', () => {
+describe('buildContentTree()', () => {
   before(() => {
     process.chdir('tests/test-utils/resources/test_demo');
   });
 
   it('should return all the information about the content', () => {
-    const contentTree = buildSourceContentTree(path.resolve('./content'));
+    const contentTree = buildContentTree(path.resolve('./content'));
 
     expect(Object.keys(contentTree)).to.eql([
       'another-blog',

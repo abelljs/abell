@@ -29,11 +29,10 @@ function getProgramInfo() {
 
   const programInfo = {
     abellConfig,
-    contentTree: buildSourceContentTree(abellConfig.contentPath),
+    contentTree: buildContentTree(abellConfig.contentPath),
     templateTree: buildTemplateTree(abellConfig.themePath),
     logs: 'minimum',
-    port: 5000,
-    socketPort: 3000
+    port: 5000
   };
 
   return programInfo;
@@ -44,7 +43,7 @@ function getProgramInfo() {
  * @param {String} contentPath
  * @return {ContentTree}
  */
-function buildSourceContentTree(contentPath) {
+function buildContentTree(contentPath) {
   if (!fs.existsSync(contentPath)) {
     return {};
   }
@@ -66,7 +65,7 @@ function buildSourceContentTree(contentPath) {
 /**
  * Build template tree
  * @param {String} themePath - path to directory that has theme source
- * @return {String[]}
+ * @return {TemplateTree}
  */
 function buildTemplateTree(themePath) {
   // Builds tree with all information of .abell files
@@ -278,7 +277,7 @@ function addPrefixInHTMLPaths(htmlTemplate, prefix) {
 
 module.exports = {
   getProgramInfo,
-  buildSourceContentTree,
+  buildContentTree,
   buildTemplateTree,
   getSourceNodeFromPluginNode,
   getAbellConfig,
