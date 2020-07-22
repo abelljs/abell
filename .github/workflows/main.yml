@@ -5,7 +5,7 @@ name: Tests and ESLint
 
 on:
   push:
-    branches: [main, rearchitecture]
+    branches: [main, next]
   pull_request:
     branches: [main]
 
