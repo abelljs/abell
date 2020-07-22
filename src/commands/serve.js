@@ -55,6 +55,10 @@ function runDevServer(programInfo) {
 
   /** WATCHERS!! */
 
+  /**
+   * Trigger on abell.config.js changed
+   * @param {String} filePath
+   */
   const onAbellConfigChanged = (filePath) => {
     // Read New abell.config.js
     // set globalMeta to programInfo
@@ -65,6 +69,11 @@ function runDevServer(programInfo) {
     ads.reload();
   };
 
+  /**
+   * Trigger on anything inside 'theme' directory is changed
+   * @param {Object} event
+   * @param {String} filePath
+   */
   const onThemeChanged = (event, filePath) => {
     console.log('Theme Changed 💅');
 
@@ -85,6 +94,7 @@ function runDevServer(programInfo) {
   };
 
   /**
+   * Trigger on anything inside 'content' is changed.
    * 1. if meta.json changed, rebuild contentTree
    * 2. if content add/remove, rebuild contentTree
    * 3. if .md changed, rebuild HTML page of that particular blog
@@ -97,10 +107,10 @@ function runDevServer(programInfo) {
       `📄 >> Event '${event}' in ${path.relative(process.cwd(), filePath)}`
     );
 
-    if (filePath.endsWith('meta.json') || filePath.endsWith('meta.js')) {
-      delete require.cache[filePath];
-      // if file changed is meta.json or meta.js
+    const isFileMeta =
+      filePath.endsWith('meta.json') || filePath.endsWith('meta.js');
 
+    if (isFileMeta || (event !== 'change' && !isFileMeta)) {
       // rebuild contentTree but do not remove content from plugins
       programInfo.contentTree = buildContentTree(
         programInfo.abellConfig.contentPath,
@@ -109,9 +119,18 @@ function runDevServer(programInfo) {
           existingTree: programInfo.contentTree
         }
       );
+    }
 
+    // if file changed is meta.json or meta.js
+    if (isFileMeta) {
+      delete require.cache[filePath]; // remove existing meta.json from cache
       generateSite(programInfo);
       ads.reload();
+    } else if (filePath.endsWith('.md')) {
+      const loopableTemplates = Object.values(programInfo.templateTree).filter(
+        (template) => template.shouldLoop
+      );
+      console.log(loopableTemplates);
     }
   };
 

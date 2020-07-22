@@ -97,13 +97,10 @@ function buildTemplateTree(themePath) {
     theme[relativePath] = {
       shouldLoop,
       $path: relativePath,
-      $root: path.dirname(relativePath).includes(path.sep)
-        ? path
-            .dirname(relativePath)
-            .split(path.sep)
-            .map(() => '..')
-            .join(path.sep)
-        : ''
+      $root: path.relative(
+        path.join(themePath, path.dirname(relativePath)),
+        themePath
+      )
     };
   }
 
@@ -181,10 +178,7 @@ function getContentMeta(slug, { contentPath }) {
     $modifiedAt: mtime,
     $createdAt: ctime,
     $path: slug,
-    $root: slug
-      .split(path.sep)
-      .map(() => '..')
-      .join(path.sep)
+    $root: path.relative(path.join(contentPath, slug), contentPath)
   };
 }
 
