@@ -9,13 +9,17 @@
   <body>
     <section>
       <h2>Content</h2>
+      <div data-test="all-slugs">
       {{
         contentArray
           .map(meta => `
-            <div data-test="meta-slug">${meta.$slug}</div>
+          <div>
+            <span class="meta-slug">${meta.$slug}</span>
+          </div>
           `)
           .join('')
       }}
+      </div>
     </section>
   </body>
 </html>

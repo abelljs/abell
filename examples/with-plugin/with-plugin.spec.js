@@ -21,14 +21,23 @@ describe('examples/with-plugin', () => {
         .to.equal(true)
     })
 
-    it('should render slug of blog from plugin into the div', () => {
-      expect($.index('[data-test="meta-slug"]').html())
-        .to.equal('hello-custom-blog');
-    })
-
     it('should render h1 of blog from content into the output html', () => {
       expect($.content('[data-test="blog-content"] > #hello').html())
         .to.equal('Hello');
+    })
+
+
+    it('should render all the slugs of blog', () => {
+      const expectedTitles = [
+        'my-first-blog',
+        'another-blog',
+        'hello-custom-blog'
+      ]
+
+      $.index('[data-test="all-slugs"] > div').each(function(index, element) {
+        expect($.index(this).children('.meta-slug').html())
+          .to.equal(expectedTitles[index]);
+      })
     })
 
   })
