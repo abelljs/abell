@@ -41,9 +41,12 @@ function getProgramInfo() {
 /**
  * Builds Source Content tree
  * @param {String} contentPath
+ * @param {Object} options
+ * @param {Boolean} options.keepPluginContent - keep the existing plugin content
+ * @param {ContentTree} options.existingTree
  * @return {ContentTree}
  */
-function buildContentTree(contentPath) {
+function buildContentTree(contentPath, options = { keepPluginContent: false }) {
   if (!fs.existsSync(contentPath)) {
     return {};
   }
@@ -57,6 +60,20 @@ function buildContentTree(contentPath) {
   const source = {};
   for (const slug of relativeSlugs) {
     source[slug] = getContentMeta(slug, { contentPath });
+  }
+
+  if (!options.keepPluginContent) {
+    // If keep plugin content is false, return local content's tree
+    return source;
+  }
+
+  // else add plugin content from existing tree (mostly used in abell serve)
+  const pluginContent = Object.values(options.existingTree).filter(
+    (contentObj) => contentObj.$source !== 'local'
+  );
+
+  for (const contentObj of pluginContent) {
+    source[contentObj.$path] = contentObj;
   }
 
   return source;
@@ -137,7 +154,7 @@ function getContentMeta(slug, { contentPath }) {
   };
 
   // Read data defined in meta.json or meta.js file of content
-  let definedMetaData;
+  let definedMetaData = {};
   if (fs.existsSync(path.join(contentPath, slug, 'meta.json'))) {
     definedMetaData = require(path.join(contentPath, slug, 'meta.json'));
   } else if (fs.existsSync(path.join(contentPath, slug, 'meta.js'))) {

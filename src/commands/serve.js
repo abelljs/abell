@@ -8,6 +8,7 @@ const {
   getProgramInfo,
   getAbellConfig,
   buildTemplateTree,
+  buildContentTree,
   getSourceNodeFromPluginNode
 } = require('../utils/build-utils.js');
 
@@ -16,7 +17,8 @@ const {
   executeAfterBuildPlugins,
   colors,
   exitHandler,
-  clearLocalRequireCache
+  clearLocalRequireCache,
+  logError
 } = require('../utils/general-helpers.js');
 
 const { generateSite } = require('../utils/generate-site.js');
@@ -78,15 +80,8 @@ function runDevServer(programInfo) {
       );
     }
 
-    try {
-      generateSite(programInfo);
-      ads.reload();
-    } catch (err) {
-      if (err.message.includes('is not defined')) {
-        console.log(err);
-        console.error(`${colors.boldRed('>> Build Failed 😭')} ${err.message}`);
-      }
-    }
+    generateSite(programInfo);
+    ads.reload();
   };
 
   /**
@@ -98,10 +93,26 @@ function runDevServer(programInfo) {
    */
   const onContentChanged = (event, filePath) => {
     // build content tree again on add/remove
-
     console.log(
       `📄 >> Event '${event}' in ${path.relative(process.cwd(), filePath)}`
     );
+
+    if (filePath.endsWith('meta.json') || filePath.endsWith('meta.js')) {
+      delete require.cache[filePath];
+      // if file changed is meta.json or meta.js
+
+      // rebuild contentTree but do not remove content from plugins
+      programInfo.contentTree = buildContentTree(
+        programInfo.abellConfig.contentPath,
+        {
+          keepPluginContent: true,
+          existingTree: programInfo.contentTree
+        }
+      );
+
+      generateSite(programInfo);
+      ads.reload();
+    }
   };
 
   /** LISTENERS! */
@@ -116,12 +127,28 @@ function runDevServer(programInfo) {
   if (fs.existsSync(programInfo.abellConfig.contentPath)) {
     chokidar
       .watch(programInfo.abellConfig.contentPath, chokidarOptions)
-      .on('all', onContentChanged);
+      .on('all', (event, filePath) => {
+        // error handling
+        try {
+          onContentChanged(event, filePath);
+        } catch (err) {
+          console.log(err);
+          logError(err.message);
+        }
+      });
   }
 
   chokidar
     .watch(programInfo.abellConfig.themePath, chokidarOptions)
-    .on('all', onThemeChanged);
+    .on('all', (event, filePath) => {
+      // error handling
+      try {
+        onThemeChanged(event, filePath);
+      } catch (err) {
+        console.log(err);
+        logError(err.message);
+      }
+    });
 
   /** EXIT HANDLER */
   // do something when app is closing
