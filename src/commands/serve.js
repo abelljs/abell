@@ -110,8 +110,11 @@ function runDevServer(programInfo) {
     const isFileMeta =
       filePath.endsWith('meta.json') || filePath.endsWith('meta.js');
 
-    if (isFileMeta || (event !== 'change' && !isFileMeta)) {
+    if (event !== 'change' || isFileMeta) {
       // rebuild contentTree but do not remove content from plugins
+
+      delete require.cache[filePath]; // remove existing meta.json from cache
+
       programInfo.contentTree = buildContentTree(
         programInfo.abellConfig.contentPath,
         {
@@ -119,14 +122,11 @@ function runDevServer(programInfo) {
           existingTree: programInfo.contentTree
         }
       );
-    }
 
-    // if file changed is meta.json or meta.js
-    if (isFileMeta) {
-      delete require.cache[filePath]; // remove existing meta.json from cache
       generateSite(programInfo);
       ads.reload();
     } else if (filePath.endsWith('.md')) {
+      // if file is markdown content
       // Only build the files that have that content
       const loopableTemplates = Object.values(programInfo.templateTree).filter(
         (template) => template.shouldLoop

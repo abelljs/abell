@@ -14,6 +14,7 @@
         contentArray
           .map(meta => `
           <div>
+            <a href="${meta.$path}">${meta.title}</a><br/>
             <span class="meta-slug">${meta.$slug}</span>
           </div>
           `)
