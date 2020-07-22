@@ -21,7 +21,7 @@ const {
   logError
 } = require('../utils/general-helpers.js');
 
-const { generateSite } = require('../utils/generate-site.js');
+const { generateSite, createHTMLFile } = require('../utils/generate-site.js');
 
 /**
  *
@@ -127,16 +127,43 @@ function runDevServer(programInfo) {
       generateSite(programInfo);
       ads.reload();
     } else if (filePath.endsWith('.md')) {
+      // Only build the files that have that content
       const loopableTemplates = Object.values(programInfo.templateTree).filter(
         (template) => template.shouldLoop
       );
-      console.log(loopableTemplates);
+
+      const content =
+        programInfo.contentTree[
+          path.relative(
+            programInfo.abellConfig.contentPath,
+            path.dirname(filePath)
+          )
+        ];
+
+      if (Object.keys(content).length < 1) {
+        // if the content does not have values,
+        // it means something is wrong. So we fallback to full website build
+        // This will usually happen when index.md is in root of 'content/' directory
+        generateSite(programInfo);
+      } else {
+        for (const template of loopableTemplates) {
+          createHTMLFile(template, programInfo, {
+            isContent: true,
+            content
+          });
+        }
+      }
+
+      ads.reload();
+    } else {
+      generateSite(programInfo);
+      ads.reload();
     }
   };
 
   /** LISTENERS! */
-  const configPath = path.join(process.cwd(), 'abell.config.js');
 
+  const configPath = path.join(process.cwd(), 'abell.config.js');
   if (fs.existsSync(configPath)) {
     chokidar
       .watch(configPath, chokidarOptions)

@@ -21,6 +21,8 @@ const {
  * @param {TemplateTree} templateObj template tree of .abell file
  * @param {ProgramInfo} programInfo path of the output HTML file
  * @param {Object} options
+ * @param {Boolean} options.isContent
+ * @param {MetaInfo} options.content
  */
 function createHTMLFile(templateObj, programInfo, options) {
   // Creates HTML File
