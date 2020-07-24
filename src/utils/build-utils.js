@@ -89,6 +89,9 @@ function buildTemplateTree(themePath) {
   const abellTemplatesInTheme = recursiveFindFiles(themePath, '.abell');
   const theme = {};
   for (const template of abellTemplatesInTheme) {
+    if (template.endsWith('.component.abell')) {
+      continue;
+    }
     const relativePath = path.relative(themePath, template);
     const shouldLoop = path.dirname(relativePath).endsWith('[$path]')
       ? true

@@ -33,7 +33,7 @@
   },
   "homepage": "https://abelljs.org",
   "dependencies": {
-    "abell-renderer": "^0.1.15",
+    "abell-renderer": "^0.2.0-alpha.2",
     "chokidar": "^3.4.0",
     "commander": "^5.0.0",
     "remarkable": "^2.0.0",

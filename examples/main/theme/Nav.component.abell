@@ -1,0 +1,13 @@
+<AbellComponent>
+<template>
+  <nav>This is Nav Component. GlobalMeta: {{ props.globalMeta.siteName }}</nav>
+</template>
+<style inlined>
+  nav {
+    color: red;
+  }
+</style>
+<script bundle="nav.js">
+  const a = 3 + 5;
+</script>
+</AbellComponent>

@@ -78,13 +78,23 @@ function createHTMLFile(templateObj, programInfo, options) {
     }
   }
 
-  let htmlOut = abellRenderer.render(abellTemplate, view, {
-    allowRequire: true,
-    basePath: path.join(
-      programInfo.abellConfig.themePath,
-      path.dirname(templateObj.$path)
-    )
-  });
+  let { html: htmlOut, components } = abellRenderer.render(
+    abellTemplate,
+    view,
+    {
+      allowRequire: true,
+      allowComponents: true,
+      basePath: path.join(
+        programInfo.abellConfig.themePath,
+        path.dirname(templateObj.$path)
+      )
+    }
+  );
+
+  if (components.length > 0) {
+    console.log(components[0].styles);
+    console.log(components[0].scripts);
+  }
 
   if (options.isContent && options.content.$path.includes(path.sep)) {
     htmlOut = addPrefixInHTMLPaths(htmlOut, options.content.$root.slice(0, -3));
