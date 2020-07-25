@@ -1,7 +1,12 @@
 const path = require('path');
 
-const { expect } = require('chai');
-const { preTestSetup, getSelector } = require('../../tests/utils/test-helpers.js')
+const {
+  expect
+} = require('chai');
+const {
+  preTestSetup,
+  getSelector
+} = require('../../tests/utils/test-helpers.js')
 
 describe('examples/main', () => {
   before(async () => {
@@ -42,11 +47,226 @@ describe('examples/main', () => {
         'Another blog (another-blog)'
       ]
 
-      $('[data-test="contentarray-container"] > div').each(function(index, element) {
+      $('[data-test="contentarray-container"] > div').each(function (index, element) {
         expect($(this).children('span.data-title').html())
           .to.equal(expectedTitles[index]);
       })
     })
   })
-});
 
+  //another-blog example
+  describe('another-blog/example.html', () => {
+    let $;
+    before(() => {
+      $ = getSelector(path.join(__dirname, 'dist/another-blog', 'example.html'))
+    })
+
+    it('should render body text', () => {
+      expect($('body').html().trim())
+        .to.equal(String("another-blog"));
+    })
+  })
+
+  //another-blog index
+  describe('another-blog/index.html', () => {
+    let $;
+    before(() => {
+      $ = getSelector(path.join(__dirname, 'dist/another-blog', 'index.html'))
+    })
+
+    it('should render header text', () => {
+      expect($('[id="another-blog"]').html())
+        .to.equal('Another blog');
+    })
+
+    it('should render all blogs into blog container', () => {
+      let blogs = [
+        '..',
+        'another-blog',
+        'another-blog',
+      ]
+
+      $('#blog-container span').each(function (index, element) {
+        expect($(this).html()).to.equal(blogs[index]);
+      });
+    })
+
+    it('should render first para text', () => {
+      let dateToCheck = new Date();
+      dateToCheck.setFullYear(2020,4,9);
+      dateToCheck.setHours(0);
+      dateToCheck.setMinutes(0);
+      dateToCheck.setSeconds(0);
+      console.log(dateToCheck.toString())
+      expect($('body main section p').first().html())
+        .to.equal(dateToCheck.toString());
+    })
+    
+    it('should render last para text', () => {
+      expect($('body main section p').last().html())
+        .to.equal(String("Amazing blog right"));
+    })
+
+  });
+
+  //deep 
+  describe('deep/index.html', () => {
+    let $;
+    before(() => {
+      $ = getSelector(path.join(__dirname, 'dist/deep', 'index.html'))
+    })
+
+    it('should render html body text', () => {
+      expect($('body').html())
+        .to.equal(String("ok .."));
+    })
+  })
+
+  //more deep 
+  describe('deep/moredeep/index.html', () => {
+    let $;
+    before(() => {
+      $ = getSelector(path.join(__dirname, 'dist/deep/moredeep', 'index.html'))
+    })
+
+    it('should render html body text', () => {
+      expect($('body').html())
+        .to.equal(String("..\\.."));
+    })
+  })
+
+
+  //my first blog example  
+  describe('my-first-blog/example.html', () => {
+    let $;
+    before(() => {
+      $ = getSelector(path.join(__dirname, 'dist/my-first-blog', 'example.html'))
+    })
+
+    it('should render html body text', () => {
+      expect($('body').text().trim())
+        .to.equal(String("my-first-blog"));
+    })
+  })
+
+  //my first blog index
+  describe('my-first-blog/index.html', () => {
+    let $;
+    before(() => {
+      $ = getSelector(path.join(__dirname, 'dist/my-first-blog', 'index.html'))
+    })
+
+    it('should render section header text', () => {
+      expect($('section #test').text())
+        .to.equal(String("test"));
+    })
+
+    it('should render section hyperlink', () => {
+      expect($('section p').text())
+        .to.equal(String("https://makethislink.com"));
+    })
+
+    it('should render all blogs into blog container', () => {
+      let blogs = [
+        '..',
+        'my-first-blog',
+        'my-first-blog',
+      ]
+
+      $('#blog-container span').each(function (index, element) {
+        expect($(this).html()).to.equal(blogs[index]);
+      });
+    })
+  })
+
+
+  //new blog example  
+  describe('new-blog/example.html', () => {
+    let $;
+    before(() => {
+      $ = getSelector(path.join(__dirname, 'dist/new-blog', 'example.html'))
+    })
+
+    it('should render html body text', () => {
+      expect($('body').text().trim())
+        .to.equal(String("new-blog"));
+    })
+  })
+
+  //new blog
+  describe('new-blog/index.html', () => {
+    let $;
+    before(() => {
+      $ = getSelector(path.join(__dirname, 'dist/new-blog', 'index.html'))
+    })
+
+    it('should render all blogs into blog container', () => {
+      let blogs = [
+        '..',
+        'new-blog',
+        'new-blog',
+      ]
+
+      $('#blog-container span').each(function (index, element) {
+        expect($(this).html()).to.equal(blogs[index]);
+      });
+    })
+    it('should render header text', () => {
+      expect($('body main section #newblog').html())
+        .to.equal(String("new-blog"));
+    })
+    it('should render first para text', () => {
+      expect($('body main section p').first().html())
+        .to.equal(String(".."));
+    })
+    it('should render global meta site name', () => {
+      expect($('body main section p').last().html())
+        .to.equal(String("{{ globalMeta.siteName }}"));
+    })
+
+  })
+
+  //new blog/sub blog/example  
+  describe('new-blog/sub-blog/example.html', () => {
+    let $;
+    before(() => {
+      $ = getSelector(path.join(__dirname, 'dist/new-blog/sub-blog', 'example.html'))
+    })
+
+    it('should render html body text', () => {
+      expect($('body').text().trim())
+        .to.equal(String("new-blog\\sub-blog"));
+    })
+  });
+
+
+  describe('new-blog/sub-blog/index.html', () => {
+    let $;
+    before(() => {
+      $ = getSelector(path.join(__dirname, 'dist/new-blog/sub-blog', 'index.html'))
+    })
+
+    it('should render all blogs into blog container', () => {
+      let blogs = [
+        '..\\..',
+        'new-blog\\sub-blog',
+        'sub-blog',
+      ]
+
+      $('#blog-container span').each(function (index, element) {
+        expect($(this).html()).to.equal(blogs[index]);
+      });
+    })
+    it('should render header text', () => {
+      expect($('body main section #inside-the-new-blog').html())
+        .to.equal(String("Inside the new blog"));
+    })
+    it('should render first para text', () => {
+      expect($('body main section p').first().html())
+        .to.equal(String("...."));
+    })
+
+  })
+
+
+});
