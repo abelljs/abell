@@ -97,7 +97,6 @@ describe('examples/main', () => {
       dateToCheck.setHours(0);
       dateToCheck.setMinutes(0);
       dateToCheck.setSeconds(0);
-      console.log(dateToCheck.toString())
       expect($('body main section p').first().html())
         .to.equal(dateToCheck.toString());
     })
