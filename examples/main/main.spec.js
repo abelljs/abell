@@ -58,7 +58,7 @@ describe('examples/main', () => {
   describe('another-blog/example.html', () => {
     let $;
     before(() => {
-      $ = getSelector(path.join(__dirname, 'dist/another-blog', 'example.html'))
+      $ = getSelector(path.join(__dirname, 'dist', 'another-blog', 'example.html'))
     })
 
     it('should render body text', () => {
@@ -71,7 +71,7 @@ describe('examples/main', () => {
   describe('another-blog/index.html', () => {
     let $;
     before(() => {
-      $ = getSelector(path.join(__dirname, 'dist/another-blog', 'index.html'))
+      $ = getSelector(path.join(__dirname, 'dist', 'another-blog', 'index.html'))
     })
 
     it('should render header text', () => {
@@ -93,14 +93,14 @@ describe('examples/main', () => {
 
     it('should render first para text', () => {
       let dateToCheck = new Date();
-      dateToCheck.setFullYear(2020,4,9);
+      dateToCheck.setFullYear(2020, 4, 9);
       dateToCheck.setHours(0);
       dateToCheck.setMinutes(0);
       dateToCheck.setSeconds(0);
       expect($('body main section p').first().html())
         .to.equal(dateToCheck.toString());
     })
-    
+
     it('should render last para text', () => {
       expect($('body main section p').last().html())
         .to.equal(String("Amazing blog right"));
@@ -112,7 +112,7 @@ describe('examples/main', () => {
   describe('deep/index.html', () => {
     let $;
     before(() => {
-      $ = getSelector(path.join(__dirname, 'dist/deep', 'index.html'))
+      $ = getSelector(path.join(__dirname, 'dist', 'deep', 'index.html'))
     })
 
     it('should render html body text', () => {
@@ -125,7 +125,7 @@ describe('examples/main', () => {
   describe('deep/moredeep/index.html', () => {
     let $;
     before(() => {
-      $ = getSelector(path.join(__dirname, 'dist/deep/moredeep', 'index.html'))
+      $ = getSelector(path.join(__dirname, 'dist', 'deep', 'moredeep', 'index.html'))
     })
 
     it('should render html body text', () => {
@@ -139,7 +139,7 @@ describe('examples/main', () => {
   describe('my-first-blog/example.html', () => {
     let $;
     before(() => {
-      $ = getSelector(path.join(__dirname, 'dist/my-first-blog', 'example.html'))
+      $ = getSelector(path.join(__dirname, 'dist', 'my-first-blog', 'example.html'))
     })
 
     it('should render html body text', () => {
@@ -152,7 +152,7 @@ describe('examples/main', () => {
   describe('my-first-blog/index.html', () => {
     let $;
     before(() => {
-      $ = getSelector(path.join(__dirname, 'dist/my-first-blog', 'index.html'))
+      $ = getSelector(path.join(__dirname, 'dist', 'my-first-blog', 'index.html'))
     })
 
     it('should render section header text', () => {
@@ -183,7 +183,7 @@ describe('examples/main', () => {
   describe('new-blog/example.html', () => {
     let $;
     before(() => {
-      $ = getSelector(path.join(__dirname, 'dist/new-blog', 'example.html'))
+      $ = getSelector(path.join(__dirname, 'dist', 'new-blog', 'example.html'))
     })
 
     it('should render html body text', () => {
@@ -196,7 +196,7 @@ describe('examples/main', () => {
   describe('new-blog/index.html', () => {
     let $;
     before(() => {
-      $ = getSelector(path.join(__dirname, 'dist/new-blog', 'index.html'))
+      $ = getSelector(path.join(__dirname, 'dist', 'new-blog', 'index.html'))
     })
 
     it('should render all blogs into blog container', () => {
@@ -229,7 +229,7 @@ describe('examples/main', () => {
   describe('new-blog/sub-blog/example.html', () => {
     let $;
     before(() => {
-      $ = getSelector(path.join(__dirname, 'dist/new-blog/sub-blog', 'example.html'))
+      $ = getSelector(path.join(__dirname, 'dist', 'new-blog', 'sub-blog', 'example.html'))
     })
 
     it('should render html body text', () => {
@@ -242,7 +242,7 @@ describe('examples/main', () => {
   describe('new-blog/sub-blog/index.html', () => {
     let $;
     before(() => {
-      $ = getSelector(path.join(__dirname, 'dist/new-blog/sub-blog', 'index.html'))
+      $ = getSelector(path.join(__dirname, 'dist', 'new-blog', 'sub-blog', 'index.html'))
     })
 
     it('should render all blogs into blog container', () => {
