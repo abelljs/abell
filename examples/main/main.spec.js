@@ -130,7 +130,7 @@ describe('examples/main', () => {
 
     it('should render html body text', () => {
       expect($('body').html())
-        .to.equal(String("..\\.."));
+        .to.equal(String(`..${path.sep}..`));
     })
   })
 
@@ -234,7 +234,7 @@ describe('examples/main', () => {
 
     it('should render html body text', () => {
       expect($('body').text().trim())
-        .to.equal(String("new-blog\\sub-blog"));
+        .to.equal(String(`new-blog${path.sep}sub-blog`));
     })
   });
 
@@ -247,8 +247,8 @@ describe('examples/main', () => {
 
     it('should render all blogs into blog container', () => {
       let blogs = [
-        '..\\..',
-        'new-blog\\sub-blog',
+        `..${path.sep}..`,
+        `new-blog${path.sep}sub-blog`,
         'sub-blog',
       ]
 
