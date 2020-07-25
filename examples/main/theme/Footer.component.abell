@@ -1,0 +1,13 @@
+<AbellComponent>
+<template>
+  <footer>This is Footer Component {{ props.globalMeta.siteName }}</footer>
+</template>
+<style>
+  footer {
+    color: red;
+  }
+</style>
+<script inlined>
+  const a = 3 + 5;
+</script>
+</AbellComponent>

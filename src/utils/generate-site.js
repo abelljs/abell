@@ -92,8 +92,7 @@ function createHTMLFile(templateObj, programInfo, options) {
   );
 
   if (components.length > 0) {
-    console.log(components[0].styles);
-    console.log(components[0].scripts);
+    console.log(components[0].components[0].styles);
   }
 
   if (options.isContent && options.content.$path.includes(path.sep)) {
