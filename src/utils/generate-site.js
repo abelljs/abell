@@ -65,12 +65,17 @@ function createHTMLFile(templateObj, programInfo, options) {
   };
 
   if (options.isContent && options.content.$source === 'plugin') {
-    if (options.content.markdownContent) {
-      // If it comes from plugin, content is supposed to have markdownContent property
+    if (options.content.content) {
+      // If it comes from plugin, content is supposed to have content property
       // In this case, we override importContent to always return the rendererd content
       // from plugin.
-      view.Abell.importContent = () =>
-        md.render(options.content.markdownContent);
+      view.Abell.importContent = () => {
+        if (options.content.contentType === 'html') {
+          return options.content.content;
+        }
+
+        return md.render(options.content.content);
+      };
     } else {
       console.log(
         `>> Content ${options.content.$slug} does not have a markdown content`
