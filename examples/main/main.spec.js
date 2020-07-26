@@ -215,7 +215,7 @@ describe('examples/main', () => {
     })
     it('should render global meta site name', () => {
       expect($('body main section p').last().html())
-        .to.equal("{{ globalMeta.siteName }}");
+        .to.equal("{{ Abell.globalMeta.siteName }}");
     })
 
   })

@@ -91,7 +91,7 @@ function createHTMLFile(templateObj, programInfo, options) {
     }
   );
 
-  if (components.length > 0) {
+  if (components && components.length > 0) {
     console.log(components[0].components[0].styles);
   }
 

@@ -1,5 +1,4 @@
 {{
-  const Nav = require('./Nav.component.abell');
   const site = require('./site.json');
 }}
 {{
@@ -16,7 +15,6 @@
     const a = 10;
     const b = 1;
   }}
-  <Nav props={globalMeta}/>
   <main>
     <section>
       JS Test <span data-test="js-in-abell-test">{{ a + b }}</span>
