@@ -261,7 +261,7 @@ describe('examples/main', () => {
         .to.equal("Inside the new blog");
     })
     it('should render first para text', () => {
-      expect($('body main section p').first().html())
+      expect($('body main section p').text())
         .to.equal(`..${path.sep}..`);
     })
 
