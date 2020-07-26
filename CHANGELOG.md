@@ -19,6 +19,7 @@
 - Added support for HTML content in source plugins.
 - Abell Components under feature flag 👽
 - `Abell.$root` value fix for Windows
+- Stack trace in errors
 
 ### Changes in Abell Renderer
 

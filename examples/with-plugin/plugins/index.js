@@ -9,8 +9,8 @@ function beforeBuild(programInfo, { createContent }) {
     {
       slug: 'blog-from-plugin',
       content: `
-      <h1>Blog from Plugin</h1>
-      <p>Description of plugin</p>
+        <h1>Blog from Plugin</h1>
+        <p>Description of plugin</p>
       `,
       contentType: 'html',
       createdAt: new Date('1 May 2020'),

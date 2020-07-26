@@ -29,8 +29,13 @@ async function build() {
   };
 
   await executeBeforeBuildPlugins(programInfo, { createContent });
-  // Build site here
-  generateSite(programInfo);
+
+  try {
+    // Build site here
+    generateSite(programInfo);
+  } catch (err) {
+    console.log(err);
+  }
 
   // Run afterBuild functions of plugins
   executeAfterBuildPlugins(programInfo);

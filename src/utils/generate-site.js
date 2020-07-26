@@ -83,17 +83,19 @@ function createHTMLFile(templateObj, programInfo, options) {
     }
   }
 
+  const sourceThemePath = path.join(
+    programInfo.abellConfig.themePath,
+    templateObj.$path
+  );
+
   let { html: htmlOut, components } = abellRenderer.render(
     abellTemplate,
     view,
     {
       allowRequire: true,
       allowComponents: true,
-      filename: templateObj.$path,
-      basePath: path.join(
-        programInfo.abellConfig.themePath,
-        path.dirname(templateObj.$path)
-      )
+      filename: path.relative(process.cwd(), sourceThemePath),
+      basePath: path.dirname(sourceThemePath)
     }
   );
 
