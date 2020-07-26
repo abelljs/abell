@@ -89,6 +89,7 @@ function createHTMLFile(templateObj, programInfo, options) {
     {
       allowRequire: true,
       allowComponents: true,
+      filename: templateObj.$path,
       basePath: path.join(
         programInfo.abellConfig.themePath,
         path.dirname(templateObj.$path)

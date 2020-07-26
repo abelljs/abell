@@ -1,16 +1,26 @@
 function beforeBuild(programInfo, { createContent }) {
-  const sourceNode = {
-    slug: 'hello-custom-blog',
-    content: `
-    <h1>This is HTML content</h1>
-    <p>woahh</p>
-    `,
-    contentType: 'html',
-    createdAt: new Date('13 May 2019'),
-    modifiedAt: new Date('13 May 2019')
-  }
+  const nodes = [
+    {
+      slug: 'hello-custom-blog',
+      content: `# Hello`,
+      createdAt: new Date('13 May 2019'),
+      modifiedAt: new Date('13 May 2019')
+    },
+    {
+      slug: 'blog-from-plugin',
+      content: `
+      <h1>Blog from Plugin</h1>
+      <p>Description of plugin</p>
+      `,
+      contentType: 'html',
+      createdAt: new Date('1 May 2020'),
+      modifiedAt: new Date('1 May 2020')
+    }
+  ]
 
-  createContent(sourceNode)
+  for (const node of nodes) {
+    createContent(node)
+  }
 }
 
 function afterBuild() {

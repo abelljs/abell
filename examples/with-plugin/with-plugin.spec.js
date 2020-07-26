@@ -31,6 +31,7 @@ describe('examples/with-plugin', () => {
       const expectedTitles = [
         'my-first-blog',
         'another-blog',
+        'blog-from-plugin',
         'hello-custom-blog'
       ]
 

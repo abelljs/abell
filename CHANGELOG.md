@@ -4,9 +4,10 @@
 
 ### Breaking Changes
 
-- `sourcePath` changed to `themePath`
-- `destinationPath` changed to `outputPath`
-- `programInfo.abellConfigs` changed to `programInfo.abellConfig`
+- In abell.config.js,
+  - `sourcePath` changed to `themePath`
+  - `destinationPath` changed to `outputPath`
+- Internally (and for plugins) `programInfo.abellConfigs` changed to `programInfo.abellConfig`
 - All variables will now be inside `Abell` object.
   - `globalMeta` -> `Abell.globalMeta`
   - `$contentArray` -> `Abell.contentArray`
@@ -15,6 +16,13 @@
 ### Non-breaking Changes
 
 - Added `createContent` function for beforeBuild plugins that lets plugin developers create source plugin with ease.
+- Added support for HTML content in source plugins.
+- Abell Components under feature flag 👽
+- `Abell.$root` value fix for Windows
+
+### Changes in Abell Renderer
+
+Along with v0.4.0, we also released v0.2.0 of Abell Renderer. The changes are mentioned in [abell-renderer](https://github.com/abelljs/abell-renderer/tree/main/CHANGELOG.md)
 
 ## 0.3.6
 
