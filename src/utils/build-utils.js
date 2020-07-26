@@ -181,9 +181,7 @@ function getContentMeta(slug, { contentPath }) {
     $modifiedAt: mtime,
     $createdAt: ctime,
     $path: slug,
-    $root: path
-      .relative(path.join(contentPath, slug), contentPath)
-      .replace(/\\./g, '\\\\.')
+    $root: path.relative(path.join(contentPath, slug), contentPath)
   };
 }
 
@@ -256,7 +254,7 @@ function renderMarkdown(mdPath, contentPath, variables) {
       'utf-8'
     );
     const mdWithValues = abellRenderer.render(fileContent, variables); // Add variables to markdown
-    const rendererdHTML = md.render(mdWithValues);
+    const rendererdHTML = md.render(mdWithValues.replace(/\\./g, '\\\\.'));
     return rendererdHTML;
   } catch (err) {
     console.log(
