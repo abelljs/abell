@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.4.0 (Includes BREAKING CHANGES)
+
+### Breaking Changes
+
+- `sourcePath` changed to `themePath`
+- `destinationPath` changed to `outputPath`
+- `programInfo.abellConfigs` changed to `programInfo.abellConfig`
+- All variables will now be inside `Abell` object.
+  - `globalMeta` -> `Abell.globalMeta`
+  - `$contentArray` -> `Abell.contentArray`
+  - `$root` and `$path` -> `Abell.$root` and `Abell.$path`
+
+### Non-breaking Changes
+
+- Added `createContent` function for beforeBuild plugins that lets plugin developers create source plugin with ease.
+
 ## 0.3.6
 
 - Single port dev-server ([#55](https://github.com/abelljs/abell/pull/55))

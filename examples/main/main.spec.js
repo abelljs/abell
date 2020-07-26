@@ -1,12 +1,7 @@
 const path = require('path');
 
-const {
-  expect
-} = require('chai');
-const {
-  preTestSetup,
-  getSelector
-} = require('../../tests/utils/test-helpers.js')
+const { expect } = require('chai');
+const { preTestSetup, getSelector } = require('../../tests/test-utils/test-helpers.js')
 
 describe('examples/main', () => {
   before(async () => {
@@ -44,7 +39,7 @@ describe('examples/main', () => {
         `sub-blog (new-blog${path.sep}sub-blog)`,
         'new-blog (new-blog)',
         'My First Blog (my-first-blog)',
-        'Another blog (another-blog)'
+        'Another blog (another-blog)',
       ]
 
       $('[data-test="contentarray-container"] > div').each(function (index, element) {

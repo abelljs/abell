@@ -2,65 +2,81 @@ const path = require('path');
 const expect = require('chai').expect;
 
 const {
-  getBaseProgramInfo,
-  importAndRender,
-  loadContent
+  getProgramInfo,
+  renderMarkdown,
+  buildContentTree,
+  getAbellConfig,
+  addPrefixInHTMLPaths
 } = require('../src/utils/build-utils.js');
 
-describe('getBaseProgramInfo()', () => {
+describe('getProgramInfo()', () => {
   before(() => {
-    process.chdir('tests/resources/test_demo');
+    process.chdir('tests/test-utils/resources/test_demo');
   });
 
   it('should return the base info for program to execute', () => {
-    expect(getBaseProgramInfo())
+    expect(getProgramInfo())
       .to.be.an('object')
       .to.have.keys([
-        'abellConfigs',
-        'contentIndexTemplate',
-        'vars',
-        'contentTemplatePaths',
-        'contentDirectories',
+        'abellConfig',
+        'contentTree',
+        'templateTree',
+        'port',
         'logs'
       ]);
   });
 
   after(() => {
-    process.chdir('../../..')
+    process.chdir('../../../..')
   });
 });
 
 
-describe('loadContent()', () => {
+describe('buildContentTree()', () => {
   before(() => {
-    process.chdir('tests/resources/test_demo');
+    process.chdir('tests/test-utils/resources/test_demo');
   });
 
   it('should return all the information about the content', () => {
-    const {
-      contentDirectories, 
-      $contentObj
-    } = loadContent('./content');
+    const contentTree = buildContentTree(path.resolve('./content'));
 
-    expect(contentDirectories).to.eql([
+    expect(Object.keys(contentTree)).to.eql([
       'another-blog',
       'my-first-blog',
       `my-first-blog${path.sep}sub-blog`
     ]);
 
-    expect($contentObj['another-blog'].$root).to.equal('..')
+    expect(contentTree['another-blog'].$root).to.equal('..')
 
-    expect($contentObj[`my-first-blog${path.sep}sub-blog`].$root)
+    expect(contentTree[`my-first-blog${path.sep}sub-blog`].$root)
       .to.equal(`..${path.sep}..`)
 
   });
 
   after(() => {
-    process.chdir('../../..')
+    process.chdir('../../../..')
   });
 });
 
-describe('importAndRender()', () => {
+
+describe('getAbellConfig()', () => {
+  before(() => {
+    process.chdir('tests/test-utils/resources/test_demo');
+  });
+
+  it('should return siteName from abell.config.js', () => {
+    // prettier-ignore
+    expect(getAbellConfig().globalMeta.siteName)
+      .to.equal('Abell Test Working!');
+  });
+
+  after(() => {
+    process.chdir('../../../..')
+  });
+});
+
+
+describe('renderMarkdown()', () => {
   it('should return HTML of the md file in given path', () => {
     const shouldOutput = /* html */ `
       <h1 id="abell-test-title-check">Abell Test Title Check</h1>
@@ -73,13 +89,32 @@ describe('importAndRender()', () => {
     `;
 
     expect(
-      importAndRender(
+      renderMarkdown(
         'another-blog/index.md',
-        'tests/resources/test_demo/content',
+        'tests/test-utils/resources/test_demo/content',
         {
           meta: { title: 'Abell Test Title Check' }
         }
       ).replace(/[\n ]/g, '')
     ).to.equal(shouldOutput.replace(/[\n ]/g, ''));
+  });
+});
+
+describe('addPrefixInHTMLPaths()', () => {
+  it('should add prefix to HTML paths', () => {
+    const template = /* html */ `
+      <link rel="preload" href="one.css" />
+      <a href='two.html'></a>
+      <a href='https://google.com/hi.html'></a>
+      <img src="three.png" />
+    `;
+    // prettier-ignore
+    expect(addPrefixInHTMLPaths(template, '..'))
+      .to.equal(/* html */ `
+      <link rel="preload" href="../one.css" />
+      <a href='../two.html'></a>
+      <a href='https://google.com/hi.html'></a>
+      <img src="../three.png" />
+    `)
   });
 });

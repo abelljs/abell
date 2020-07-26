@@ -1,5 +1,5 @@
-## {{ meta.$slug }}
+## {{ Abell.meta.$slug }}
 
-{{ $root }}
+{{ Abell.root }}
 
-\{{ globalMeta.siteName }}
+\{{ Abell.globalMeta.siteName }}

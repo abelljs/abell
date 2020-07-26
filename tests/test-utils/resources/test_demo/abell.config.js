@@ -1,6 +1,6 @@
 module.exports = {
-  sourcePath: 'src',
-  destinationPath: 'dist',
+  themePath: 'src',
+  outputPath: 'dist',
   contentPath: 'content',
   globalMeta: {
     siteName: 'Abell Test Working!'
