@@ -262,7 +262,7 @@ describe('examples/main', () => {
     })
     it('should render first para text', () => {
       expect($('body main section p').first().html())
-        .to.equal("....");
+        .to.equal(`..${path.sep}..`);
     })
 
   })
