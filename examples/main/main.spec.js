@@ -63,7 +63,7 @@ describe('examples/main', () => {
 
     it('should render body text', () => {
       expect($('body').html().trim())
-        .to.equal(String("another-blog"));
+        .to.equal("another-blog");
     })
   })
 
@@ -103,7 +103,7 @@ describe('examples/main', () => {
 
     it('should render last para text', () => {
       expect($('body main section p').last().html())
-        .to.equal(String("Amazing blog right"));
+        .to.equal("Amazing blog right");
     })
 
   });
@@ -117,7 +117,7 @@ describe('examples/main', () => {
 
     it('should render html body text', () => {
       expect($('body').html())
-        .to.equal(String("ok .."));
+        .to.equal("ok ..");
     })
   })
 
@@ -130,7 +130,7 @@ describe('examples/main', () => {
 
     it('should render html body text', () => {
       expect($('body').html())
-        .to.equal(String(`..${path.sep}..`));
+        .to.equal(`..${path.sep}..`);
     })
   })
 
@@ -144,7 +144,7 @@ describe('examples/main', () => {
 
     it('should render html body text', () => {
       expect($('body').text().trim())
-        .to.equal(String("my-first-blog"));
+        .to.equal("my-first-blog");
     })
   })
 
@@ -157,12 +157,12 @@ describe('examples/main', () => {
 
     it('should render section header text', () => {
       expect($('section #test').text())
-        .to.equal(String("test"));
+        .to.equal("test");
     })
 
     it('should render section hyperlink', () => {
       expect($('section p').text())
-        .to.equal(String("https://makethislink.com"));
+        .to.equal("https://makethislink.com");
     })
 
     it('should render all blogs into blog container', () => {
@@ -188,7 +188,7 @@ describe('examples/main', () => {
 
     it('should render html body text', () => {
       expect($('body').text().trim())
-        .to.equal(String("new-blog"));
+        .to.equal("new-blog");
     })
   })
 
@@ -212,15 +212,15 @@ describe('examples/main', () => {
     })
     it('should render header text', () => {
       expect($('body main section #newblog').html())
-        .to.equal(String("new-blog"));
+        .to.equal("new-blog");
     })
     it('should render first para text', () => {
       expect($('body main section p').first().html())
-        .to.equal(String(".."));
+        .to.equal("..");
     })
     it('should render global meta site name', () => {
       expect($('body main section p').last().html())
-        .to.equal(String("{{ globalMeta.siteName }}"));
+        .to.equal("{{ globalMeta.siteName }}");
     })
 
   })
@@ -234,7 +234,7 @@ describe('examples/main', () => {
 
     it('should render html body text', () => {
       expect($('body').text().trim())
-        .to.equal(String(`new-blog${path.sep}sub-blog`));
+        .to.equal(`new-blog${path.sep}sub-blog`);
     })
   });
 
@@ -258,7 +258,7 @@ describe('examples/main', () => {
     })
     it('should render header text', () => {
       expect($('body main section #inside-the-new-blog').html())
-        .to.equal(String("Inside the new blog"));
+        .to.equal("Inside the new blog");
     })
     it('should render first para text', () => {
       expect($('body main section p').first().html())
