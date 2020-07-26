@@ -173,6 +173,11 @@ function getContentMeta(slug, { contentPath }) {
     mtime = new Date(definedMetaData.$modifiedAt);
   }
 
+  console.log('Logs for windows');
+  console.log(contentPath);
+  console.log(slug);
+  console.log(path.relative(path.join(contentPath, slug), contentPath));
+
   return {
     ...defaultMeta,
     ...definedMetaData,
