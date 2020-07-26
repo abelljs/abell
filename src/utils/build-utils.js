@@ -183,7 +183,7 @@ function getContentMeta(slug, { contentPath }) {
     $path: slug,
     $root: path
       .relative(path.join(contentPath, slug), contentPath)
-      .replace(/\\./g, '\\.')
+      .replace(/\\./g, '\\\\.')
   };
 }
 
