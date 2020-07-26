@@ -1,5 +1,6 @@
 # Changelog
 
+<!--
 ## 0.4.0 (Includes BREAKING CHANGES)
 
 ### Breaking Changes
@@ -24,6 +25,7 @@
 ### Changes in Abell Renderer
 
 Along with v0.4.0, we also released v0.2.0 of Abell Renderer. The changes are mentioned in [abell-renderer](https://github.com/abelljs/abell-renderer/tree/main/CHANGELOG.md)
+-->
 
 ## 0.3.6
 
