@@ -17,6 +17,88 @@ const {
 } = require('./build-utils.js');
 
 /**
+ * Recursive function that unwraps components and adds them to respective files
+ * @param {Object} components Array of all components
+ * @param {Array} prev Holds previous array for recursion
+ * @return {Array}
+ */
+function bundleComponentContent(components, prev = []) {
+  if (components.length <= 0) {
+    return prev;
+  }
+
+  const out = [];
+
+  for (const component of components) {
+    for (const style of component.styles) {
+      if (style.attributes.inlined === true) {
+        prev.push({
+          type: 'style',
+          inlined: true,
+          content: style.content,
+          attributes: style.attributes
+        });
+      } else if (style.attributes.bundle) {
+        prev.push({
+          type: 'style',
+          inlined: false,
+          bundle: path.join(
+            process.cwd(),
+            'bundled-css',
+            style.attributes.bundle
+          ),
+          content: style.content,
+          attributes: style.attributes
+        });
+      } else {
+        prev.push({
+          type: 'style',
+          inlined: false,
+          bundle: path.join(process.cwd(), 'bundled-css', 'main.abell.css'),
+          content: style.content,
+          attributes: style.attributes
+        });
+      }
+    }
+
+    for (const script of component.scripts) {
+      if (script.attributes.inlined === true) {
+        prev.push({
+          type: 'script',
+          inlined: true,
+          content: script.content,
+          attributes: script.attributes
+        });
+      } else if (script.attributes.bundle) {
+        prev.push({
+          type: 'script',
+          inlined: false,
+          bundle: path.join(
+            process.cwd(),
+            'bundled-js',
+            script.attributes.bundle
+          ),
+          content: script.content,
+          attributes: script.attributes
+        });
+      } else {
+        prev.push({
+          type: 'script',
+          inlined: false,
+          bundle: path.join(process.cwd(), 'bundled-js', 'main.abell.js'),
+          content: script.content,
+          attributes: script.attributes
+        });
+      }
+    }
+
+    out.push(...bundleComponentContent(component.components, prev));
+  }
+
+  return out;
+}
+
+/**
  * Creates HTML file from given parameters
  * @param {TemplateTree} templateObj template tree of .abell file
  * @param {ProgramInfo} programInfo path of the output HTML file
@@ -100,7 +182,7 @@ function createHTMLFile(templateObj, programInfo, options) {
   );
 
   if (components && components.length > 0) {
-    console.log(components[0].components[0].styles);
+    console.log(bundleComponentContent(components));
   }
 
   if (options.isContent && options.content.$path.includes(path.sep)) {

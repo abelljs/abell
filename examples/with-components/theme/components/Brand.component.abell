@@ -1,0 +1,13 @@
+<AbellComponent>
+<template>
+  <div>This is brand component</div>
+</template>
+<style inlined>
+  div {
+    background-color: #f30;
+    color: #fff;
+  }
+</style>
+<script>
+</script>
+</AbellComponent>
