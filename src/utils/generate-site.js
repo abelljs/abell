@@ -7,7 +7,8 @@ const {
   rmdirRecursiveSync,
   createPathIfAbsent,
   copyFolderSync,
-  replaceExtension
+  replaceExtension,
+  recursiveFindFiles
 } = require('./abell-fs.js');
 
 const {
@@ -268,9 +269,7 @@ function generateSite(programInfo) {
 
   const ignoreCopying = [
     ...importedFiles,
-    ...Object.keys(programInfo.templateTree).map((relativePath) =>
-      path.join(programInfo.abellConfig.themePath, relativePath)
-    )
+    ...recursiveFindFiles(programInfo.abellConfig.themePath, '.abell')
   ];
 
   // Copy everything from src to dist except the ones mentioned in ignoreCopying.
