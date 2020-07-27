@@ -16,6 +16,7 @@ const {
   md,
   addPrefixInHTMLPaths
 } = require('./build-utils.js');
+const { addToHeadEnd, addToBodyEnd } = require('./general-helpers.js');
 
 /**
  * Hashmap of template content for memoization
@@ -59,7 +60,7 @@ function getComponentBundles(
 
     for (const script of component.scripts) {
       if (script.attributes.inlined === true) {
-        prev.inlinedScripts += style.content;
+        prev.inlinedScripts += script.content;
       } else if (script.attributes.bundle) {
         const bundlePath = path.join('bundled-js', script.attributes.bundle);
         if (!prev[bundlePath]) {
@@ -176,26 +177,6 @@ function createHTMLFile(templateObj, programInfo, options) {
     }
   );
 
-  if (components && components.length > 0) {
-    const bundleMap = getComponentBundles(components);
-    for (let [bundlePath, bundleContent] of Object.entries(bundleMap)) {
-      if (bundlePath === 'inlinedStyles') {
-        // inline the bundleContent inside HTML in style
-      } else if (bundlePath === 'inlinedScripts') {
-        // inline the bundleContent in HTML in script
-      } else {
-        bundlePath = path.join(programInfo.abellConfig.outputPath, bundlePath);
-        createPathIfAbsent(path.dirname(bundlePath));
-        // append bundleContent into bundlePath and add <script src> or <style href> depending on extension
-        if (fs.existsSync(bundlePath)) {
-          fs.writeFileSync(bundlePath, bundleContent);
-        } else {
-          fs.appendFileSync(bundlePath, bundleContent);
-        }
-      }
-    }
-  }
-
   if (options.isContent && options.content.$path.includes(path.sep)) {
     htmlOut = addPrefixInHTMLPaths(htmlOut, options.content.$root.slice(0, -3));
   }
@@ -211,6 +192,51 @@ function createHTMLFile(templateObj, programInfo, options) {
     programInfo.abellConfig.outputPath,
     replaceExtension(templateObj.$path, '.html').replace('[$path]', Abell.$path)
   );
+
+  if (components && components.length > 0) {
+    const bundleMap = getComponentBundles(components);
+    for (let [bundlePath, bundleContent] of Object.entries(bundleMap)) {
+      if (bundlePath === 'inlinedStyles') {
+        // inline the bundleContent inside HTML in style
+        htmlOut = addToHeadEnd(`\n<style>${bundleContent}</style>\n`, htmlOut);
+      } else if (bundlePath === 'inlinedScripts') {
+        // inline the bundleContent in HTML in script
+        htmlOut = addToBodyEnd(`<script>${bundleContent}</script>`, htmlOut);
+      } else {
+        bundlePath = path.join(programInfo.abellConfig.outputPath, bundlePath);
+        createPathIfAbsent(path.dirname(bundlePath));
+        // append bundleContent into bundlePath and add <script src> or <style href> depending on extension
+        if (fs.existsSync(bundlePath)) {
+          fs.writeFileSync(bundlePath, bundleContent);
+        } else {
+          fs.appendFileSync(bundlePath, bundleContent);
+        }
+      }
+    }
+
+    const cssLinks = Object.keys(bundleMap)
+      .filter((filePath) => filePath.endsWith('.css'))
+      .map(
+        (filePath) =>
+          `\n<link rel="stylesheet" href="${path.relative(
+            path.dirname(outPath),
+            path.join(programInfo.abellConfig.outputPath, filePath)
+          )}"/>\n`
+      );
+
+    const jsLinks = Object.keys(bundleMap)
+      .filter((filePath) => filePath.endsWith('.js'))
+      .map(
+        (filePath) =>
+          `\n<script src="${path.relative(
+            path.dirname(outPath),
+            path.join(programInfo.abellConfig.outputPath, filePath)
+          )}"></script>\n`
+      );
+
+    htmlOut = addToBodyEnd(jsLinks.join('\n'), htmlOut);
+    htmlOut = addToHeadEnd(cssLinks.join('\n'), htmlOut);
+  }
 
   // Write into .html file
   fs.writeFileSync(outPath, htmlOut);

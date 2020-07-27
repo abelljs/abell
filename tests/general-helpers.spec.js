@@ -55,7 +55,7 @@ describe('addToHeadEnd()', () => {
       </html>
     `;
 
-    const out = addToHeadEnd(template, `<link rel="stylesheet" href="abell.css" />`);
+    const out = addToHeadEnd(`<link rel="stylesheet" href="abell.css" />`, template);
     const $ = cheerio.load(out);
     // prettier-ignore
     expect($('head > link[rel="stylesheet"]').attr('href')).to.equal('abell.css')
@@ -72,7 +72,7 @@ describe('addToHeadEnd()', () => {
       </html>
     `;
 
-    const out = addToHeadEnd(template, `<link rel="stylesheet" href="abell.css" />`);
+    const out = addToHeadEnd(`<link rel="stylesheet" href="abell.css" />`, template);
     const $ = cheerio.load(out);
     // prettier-ignore
     expect($('head > link[rel="stylesheet"]').attr('href')).to.equal('abell.css')
@@ -93,7 +93,7 @@ describe('addToBodyEnd()', () => {
       </html>
     `;
 
-    const out = addToBodyEnd(template, `<link rel="stylesheet" href="abell.css" />`);
+    const out = addToBodyEnd(`<link rel="stylesheet" href="abell.css" />`, template);
     const $ = cheerio.load(out);
     // prettier-ignore
     expect($('body > link[rel="stylesheet"]').attr('href')).to.equal('abell.css')

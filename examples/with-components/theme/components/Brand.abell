@@ -1,13 +1,14 @@
 <AbellComponent>
 <template>
-  <div>This is brand component</div>
+  <div class="brand">This is brand component</div>
 </template>
-<style bundle="top.css">
+<style>
   div {
     background-color: #f30;
     color: #fff;
   }
 </style>
-<script>
+<script inlined>
+  document.querySelector('div.brand').innerHTML = 'Set from JS';
 </script>
 </AbellComponent>

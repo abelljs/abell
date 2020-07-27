@@ -96,29 +96,31 @@ const execRegexOnAll = (regex, template) => {
 
 /**
  * adds given string to head tag of the html
- * @param {String} htmlText - HTML Content in String
  * @param {String} stringToAdd - String to add in HEAD
+ * @param {String} htmlText - HTML Content in String
  * @return {String}
  */
-function addToHeadEnd(htmlText, stringToAdd) {
+function addToHeadEnd(stringToAdd, htmlText) {
   const headEndIndex = htmlText.indexOf('</head>');
   if (headEndIndex < 0) {
     // if the text does not have </head>
     return '<head>' + stringToAdd + '</head>' + htmlText;
   }
 
-  return (
-    htmlText.slice(0, headEndIndex) + stringToAdd + htmlText.slice(headEndIndex)
-  );
+  const out =
+    htmlText.slice(0, headEndIndex) +
+    stringToAdd +
+    htmlText.slice(headEndIndex);
+  return out;
 }
 
 /**
  * adds given string to end of body tag of the html
- * @param {String} htmlText - HTML Content in String
  * @param {String} stringToAdd - String to add in BODY
+ * @param {String} htmlText - HTML Content in String
  * @return {String}
  */
-function addToBodyEnd(htmlText, stringToAdd) {
+function addToBodyEnd(stringToAdd, htmlText) {
   const bodyEndIndex = htmlText.indexOf('</body>');
   if (bodyEndIndex < 0) {
     // if the text does not have </head>

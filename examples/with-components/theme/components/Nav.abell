@@ -8,12 +8,10 @@
     <Brand />
   </nav>
 </template>
-<style bundle="top.css">
+<style inlined>
   nav {
-    background-color: #f30;
+    background-color: #000;
     color: #fff;
   }
 </style>
-<script>
-</script>
 </AbellComponent>
