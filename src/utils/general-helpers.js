@@ -95,6 +95,42 @@ const execRegexOnAll = (regex, template) => {
 };
 
 /**
+ * adds given string to head tag of the html
+ * @param {String} htmlText - HTML Content in String
+ * @param {String} stringToAdd - String to add in HEAD
+ * @return {String}
+ */
+function addToHeadEnd(htmlText, stringToAdd) {
+  const headEndIndex = htmlText.indexOf('</head>');
+  if (headEndIndex < 0) {
+    // if the text does not have </head>
+    return '<head>' + stringToAdd + '</head>' + htmlText;
+  }
+
+  return (
+    htmlText.slice(0, headEndIndex) + stringToAdd + htmlText.slice(headEndIndex)
+  );
+}
+
+/**
+ * adds given string to end of body tag of the html
+ * @param {String} htmlText - HTML Content in String
+ * @param {String} stringToAdd - String to add in BODY
+ * @return {String}
+ */
+function addToBodyEnd(htmlText, stringToAdd) {
+  const bodyEndIndex = htmlText.indexOf('</body>');
+  if (bodyEndIndex < 0) {
+    // if the text does not have </head>
+    return htmlText + '<body>' + stringToAdd + '</body>';
+  }
+
+  return (
+    htmlText.slice(0, bodyEndIndex) + stringToAdd + htmlText.slice(bodyEndIndex)
+  );
+}
+
+/**
  * Remarkable plugin to add id to headers
  * @param {Object} md
  */
@@ -142,6 +178,8 @@ module.exports = {
   clearLocalRequireCache,
   exitHandler,
   execRegexOnAll,
+  addToHeadEnd,
+  addToBodyEnd,
   anchorsPlugin,
   logError,
   logWarning,
