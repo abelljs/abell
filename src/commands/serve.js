@@ -74,7 +74,7 @@ function runDevServer(programInfo) {
    * @param {Object} event
    * @param {String} filePath
    */
-  const onThemeChanged = (event, filePath) => {
+  const onThemeChanged = async (event, filePath) => {
     console.log('Theme Changed 💅');
 
     // if file is js or json, we have to make sure the file is not in require cache
@@ -84,7 +84,7 @@ function runDevServer(programInfo) {
 
     // if new file is added/removed, we have to recalculate template tree
     if (event !== 'change') {
-      programInfo.templateTree = buildTemplateTree(
+      programInfo.templateTree = await buildTemplateTree(
         programInfo.abellConfig.themePath
       );
     }
@@ -188,12 +188,10 @@ function runDevServer(programInfo) {
     .watch(programInfo.abellConfig.themePath, chokidarOptions)
     .on('all', (event, filePath) => {
       // error handling
-      try {
-        onThemeChanged(event, filePath);
-      } catch (err) {
+      onThemeChanged(event, filePath).catch((err) => {
         console.log(err);
         logError(err.message);
-      }
+      });
     });
 
   /** EXIT HANDLER */
@@ -213,7 +211,7 @@ function runDevServer(programInfo) {
  * @param {Object} command
  */
 async function serve(command) {
-  const programInfo = getProgramInfo();
+  const programInfo = await getProgramInfo();
 
   // createContent function that goes to plugins
   const createContent = (pluginNode) => {
@@ -223,11 +221,6 @@ async function serve(command) {
   };
 
   await executeBeforeBuildPlugins(programInfo, { createContent });
-  // constant till here
-
-  /**
-   * TODO: Everything after this!
-   */
 
   programInfo.port = command.port || 5000;
   programInfo.task = 'serve';

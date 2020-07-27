@@ -13,7 +13,11 @@ const {
   execRegexOnAll
 } = require('./general-helpers.js');
 
-const { recursiveFindFiles, getAbsolutePath } = require('./abell-fs.js');
+const {
+  recursiveFindFiles,
+  getAbsolutePath,
+  getFirstLine
+} = require('./abell-fs.js');
 
 md.use(anchorsPlugin);
 
@@ -23,14 +27,15 @@ md.use(anchorsPlugin);
  * Returns the basic information needed for build execution
  * @return {ProgramInfo}
  */
-function getProgramInfo() {
+async function getProgramInfo() {
   // Get configured paths of destination and content
   const abellConfig = getAbellConfig();
 
   const programInfo = {
     abellConfig,
     contentTree: buildContentTree(abellConfig.contentPath),
-    templateTree: buildTemplateTree(abellConfig.themePath),
+    templateTree: await buildTemplateTree(abellConfig.themePath),
+    task: '',
     logs: 'minimum',
     port: 5000
   };
@@ -84,14 +89,15 @@ function buildContentTree(contentPath, options = { keepPluginContent: false }) {
  * @param {String} themePath - path to directory that has theme source
  * @return {TemplateTree}
  */
-function buildTemplateTree(themePath) {
+async function buildTemplateTree(themePath) {
   // Builds tree with all information of .abell files
   const abellTemplatesInTheme = recursiveFindFiles(themePath, '.abell');
   const theme = {};
   for (const template of abellTemplatesInTheme) {
-    if (template.endsWith('.component.abell')) {
+    if ((await getFirstLine(template)).trim() === '<AbellComponent>') {
       continue;
     }
+
     const relativePath = path.relative(themePath, template);
     const shouldLoop = path.dirname(relativePath).endsWith('[$path]')
       ? true

@@ -14,13 +14,14 @@ describe('getProgramInfo()', () => {
     process.chdir('tests/test-utils/resources/test_demo');
   });
 
-  it('should return the base info for program to execute', () => {
-    expect(getProgramInfo())
+  it('should return the base info for program to execute', async () => {
+    expect((await getProgramInfo()))
       .to.be.an('object')
       .to.have.keys([
         'abellConfig',
         'contentTree',
         'templateTree',
+        'task',
         'port',
         'logs'
       ]);

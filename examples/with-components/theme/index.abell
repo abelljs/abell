@@ -1,7 +1,11 @@
 {{
-  const Nav = require('./components/Nav.component.abell');
+  const Nav = require('./components/Nav.abell');
 }}
-
+<html>
+<head>
+  <title>Abell Page</title>
+</head>
 <body>
   <Nav props={a: 3}/>
 </body>
+</html>

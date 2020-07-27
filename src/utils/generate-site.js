@@ -17,6 +17,11 @@ const {
 } = require('./build-utils.js');
 
 /**
+ * Hashmap of template content for memoization
+ */
+const templateHashmap = {};
+
+/**
  * Recursive function that unwraps components and adds them to respective files
  * @param {Object} components Array of all components
  * @param {Array} prev Holds previous array for recursion
@@ -93,10 +98,22 @@ function createHTMLFile(templateObj, programInfo, options) {
    * 5. Write HTML file.
    */
 
-  const abellTemplate = fs.readFileSync(
-    path.join(programInfo.abellConfig.themePath, templateObj.$path),
-    'utf-8'
-  );
+  let abellTemplate;
+  if (templateObj.$path in templateHashmap) {
+    // Read from hashmap
+    abellTemplate = templateHashmap[templateObj.$path];
+  } else {
+    // New fetch
+    abellTemplate = fs.readFileSync(
+      path.join(programInfo.abellConfig.themePath, templateObj.$path),
+      'utf-8'
+    );
+
+    if (programInfo.task === 'build') {
+      // only use hashmaps in build. In serve, we have to refetch values.
+      templateHashmap[templateObj.$path] = abellTemplate;
+    }
+  }
 
   const Abell = {
     globalMeta: programInfo.abellConfig.globalMeta,

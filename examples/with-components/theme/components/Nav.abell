@@ -1,6 +1,6 @@
 <AbellComponent>
 {{
-  const Brand = require('./Brand.component.abell');
+  const Brand = require('./Brand.abell');
 }}
 <template>
   <nav>

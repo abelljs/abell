@@ -19,8 +19,8 @@ async function build() {
   // - Get All information of source content in a tree
   // - Get all information of template in template tree
   const buildStartTime = new Date();
-  const programInfo = getProgramInfo();
-
+  const programInfo = await getProgramInfo();
+  programInfo.task = 'build';
   // createContent function that goes to plugins
   const createContent = (pluginNode) => {
     programInfo.contentTree[pluginNode.slug] = getSourceNodeFromPluginNode(
