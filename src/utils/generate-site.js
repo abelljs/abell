@@ -22,77 +22,70 @@ const {
  * @param {Array} prev Holds previous array for recursion
  * @return {Array}
  */
-function bundleComponentContent(components, prev = []) {
+function bundleComponentContent(
+  components,
+  prev = { inlinedStyles: '', inlinedScripts: '' }
+) {
   if (components.length <= 0) {
     return prev;
   }
 
-  const out = [];
+  let out = [];
 
   for (const component of components) {
     for (const style of component.styles) {
       if (style.attributes.inlined === true) {
-        prev.push({
-          type: 'style',
-          inlined: true,
-          content: style.content,
-          attributes: style.attributes
-        });
+        prev.inlinedStyles += style.content;
       } else if (style.attributes.bundle) {
-        prev.push({
-          type: 'style',
-          inlined: false,
-          bundle: path.join(
-            process.cwd(),
-            'bundled-css',
-            style.attributes.bundle
-          ),
-          content: style.content,
-          attributes: style.attributes
-        });
+        const bundlePath = path.join(
+          process.cwd(),
+          'bundled-css',
+          style.attributes.bundle
+        );
+        if (!prev[bundlePath]) {
+          prev[bundlePath] = '';
+        }
+        prev[bundlePath] += style.content;
       } else {
-        prev.push({
-          type: 'style',
-          inlined: false,
-          bundle: path.join(process.cwd(), 'bundled-css', 'main.abell.css'),
-          content: style.content,
-          attributes: style.attributes
-        });
+        const bundlePath = path.join(
+          process.cwd(),
+          'bundled-css',
+          'main.abell.css'
+        );
+        if (!prev[bundlePath]) {
+          prev[bundlePath] = '';
+        }
+        prev[bundlePath] += style.content;
       }
     }
 
     for (const script of component.scripts) {
       if (script.attributes.inlined === true) {
-        prev.push({
-          type: 'script',
-          inlined: true,
-          content: script.content,
-          attributes: script.attributes
-        });
+        prev.inlinedScripts += style.content;
       } else if (script.attributes.bundle) {
-        prev.push({
-          type: 'script',
-          inlined: false,
-          bundle: path.join(
-            process.cwd(),
-            'bundled-js',
-            script.attributes.bundle
-          ),
-          content: script.content,
-          attributes: script.attributes
-        });
+        const bundlePath = path.join(
+          process.cwd(),
+          'bundled-js',
+          script.attributes.bundle
+        );
+        if (!prev[bundlePath]) {
+          prev[bundlePath] = '';
+        }
+        prev[bundlePath] += script.content;
       } else {
-        prev.push({
-          type: 'script',
-          inlined: false,
-          bundle: path.join(process.cwd(), 'bundled-js', 'main.abell.js'),
-          content: script.content,
-          attributes: script.attributes
-        });
+        const bundlePath = path.join(
+          process.cwd(),
+          'bundled-js',
+          'main.abell.js'
+        );
+        if (!prev[bundlePath]) {
+          prev[bundlePath] = '';
+        }
+        prev[bundlePath] += script.content;
       }
     }
 
-    out.push(...bundleComponentContent(component.components, prev));
+    out = { ...bundleComponentContent(component.components, prev) };
   }
 
   return out;
