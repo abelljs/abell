@@ -251,13 +251,19 @@ describe('examples/main', () => {
         expect($(this).html()).to.equal(blogs[index]);
       });
     })
+
     it('should render header text', () => {
       expect($('body main section #inside-the-new-blog').html())
         .to.equal("Inside the new blog");
     })
+
     it('should render first para text', () => {
       expect($('body main section p').text())
         .to.equal(`..${path.sep}..`);
+    })
+
+    it('should add prefix in paths for deep level folders', () => {
+      expect($('main img').attr('src')).to.equal(`../../image/cool.png`);
     })
 
   })

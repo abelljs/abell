@@ -22,7 +22,7 @@ const {
  * @param {Array} prev Holds previous array for recursion
  * @return {Array}
  */
-function bundleComponentContent(
+function getComponentBundles(
   components,
   prev = { inlinedStyles: '', inlinedScripts: '' }
 ) {
@@ -37,21 +37,13 @@ function bundleComponentContent(
       if (style.attributes.inlined === true) {
         prev.inlinedStyles += style.content;
       } else if (style.attributes.bundle) {
-        const bundlePath = path.join(
-          process.cwd(),
-          'bundled-css',
-          style.attributes.bundle
-        );
+        const bundlePath = path.join('bundled-css', style.attributes.bundle);
         if (!prev[bundlePath]) {
           prev[bundlePath] = '';
         }
         prev[bundlePath] += style.content;
       } else {
-        const bundlePath = path.join(
-          process.cwd(),
-          'bundled-css',
-          'main.abell.css'
-        );
+        const bundlePath = path.join('bundled-css', 'main.abell.css');
         if (!prev[bundlePath]) {
           prev[bundlePath] = '';
         }
@@ -63,21 +55,13 @@ function bundleComponentContent(
       if (script.attributes.inlined === true) {
         prev.inlinedScripts += style.content;
       } else if (script.attributes.bundle) {
-        const bundlePath = path.join(
-          process.cwd(),
-          'bundled-js',
-          script.attributes.bundle
-        );
+        const bundlePath = path.join('bundled-js', script.attributes.bundle);
         if (!prev[bundlePath]) {
           prev[bundlePath] = '';
         }
         prev[bundlePath] += script.content;
       } else {
-        const bundlePath = path.join(
-          process.cwd(),
-          'bundled-js',
-          'main.abell.js'
-        );
+        const bundlePath = path.join('bundled-js', 'main.abell.js');
         if (!prev[bundlePath]) {
           prev[bundlePath] = '';
         }
@@ -85,7 +69,7 @@ function bundleComponentContent(
       }
     }
 
-    out = { ...bundleComponentContent(component.components, prev) };
+    out = { ...getComponentBundles(component.components, prev) };
   }
 
   return out;
@@ -175,7 +159,23 @@ function createHTMLFile(templateObj, programInfo, options) {
   );
 
   if (components && components.length > 0) {
-    console.log(bundleComponentContent(components));
+    const bundleMap = getComponentBundles(components);
+    for (let [bundlePath, bundleContent] of Object.entries(bundleMap)) {
+      if (bundlePath === 'inlinedStyles') {
+        // inline the bundleContent inside HTML in style
+      } else if (bundlePath === 'inlinedScripts') {
+        // inline the bundleContent in HTML in script
+      } else {
+        bundlePath = path.join(programInfo.abellConfig.outputPath, bundlePath);
+        createPathIfAbsent(path.dirname(bundlePath));
+        // append bundleContent into bundlePath and add <script src> or <style href> depending on extension
+        if (fs.existsSync(bundlePath)) {
+          fs.writeFileSync(bundlePath, bundleContent);
+        } else {
+          fs.appendFileSync(bundlePath, bundleContent);
+        }
+      }
+    }
   }
 
   if (options.isContent && options.content.$path.includes(path.sep)) {
