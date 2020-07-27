@@ -8,7 +8,7 @@
     <Brand />
   </nav>
 </template>
-<style>
+<style bundle="top.css">
   nav {
     background-color: #f30;
     color: #fff;

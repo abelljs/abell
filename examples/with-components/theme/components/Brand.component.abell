@@ -2,7 +2,7 @@
 <template>
   <div>This is brand component</div>
 </template>
-<style inlined>
+<style bundle="top.css">
   div {
     background-color: #f30;
     color: #fff;
