@@ -19,8 +19,10 @@
 - Added `createContent` function for beforeBuild plugins that lets plugin developers create source plugin with ease.
 - Added support for HTML content in source plugins.
 - Abell Components under feature flag 👽
+- Abell Bundlerrrrr 🎉
 - `Abell.$root` value fix for Windows
 - Stack trace in errors
+- You can now `.map` to loop without `.join` in the end. Arrays will be turned into strings by default.
 
 ### Changes in Abell Renderer
 
