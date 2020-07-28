@@ -2,7 +2,7 @@
 <template>
   <footer>This is Footer</footer>
 </template>
-<style>
+<style inlined>
   footer {
     color: #f30;
   }

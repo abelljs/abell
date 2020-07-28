@@ -4,8 +4,16 @@ const path = require('path');
 const { addToHeadEnd, addToBodyEnd } = require('./general-helpers.js');
 const { createPathIfAbsent } = require('./abell-fs.js');
 
-const currentBundledCSS = {}; // stores map of css files as they are bundled
-const currentBundledJS = {}; // stores map of js files as they are bundled
+let currentBundledCSS = {}; // stores map of css files as they are bundled
+let currentBundledJS = {}; // stores map of js files as they are bundled
+
+/**
+ * Clears bundle cache. (Used in abell serve)
+ */
+function clearBundleCache() {
+  currentBundledCSS = {};
+  currentBundledJS = {};
+}
 
 /**
  * Recursive function that unwraps components and adds them to respective files
@@ -133,4 +141,4 @@ function createBundles(htmlOut, outPath, components, programInfo) {
   return htmlOut;
 }
 
-module.exports = { createBundles };
+module.exports = { createBundles, clearBundleCache };
