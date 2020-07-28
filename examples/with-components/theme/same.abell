@@ -1,13 +1,11 @@
 {{
   const Nav = require('./components/Nav.abell');
-  const Footer = require('./components/Footer.abell');
 }}
 <html>
 <head>
   <title>Abell Page</title>
 </head>
 <body>
-  <Nav props={a: 3}/>
-  <Footer/>
+  <Nav props={a: 83}/>
 </body>
 </html>

@@ -16,71 +16,13 @@ const {
   md,
   addPrefixInHTMLPaths
 } = require('./build-utils.js');
-const { addToHeadEnd, addToBodyEnd } = require('./general-helpers.js');
+
+const { createBundles } = require('./abell-bundler.js');
 
 /**
  * Hashmap of template content for memoization
  */
 const templateHashmap = {};
-
-/**
- * Recursive function that unwraps components and adds them to respective files
- * @param {Object} components Array of all components
- * @param {Array} prev Holds previous array for recursion
- * @return {Array}
- */
-function getComponentBundles(
-  components,
-  prev = { inlinedStyles: '', inlinedScripts: '' }
-) {
-  if (components.length <= 0) {
-    return prev;
-  }
-
-  let out = [];
-
-  for (const component of components) {
-    for (const style of component.styles) {
-      if (style.attributes.inlined === true) {
-        prev.inlinedStyles += style.content;
-      } else if (style.attributes.bundle) {
-        const bundlePath = path.join('bundled-css', style.attributes.bundle);
-        if (!prev[bundlePath]) {
-          prev[bundlePath] = '';
-        }
-        prev[bundlePath] += style.content;
-      } else {
-        const bundlePath = path.join('bundled-css', 'main.abell.css');
-        if (!prev[bundlePath]) {
-          prev[bundlePath] = '';
-        }
-        prev[bundlePath] += style.content;
-      }
-    }
-
-    for (const script of component.scripts) {
-      if (script.attributes.inlined === true) {
-        prev.inlinedScripts += script.content;
-      } else if (script.attributes.bundle) {
-        const bundlePath = path.join('bundled-js', script.attributes.bundle);
-        if (!prev[bundlePath]) {
-          prev[bundlePath] = '';
-        }
-        prev[bundlePath] += script.content;
-      } else {
-        const bundlePath = path.join('bundled-js', 'main.abell.js');
-        if (!prev[bundlePath]) {
-          prev[bundlePath] = '';
-        }
-        prev[bundlePath] += script.content;
-      }
-    }
-
-    out = { ...getComponentBundles(component.components, prev) };
-  }
-
-  return out;
-}
 
 /**
  * Creates HTML file from given parameters
@@ -194,48 +136,7 @@ function createHTMLFile(templateObj, programInfo, options) {
   );
 
   if (components && components.length > 0) {
-    const bundleMap = getComponentBundles(components);
-    for (let [bundlePath, bundleContent] of Object.entries(bundleMap)) {
-      if (bundlePath === 'inlinedStyles') {
-        // inline the bundleContent inside HTML in style
-        htmlOut = addToHeadEnd(`\n<style>${bundleContent}</style>\n`, htmlOut);
-      } else if (bundlePath === 'inlinedScripts') {
-        // inline the bundleContent in HTML in script
-        htmlOut = addToBodyEnd(`<script>${bundleContent}</script>`, htmlOut);
-      } else {
-        bundlePath = path.join(programInfo.abellConfig.outputPath, bundlePath);
-        createPathIfAbsent(path.dirname(bundlePath));
-        // append bundleContent into bundlePath and add <script src> or <style href> depending on extension
-        if (fs.existsSync(bundlePath)) {
-          fs.writeFileSync(bundlePath, bundleContent);
-        } else {
-          fs.appendFileSync(bundlePath, bundleContent);
-        }
-      }
-    }
-
-    const cssLinks = Object.keys(bundleMap)
-      .filter((filePath) => filePath.endsWith('.css'))
-      .map(
-        (filePath) =>
-          `\n<link rel="stylesheet" href="${path.relative(
-            path.dirname(outPath),
-            path.join(programInfo.abellConfig.outputPath, filePath)
-          )}"/>\n`
-      );
-
-    const jsLinks = Object.keys(bundleMap)
-      .filter((filePath) => filePath.endsWith('.js'))
-      .map(
-        (filePath) =>
-          `\n<script src="${path.relative(
-            path.dirname(outPath),
-            path.join(programInfo.abellConfig.outputPath, filePath)
-          )}"></script>\n`
-      );
-
-    htmlOut = addToBodyEnd(jsLinks.join('\n'), htmlOut);
-    htmlOut = addToHeadEnd(cssLinks.join('\n'), htmlOut);
+    htmlOut = createBundles(htmlOut, outPath, components, programInfo);
   }
 
   // Write into .html file

@@ -8,7 +8,7 @@
     color: #fff;
   }
 </style>
-<script inlined>
+<script>
   document.querySelector('div.brand').innerHTML = 'Set from JS';
 </script>
 </AbellComponent>
