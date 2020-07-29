@@ -5,7 +5,8 @@ const {
 
 const {
   executeBeforeBuildPlugins,
-  executeAfterBuildPlugins
+  executeAfterBuildPlugins,
+  logError
 } = require('../utils/general-helpers.js');
 
 const { generateSite } = require('../utils/generate-site.js');
@@ -34,7 +35,10 @@ async function build() {
     // Build site here
     generateSite(programInfo);
   } catch (err) {
+    console.log('\n>>');
     console.log(err);
+    logError('Abell Build Failed :( More logs above.\n');
+    process.exit(0);
   }
 
   // Run afterBuild functions of plugins

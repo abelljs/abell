@@ -1,12 +1,12 @@
 {
   "name": "abell",
-  "version": "0.4.0-alpha.9",
+  "version": "0.4.0-alpha.10",
   "description": "Abell is a static blog generator that generates blog in Vanilla JavaScript",
   "funding": {
     "type": "patreon",
     "url": "https://patreon.com/saurabhdaware"
   },
-  "main": "src/main.js",
+  "main": "src/index.js",
   "bin": {
     "abell": "bin/abell.js"
   },
@@ -33,7 +33,7 @@
   },
   "homepage": "https://abelljs.org",
   "dependencies": {
-    "abell-renderer": "^0.2.0-alpha.8",
+    "abell-renderer": "^0.2.0-alpha.9",
     "chokidar": "^3.4.0",
     "commander": "^5.0.0",
     "remarkable": "^2.0.0",
