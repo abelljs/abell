@@ -3,10 +3,6 @@
   <div class="brand">This is brand component</div>
 </template>
 <style>
-  div {
-    background-color: #09f;
-    color: #fff;
-  }
 </style>
 <script>
   document.querySelector('div.brand').innerHTML = 'Set from JS';

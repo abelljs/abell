@@ -4,10 +4,20 @@
 }}
 <html>
 <head>
-  <title>Abell Page</title>
+  <title>{{ Abell.globalMeta.title }}</title>
 </head>
 <body>
   <Nav props={a: 3}/>
+  About: <a href="about">about</a>
+  <section>
+  {{
+    Abell.contentArray
+      .map((meta) => `
+        <a href="${meta.$path}">${meta.title}</a>
+      `)
+      .join('<br/>')
+  }}
+  </section>
   <Footer/>
 </body>
 </html>

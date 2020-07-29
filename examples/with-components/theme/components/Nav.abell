@@ -4,8 +4,8 @@
 }}
 <template>
   <nav>
+    <Brand/>
     This is nav component {{ props.a }}
-    <Brand />
   </nav>
 </template>
 <style>

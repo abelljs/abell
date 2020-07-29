@@ -17,7 +17,7 @@ const {
   addPrefixInHTMLPaths
 } = require('./build-utils.js');
 
-const { createBundles } = require('./abell-bundler.js');
+const { createBundles, clearBundleCache } = require('./abell-bundler.js');
 
 /**
  * Hashmap of template content for memoization
@@ -172,6 +172,8 @@ function generateSite(programInfo) {
   // Refresh dist
   rmdirRecursiveSync(programInfo.abellConfig.outputPath);
   fs.mkdirSync(programInfo.abellConfig.outputPath);
+
+  clearBundleCache();
 
   for (const template of Object.values(programInfo.templateTree)) {
     if (template.shouldLoop) {

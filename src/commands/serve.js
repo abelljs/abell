@@ -22,7 +22,6 @@ const {
 } = require('../utils/general-helpers.js');
 
 const { generateSite, createHTMLFile } = require('../utils/generate-site.js');
-const { clearBundleCache } = require('../utils/abell-bundler');
 
 /**
  *
@@ -77,7 +76,6 @@ function runDevServer(programInfo) {
    */
   const onThemeChanged = async (event, filePath) => {
     console.log('Theme Changed 💅');
-    clearBundleCache();
     // if file is js or json, we have to make sure the file is not in require cache
     if (filePath.endsWith('.js') || filePath.endsWith('.json')) {
       clearLocalRequireCache(programInfo.abellConfig.themePath);
