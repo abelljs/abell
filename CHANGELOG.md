@@ -23,6 +23,7 @@
 - `Abell.$root` value fix for Windows
 - Stack trace in errors
 - You can now `.map` to loop without `.join` in the end. Arrays will be turned into strings by default.
+- Other minor bug fixes
 
 ### Changes in Abell Renderer
 

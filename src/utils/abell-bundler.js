@@ -81,6 +81,22 @@ function getComponentBundles(
     out = { ...getComponentBundles(component.components, prev) };
   }
 
+  Object.entries(currentBundledCSS)
+    .filter(
+      ([key, value]) => value === 'inlinedStyles' || value === 'inlinedScripts'
+    )
+    .forEach(([key, value]) => {
+      delete currentBundledCSS[key];
+    });
+
+  Object.entries(currentBundledJS)
+    .filter(
+      ([key, value]) => value === 'inlinedStyles' || value === 'inlinedScripts'
+    )
+    .forEach(([key, value]) => {
+      delete currentBundledJS[key];
+    });
+
   return out;
 }
 
