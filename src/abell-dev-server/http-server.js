@@ -97,7 +97,8 @@ function createServer(options) {
   const port = options.port || 9000;
   const socketCode = /* html */ `
   <script>
-    const url = 'ws://' + location.host;
+    const socketProtocol = location.protocol === 'http:' ? 'ws://' : 'wss://';
+    const url = socketProtocol + location.host;
     const connection = new WebSocket(url);
     connection.addEventListener('message', e => {
       if (e.data === 'abell-dev-server-reload') {
