@@ -56,10 +56,9 @@ function buildContentTree(contentPath, options = { keepPluginContent: false }) {
     return {};
   }
   // Build the tree which has all information about content
-  const relativeSlugs = recursiveFindFiles(
-    contentPath,
-    'index.md'
-  ).map((mdPath) => path.dirname(path.relative(contentPath, mdPath)));
+  const relativeSlugs = recursiveFindFiles(contentPath, 'index.md')
+    .map((mdPath) => path.dirname(path.relative(contentPath, mdPath)))
+    .filter((fileDirectories) => fileDirectories !== '.');
 
   // Create a source object with slugs as keys and their meta values as properties
   const source = {};
@@ -128,8 +127,8 @@ function getSourceNodeFromPluginNode(pluginNode) {
     description: pluginNode.description || `This is ${pluginNode.slug}...`,
     $path: pluginNode.slug,
     $slug: pluginNode.slug,
-    $createdAt: pluginNode.createdAt,
-    $modifiedAt: pluginNode.modifiedAt || pluginNode.createdAt,
+    $createdAt: pluginNode.createdAt || new Date(),
+    $modifiedAt: pluginNode.modifiedAt || pluginNode.createdAt || new Date(),
     $root: '..',
     $source: 'plugin'
   };
@@ -259,7 +258,9 @@ function renderMarkdown(mdPath, contentPath, variables) {
       path.join(contentPath, mdPath),
       'utf-8'
     );
-    const mdWithValues = abellRenderer.render(fileContent, variables); // Add variables to markdown
+    const mdWithValues = abellRenderer.render(fileContent, variables, {
+      filename: path.relative(process.cwd(), path.join(contentPath, mdPath))
+    }); // Add variables to markdown
     const rendererdHTML = md.render(mdWithValues.replace(/\\./g, '\\\\.'));
     return rendererdHTML;
   } catch (err) {
