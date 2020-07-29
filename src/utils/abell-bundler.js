@@ -45,14 +45,16 @@ function getComponentBundles(
       const alreadyBundledInfo = currentBundledCSS[style.componentPath];
 
       if (alreadyBundledInfo && alreadyBundledInfo === bundlePath) {
-        continue;
+        // style is already bundled
+        style.content = '';
+      } else {
+        currentBundledCSS[style.componentPath] = bundlePath;
       }
 
       if (!prev[bundlePath]) {
         prev[bundlePath] = '';
       }
       prev[bundlePath] += style.content;
-      currentBundledCSS[style.componentPath] = bundlePath;
     }
 
     for (const script of component.scripts) {
@@ -68,19 +70,22 @@ function getComponentBundles(
       const alreadyBundledInfo = currentBundledJS[script.componentPath];
 
       if (alreadyBundledInfo && alreadyBundledInfo === bundlePath) {
-        continue;
+        // script is already bundled
+        script.content = '';
+      } else {
+        currentBundledJS[script.componentPath] = bundlePath;
       }
 
       if (!prev[bundlePath]) {
         prev[bundlePath] = '';
       }
       prev[bundlePath] += script.content;
-      currentBundledJS[script.componentPath] = bundlePath;
     }
 
     out = { ...getComponentBundles(component.components, prev) };
   }
 
+  // inlined scripts and style should be cleared from cache after every file write
   Object.entries(currentBundledCSS)
     .filter(
       ([key, value]) => value === 'inlinedStyles' || value === 'inlinedScripts'
