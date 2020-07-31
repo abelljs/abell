@@ -125,12 +125,6 @@ function runDevServer(programInfo) {
       generateSite(programInfo);
       ads.reload();
     } else if (filePath.endsWith('.md')) {
-      // if file is markdown content
-      // Only build the files that have that content
-      const loopableTemplates = Object.values(programInfo.templateTree).filter(
-        (template) => template.shouldLoop
-      );
-
       const content =
         programInfo.contentTree[
           path.relative(
@@ -139,12 +133,21 @@ function runDevServer(programInfo) {
           )
         ];
 
-      if (Object.keys(content).length < 1) {
+      if (!content) {
+        // This block is for *idk what happened but lets rebuild whole thing anyway*
+        generateSite(programInfo);
+      } else if (Object.keys(content).length < 1) {
         // if the content does not have values,
         // it means something is wrong. So we fallback to full website build
         // This will usually happen when index.md is in root of 'content/' directory
         generateSite(programInfo);
       } else {
+        // if file is markdown content
+        // Only build the files that have that content
+        const loopableTemplates = Object.values(
+          programInfo.templateTree
+        ).filter((template) => template.shouldLoop);
+
         for (const template of loopableTemplates) {
           createHTMLFile(template, programInfo, {
             isContent: true,
