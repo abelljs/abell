@@ -108,7 +108,6 @@ function createBundles({
   programInfo
 }) {
   const bundleMap = getComponentBundles(components, parentPath);
-  console.log(bundleMap);
   for (let [bundlePath, bundleContent] of Object.entries(bundleMap)) {
     if (!bundleContent.trim()) {
       continue;
