@@ -1,6 +1,5 @@
 const fs = require('fs');
 const path = require('path');
-const readline = require('readline');
 
 /**
  * Returns full path on given relative path
@@ -44,17 +43,7 @@ function rmdirRecursiveSync(pathToRemove) {
  * @param {String} pathToFile
  */
 async function getFirstLine(pathToFile) {
-  const readable = fs.createReadStream(pathToFile);
-  const reader = readline.createInterface({ input: readable });
-  const line = await new Promise((resolve) => {
-    reader.on('line', (line) => {
-      reader.close();
-      reader.removeAllListeners();
-      resolve(line);
-    });
-  }).catch(console.log);
-  readable.close();
-  return line;
+  return fs.readFileSync(pathToFile, 'utf-8').split('\n')[0];
 }
 
 /**

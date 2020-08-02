@@ -4,7 +4,8 @@ const expect = require('chai').expect;
 
 const {
   createPathIfAbsent,
-  recursiveFindFiles
+  recursiveFindFiles,
+  getFirstLine
 } = require('../src/utils/abell-fs.js');
 
 describe('recursiveFindFiles()', () => {
@@ -45,3 +46,18 @@ describe('createPathIfAbsent()', () => {
     process.chdir('../../../..')
   });
 });
+
+describe('getFirstLine()', () => {
+  before(() => {
+    process.chdir('tests/test-utils/resources/test_demo');
+  });
+
+  it('should only read the first line of the given file', async () => {
+    expect(await getFirstLine(path.join('src', 'index.abell')))
+      .to.equal('<!DOCTYPE html>')
+  })
+
+  after(() => {
+    process.chdir('../../../..')
+  });
+})
