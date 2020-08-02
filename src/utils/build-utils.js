@@ -27,14 +27,14 @@ md.use(anchorsPlugin);
  * Returns the basic information needed for build execution
  * @return {ProgramInfo}
  */
-async function getProgramInfo() {
+function getProgramInfo() {
   // Get configured paths of destination and content
   const abellConfig = getAbellConfig();
 
   const programInfo = {
     abellConfig,
     contentMap: buildContentMap(abellConfig.contentPath),
-    templateMap: await buildTemplateMap(abellConfig.themePath),
+    templateMap: buildTemplateMap(abellConfig.themePath),
     task: '',
     logs: 'minimum',
     port: 5000
@@ -88,12 +88,12 @@ function buildContentMap(contentPath, options = { keepPluginContent: false }) {
  * @param {String} themePath - path to directory that has theme source
  * @return {TemplateMap}
  */
-async function buildTemplateMap(themePath) {
+function buildTemplateMap(themePath) {
   // Builds tree with all information of .abell files
   const abellTemplatesInTheme = recursiveFindFiles(themePath, '.abell');
   const theme = {};
   for (const template of abellTemplatesInTheme) {
-    if ((await getFirstLine(template)).trim() === '<AbellComponent>') {
+    if (getFirstLine(template).trim().includes('<AbellComponent>')) {
       continue;
     }
 

@@ -53,7 +53,7 @@ describe('getFirstLine()', () => {
   });
 
   it('should only read the first line of the given file', async () => {
-    expect(await getFirstLine(path.join('src', 'index.abell')))
+    expect(getFirstLine(path.join('src', 'index.abell')).trim())
       .to.equal('<!DOCTYPE html>')
   })
 

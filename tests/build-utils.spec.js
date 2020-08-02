@@ -15,7 +15,7 @@ describe('getProgramInfo()', () => {
   });
 
   it('should return the base info for program to execute', async () => {
-    expect((await getProgramInfo()))
+    expect(getProgramInfo())
       .to.be.an('object')
       .to.have.keys([
         'abellConfig',

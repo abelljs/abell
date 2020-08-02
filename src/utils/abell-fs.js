@@ -41,8 +41,9 @@ function rmdirRecursiveSync(pathToRemove) {
 /**
  * get first only line of file
  * @param {String} pathToFile
+ * @return {String}
  */
-async function getFirstLine(pathToFile) {
+function getFirstLine(pathToFile) {
   return fs.readFileSync(pathToFile, 'utf-8').split('\n')[0];
 }
 

@@ -83,7 +83,7 @@ function runDevServer(programInfo) {
 
     // if new file is added/removed, we have to recalculate template tree
     if (event !== 'change') {
-      programInfo.templateMap = await buildTemplateMap(
+      programInfo.templateMap = buildTemplateMap(
         programInfo.abellConfig.themePath
       );
     }
@@ -213,7 +213,7 @@ function runDevServer(programInfo) {
  * @param {Object} command
  */
 async function serve(command) {
-  const programInfo = await getProgramInfo();
+  const programInfo = getProgramInfo();
 
   // createContent function that goes to plugins
   const createContent = (pluginNode) => {
