@@ -30,14 +30,14 @@
  * @property {String} $path - path of the current file
  * @property {String} $root - path to the root directory
  *
- * @typedef {Object.<String, MetaInfo>} ContentTree
+ * @typedef {Object.<String, MetaInfo>} ContentMap
  *
- * @typedef {Object.<String, TemplateObj>} TemplateTree
+ * @typedef {Object.<String, TemplateObj>} TemplateMap
  *
  * @typedef {Object} ProgramInfo
  * @property {AbellConfig} abellConfig
- * @property {ContentTree} contentTree
- * @property {TemplateTree} templateTree
+ * @property {ContentMap} contentMap
+ * @property {TemplateMap} templateMap
  * @property {String} logs - 'minimum', 'complete'
  * @property {Number} port - port of the dev server
  *

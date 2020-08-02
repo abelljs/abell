@@ -4,7 +4,7 @@ const expect = require('chai').expect;
 const {
   getProgramInfo,
   renderMarkdown,
-  buildContentTree,
+  buildContentMap,
   getAbellConfig,
   addPrefixInHTMLPaths
 } = require('../src/utils/build-utils.js');
@@ -19,8 +19,8 @@ describe('getProgramInfo()', () => {
       .to.be.an('object')
       .to.have.keys([
         'abellConfig',
-        'contentTree',
-        'templateTree',
+        'contentMap',
+        'templateMap',
         'task',
         'port',
         'logs'
@@ -33,23 +33,23 @@ describe('getProgramInfo()', () => {
 });
 
 
-describe('buildContentTree()', () => {
+describe('buildContentMap()', () => {
   before(() => {
     process.chdir('tests/test-utils/resources/test_demo');
   });
 
   it('should return all the information about the content', () => {
-    const contentTree = buildContentTree(path.resolve('./content'));
+    const contentMap = buildContentMap(path.resolve('./content'));
 
-    expect(Object.keys(contentTree)).to.eql([
+    expect(Object.keys(contentMap)).to.eql([
       'another-blog',
       'my-first-blog',
       `my-first-blog${path.sep}sub-blog`
     ]);
 
-    expect(contentTree['another-blog'].$root).to.equal('..')
+    expect(contentMap['another-blog'].$root).to.equal('..')
 
-    expect(contentTree[`my-first-blog${path.sep}sub-blog`].$root)
+    expect(contentMap[`my-first-blog${path.sep}sub-blog`].$root)
       .to.equal(`..${path.sep}..`)
 
   });

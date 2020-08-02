@@ -7,8 +7,8 @@ const ads = require('../abell-dev-server');
 const {
   getProgramInfo,
   getAbellConfig,
-  buildTemplateTree,
-  buildContentTree,
+  buildTemplateMap,
+  buildContentMap,
   getSourceNodeFromPluginNode
 } = require('../utils/build-utils.js');
 
@@ -83,7 +83,7 @@ function runDevServer(programInfo) {
 
     // if new file is added/removed, we have to recalculate template tree
     if (event !== 'change') {
-      programInfo.templateTree = await buildTemplateTree(
+      programInfo.templateMap = await buildTemplateMap(
         programInfo.abellConfig.themePath
       );
     }
@@ -94,8 +94,8 @@ function runDevServer(programInfo) {
 
   /**
    * Trigger on anything inside 'content' is changed.
-   * 1. if meta.json changed, rebuild contentTree
-   * 2. if content add/remove, rebuild contentTree
+   * 1. if meta.json changed, rebuild contentMap
+   * 2. if content add/remove, rebuild contentMap
    * 3. if .md changed, rebuild HTML page of that particular blog
    * @param {Event} event
    * @param {String} filePath
@@ -110,15 +110,15 @@ function runDevServer(programInfo) {
       filePath.endsWith('meta.json') || filePath.endsWith('meta.js');
 
     if (event !== 'change' || isFileMeta) {
-      // rebuild contentTree but do not remove content from plugins
+      // rebuild contentMap but do not remove content from plugins
 
       delete require.cache[filePath]; // remove existing meta.json from cache
 
-      programInfo.contentTree = buildContentTree(
+      programInfo.contentMap = buildContentMap(
         programInfo.abellConfig.contentPath,
         {
           keepPluginContent: true,
-          existingTree: programInfo.contentTree
+          existingTree: programInfo.contentMap
         }
       );
 
@@ -126,7 +126,7 @@ function runDevServer(programInfo) {
       ads.reload();
     } else if (filePath.endsWith('.md')) {
       const content =
-        programInfo.contentTree[
+        programInfo.contentMap[
           path.relative(
             programInfo.abellConfig.contentPath,
             path.dirname(filePath)
@@ -144,9 +144,9 @@ function runDevServer(programInfo) {
       } else {
         // if file is markdown content
         // Only build the files that have that content
-        const loopableTemplates = Object.values(
-          programInfo.templateTree
-        ).filter((template) => template.shouldLoop);
+        const loopableTemplates = Object.values(programInfo.templateMap).filter(
+          (template) => template.shouldLoop
+        );
 
         for (const template of loopableTemplates) {
           createHTMLFile(template, programInfo, {
@@ -217,7 +217,7 @@ async function serve(command) {
 
   // createContent function that goes to plugins
   const createContent = (pluginNode) => {
-    programInfo.contentTree[pluginNode.slug] = getSourceNodeFromPluginNode(
+    programInfo.contentMap[pluginNode.slug] = getSourceNodeFromPluginNode(
       pluginNode
     );
   };

@@ -24,7 +24,7 @@ async function build() {
   programInfo.task = 'build';
   // createContent function that goes to plugins
   const createContent = (pluginNode) => {
-    programInfo.contentTree[pluginNode.slug] = getSourceNodeFromPluginNode(
+    programInfo.contentMap[pluginNode.slug] = getSourceNodeFromPluginNode(
       pluginNode
     );
   };

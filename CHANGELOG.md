@@ -13,6 +13,7 @@
   - `globalMeta` -> `Abell.globalMeta`
   - `$contentArray` -> `Abell.contentArray`
   - `$root` and `$path` -> `Abell.$root` and `Abell.$path`
+- A lot of things in programInfo variable of plugins changed
 
 ### Non-breaking Changes
 

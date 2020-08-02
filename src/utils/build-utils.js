@@ -33,8 +33,8 @@ async function getProgramInfo() {
 
   const programInfo = {
     abellConfig,
-    contentTree: buildContentTree(abellConfig.contentPath),
-    templateTree: await buildTemplateTree(abellConfig.themePath),
+    contentMap: buildContentMap(abellConfig.contentPath),
+    templateMap: await buildTemplateMap(abellConfig.themePath),
     task: '',
     logs: 'minimum',
     port: 5000
@@ -48,10 +48,10 @@ async function getProgramInfo() {
  * @param {String} contentPath
  * @param {Object} options
  * @param {Boolean} options.keepPluginContent - keep the existing plugin content
- * @param {ContentTree} options.existingTree
- * @return {ContentTree}
+ * @param {ContentMap} options.existingTree
+ * @return {ContentMap}
  */
-function buildContentTree(contentPath, options = { keepPluginContent: false }) {
+function buildContentMap(contentPath, options = { keepPluginContent: false }) {
   if (!fs.existsSync(contentPath)) {
     return {};
   }
@@ -86,9 +86,9 @@ function buildContentTree(contentPath, options = { keepPluginContent: false }) {
 /**
  * Build template tree
  * @param {String} themePath - path to directory that has theme source
- * @return {TemplateTree}
+ * @return {TemplateMap}
  */
-async function buildTemplateTree(themePath) {
+async function buildTemplateMap(themePath) {
   // Builds tree with all information of .abell files
   const abellTemplatesInTheme = recursiveFindFiles(themePath, '.abell');
   const theme = {};
@@ -298,8 +298,8 @@ function addPrefixInHTMLPaths(htmlTemplate, prefix) {
 
 module.exports = {
   getProgramInfo,
-  buildContentTree,
-  buildTemplateTree,
+  buildContentMap,
+  buildTemplateMap,
   getSourceNodeFromPluginNode,
   getAbellConfig,
   getContentMeta,

@@ -26,7 +26,7 @@ const templateHashmap = {};
 
 /**
  * Creates HTML file from given parameters
- * @param {TemplateTree} templateObj template tree of .abell file
+ * @param {TemplateMap} templateObj template tree of .abell file
  * @param {ProgramInfo} programInfo path of the output HTML file
  * @param {Object} options
  * @param {Boolean} options.isContent
@@ -61,10 +61,10 @@ function createHTMLFile(templateObj, programInfo, options) {
 
   const Abell = {
     globalMeta: programInfo.abellConfig.globalMeta,
-    contentArray: Object.values(programInfo.contentTree).sort(
+    contentArray: Object.values(programInfo.contentMap).sort(
       (a, b) => b.$createdAt.getTime() - a.$createdAt.getTime()
     ),
-    contentObj: programInfo.contentTree,
+    contentObj: programInfo.contentMap,
     $root: templateObj.$root,
     $path: templateObj.$path
   };
@@ -175,9 +175,9 @@ function generateSite(programInfo) {
 
   clearBundleCache();
 
-  for (const template of Object.values(programInfo.templateTree)) {
+  for (const template of Object.values(programInfo.templateMap)) {
     if (template.shouldLoop) {
-      for (const content of Object.values(programInfo.contentTree)) {
+      for (const content of Object.values(programInfo.contentMap)) {
         // loop over content
         createHTMLFile(template, programInfo, { isContent: true, content });
       }
