@@ -52,7 +52,7 @@ async function getFirstLine(pathToFile) {
       reader.removeAllListeners();
       resolve(line);
     });
-  });
+  }).catch(console.log);
   readable.close();
   return line;
 }
