@@ -136,7 +136,13 @@ function createHTMLFile(templateObj, programInfo, options) {
   );
 
   if (components && components.length > 0) {
-    htmlOut = createBundles(htmlOut, outPath, components, programInfo);
+    htmlOut = createBundles({
+      htmlOut,
+      outPath,
+      components,
+      parentPath: templateObj.$path,
+      programInfo
+    });
   }
 
   // Write into .html file

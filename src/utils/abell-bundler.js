@@ -18,11 +18,13 @@ function clearBundleCache() {
 /**
  * Recursive function that unwraps components and adds them to respective files
  * @param {Object} components Array of all components
+ * @param {String} parentPath Path of parent
  * @param {Array} prev Holds previous array for recursion
  * @return {Array}
  */
 function getComponentBundles(
   components,
+  parentPath,
   prev = { inlinedStyles: '', inlinedScripts: '' }
 ) {
   if (components.length <= 0) {
@@ -35,7 +37,7 @@ function getComponentBundles(
     for (const style of component.styles) {
       let bundlePath;
       if (style.attributes.inlined === true) {
-        bundlePath = 'inlinedStyles';
+        bundlePath = 'inlinedStyles-' + parentPath;
       } else if (style.attributes.bundle) {
         bundlePath = path.join('bundled-css', style.attributes.bundle);
       } else {
@@ -60,7 +62,7 @@ function getComponentBundles(
     for (const script of component.scripts) {
       let bundlePath;
       if (script.attributes.inlined === true) {
-        bundlePath = 'inlinedScripts';
+        bundlePath = 'inlinedScripts-' + parentPath;
       } else if (script.attributes.bundle) {
         bundlePath = path.join('bundled-js', script.attributes.bundle);
       } else {
@@ -82,47 +84,39 @@ function getComponentBundles(
       prev[bundlePath] += script.content;
     }
 
-    out = { ...getComponentBundles(component.components, prev) };
+    out = { ...getComponentBundles(component.components, parentPath, prev) };
   }
-
-  // inlined scripts and style should be cleared from cache after every file write
-  Object.entries(currentBundledCSS)
-    .filter(
-      ([key, value]) => value === 'inlinedStyles' || value === 'inlinedScripts'
-    )
-    .forEach(([key, value]) => {
-      delete currentBundledCSS[key];
-    });
-
-  Object.entries(currentBundledJS)
-    .filter(
-      ([key, value]) => value === 'inlinedStyles' || value === 'inlinedScripts'
-    )
-    .forEach(([key, value]) => {
-      delete currentBundledJS[key];
-    });
 
   return out;
 }
 
 /**
  * Adds all files from bundleMap to respective files
- * @param {String} htmlOut HTML text input
- * @param {String} outPath Output path of HTML file
- * @param {Object} components Tree of components, retured from abell-renderer
- * @param {ProgramInfo} programInfo
+ * @param {Object} options
+ * @param {String} options.htmlOut HTML text input
+ * @param {String} options.outPath Output path of HTML file
+ * @param {Object} options.components Tree of components, retured from abell-renderer
+ * @param {Object} options.parentPath Path of parent abell file
+ * @param {ProgramInfo} options.programInfo
  * @return {String}
  */
-function createBundles(htmlOut, outPath, components, programInfo) {
-  const bundleMap = getComponentBundles(components);
+function createBundles({
+  htmlOut,
+  outPath,
+  components,
+  parentPath,
+  programInfo
+}) {
+  const bundleMap = getComponentBundles(components, parentPath);
+  console.log(bundleMap);
   for (let [bundlePath, bundleContent] of Object.entries(bundleMap)) {
     if (!bundleContent.trim()) {
       continue;
     }
-    if (bundlePath === 'inlinedStyles') {
+    if (bundlePath.startsWith('inlinedStyles')) {
       // inline the bundleContent inside HTML in style
       htmlOut = addToHeadEnd(`\n<style>${bundleContent}</style>\n`, htmlOut);
-    } else if (bundlePath === 'inlinedScripts') {
+    } else if (bundlePath.startsWith('inlinedScripts')) {
       // inline the bundleContent in HTML in script
       htmlOut = addToBodyEnd(`<script>${bundleContent}</script>`, htmlOut);
     } else {
