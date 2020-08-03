@@ -10,3 +10,4 @@ tests/
 .prettierignore
 cypress.json
 CODE_OF_CONDUCT.md
+local/
