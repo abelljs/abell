@@ -96,17 +96,11 @@ function getComponentBundles(
  * @param {String} options.htmlOut HTML text input
  * @param {String} options.outPath Output path of HTML file
  * @param {Object} options.components Tree of components, retured from abell-renderer
- * @param {Object} options.parentPath Path of parent abell file
  * @param {ProgramInfo} options.programInfo
  * @return {String}
  */
-function createBundles({
-  htmlOut,
-  outPath,
-  components,
-  parentPath,
-  programInfo
-}) {
+function createBundles({ htmlOut, outPath, components, programInfo }) {
+  const parentPath = path.relative(programInfo.abellConfig.outputPath, outPath);
   const bundleMap = getComponentBundles(components, parentPath);
   for (let [bundlePath, bundleContent] of Object.entries(bundleMap)) {
     if (!bundleContent.trim()) {

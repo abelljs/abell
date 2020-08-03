@@ -140,7 +140,6 @@ function createHTMLFile(templateObj, programInfo, options) {
       htmlOut,
       outPath,
       components,
-      parentPath: templateObj.$path,
       programInfo
     });
   }
