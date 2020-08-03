@@ -98,7 +98,7 @@ function buildTemplateMap(themePath) {
     }
 
     const relativePath = path.relative(themePath, template);
-    const shouldLoop = path.dirname(relativePath).endsWith('[$path]')
+    const shouldLoop = path.dirname(relativePath).endsWith('[path]')
       ? true
       : false;
 

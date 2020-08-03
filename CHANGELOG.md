@@ -9,6 +9,7 @@
   - `sourcePath` changed to `themePath`
   - `destinationPath` changed to `outputPath`
 - Internally (and for plugins) `programInfo.abellConfigs` changed to `programInfo.abellConfig`
+- In folder structure, [$path] changed to [path]
 - All variables will now be inside `Abell` object.
   - `globalMeta` -> `Abell.globalMeta`
   - `$contentArray` -> `Abell.contentArray`

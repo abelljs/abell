@@ -126,13 +126,13 @@ function createHTMLFile(templateObj, programInfo, options) {
   createPathIfAbsent(
     path.join(
       programInfo.abellConfig.outputPath,
-      path.dirname(templateObj.$path).replace('[$path]', Abell.$path)
+      path.dirname(templateObj.$path).replace('[path]', Abell.$path)
     )
   );
 
   const outPath = path.join(
     programInfo.abellConfig.outputPath,
-    replaceExtension(templateObj.$path, '.html').replace('[$path]', Abell.$path)
+    replaceExtension(templateObj.$path, '.html').replace('[path]', Abell.$path)
   );
 
   if (components && components.length > 0) {
