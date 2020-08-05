@@ -124,7 +124,7 @@ function runDevServer(programInfo) {
 
       generateSite(programInfo);
       ads.reload();
-    } else if (filePath.endsWith('.md')) {
+    } else if (filePath.endsWith('.md') || filePath.endsWith('.abell')) {
       const content =
         programInfo.contentMap[
           path.relative(

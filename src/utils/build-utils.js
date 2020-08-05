@@ -56,7 +56,10 @@ function buildContentMap(contentPath, options = { keepPluginContent: false }) {
     return {};
   }
   // Build the tree which has all information about content
-  const relativeSlugs = recursiveFindFiles(contentPath, 'index.md')
+  const relativeSlugs = [
+    ...recursiveFindFiles(contentPath, '.md'),
+    ...recursiveFindFiles(contentPath, '.abell')
+  ]
     .map((mdPath) => path.dirname(path.relative(contentPath, mdPath)))
     .filter((fileDirectories) => fileDirectories !== '.');
 
@@ -252,7 +255,9 @@ function getAbellConfig() {
  * @return {String}
  */
 function renderMarkdown(fullMDPath, variables) {
-  const fileContent = fs.readFileSync(fullMDPath, 'utf-8');
+  const fileContent = fs
+    .readFileSync(fullMDPath, 'utf-8')
+    .replace(/<[/]?AbellMarkdown>/g, '');
   const mdWithValues = abellRenderer.render(fileContent, variables, {
     filename: path.relative(process.cwd(), fullMDPath)
   }); // Add variables to markdown
