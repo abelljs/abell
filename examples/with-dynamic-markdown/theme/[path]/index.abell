@@ -1,0 +1,17 @@
+{{
+  const data = require('../data/notgoingtodist.js');
+  const { meta, importContent, $root } = Abell;
+}}
+<body>
+  <main>
+    <section id="blog-container">
+      <span data-test="root-test">{{ $root }}</span>
+      <span data-test="path-test">{{ meta.$path }}</span>
+      <span data-test="slug-test">{{ meta.$slug }}</span>
+    </section>
+    <img src="../image/cool.png"/>
+    <section data-test="blog-content">
+      {{ importContent(`${meta.$path}/index.md`) }}
+    </section>
+  </main>
+</body>

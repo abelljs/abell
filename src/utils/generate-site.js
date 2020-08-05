@@ -80,7 +80,9 @@ function createHTMLFile(templateObj, programInfo, options) {
     Abell: {
       ...Abell,
       importContent: (mdPath) =>
-        renderMarkdown(mdPath, programInfo.abellConfig.contentPath, { Abell })
+        renderMarkdown(path.join(programInfo.abellConfig.contentPath, mdPath), {
+          Abell
+        })
     }
   };
 
