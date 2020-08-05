@@ -22,6 +22,7 @@ const {
 } = require('../utils/general-helpers.js');
 
 const { generateSite, createHTMLFile } = require('../utils/generate-site.js');
+const { clearBundleCache } = require('../utils/abell-bundler');
 
 /**
  *
@@ -148,6 +149,7 @@ function runDevServer(programInfo) {
           (template) => template.shouldLoop
         );
 
+        clearBundleCache({ ofBundle: content.$path });
         for (const template of loopableTemplates) {
           createHTMLFile(template, programInfo, {
             isContent: true,

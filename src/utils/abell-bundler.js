@@ -9,8 +9,25 @@ let currentBundledJS = {}; // stores map of js files as they are bundled
 
 /**
  * Clears bundle cache. (Used in abell serve)
+ * @param {Object} options
+ * @param {String} options.ofBundle
  */
-function clearBundleCache() {
+function clearBundleCache({ ofBundle } = {}) {
+  if (ofBundle) {
+    Object.entries(currentBundledCSS)
+      .filter(([key, value]) => value.startsWith('inlinedStyles-' + ofBundle))
+      .forEach(([key, value]) => {
+        delete currentBundledCSS[key];
+      });
+
+    Object.entries(currentBundledJS)
+      .filter(([key, value]) => value.startsWith('inlinedScripts-' + ofBundle))
+      .forEach(([key, value]) => {
+        delete currentBundledJS[key];
+      });
+
+    return;
+  }
   currentBundledCSS = {};
   currentBundledJS = {};
 }
