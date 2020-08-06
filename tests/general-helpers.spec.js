@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 const expect = require('chai').expect;
 const cheerio = require('cheerio');
 
@@ -41,7 +42,6 @@ describe('execRegexOnAll()', () => {
   });
 });
 
-
 describe('addToHeadEnd()', () => {
   it('should add given string in <head></head> of HTML', () => {
     const template = `
@@ -55,12 +55,14 @@ describe('addToHeadEnd()', () => {
       </html>
     `;
 
-    const out = addToHeadEnd(`<link rel="stylesheet" href="abell.css" />`, template);
+    const out = addToHeadEnd(
+      `<link rel="stylesheet" href="abell.css" />`,
+      template
+    );
     const $ = cheerio.load(out);
     // prettier-ignore
     expect($('head > link[rel="stylesheet"]').attr('href')).to.equal('abell.css')
     expect(out.includes('</head>')).to.equal(true);
-
   });
 
   it('should add given string in <head></head> of HTML when template does not have head', () => {
@@ -72,7 +74,10 @@ describe('addToHeadEnd()', () => {
       </html>
     `;
 
-    const out = addToHeadEnd(`<link rel="stylesheet" href="abell.css" />`, template);
+    const out = addToHeadEnd(
+      `<link rel="stylesheet" href="abell.css" />`,
+      template
+    );
     const $ = cheerio.load(out);
     // prettier-ignore
     expect($('head > link[rel="stylesheet"]').attr('href')).to.equal('abell.css')
@@ -93,11 +98,13 @@ describe('addToBodyEnd()', () => {
       </html>
     `;
 
-    const out = addToBodyEnd(`<link rel="stylesheet" href="abell.css" />`, template);
+    const out = addToBodyEnd(
+      `<link rel="stylesheet" href="abell.css" />`,
+      template
+    );
     const $ = cheerio.load(out);
     // prettier-ignore
     expect($('body > link[rel="stylesheet"]').attr('href')).to.equal('abell.css')
     expect(out.includes('</body>')).to.equal(true);
-
   });
 });

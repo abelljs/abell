@@ -3,4 +3,4 @@ module.exports = {
   globalMeta: {
     title: 'Abell with-components Example'
   }
-}
+};

@@ -1,3 +1,10 @@
+/**
+ * Executes before starting build
+ *
+ * @param {Object} programInfo
+ * @param {Object} options
+ * @param {Function} options.createContent
+ */
 function beforeBuild(programInfo, { createContent }) {
   const nodes = [
     {
@@ -16,13 +23,16 @@ function beforeBuild(programInfo, { createContent }) {
       createdAt: new Date('1 May 2020'),
       modifiedAt: new Date('1 May 2020')
     }
-  ]
+  ];
 
   for (const node of nodes) {
-    createContent(node)
+    createContent(node);
   }
 }
 
+/**
+ * Runs after build of abell
+ */
 function afterBuild() {
   console.log('After build working!');
 }

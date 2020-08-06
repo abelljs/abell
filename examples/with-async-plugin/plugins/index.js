@@ -1,7 +1,11 @@
+/**
+ * example wait function to pause excution
+ * @param {number} time time to wait for
+ */
 async function wait(time) {
   return new Promise((resolve) => {
     setTimeout(resolve, time);
-  })
+  });
 }
 
 const beforeBuild = async (programInfo) => {

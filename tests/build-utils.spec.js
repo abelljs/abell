@@ -28,10 +28,9 @@ describe('getProgramInfo()', () => {
   });
 
   after(() => {
-    process.chdir('../../../..')
+    process.chdir('../../../..');
   });
 });
-
 
 describe('buildContentMap()', () => {
   before(() => {
@@ -47,18 +46,17 @@ describe('buildContentMap()', () => {
       `my-first-blog${path.sep}sub-blog`
     ]);
 
-    expect(contentMap['another-blog'].$root).to.equal('..')
+    expect(contentMap['another-blog'].$root).to.equal('..');
 
-    expect(contentMap[`my-first-blog${path.sep}sub-blog`].$root)
-      .to.equal(`..${path.sep}..`)
-
+    expect(contentMap[`my-first-blog${path.sep}sub-blog`].$root).to.equal(
+      `..${path.sep}..`
+    );
   });
 
   after(() => {
-    process.chdir('../../../..')
+    process.chdir('../../../..');
   });
 });
-
 
 describe('getAbellConfig()', () => {
   before(() => {
@@ -72,10 +70,9 @@ describe('getAbellConfig()', () => {
   });
 
   after(() => {
-    process.chdir('../../../..')
+    process.chdir('../../../..');
   });
 });
-
 
 describe('renderMarkdown()', () => {
   it('should return HTML of the md file in given path', () => {

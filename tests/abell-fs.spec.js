@@ -1,3 +1,5 @@
+/* eslint-disable max-len */
+
 const fs = require('fs');
 const path = require('path');
 const expect = require('chai').expect;
@@ -43,7 +45,7 @@ describe('createPathIfAbsent()', () => {
   });
 
   after(() => {
-    process.chdir('../../../..')
+    process.chdir('../../../..');
   });
 });
 
@@ -53,11 +55,12 @@ describe('getFirstLine()', () => {
   });
 
   it('should only read the first line of the given file', async () => {
-    expect(getFirstLine(path.join('src', 'index.abell')).trim())
-      .to.equal('<!DOCTYPE html>')
-  })
+    expect(getFirstLine(path.join('src', 'index.abell')).trim()).to.equal(
+      '<!DOCTYPE html>'
+    );
+  });
 
   after(() => {
-    process.chdir('../../../..')
+    process.chdir('../../../..');
   });
-})
+});
