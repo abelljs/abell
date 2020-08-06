@@ -17,7 +17,7 @@
     "start": "cd examples/main && node ../../bin/abell.js build && serve dist",
     "dev": "echo \"1. Execute 'npm link' \n2. 'cd examples/main'\n3. 'abell serve' \"",
     "eslint": "eslint .",
-    "prettier": "prettier --write \"**/*.js\"",
+    "prettier": "prettier --write \"src/**/*.js\"",
     "format": "npm run prettier",
     "prepublishOnly": "npm run eslint && npm test"
   },
