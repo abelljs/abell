@@ -88,8 +88,7 @@ describe('renderMarkdown()', () => {
 
     expect(
       renderMarkdown(
-        'another-blog/index.md',
-        'tests/test-utils/resources/test_demo/content',
+        'tests/test-utils/resources/test_demo/content/another-blog/index.md',
         {
           meta: { title: 'Abell Test Title Check' }
         }
