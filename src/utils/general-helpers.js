@@ -24,7 +24,7 @@ async function executeBeforeBuildPlugins(programInfo, { createContent }) {
  *
  * @param {ProgramInfo} programInfo
  */
-function executeAfterBuildPlugins(programInfo) {
+async function executeAfterBuildPlugins(programInfo) {
   /** After Build plugins */
   for (const pluginPath of programInfo.abellConfig.plugins) {
     const currentPlugin = require(pluginPath);
@@ -35,7 +35,7 @@ function executeAfterBuildPlugins(programInfo) {
             path.relative(process.cwd(), pluginPath)
         );
       }
-      currentPlugin.afterBuild(programInfo);
+      await currentPlugin.afterBuild(programInfo);
     }
   }
 }
@@ -157,7 +157,7 @@ function anchorsPlugin(md) {
  * @return {Void}
  */
 const logError = (errorMessage) =>
-  console.log(`${colors.boldRed('>>>')} ${errorMessage}`);
+  console.log(`\n${colors.boldRed('>>>')} ${errorMessage}`);
 
 /**
  * console.log for warnings, logs with warning styles

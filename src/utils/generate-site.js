@@ -165,6 +165,11 @@ function createHTMLFile(templateObj, programInfo, options) {
 
   // Write into .html file
   fs.writeFileSync(outPath, htmlOut);
+  if (programInfo.logs === 'complete') {
+    console.log(
+      `...Built ${path.relative(programInfo.abellConfig.outputPath, outPath)}`
+    );
+  }
 
   if (options.isContent && options.content) {
     // Copy 'assets' folder from content, if exist.

@@ -6,7 +6,8 @@ const {
 const {
   executeBeforeBuildPlugins,
   executeAfterBuildPlugins,
-  logError
+  logError,
+  colors
 } = require('../utils/general-helpers.js');
 
 const { generateSite } = require('../utils/generate-site.js');
@@ -31,19 +32,25 @@ async function build() {
 
   await executeBeforeBuildPlugins(programInfo, { createContent });
 
+  programInfo.logs = 'complete';
+  programInfo.task = 'build';
+
   try {
     // Build site here
     generateSite(programInfo);
   } catch (err) {
     console.log('\n>>');
     console.log(err);
-    logError('Abell Build Failed :( More logs above.\n');
+    logError('Abell Build Failed 😭 More logs above.\n');
+    // prettier-ignore
+    console.log(">> If you think this is Abell's fault, It would help if you Create an Issue at https://github.com/abelljs/abell/issues \n\n"); // eslint-disable-line
     process.exit(0);
   }
 
   // Run afterBuild functions of plugins
-  executeAfterBuildPlugins(programInfo);
-  console.log(new Date() - buildStartTime);
+  await executeAfterBuildPlugins(programInfo);
+  // prettier-ignore
+  console.log(`\n${colors.boldGreen('>>>')} Build Success (Built in ${new Date() - buildStartTime}ms) 🌻\n\n`); // eslint-disable-line max-len
 }
 
 module.exports = build;

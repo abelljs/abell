@@ -30,7 +30,7 @@ const { clearBundleCache } = require('../utils/abell-bundler');
  */
 function runDevServer(programInfo) {
   // Runs Dev server with all the watchers etc.
-  generateSite(programInfo);
+  generateSite({ ...programInfo, logs: 'complete' });
   console.log('Starting abell-dev-server 🤠...');
 
   ads.create({
@@ -63,11 +63,12 @@ function runDevServer(programInfo) {
   const onAbellConfigChanged = (filePath) => {
     // Read New abell.config.js
     // set globalMeta to programInfo
-    console.log('Abell Config Changed ⚙️');
+    console.log('\n⚙️  Abell Config Changed');
     const newAbellConfig = getAbellConfig();
     programInfo.abellConfig.globalMeta = newAbellConfig.globalMeta;
     generateSite(programInfo);
     ads.reload();
+    console.log(colors.boldGreen('>') + ' Site Rebuilt');
   };
 
   /**
@@ -76,7 +77,9 @@ function runDevServer(programInfo) {
    * @param {String} filePath
    */
   const onThemeChanged = async (event, filePath) => {
-    console.log('Theme Changed 💅');
+    console.log(
+      `\n💅 Event '${event}' in ${path.relative(process.cwd(), filePath)}`
+    );
     // if file is js or json, we have to make sure the file is not in require cache
     if (filePath.endsWith('.js') || filePath.endsWith('.json')) {
       clearLocalRequireCache(programInfo.abellConfig.themePath);
@@ -91,6 +94,7 @@ function runDevServer(programInfo) {
 
     generateSite(programInfo);
     ads.reload();
+    console.log(colors.boldGreen('>') + ' Files Rebuilt');
   };
 
   /**
@@ -104,7 +108,7 @@ function runDevServer(programInfo) {
   const onContentChanged = (event, filePath) => {
     // build content tree again on add/remove
     console.log(
-      `📄 >> Event '${event}' in ${path.relative(process.cwd(), filePath)}`
+      `\n📄 Event '${event}' in ${path.relative(process.cwd(), filePath)}`
     );
 
     const isFileMeta =
@@ -125,6 +129,7 @@ function runDevServer(programInfo) {
 
       generateSite(programInfo);
       ads.reload();
+      console.log(colors.boldGreen('>') + ' Files Rebuilt');
     } else if (filePath.endsWith('.md')) {
       const content =
         programInfo.contentMap[
@@ -137,11 +142,13 @@ function runDevServer(programInfo) {
       if (!content) {
         // This block is for *idk what happened but lets rebuild whole thing anyway*
         generateSite(programInfo);
+        console.log(colors.boldGreen('>') + ' Files Rebuilt');
       } else if (Object.keys(content).length < 1) {
         // if the content does not have values,
         // it means something is wrong. So we fallback to full website build
         // This will usually happen when index.md is in root of 'content/' directory
         generateSite(programInfo);
+        console.log(colors.boldGreen('>') + ' Files Rebuilt');
       } else {
         // if file is markdown content
         // Only build the files that have that content
@@ -156,12 +163,15 @@ function runDevServer(programInfo) {
             content
           });
         }
+
+        console.log(`${colors.boldGreen('>')} Rebuilt ${content.$path}`);
       }
 
       ads.reload();
     } else {
       generateSite(programInfo);
       ads.reload();
+      console.log(colors.boldGreen('>') + ' Files Rebuilt');
     }
   };
 
@@ -227,8 +237,8 @@ async function serve(command) {
   await executeBeforeBuildPlugins(programInfo, { createContent });
 
   programInfo.port = command.port || 5000;
-  programInfo.task = 'serve';
   programInfo.logs = 'minimum';
+  programInfo.task = 'serve';
   programInfo.abellConfig.outputPath = '.debug';
 
   runDevServer(programInfo);
