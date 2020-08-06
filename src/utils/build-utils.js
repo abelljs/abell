@@ -247,28 +247,19 @@ function getAbellConfig() {
  * 2. Converts it to html
  * 3. Adds variable to the new HTML and returns the HTML
  *
- * @param {String} mdPath
- * @param {String} contentPath
+ * @param {String} fullMDPath
  * @param {Object} variables
  * @return {String}
  */
-function renderMarkdown(mdPath, contentPath, variables) {
-  try {
-    const fileContent = fs.readFileSync(
-      path.join(contentPath, mdPath),
-      'utf-8'
-    );
-    const mdWithValues = abellRenderer.render(fileContent, variables, {
-      filename: path.relative(process.cwd(), path.join(contentPath, mdPath))
-    }); // Add variables to markdown
-    const rendererdHTML = md.render(mdWithValues.replace(/\\./g, '\\\\.'));
-    return rendererdHTML;
-  } catch (err) {
-    console.log(
-      `Error in {{ $importContent() }} at ['$path']/index.abell\n${mdPath} may not exist! Look log below for more details` // eslint-disable-line
-    );
-    throw err;
-  }
+function renderMarkdown(fullMDPath, variables) {
+  const fileContent = fs.readFileSync(fullMDPath, 'utf-8');
+  const mdWithValues = abellRenderer.render(fileContent, variables, {
+    filename: path.relative(process.cwd(), fullMDPath)
+  }); // Add variables to markdown
+
+  // .replace method below avoids escaping '\.' from markdown which it would do otherwise
+  const rendererdHTML = md.render(mdWithValues.replace(/\\./g, '\\\\.'));
+  return rendererdHTML;
 }
 
 /**

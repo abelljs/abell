@@ -80,7 +80,9 @@ function createHTMLFile(templateObj, programInfo, options) {
     Abell: {
       ...Abell,
       importContent: (mdPath) =>
-        renderMarkdown(mdPath, programInfo.abellConfig.contentPath, { Abell })
+        renderMarkdown(path.join(programInfo.abellConfig.contentPath, mdPath), {
+          Abell
+        })
     }
   };
 
@@ -89,12 +91,29 @@ function createHTMLFile(templateObj, programInfo, options) {
       // If it comes from plugin, content is supposed to have content property
       // In this case, we override importContent to always return the rendererd content
       // from plugin.
-      view.Abell.importContent = () => {
-        if (options.content.contentType === 'html') {
-          return options.content.content;
-        }
+      view.Abell.importContent = (mdPath) => {
+        if (
+          path.resolve(mdPath) ===
+          path.resolve(path.join(options.content.slug, 'index.md'))
+        ) {
+          if (options.content.contentType === 'html') {
+            return options.content.content;
+          }
 
-        return md.render(options.content.content);
+          return md.render(options.content.content);
+        } else {
+          try {
+            return renderMarkdown(
+              path.join(programInfo.abellConfig.contentPath, mdPath),
+              {
+                Abell
+              }
+            );
+          } catch (err) {
+            console.log('Markdown file not found.');
+            throw err;
+          }
+        }
       };
     } else {
       console.log(
