@@ -25,7 +25,15 @@
     "type": "git",
     "url": "git+https://github.com/abelljs/abell.git"
   },
-  "keywords": [],
+  "keywords": [
+    "blog",
+    "ssg",
+    "gatsby",
+    "jekyll",
+    "static",
+    "website",
+    "generator"
+  ],
   "author": "saurabhdaware",
   "license": "MIT",
   "bugs": {
