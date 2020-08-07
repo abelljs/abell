@@ -77,7 +77,7 @@ describe('utils/abell-bundler.js', () => {
         return text.replace(/\n|\s|\r/g, '');
       };
 
-      const expectedBundleMap = {
+      const expectedAboutBundleMap = {
         inlinedStyles: '',
         inlinedScripts: '',
         'inlinedStyles-about.html':
@@ -86,14 +86,37 @@ describe('utils/abell-bundler.js', () => {
         [`bundled-js${path.sep}main.abell.js`]: "\n  document.querySelector('div.brand').innerHTML = 'Set from JS';\n\n"
       };
 
-      const actualBundleMap = getComponentBundles(
+      // Since css and js is already bundled in separate files in about,
+      // it should not be bundled in index.
+      // but inlinedStyles should be there
+      const expectedIndexBundleMap = {
+        inlinedStyles: '',
+        inlinedScripts: '',
+        'inlinedStyles-index.html':
+          '\n  nav {\n    background-color: #000;\n    color: #fff;\n  }\n',
+        [`bundled-css${path.sep}main.abell.css`]: '',
+        [`bundled-js${path.sep}main.abell.js`]: ''
+      };
+
+      const aboutBundleMap = getComponentBundles(
         fakeComponentTree,
         'about.html'
       );
 
-      Object.keys(actualBundleMap).forEach((key) => {
-        expect(normalizeText(actualBundleMap[key])).to.equal(
-          normalizeText(expectedBundleMap[key])
+      const indexBundleMap = getComponentBundles(
+        fakeComponentTree,
+        'index.html'
+      );
+
+      Object.keys(aboutBundleMap).forEach((key) => {
+        expect(normalizeText(aboutBundleMap[key])).to.equal(
+          normalizeText(expectedAboutBundleMap[key])
+        );
+      });
+
+      Object.keys(indexBundleMap).forEach((key) => {
+        expect(normalizeText(indexBundleMap[key])).to.equal(
+          normalizeText(expectedIndexBundleMap[key])
         );
       });
     });
