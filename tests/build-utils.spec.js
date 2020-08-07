@@ -55,7 +55,7 @@ describe('utils/build-utils.js', () => {
         true
       );
 
-      expect(Object.keys(templateMap)).to.eql([
+      expect(Object.keys(templateMap)).to.have.members([
         `[path]${path.sep}index.abell`,
         'about.abell',
         'index.abell'
