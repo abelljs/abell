@@ -39,7 +39,7 @@ describe('examples/with-components', () => {
 
     it('should add main stylesheet link to head', () => {
       expect($('link[rel="stylesheet"]').attr('href')).to.equal(
-        'bundled-css/main.abell.css'
+        'bundled-css/main.abell.css'.replace(/\//g, path.sep)
       );
     });
 
@@ -67,7 +67,7 @@ describe('examples/with-components', () => {
 
     it('should add main stylesheet link to head', () => {
       expect($('link[rel="stylesheet"]').attr('href')).to.equal(
-        '../bundled-css/main.abell.css'
+        '../bundled-css/main.abell.css'.replace(/\//g, path.sep)
       );
     });
 
@@ -107,24 +107,28 @@ describe('examples/with-components', () => {
 
   describe('bundled-css/main.abell.css', () => {
     it('should have expected CSS properties in main bundle', () => {
-      expect(
-        fs
-          .readFileSync(
-            path.join(__dirname, 'dist', 'bundled-css', 'main.abell.css'),
-            'utf-8'
-          )
-          .replace(/\s|\n|\r/g, '')
-      ).to.equal(
-        `
+      const footerCSS = `
         footer {
           color: #f30;
         }
+      `.replace(/\s|\n|\r/g, '');
 
+      const aboutCSS = `
         .about {
           color: #999;
         }
-      `.replace(/\s|\n|\r/g, '')
-      );
+      `.replace(/\s|\n|\r/g, '');
+
+      const mainAbellCSS = fs
+        .readFileSync(
+          path.join(__dirname, 'dist', 'bundled-css', 'main.abell.css'),
+          'utf-8'
+        )
+        .replace(/\s|\n|\r/g, '');
+
+      expect(
+        mainAbellCSS.includes(footerCSS) && mainAbellCSS.includes(aboutCSS)
+      ).to.equal(true);
     });
   });
 
