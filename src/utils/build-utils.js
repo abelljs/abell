@@ -116,7 +116,7 @@ function buildTemplateMap(themePath) {
 }
 
 /**
- *
+ * Maps values from plugin to actual Abell's content node
  * @param {PluginNode} pluginNode Similar to meta info but includes content as well
  * @return {MetaInfo}
  */

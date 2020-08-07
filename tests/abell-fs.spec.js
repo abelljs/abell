@@ -15,7 +15,7 @@ const {
 } = require('../src/utils/abell-fs.js');
 
 describe("utils/abell-fs.js - Abell's file system", () => {
-  describe('getAbsolutePath()', () => {
+  describe('#getAbsolutePath()', () => {
     it('should return absolute path on giving relative path', () => {
       expect(getAbsolutePath(path.join('hi', 'hello'))).to.not.equal(
         path.join('hi', 'hello')
@@ -23,7 +23,7 @@ describe("utils/abell-fs.js - Abell's file system", () => {
     });
   });
 
-  describe('replaceExtension()', () => {
+  describe('#replaceExtension()', () => {
     it('should change the extension of given path', () => {
       expect(
         replaceExtension(path.join('hi', 'hello.abell'), '.html')
@@ -31,7 +31,7 @@ describe("utils/abell-fs.js - Abell's file system", () => {
     });
   });
 
-  describe('copyFolderSync() and rmdirRecursiveSync()', () => {
+  describe('#copyFolderSync(), #rmdirRecursiveSync()', () => {
     it('should copy folder from one path to other and then delete it', () => {
       const resourcePath = path.join(__dirname, 'test-utils', 'resources');
       const copyFrom = path.join(resourcePath, 'test_copyFolderSync');
@@ -46,7 +46,7 @@ describe("utils/abell-fs.js - Abell's file system", () => {
     });
   });
 
-  describe('getFirstLine()', () => {
+  describe('#getFirstLine()', () => {
     before(() => {
       process.chdir('tests/test-utils/resources/test_demo');
     });
@@ -62,7 +62,7 @@ describe("utils/abell-fs.js - Abell's file system", () => {
     });
   });
 
-  describe('recursiveFindFiles()', () => {
+  describe('#recursiveFindFiles()', () => {
     // eslint-disable-next-line max-len
     it('should return paths of all files in test_recursiveFindFiles directory', () => {
       // prettier-ignore
@@ -81,7 +81,7 @@ describe("utils/abell-fs.js - Abell's file system", () => {
     });
   });
 
-  describe('createPathIfAbsent()', () => {
+  describe('#createPathIfAbsent()', () => {
     before(() => {
       process.chdir('tests/test-utils/resources/test_demo');
     });
