@@ -166,4 +166,4 @@ function createBundles({ htmlOut, outPath, components, programInfo }) {
   return htmlOut;
 }
 
-module.exports = { createBundles, clearBundleCache };
+module.exports = { createBundles, clearBundleCache, getComponentBundles };
