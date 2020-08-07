@@ -3,9 +3,9 @@
   const Brand = require('./Brand.abell');
 }}
 <template>
-  <nav>
+  <nav data-test="nav-component">
     <Brand/>
-    This is nav component {{ props.a }}
+    This is nav component <span data-test="nav-component-prop">{{ props.a }}</span>
   </nav>
 </template>
 <style inlined>

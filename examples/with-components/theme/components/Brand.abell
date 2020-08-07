@@ -1,6 +1,6 @@
 <AbellComponent>
 <template>
-  <div class="brand">This is brand component</div>
+  <div data-test="brand-component" class="brand">This is brand component</div>
 </template>
 <style>
 </style>
