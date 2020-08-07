@@ -61,8 +61,10 @@ describe('utils/build-utils.js', () => {
         'index.abell'
       ]);
 
-      expect(templateMap['[path]/index.abell'].shouldLoop).to.equal(true);
-      expect(templateMap['[path]/index.abell'].$root).to.equal('..');
+      expect(templateMap[`[path]${path.sep}index.abell`].shouldLoop).to.equal(
+        true
+      );
+      expect(templateMap[`[path]${path.sep}index.abell`].$root).to.equal('..');
 
       expect(templateMap['index.abell'].shouldLoop).to.equal(false);
       expect(templateMap['index.abell'].$root).to.equal('');
