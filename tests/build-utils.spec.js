@@ -81,7 +81,7 @@ describe('utils/build-utils.js', () => {
 
       const contentMap = buildContentMap(contentPath);
 
-      expect(Object.keys(contentMap)).to.eql([
+      expect(Object.keys(contentMap)).to.have.members([
         'another-blog',
         'my-first-blog',
         `my-first-blog${path.sep}sub-blog`
