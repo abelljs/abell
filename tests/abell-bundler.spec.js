@@ -2,6 +2,7 @@
 
 const { getComponentBundles } = require('../src/utils/abell-bundler.js');
 const expect = require('chai').expect;
+const path = require('path');
 
 /* Fake Component Tree for testing */
 const fakeComponentTree = [
@@ -81,9 +82,8 @@ describe('utils/abell-bundler.js', () => {
         inlinedScripts: '',
         'inlinedStyles-about.html':
           '\n  nav {\n    background-color: #000;\n    color: #fff;\n  }\n',
-        'bundled-css/main.abell.css': '\n  .about {\n    color: #999;\n  }\n',
-        'bundled-js/main.abell.js':
-          "\n  document.querySelector('div.brand').innerHTML = 'Set from JS';\n\n"
+        [`bundled-css${path.sep}main.abell.css`]: '\n  .about {\n    color: #999;\n  }\n',
+        [`bundled-js${path.sep}main.abell.js`]: "\n  document.querySelector('div.brand').innerHTML = 'Set from JS';\n\n"
       };
 
       const actualBundleMap = getComponentBundles(
