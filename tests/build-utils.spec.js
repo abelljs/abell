@@ -56,7 +56,7 @@ describe('utils/build-utils.js', () => {
       );
 
       expect(Object.keys(templateMap)).to.eql([
-        '[path]/index.abell',
+        `[path]${path.sep}index.abell`,
         'about.abell',
         'index.abell'
       ]);
