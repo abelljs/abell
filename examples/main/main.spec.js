@@ -255,7 +255,15 @@ describe('examples/main', () => {
     });
 
     it('should render first para text', () => {
-      expect($('body main section p').text()).to.equal(`..${path.sep}..`);
+      expect($('body main section > p:nth-child(2)').text()).to.equal(
+        `..${path.sep}..`
+      );
+    });
+
+    it('should have relative path to index.md', () => {
+      expect($('body main section > p:nth-child(3) > a').attr('href')).to.equal(
+        `hello`
+      );
     });
 
     it('should add prefix in paths for deep level folders', () => {

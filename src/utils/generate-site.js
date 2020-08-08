@@ -74,6 +74,14 @@ function createHTMLFile(templateObj, programInfo, options) {
     Abell.$root = options.content.$root;
     Abell.$path = options.content.$path;
     Abell.meta = options.content;
+
+    // Adjust paths according to the depth of the folder.
+    if (options.content.$path.includes(path.sep)) {
+      abellTemplate = addPrefixInHTMLPaths(
+        abellTemplate,
+        options.content.$root.slice(0, -3)
+      );
+    }
   }
 
   const view = {
@@ -137,10 +145,6 @@ function createHTMLFile(templateObj, programInfo, options) {
       basePath: path.dirname(sourceThemePath)
     }
   );
-
-  if (options.isContent && options.content.$path.includes(path.sep)) {
-    htmlOut = addPrefixInHTMLPaths(htmlOut, options.content.$root.slice(0, -3));
-  }
 
   createPathIfAbsent(
     path.join(
