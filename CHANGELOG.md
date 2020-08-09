@@ -15,6 +15,7 @@
   - `$contentArray` -> `Abell.contentArray`
   - `$root` and `$path` -> `Abell.$root` and `Abell.$path`
 - A lot of things in programInfo variable of plugins changed
+- Dropped support for automatic prefixing of paths (it was super buggy)
 
 ### Non-breaking Changes
 

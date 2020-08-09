@@ -1,0 +1,6 @@
+<!DOCTYPE html>
+<html lang="en">
+<body>
+  {{ Abell.importContent(`${Abell.meta.$path}/index.md`) }}
+</body>
+</html>

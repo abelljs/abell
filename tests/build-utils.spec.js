@@ -10,8 +10,7 @@ const {
   getContentMeta,
   getSourceNodeFromPluginNode,
   renderMarkdown,
-  getAbellConfig,
-  addPrefixInHTMLPaths
+  getAbellConfig
 } = require('../src/utils/build-utils.js');
 
 describe('utils/build-utils.js', () => {
@@ -170,25 +169,6 @@ describe('utils/build-utils.js', () => {
           }
         ).replace(/[\n ]/g, '')
       ).to.equal(shouldOutput.replace(/[\n ]/g, ''));
-    });
-  });
-
-  describe('#addPrefixInHTMLPaths()', () => {
-    it('should add prefix to HTML paths', () => {
-      const template = /* html */ `
-        <link rel="preload" href="one.css" />
-        <a href='two.html'></a>
-        <a href='https://google.com/hi.html'></a>
-        <img src="three.png" />
-      `;
-      // prettier-ignore
-      expect(addPrefixInHTMLPaths(template, '..'))
-        .to.equal(/* html */ `
-        <link rel="preload" href="../one.css" />
-        <a href='../two.html'></a>
-        <a href='https://google.com/hi.html'></a>
-        <img src="../three.png" />
-      `)
     });
   });
 

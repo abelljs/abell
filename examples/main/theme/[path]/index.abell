@@ -9,7 +9,7 @@
       <span data-test="path-test">{{ meta.$path }}</span>
       <span data-test="slug-test">{{ meta.$slug }}</span>
     </section>
-    <img src="../image/cool.png"/>
+    <img src="{{$root}}/image/cool.png"/>
     <section data-test="blog-content">
       {{ importContent(`${meta.$path}/index.md`) }}
     </section>

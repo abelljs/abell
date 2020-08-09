@@ -7,11 +7,7 @@ const md = new Remarkable({
   html: true
 });
 
-const {
-  logWarning,
-  anchorsPlugin,
-  execRegexOnAll
-} = require('./general-helpers.js');
+const { logWarning, anchorsPlugin } = require('./general-helpers.js');
 
 const {
   recursiveFindFiles,
@@ -262,31 +258,6 @@ function renderMarkdown(fullMDPath, variables) {
   return rendererdHTML;
 }
 
-/**
- * Adds right prefix to paths if folder's level is deep
- * @param {String} htmlTemplate
- * @param {String} prefix
- * @return {String}
- */
-function addPrefixInHTMLPaths(htmlTemplate, prefix) {
-  const { matches, input } = execRegexOnAll(
-    / (?:href|src)=["'`](.*?)["'`]/g,
-    htmlTemplate
-  );
-
-  let output = '';
-  let lastIndex = 0;
-  for (const match of matches) {
-    if (match[1].startsWith('http') || match[1].startsWith('//')) continue;
-    const indexToAddOn = match.index + match[0].indexOf(match[1]);
-    output += input.slice(lastIndex, indexToAddOn) + prefix + '/';
-    lastIndex = indexToAddOn;
-  }
-  output += input.slice(lastIndex);
-
-  return output;
-}
-
 module.exports = {
   getProgramInfo,
   buildContentMap,
@@ -295,6 +266,5 @@ module.exports = {
   getAbellConfig,
   getContentMeta,
   renderMarkdown,
-  addPrefixInHTMLPaths,
   md
 };
