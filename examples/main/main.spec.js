@@ -267,7 +267,9 @@ describe('examples/main', () => {
     });
 
     it('should add prefix in paths for deep level folders', () => {
-      expect($('main img').attr('src')).to.equal(`../../image/cool.png`);
+      expect($('main img').attr('src')).to.equal(
+        `..${path.sep}../image/cool.png`
+      );
     });
   });
 });
