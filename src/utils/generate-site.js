@@ -7,7 +7,6 @@ const {
   rmdirRecursiveSync,
   createPathIfAbsent,
   copyFolderSync,
-  replaceExtension,
   recursiveFindFiles
 } = require('./abell-fs.js');
 
@@ -39,19 +38,19 @@ function createHTMLFile(templateObj, programInfo, options) {
    */
 
   let abellTemplate;
-  if (templateObj.$path in templateHashmap) {
+  if (templateObj.templatePath in templateHashmap) {
     // Read from hashmap
-    abellTemplate = templateHashmap[templateObj.$path];
+    abellTemplate = templateHashmap[templateObj.templatePath];
   } else {
     // New fetch
     abellTemplate = fs.readFileSync(
-      path.join(programInfo.abellConfig.themePath, templateObj.$path),
+      path.join(programInfo.abellConfig.themePath, templateObj.templatePath),
       'utf-8'
     );
 
     if (programInfo.task === 'build') {
       // only use hashmaps in build. In serve, we have to refetch values.
-      templateHashmap[templateObj.$path] = abellTemplate;
+      templateHashmap[templateObj.templatePath] = abellTemplate;
     }
   }
 
@@ -62,7 +61,7 @@ function createHTMLFile(templateObj, programInfo, options) {
     ),
     contentObj: programInfo.contentMap,
     $root: templateObj.$root,
-    $path: templateObj.$path
+    $path: templateObj.htmlPath.replace(/index\.html/g, '')
   };
 
   if (options.isContent) {
@@ -120,7 +119,7 @@ function createHTMLFile(templateObj, programInfo, options) {
 
   const sourceThemePath = path.join(
     programInfo.abellConfig.themePath,
-    templateObj.$path
+    templateObj.templatePath
   );
 
   let { html: htmlOut, components } = abellRenderer.render(
@@ -134,17 +133,12 @@ function createHTMLFile(templateObj, programInfo, options) {
     }
   );
 
-  createPathIfAbsent(
-    path.join(
-      programInfo.abellConfig.outputPath,
-      path.dirname(templateObj.$path).replace('[path]', Abell.$path)
-    )
-  );
-
   const outPath = path.join(
     programInfo.abellConfig.outputPath,
-    replaceExtension(templateObj.$path, '.html').replace('[path]', Abell.$path)
+    templateObj.htmlPath.replace('[path]', Abell.$path)
   );
+
+  createPathIfAbsent(path.dirname(outPath));
 
   if (components && components.length > 0) {
     htmlOut = createBundles({

@@ -2,7 +2,7 @@
   const site = require('./site.json');
 }}
 {{
-  const { globalMeta, contentArray, $root } = Abell;
+  const { globalMeta, contentArray, $root, $path } = Abell;
 }}
 <!DOCTYPE html>
 <html lang="en">
@@ -27,6 +27,9 @@
     </section>
     <section>
       root test <span data-test="root-test">{{ $root }}</span>
+    </section>
+    <section>
+      path test <span data-test="path-test">{{ $path }}</span>
     </section>
     <section>
       contentArray Test

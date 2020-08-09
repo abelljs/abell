@@ -12,6 +12,7 @@ const { logWarning, anchorsPlugin } = require('./general-helpers.js');
 const {
   recursiveFindFiles,
   getAbsolutePath,
+  replaceExtension,
   getFirstLine
 } = require('./abell-fs.js');
 
@@ -100,7 +101,8 @@ function buildTemplateMap(themePath) {
 
     theme[relativePath] = {
       shouldLoop,
-      $path: relativePath,
+      templatePath: relativePath,
+      htmlPath: replaceExtension(relativePath, '.html'),
       $root: path.relative(
         path.join(themePath, path.dirname(relativePath)),
         themePath

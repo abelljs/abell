@@ -33,8 +33,12 @@ describe('examples/main', () => {
       );
     });
 
-    it('should render nothing since the file is at top level', () => {
+    it('should render nothing since top level value of $root is blank', () => {
       expect($('[data-test="root-test"]').html()).to.equal('');
+    });
+
+    it('should render nothing since top level value of $path is blank', () => {
+      expect($('[data-test="path-test"]').html()).to.equal('');
     });
 
     it('should render all the article meta info into container', () => {
