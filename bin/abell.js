@@ -17,7 +17,10 @@ const serve = require('../src/commands/serve.js');
 program.command('build').action(build);
 
 /** abell serve */
-program.command('serve').action(serve);
+program
+  .command('serve')
+  .option('--port [port]', 'Serve on different port')
+  .action(serve);
 
 /** abell -V */
 program.version(require('../package.json').version);
