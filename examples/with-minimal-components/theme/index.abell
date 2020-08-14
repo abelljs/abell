@@ -1,0 +1,12 @@
+{{
+  const Nav = require('./components/Nav.abell');
+}}
+<html>
+<head>
+  <title>Minimal Component Example</title>
+</head>
+<body>
+  <Nav props={a: 3}/>
+  <Nav props={a: 9}/>
+</body>
+</html>

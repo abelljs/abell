@@ -3,10 +3,26 @@
 /**
  * It is very unlikely that you would have to change anything in this file
  * since it only deals with exporting right functions to users.
- *
- * You can check `src/cli.js` for actual logics.
  */
 
 // This is the file that gets called first on `abell [command]`
 // The code from src/index.js is executed
-require('../src/cli.js');
+const program = require('commander');
+const build = require('../src/commands/build.js');
+const serve = require('../src/commands/serve.js');
+
+// Listeners
+
+/** abell build */
+program.command('build').action(build);
+
+/** abell serve */
+program
+  .command('serve')
+  .option('--port [port]', 'Serve on different port')
+  .action(serve);
+
+/** abell -V */
+program.version(require('../package.json').version);
+
+program.parse(process.argv); // required for commander to parse arguments

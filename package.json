@@ -1,12 +1,12 @@
 {
   "name": "abell",
-  "version": "0.3.6",
+  "version": "0.4.0",
   "description": "Abell is a static blog generator that generates blog in Vanilla JavaScript",
   "funding": {
     "type": "patreon",
     "url": "https://patreon.com/saurabhdaware"
   },
-  "main": "src/main.js",
+  "main": "src/index.js",
   "bin": {
     "abell": "bin/abell.js"
   },
@@ -17,7 +17,7 @@
     "start": "cd examples/main && node ../../bin/abell.js build && serve dist",
     "dev": "echo \"1. Execute 'npm link' \n2. 'cd examples/main'\n3. 'abell serve' \"",
     "eslint": "eslint .",
-    "prettier": "prettier --write \"**/*.js\"",
+    "prettier": "prettier --write \"src/**/*.js\"",
     "format": "npm run prettier",
     "prepublishOnly": "npm run eslint && npm test"
   },
@@ -25,7 +25,15 @@
     "type": "git",
     "url": "git+https://github.com/abelljs/abell.git"
   },
-  "keywords": [],
+  "keywords": [
+    "blog",
+    "ssg",
+    "gatsby",
+    "jekyll",
+    "static",
+    "website",
+    "generator"
+  ],
   "author": "saurabhdaware",
   "license": "MIT",
   "bugs": {
@@ -33,7 +41,7 @@
   },
   "homepage": "https://abelljs.org",
   "dependencies": {
-    "abell-renderer": "^0.1.15",
+    "abell-renderer": "^0.2.0",
     "chokidar": "^3.4.0",
     "commander": "^5.0.0",
     "remarkable": "^2.0.0",

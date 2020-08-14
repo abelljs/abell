@@ -3,4 +3,4 @@ module.exports = {
     siteName: 'Plugins Example'
   },
   plugins: ['plugins/index.js']
-}
+};

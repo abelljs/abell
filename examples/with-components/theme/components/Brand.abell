@@ -1,0 +1,10 @@
+<AbellComponent>
+<template>
+  <div data-test="brand-component" class="brand">This is brand component</div>
+</template>
+<style>
+</style>
+<script>
+  document.querySelector('div.brand').innerHTML = 'Set from JS';
+</script>
+</AbellComponent>

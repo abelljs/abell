@@ -1,3 +1,5 @@
 # Inside the new blog
 
-{{ $root }}
+{{ Abell.$root }}
+
+[sub-blog/hello](hello)

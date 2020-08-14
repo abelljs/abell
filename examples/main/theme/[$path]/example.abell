@@ -1,3 +1,0 @@
-<body>
-  {{ meta.$path }}
-</body>

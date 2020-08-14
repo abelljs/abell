@@ -1,0 +1,8 @@
+{{
+  const Nav = require('./components/Nav.abell');
+}}
+<html>
+<body>
+  <Nav props={foo: 9}/>
+</body>
+</html>

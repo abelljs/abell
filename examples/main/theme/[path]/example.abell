@@ -1,0 +1,3 @@
+<body>
+  {{ Abell.meta.$path }}
+</body>

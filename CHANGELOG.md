@@ -1,5 +1,36 @@
 # Changelog
 
+## 0.4.0 (Includes BREAKING CHANGES)
+
+### Breaking Changes
+
+- In abell.config.js,
+  - `sourcePath` changed to `themePath`
+  - `destinationPath` changed to `outputPath`
+- Internally (and for plugins) `programInfo.abellConfigs` changed to `programInfo.abellConfig`
+- In folder structure, [$path] changed to [path]
+- All variables will now be inside `Abell` object.
+  - `globalMeta` -> `Abell.globalMeta`
+  - `$contentArray` -> `Abell.contentArray`
+  - `$root` and `$path` -> `Abell.$root` and `Abell.$path`
+- A lot of things in programInfo variable of plugins changed
+- Dropped support for automatic prefixing of paths (it was super buggy)
+
+### Non-breaking Changes
+
+- Added `createContent` function for beforeBuild plugins that lets plugin developers create source plugin with ease.
+- Added support for HTML content in source plugins.
+- Abell Components 🌻
+- Abell Bundlerrrrr 🎉
+- `Abell.$root` value fix for Windows
+- Stack trace in errors
+- You can now `.map` to loop without `.join` in the end. Arrays will be turned into strings by default.
+- Other minor bug fixes
+
+### Changes in Abell Renderer
+
+Along with v0.4.0, we also released v0.2.0 of Abell Renderer. The changes are mentioned in [abell-renderer](https://github.com/abelljs/abell-renderer/tree/main/CHANGELOG.md)
+
 ## 0.3.6
 
 - Single port dev-server ([#55](https://github.com/abelljs/abell/pull/55))

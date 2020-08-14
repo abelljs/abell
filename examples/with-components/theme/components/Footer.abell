@@ -1,0 +1,11 @@
+
+<AbellComponent>
+<template>
+  <footer>This is Footer</footer>
+</template>
+<style>
+  footer {
+    color: #f30;
+  }
+</style>
+</AbellComponent>

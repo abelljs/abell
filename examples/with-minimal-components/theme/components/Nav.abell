@@ -1,0 +1,17 @@
+<AbellComponent>
+{{
+  const Brand = require('./Brand.abell');
+}}
+<template>
+  <nav>
+    This is nav component {{ props.a }}
+    <Brand/>
+  </nav>
+</template>
+<style inlined>
+  nav {
+    background-color: #000;
+    color: #fff;
+  }
+</style>
+</AbellComponent>

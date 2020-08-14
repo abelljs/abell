@@ -1,0 +1,14 @@
+<AbellComponent>
+<template>
+  <div class="about">
+    Hi I am Abell! 
+  </div>
+</template>
+<style>
+  .about {
+    color: #999;
+  }
+</style>
+<script>
+</script>
+</AbellComponent>

@@ -1,93 +1,56 @@
-const fs = require('fs');
-const path = require('path');
+const {
+  getProgramInfo,
+  getSourceNodeFromPluginNode
+} = require('../utils/build-utils.js');
 
 const {
-  rmdirRecursiveSync,
-  copyFolderSync,
-  boldGreen,
-  recursiveFindFiles
-} = require('../utils/helpers.js');
+  executeBeforeBuildPlugins,
+  executeAfterBuildPlugins,
+  logError,
+  colors
+} = require('../utils/general-helpers.js');
 
-const {
-  generateContentFile,
-  generateHTMLFile
-} = require('../utils/build-utils');
+const { generateSite } = require('../utils/generate-site.js');
 
 /**
- * Builds the static site!
- * The build parameters are first calculated in index.js
- * and the programInfo with all those parameters is passed
- *
- * @param {ProgramInfo} programInfo
- * @return {void}
+ * Executed on `abell build`
  */
-function build(programInfo) {
-  if (programInfo.logs == 'complete') console.log('\n>> Abell Build Started\n');
-
-  const abellFiles = recursiveFindFiles(
-    programInfo.abellConfigs.sourcePath,
-    '.abell'
-  );
-
-  // Refresh dist
-  rmdirRecursiveSync(programInfo.abellConfigs.destinationPath);
-  fs.mkdirSync(programInfo.abellConfigs.destinationPath);
-
-  // GENERATE CONTENT's HTML FILES
-  if (programInfo.contentTemplatePaths.length > 0) {
-    for (const contentTemplatePath of programInfo.contentTemplatePaths) {
-      for (const contentPath of programInfo.contentDirectories) {
-        generateContentFile(contentPath, contentTemplatePath, programInfo);
-        if (programInfo.logs == 'complete') {
-          console.log(`...Built ${contentPath}`);
-        }
-      }
-    }
-  }
-
-  // GENERATE OTHER HTML FILES FROM ABELL
-  for (const file of abellFiles) {
-    const relativePath = path.relative(
-      programInfo.abellConfigs.sourcePath,
-      file
+async function build() {
+  // - Get baseProgramInfo
+  // - Execute beforeBuild plugins and let them add extra content or template if needed.
+  // - Get All information of source content in a tree
+  // - Get all information of template in template tree
+  const buildStartTime = new Date();
+  const programInfo = getProgramInfo();
+  programInfo.task = 'build';
+  // createContent function that goes to plugins
+  const createContent = (pluginNode) => {
+    programInfo.contentMap[pluginNode.slug] = getSourceNodeFromPluginNode(
+      pluginNode
     );
+  };
 
-    if (relativePath.includes('[$path]')) {
-      continue;
-    }
+  await executeBeforeBuildPlugins(programInfo, { createContent });
 
-    // e.g generateHTMLFile('index', programInfo) will build theme/index.abell to dist/index.html
-    generateHTMLFile(relativePath, programInfo);
+  programInfo.logs = 'complete';
+  programInfo.task = 'build';
 
-    if (programInfo.logs == 'complete') {
-      console.log(`...Built ${relativePath}.html`);
-    }
+  try {
+    // Build site here
+    generateSite(programInfo);
+  } catch (err) {
+    console.log('\n>>');
+    console.log(err);
+    logError('Abell Build Failed 😭 More logs above.\n');
+    // prettier-ignore
+    console.log(">> If you think this is Abell's fault, It would help if you Create an Issue at https://github.com/abelljs/abell/issues \n\n"); // eslint-disable-line
+    process.exit(0);
   }
 
-  const importedFiles = Object.keys(require.cache).filter(
-    (importedFile) =>
-      !path
-        .relative(programInfo.abellConfigs.sourcePath, importedFile)
-        .startsWith('..')
-  );
-
-  const ignoreCopying = [
-    ...importedFiles,
-    ...[...abellFiles, ...programInfo.contentTemplatePaths].map(
-      (withoutExtension) => withoutExtension + '.abell'
-    )
-  ];
-
-  // Copy everything from src to dist except the ones mentioned in ignoreCopying.
-  copyFolderSync(
-    programInfo.abellConfigs.sourcePath,
-    programInfo.abellConfigs.destinationPath,
-    ignoreCopying
-  );
-
-  if (programInfo.logs == 'minimum') {
-    console.log(`${boldGreen('>>>')} Files built.. ✨`);
-  }
+  // Run afterBuild functions of plugins
+  await executeAfterBuildPlugins(programInfo);
+  // prettier-ignore
+  console.log(`\n${colors.boldGreen('>>>')} Build Success (Built in ${new Date() - buildStartTime}ms) 🌻\n\n`); // eslint-disable-line max-len
 }
 
 module.exports = build;

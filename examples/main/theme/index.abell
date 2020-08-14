@@ -1,6 +1,9 @@
 {{
   const site = require('./site.json');
 }}
+{{
+  const { globalMeta, contentArray, $root, $path } = Abell;
+}}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,14 +26,16 @@
       globalMeta Test <span data-test="globalmeta-test">{{ globalMeta.siteName }}</span>
     </section>
     <section>
-      $root test <span data-test="root-test">{{ $root }}</span>
+      root test <span data-test="root-test">{{ $root }}</span>
     </section>
     <section>
-      $contentArray Test
+      path test <span data-test="path-test">{{ $path }}</span>
+    </section>
+    <section>
+      contentArray Test
       <div data-test="contentarray-container">
-        {{ console.log($contentArray) }}
         {{
-          $contentArray
+          contentArray
             .map(meta => `
               <div>
                 <span class="data-title">${meta.title} (${meta.$path})</span>

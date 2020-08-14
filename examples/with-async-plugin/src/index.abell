@@ -4,8 +4,8 @@
   <main>
     <div class="article-container">
       {{
-        $contentArray
-          .map(meta => `
+        Abell.contentArray
+          .map(meta => /* html */ `
             <article class="shadow">
               <a href="${meta.$path}/">
                 <h2>${meta.title}</h2>
@@ -14,7 +14,6 @@
               </a>
             </article>
           `)
-          .join('')
       }}
     </div>
   </main>
