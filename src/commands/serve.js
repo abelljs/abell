@@ -23,6 +23,7 @@ const {
 
 const { generateSite, createHTMLFile } = require('../utils/generate-site.js');
 const { clearBundleCache } = require('../utils/abell-bundler');
+const { getFirstLine } = require('../utils/abell-fs');
 
 /**
  *
@@ -85,8 +86,12 @@ function runDevServer(programInfo) {
       clearLocalRequireCache(programInfo.abellConfig.themePath);
     }
 
+    const isAbellComponent = !event.includes('unlink')
+      ? getFirstLine(filePath).trim().includes('<AbellComponent>')
+      : false;
+
     // if new file is added/removed, we have to recalculate template tree
-    if (event !== 'change') {
+    if (event !== 'change' || isAbellComponent) {
       programInfo.templateMap = buildTemplateMap(
         programInfo.abellConfig.themePath
       );
