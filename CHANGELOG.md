@@ -1,6 +1,5 @@
 # Changelog
 
-<!--
 ## 0.4.0 (Includes BREAKING CHANGES)
 
 ### Breaking Changes
@@ -21,7 +20,7 @@
 
 - Added `createContent` function for beforeBuild plugins that lets plugin developers create source plugin with ease.
 - Added support for HTML content in source plugins.
-- Abell Components under feature flag 👽
+- Abell Components 🌻
 - Abell Bundlerrrrr 🎉
 - `Abell.$root` value fix for Windows
 - Stack trace in errors
@@ -31,7 +30,6 @@
 ### Changes in Abell Renderer
 
 Along with v0.4.0, we also released v0.2.0 of Abell Renderer. The changes are mentioned in [abell-renderer](https://github.com/abelljs/abell-renderer/tree/main/CHANGELOG.md)
--->
 
 ## 0.3.6
 
