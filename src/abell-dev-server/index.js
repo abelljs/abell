@@ -15,6 +15,7 @@ async function create(options) {
     if (!socketServer) console.log('>> Watcher Connected');
     socketServer = ws;
   });
+  return { httpServer, wss };
 }
 
 /**

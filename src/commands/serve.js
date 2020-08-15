@@ -29,12 +29,12 @@ const { getFirstLine } = require('../utils/abell-fs');
  *
  * @param {ProgramInfo} programInfo
  */
-function runDevServer(programInfo) {
+async function runDevServer(programInfo) {
   // Runs Dev server with all the watchers etc.
   generateSite({ ...programInfo, logs: 'complete' });
   console.log('Starting abell-dev-server 🤠...');
 
-  ads.create({
+  const adsResult = await ads.create({
     port: programInfo.port,
     path: programInfo.abellConfig.outputPath
   });
@@ -51,7 +51,9 @@ function runDevServer(programInfo) {
   console.log('='.repeat(process.stdout.columns));
   console.log('\n\n💫 Abell dev server running.');
   console.log(
-    `${colors.boldGreen('Local: ')} http://localhost:${programInfo.port} \n\n`
+    `${colors.boldGreen('Local: ')} http://localhost:${
+      adsResult.httpServer.address().port
+    } \n\n`
   );
   console.log('='.repeat(process.stdout.columns));
 

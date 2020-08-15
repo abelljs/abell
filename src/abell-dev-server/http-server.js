@@ -150,12 +150,13 @@ async function createServer(options, retry) {
       httpServer = http
         .createServer((req, res) => server(req, res, socketCode, options))
         .listen(parseInt(result.port));
-      console.log(`Server listening on port ${port}`);
+      console.log(`Server listening on port ${result.port}`);
     }
   } else {
     httpServer = http
       .createServer((req, res) => server(req, res, socketCode, options))
       .listen(parseInt(options.port));
+    console.log(`Server listening on port ${options.port}`);
   }
   return httpServer;
 }
