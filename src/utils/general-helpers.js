@@ -57,12 +57,11 @@ function clearLocalRequireCache(themePath) {
  * @param {Object} options
  * @param {Number} exitCode
  */
-function exitHandler(options, exitCode) {
+function exitHandler(options) {
   if (options.cleanup) {
     rmdirRecursiveSync('.debug');
     console.log('\n\nBiee 🐨✌️\n');
   }
-  if (exitCode !== 0) console.log(exitCode);
   if (options.exit) process.exit();
 }
 

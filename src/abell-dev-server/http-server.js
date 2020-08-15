@@ -3,6 +3,27 @@ const url = require('url');
 const fs = require('fs');
 const path = require('path');
 
+const isPortTaken = function (port) {
+  return new Promise((resolve, reject) => {
+    const net = require('net');
+    const tester = net
+      .createServer()
+      .once('error', function (err) {
+        if (err.code === 'EADDRINUSE')
+          return resolve({ success: false, port: null });
+        return reject(err);
+      })
+      .once('listening', function () {
+        tester
+          .once('close', function () {
+            resolve({ success: true, port });
+          })
+          .close();
+      })
+      .listen(port);
+  });
+};
+
 /**
  * @typedef {Object} Options
  * @property {Number} port
@@ -91,10 +112,16 @@ function server(req, res, socketCode, options) {
 /**
  *
  * @param {Options} options
+ * @param {Options} retry
  * @return {Object} httpServer
  */
-function createServer(options) {
-  const port = options.port || 9000;
+async function createServer(options, retry) {
+  if (retry && retry.count > 3) {
+    console.error('Max retries for port finding exceeded. Exiting..');
+    process.exit(1);
+  }
+
+  const port = (retry && retry.nextPort) || options.port || 5000;
   const socketCode = /* html */ `
   <script>
     const socketProtocol = location.protocol === 'http:' ? 'ws://' : 'wss://';
@@ -107,12 +134,29 @@ function createServer(options) {
     });
   </script>
   `;
+  let httpServer;
 
-  const httpServer = http
-    .createServer((req, res) => server(req, res, socketCode, options))
-    .listen(parseInt(port));
-  console.log(`Server listening on port ${port}`);
+  // retry if and only if we are using the default port
+  if (!options.port) {
+    const result = await isPortTaken(port);
 
+    if (!result.success) {
+      console.log(`Port ${port} is taken!! Retrying with port ${port + 1}`);
+      httpServer = createServer(options, {
+        nextPort: port + 1,
+        count: retry ? retry.count + 1 : 1
+      });
+    } else {
+      httpServer = http
+        .createServer((req, res) => server(req, res, socketCode, options))
+        .listen(parseInt(result.port));
+      console.log(`Server listening on port ${port}`);
+    }
+  } else {
+    httpServer = http
+      .createServer((req, res) => server(req, res, socketCode, options))
+      .listen(parseInt(options.port));
+  }
   return httpServer;
 }
 

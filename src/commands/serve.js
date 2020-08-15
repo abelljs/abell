@@ -241,7 +241,7 @@ async function serve(command) {
 
   await executeBeforeBuildPlugins(programInfo, { createContent });
 
-  programInfo.port = command.port || 5000;
+  programInfo.port = command.port;
   programInfo.logs = 'minimum';
   programInfo.task = 'serve';
   programInfo.abellConfig.outputPath = '.debug';

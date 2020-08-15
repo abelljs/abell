@@ -7,8 +7,8 @@ let socketServer;
  * @param {Object} options
  * @param {Number} options.port
  */
-function create(options) {
-  const httpServer = createServer(options);
+async function create(options) {
+  const httpServer = await createServer(options);
   const wss = new WebSocket.Server({ server: httpServer });
   console.log('Socket Server Listening...');
   wss.on('connection', (ws) => {
