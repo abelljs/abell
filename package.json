@@ -57,7 +57,8 @@
     "husky": "^4.2.5",
     "mocha": "^7.1.2",
     "node-fetch": "^2.6.0",
-    "prettier": "^2.0.5"
+    "prettier": "^2.0.5",
+    "sinon": "^9.0.3"
   },
   "husky": {
     "hooks": {
