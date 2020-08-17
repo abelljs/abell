@@ -121,7 +121,7 @@ async function createServer(options, retry) {
     process.exit(1);
   }
 
-  const port = (retry && retry.nextPort) || options.port || 5000;
+  const port = (retry && retry.nextPort) || (options && options.port) || 5000;
   const socketCode = /* html */ `
   <script>
     const socketProtocol = location.protocol === 'http:' ? 'ws://' : 'wss://';

@@ -16,7 +16,9 @@ const {
 describe('utils/build-utils.js', () => {
   describe('#getProgramInfo()', () => {
     before(() => {
-      process.chdir('tests/test-utils/resources/test_demo');
+      process.chdir(
+        path.join(__dirname, 'test-utils', 'resources', 'test_demo')
+      );
     });
 
     it('should return the base info for program to execute', async () => {
@@ -33,7 +35,7 @@ describe('utils/build-utils.js', () => {
     });
 
     after(() => {
-      process.chdir('../../../..');
+      process.chdir(__dirname);
     });
   });
 
@@ -98,7 +100,9 @@ describe('utils/build-utils.js', () => {
 
   describe('#getAbellConfig()', () => {
     before(() => {
-      process.chdir('tests/test-utils/resources/test_demo');
+      process.chdir(
+        path.join(__dirname, 'test-utils', 'resources', 'test_demo')
+      );
     });
 
     it('should return siteName from abell.config.js', () => {
@@ -118,7 +122,9 @@ describe('utils/build-utils.js', () => {
     });
 
     after(() => {
-      process.chdir('../../../..');
+      process.chdir(
+        path.join(__dirname, 'test-utils', 'resources', 'test_demo')
+      );
     });
   });
 
@@ -163,7 +169,10 @@ describe('utils/build-utils.js', () => {
 
       expect(
         renderMarkdown(
-          'tests/test-utils/resources/test_demo/content/another-blog/index.md',
+          path.join(
+            __dirname,
+            'test-utils/resources/test_demo/content/another-blog/index.md'
+          ),
           {
             meta: { title: 'Abell Test Title Check' }
           }
