@@ -58,9 +58,9 @@ Full documentation at: [https://github.com/abelljs/abell-renderer#-javascript-ap
 
 This repository contains the code for static-site-generation. As you can see above that abell-renderer allows us to pass sandbox (an environment/variables, functions, etc.).
 
-In static-site-generation, we need some variables like a variable that gives us the list and details of blogs, a function that lets us import markdown content, a variable to give a path to current blog. Abell provides all these variables and loops over a layout (`[$path]/index.abell` file) to dynamically generate blogs from a single layout. (See [src/utils/build-utils.js](https://github.com/abelljs/abell/blob/main/src/utils/build-utils.js))
+In static-site-generation, we need some variables like a variable that gives us the list and details of blogs, a function that lets us import markdown content, a variable to give a path to current blog. Abell provides all these variables and loops over a layout (`[path]/index.abell` file) to dynamically generate blogs from a single layout. (See [src/utils/generate-site.js](https://github.com/abelljs/abell/blob/main/src/utils/generate-site.js))
 
-The entry point of the code is [src/cli.js](https://github.com/abelljs/abell/blob/main/src/cli.js) which on `abell build` calls [src/commands/build.js](https://github.com/abelljs/abell/blob/main/src/commands/build.js) and on `abell serve` calls [src/commands/serve.js](https://github.com/abelljs/abell/blob/main/src/commands/serve.js)
+The entry point of the code is [bin/abell.js](https://github.com/abelljs/abell/blob/main/bin/abell.js) which on `abell build` calls [src/commands/build.js](https://github.com/abelljs/abell/blob/main/src/commands/build.js) and on `abell serve` calls [src/commands/serve.js](https://github.com/abelljs/abell/blob/main/src/commands/serve.js)
 
 Additionally, if you're developing a website, you need a dev-server that reloads when you change the code. Abell's dev server is written from scratch to provide quick reloads. The code related to reloading dev server is at [src/abell-dev-server/](https://github.com/abelljs/abell/blob/main/src/abell-dev-server/) and the code that decides what to reload is at [src/commands/serve.js](https://github.com/abelljs/abell/blob/main/src/commands/serve.js)
 
@@ -68,4 +68,6 @@ Throughout the code you will see a variable called `programInfo` being passed to
 
 _Note: In most cases, you will not have to understand the whole code and you will mostly need to care about the file related to changes you're making, so even if you don't understand the whole code, that's completely normal and ok_
 
-Thank you and if you need any additional help, you can ask in our [Slack Channel](https://join.slack.com/t/abellland/shared_invite/zt-ebklbe8h-FhRgHxNbuO_hvFDf~nZtGQ) or reach out to me on [Twitter @saurabhcodes](https://twitter.com/saurabhcodes)
+Thank you and if you need any additional help, you can reach out to me on [Twitter @saurabhcodes](https://twitter.com/saurabhcodes) or ask in our Discord Channel.
+
+<a href="https://discord.gg/ndsVpRG"><img src="https://img.shields.io/badge/discord-join%20chat-738ADB?style=for-the-badge&logo=discord&logoColor=738ADB&labelColor=black"/></a>&nbsp;
