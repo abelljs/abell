@@ -48,7 +48,9 @@ describe("utils/abell-fs.js - Abell's file system", () => {
 
   describe('#getFirstLine()', () => {
     before(() => {
-      process.chdir('tests/test-utils/resources/test_demo');
+      process.chdir(
+        path.join(__dirname, 'test-utils', 'resources', 'test_demo')
+      );
     });
 
     it('should only read the first line of the given file', async () => {
@@ -58,7 +60,7 @@ describe("utils/abell-fs.js - Abell's file system", () => {
     });
 
     after(() => {
-      process.chdir('../../../..');
+      process.chdir(__dirname);
     });
   });
 
@@ -67,13 +69,13 @@ describe("utils/abell-fs.js - Abell's file system", () => {
     it('should return paths of all files in test_recursiveFindFiles directory', () => {
       // prettier-ignore
       // eslint-disable-next-line max-len
-      expect(recursiveFindFiles('tests/test-utils/resources/test_recursiveFindFiles', '.abell'))
+      expect(recursiveFindFiles('test-utils/resources/test_recursiveFindFiles', '.abell'))
         .to.be.an('array')
         .that.has.members([
-          'tests/test-utils/resources/test_recursiveFindFiles/deep/moredeep/jkl.abell',
-          'tests/test-utils/resources/test_recursiveFindFiles/ghi.abell',
-          'tests/test-utils/resources/test_recursiveFindFiles/one/abc.abell',
-          'tests/test-utils/resources/test_recursiveFindFiles/two/def.abell'
+          'test-utils/resources/test_recursiveFindFiles/deep/moredeep/jkl.abell',
+          'test-utils/resources/test_recursiveFindFiles/ghi.abell',
+          'test-utils/resources/test_recursiveFindFiles/one/abc.abell',
+          'test-utils/resources/test_recursiveFindFiles/two/def.abell'
         ].map(nonCrossPlatformPaths => 
             nonCrossPlatformPaths.replace(/\//g, path.sep)
           )
@@ -83,7 +85,9 @@ describe("utils/abell-fs.js - Abell's file system", () => {
 
   describe('#createPathIfAbsent()', () => {
     before(() => {
-      process.chdir('tests/test-utils/resources/test_demo');
+      process.chdir(
+        path.join(__dirname, 'test-utils', 'resources', 'test_demo')
+      );
     });
 
     it('should create /newly/created/path if it is not present', () => {
@@ -97,7 +101,7 @@ describe("utils/abell-fs.js - Abell's file system", () => {
     });
 
     after(() => {
-      process.chdir('../../../..');
+      process.chdir(__dirname);
     });
   });
 });
