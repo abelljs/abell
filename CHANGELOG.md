@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.4.1
+
+- Abell now looks for other ports when 5000 is taken
+- Tests for Dev Server 🎉
+
+(Thanks to [#64](https://github.com/abelljs/abell/pull/64) by [@pantharshit00](https://github.com/pantharshit00))
+
 ## 0.4.0 (Includes BREAKING CHANGES)
 
 ### Breaking Changes
