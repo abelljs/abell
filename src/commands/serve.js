@@ -31,7 +31,7 @@ const { getFirstLine } = require('../utils/abell-fs');
  */
 async function runDevServer(programInfo) {
   // Runs Dev server with all the watchers etc.
-  generateSite({ ...programInfo, logs: 'complete' });
+  await generateSite({ ...programInfo, logs: 'complete' });
   console.log('Starting abell-dev-server 🤠...');
 
   const adsResult = await ads.create({
@@ -63,13 +63,13 @@ async function runDevServer(programInfo) {
    * Trigger on abell.config.js changed
    * @param {String} filePath
    */
-  const onAbellConfigChanged = (filePath) => {
+  const onAbellConfigChanged = async (filePath) => {
     // Read New abell.config.js
     // set globalMeta to programInfo
     console.log('\n⚙️  Abell Config Changed');
     const newAbellConfig = getAbellConfig();
     programInfo.abellConfig.globalMeta = newAbellConfig.globalMeta;
-    generateSite(programInfo);
+    await generateSite(programInfo);
     ads.reload();
     console.log(colors.boldGreen('>') + ' Site Rebuilt');
   };
@@ -99,7 +99,7 @@ async function runDevServer(programInfo) {
       );
     }
 
-    generateSite(programInfo);
+    await generateSite(programInfo);
     ads.reload();
     console.log(colors.boldGreen('>') + ' Files Rebuilt');
   };
@@ -112,7 +112,7 @@ async function runDevServer(programInfo) {
    * @param {Event} event
    * @param {String} filePath
    */
-  const onContentChanged = (event, filePath) => {
+  const onContentChanged = async (event, filePath) => {
     // build content tree again on add/remove
     console.log(
       `\n📄 Event '${event}' in ${path.relative(process.cwd(), filePath)}`
@@ -134,7 +134,7 @@ async function runDevServer(programInfo) {
         }
       );
 
-      generateSite(programInfo);
+      await generateSite(programInfo);
       ads.reload();
       console.log(colors.boldGreen('>') + ' Files Rebuilt');
     } else if (filePath.endsWith('.md')) {
@@ -148,13 +148,13 @@ async function runDevServer(programInfo) {
 
       if (!content) {
         // This block is for *idk what happened but lets rebuild whole thing anyway*
-        generateSite(programInfo);
+        await generateSite(programInfo);
         console.log(colors.boldGreen('>') + ' Files Rebuilt');
       } else if (Object.keys(content).length < 1) {
         // if the content does not have values,
         // it means something is wrong. So we fallback to full website build
         // This will usually happen when index.md is in root of 'content/' directory
-        generateSite(programInfo);
+        await generateSite(programInfo);
         console.log(colors.boldGreen('>') + ' Files Rebuilt');
       } else {
         // if file is markdown content
@@ -165,7 +165,7 @@ async function runDevServer(programInfo) {
 
         clearBundleCache({ ofBundle: content.$path });
         for (const template of loopableTemplates) {
-          createHTMLFile(template, programInfo, {
+          await createHTMLFile(template, programInfo, {
             isContent: true,
             content
           });
@@ -176,7 +176,7 @@ async function runDevServer(programInfo) {
 
       ads.reload();
     } else {
-      generateSite(programInfo);
+      await generateSite(programInfo);
       ads.reload();
       console.log(colors.boldGreen('>') + ' Files Rebuilt');
     }

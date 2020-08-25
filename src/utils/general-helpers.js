@@ -7,13 +7,11 @@ const { rmdirRecursiveSync } = require('./abell-fs.js');
  */
 async function executeBeforeBuildPlugins(programInfo, { createContent }) {
   /** Before Build plugins */
+  console.log('\n>> Executing beforeBuild plugins');
   for (const pluginPath of programInfo.abellConfig.plugins) {
     const currentPlugin = require(pluginPath);
     if (currentPlugin.beforeBuild) {
-      console.log(
-        '>> Plugin BeforeBuild: Executing ' +
-          path.relative(process.cwd(), pluginPath)
-      );
+      console.log('> Plugin ' + path.relative(process.cwd(), pluginPath));
 
       await currentPlugin.beforeBuild(programInfo, { createContent });
     }
@@ -26,18 +24,49 @@ async function executeBeforeBuildPlugins(programInfo, { createContent }) {
  */
 async function executeAfterBuildPlugins(programInfo) {
   /** After Build plugins */
+  console.log('\n>> Executing afterBuild plugins');
   for (const pluginPath of programInfo.abellConfig.plugins) {
     const currentPlugin = require(pluginPath);
     if (currentPlugin.afterBuild) {
       if (programInfo.logs === 'complete') {
-        console.log(
-          '>> Plugin AfterBuild: Executing ' +
-            path.relative(process.cwd(), pluginPath)
-        );
+        console.log('> Plugin ' + path.relative(process.cwd(), pluginPath));
       }
       await currentPlugin.afterBuild(programInfo);
     }
   }
+}
+
+/**
+ * executes beforeHTMLWrite plugins
+ * @param {string} htmlOutput HTML code in string
+ * @param {ProgramInfo} programInfo
+ */
+async function executeBeforeHTMLWritePlugins(htmlOutput, programInfo) {
+  for (const pluginPath of programInfo.abellConfig.plugins) {
+    const currentPlugin = require(pluginPath);
+    if (currentPlugin.beforeHTMLWrite) {
+      if (programInfo.logs === 'complete') {
+        console.log(
+          '> Executing beforeHTMLWrite of ' +
+            path.relative(process.cwd(), pluginPath)
+        );
+      }
+
+      try {
+        htmlOutput = await currentPlugin.beforeHTMLWrite(
+          htmlOutput,
+          programInfo
+        );
+
+        if (!htmlOutput) throw new Error(`Plugin returned ${htmlOutput}`);
+      } catch (err) {
+        console.log(`ERROR in ${path.relative(process.cwd(), pluginPath)}`);
+        console.log(err);
+      }
+    }
+  }
+
+  return htmlOutput;
 }
 
 /**
@@ -176,6 +205,7 @@ const colors = {
 module.exports = {
   executeBeforeBuildPlugins,
   executeAfterBuildPlugins,
+  executeBeforeHTMLWritePlugins,
   clearLocalRequireCache,
   exitHandler,
   execRegexOnAll,
