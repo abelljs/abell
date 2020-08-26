@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.5.0
+
+- Plugins can now export `beforeHTMLWrite` function
+
 ## 0.4.1
 
 - Abell now looks for other ports when 5000 is taken

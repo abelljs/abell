@@ -33,6 +33,14 @@ describe('examples/with-plugin', () => {
       );
     });
 
+    it('should add additional css from beforeWriteHTML plugin', () => {
+      expect(
+        $.index('head > style')
+          .html()
+          .replace(/\n|\r|\s/g, '')
+      ).to.equal('body{background-color:green;}');
+    });
+
     it('should render all the slugs of blog', () => {
       const expectedTitles = [
         'my-first-blog',

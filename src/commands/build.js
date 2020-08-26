@@ -37,7 +37,7 @@ async function build() {
 
   try {
     // Build site here
-    generateSite(programInfo);
+    await generateSite(programInfo);
   } catch (err) {
     console.log('\n>>');
     console.log(err);

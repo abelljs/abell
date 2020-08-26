@@ -13,6 +13,7 @@ const {
 const { renderMarkdown, md } = require('./build-utils.js');
 
 const { createBundles, clearBundleCache } = require('./abell-bundler.js');
+const { executeBeforeHTMLWritePlugins } = require('./general-helpers.js');
 
 /**
  * Hashmap of template content for memoization
@@ -27,7 +28,7 @@ const templateHashmap = {};
  * @param {Boolean} options.isContent
  * @param {MetaInfo} options.content
  */
-function createHTMLFile(templateObj, programInfo, options) {
+async function createHTMLFile(templateObj, programInfo, options) {
   // Creates HTML File
   /**
    * 1. Read .abell template
@@ -149,6 +150,9 @@ function createHTMLFile(templateObj, programInfo, options) {
     });
   }
 
+  // Execute beforeHTMLWrite plugins
+  htmlOut = await executeBeforeHTMLWritePlugins(htmlOut, programInfo);
+
   // Write into .html file
   fs.writeFileSync(outPath, htmlOut);
   if (programInfo.logs === 'complete') {
@@ -180,7 +184,7 @@ function createHTMLFile(templateObj, programInfo, options) {
  * Builds site
  * @param {ProgramInfo} programInfo
  */
-function generateSite(programInfo) {
+async function generateSite(programInfo) {
   // Builds site from given program information
   if (programInfo.logs == 'complete') console.log('\n>> Abell Build Started\n');
 
@@ -194,12 +198,15 @@ function generateSite(programInfo) {
     if (template.shouldLoop) {
       for (const content of Object.values(programInfo.contentMap)) {
         // loop over content
-        createHTMLFile(template, programInfo, { isContent: true, content });
+        await createHTMLFile(template, programInfo, {
+          isContent: true,
+          content
+        });
       }
       continue;
     }
 
-    createHTMLFile(template, programInfo, {});
+    await createHTMLFile(template, programInfo, {});
   }
 
   // We have to ignore all the files that are require()d inside .abell file

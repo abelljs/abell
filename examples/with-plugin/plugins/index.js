@@ -31,10 +31,39 @@ function beforeBuild(programInfo, { createContent }) {
 }
 
 /**
+ * Executes before HTML string is written into .html file.
+ * @param {string} htmlTemplate HTML String before writing into .html
+ * @param {ProgramInfo} programInfo
+ * @return {string}
+ */
+function beforeHTMLWrite(htmlTemplate, programInfo) {
+  const cssToAdd = `
+  <style>
+    body {
+      background-color: green;
+    }
+  </style>
+  `;
+
+  const headEndIndex = htmlTemplate.indexOf('</head>');
+  if (headEndIndex < 0) {
+    // if the text does not have </head>
+    return '<head>' + cssToAdd + '</head>' + htmlTemplate;
+  }
+
+  const newHTMLTemplate =
+    htmlTemplate.slice(0, headEndIndex) +
+    cssToAdd +
+    htmlTemplate.slice(headEndIndex);
+
+  return newHTMLTemplate;
+}
+
+/**
  * Runs after build of abell
  */
 function afterBuild() {
   console.log('After build working!');
 }
 
-module.exports = { beforeBuild, afterBuild };
+module.exports = { beforeBuild, beforeHTMLWrite, afterBuild };
