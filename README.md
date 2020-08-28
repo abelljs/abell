@@ -21,6 +21,24 @@ npm run dev
 
 Check out https://abelljs.org for complete documentation.
 
+## 🚀 &nbsp; Usage
+```HTML
+{{
+  const a = 'Hello';
+  const b = ', World 🌻';
+}}
+
+<html>
+  <body>
+    I can render JavaScript! Look: {{ a + b.toUpperCase() }}
+  </body>
+</html>
+```
+This code outputs:
+```sh
+I can render JavaScript! Look: Hello, WORLD 🌻
+```
+
 ### 🕐 Changelog
 
 Changelogs are maintained in [CHANGELOG.md](CHANGELOG.md)
