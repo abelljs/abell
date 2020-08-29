@@ -21,7 +21,7 @@ npm run dev
 
 Check out https://abelljs.org for complete documentation.
 
-## 🚀 &nbsp; Usage
+## 🚀 &nbsp; Example
 ```HTML
 {{
   const a = 'Hello';
