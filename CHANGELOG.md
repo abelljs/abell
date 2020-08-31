@@ -3,6 +3,7 @@
 ## v0.5.1
 
 - Executing plugin logs when there are no plugins removed.
+- Readme Improved
 
 ## v0.5.0
 

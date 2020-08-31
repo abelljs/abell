@@ -7,11 +7,12 @@
   <b>Not ready enough for serious projects. ☠️</b>
 </p>
 <br/>
-<p align="left">
-  a JavaScript based static-site-generator to help you create JSON, Markdown, or static-data based websites with minimal setup in a syntax you almost already know. Built on top of <a href="https://github.com/abelljs/abell-renderer">abelljs/abell-renderer</a>.
-</p>
 
-## 📖 &nbsp; Installation
+a JavaScript based static-site-generator to help you create JSON, Markdown, or static-data based websites with minimal setup in a syntax you almost already know. Built on top of [abelljs/abell-renderer](https://github.com/abelljs/abell-renderer)
+
+**Documentation:** https://abelljs.org
+
+## 📖 &nbsp; Create Abell Project
 
 ```sh
 npx create-abell-app my-blog
@@ -21,7 +22,8 @@ npm run dev
 
 Check out https://abelljs.org for complete documentation.
 
-## 🚀 &nbsp; Example
+## 🚀 &nbsp; Syntax Example
+
 ```HTML
 {{
   const a = 'Hello';
@@ -34,7 +36,9 @@ Check out https://abelljs.org for complete documentation.
   </body>
 </html>
 ```
+
 This code outputs:
+
 ```sh
 I can render JavaScript! Look: Hello, WORLD 🌻
 ```
@@ -49,10 +53,10 @@ Fork [abelljs/abell](https://github.com/abelljs/abell), Then follow these comman
 
 ```sh
 git clone https://github.com/:github-username/abell # Get a copy of the codebase in your codebase
-cd abell # Change to the folder
-npm install # This command installs all the dependencies
+cd abell
+npm install # Installs all the dependencies
 npm link # This command will add the current directory to global packages.
-cd examples/main - Directory `examples` has sample abell projects.
+cd examples/main # Directory `examples` has sample abell projects.
 abell build # command to build project or
 abell serve # command to start dev server.
 ```
