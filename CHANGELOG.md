@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.5.1
+
+- Executing plugin logs when there are no plugins removed.
+
 ## v0.5.0
 
 - Plugins can now export `beforeHTMLWrite` function

@@ -7,7 +7,9 @@ const { rmdirRecursiveSync } = require('./abell-fs.js');
  */
 async function executeBeforeBuildPlugins(programInfo, { createContent }) {
   /** Before Build plugins */
-  console.log('\n>> Executing beforeBuild plugins');
+  if (programInfo.abellConfig.plugins.length > 0) {
+    console.log('\n>> Executing beforeBuild plugins');
+  }
   for (const pluginPath of programInfo.abellConfig.plugins) {
     const currentPlugin = require(pluginPath);
     if (currentPlugin.beforeBuild) {
@@ -24,7 +26,9 @@ async function executeBeforeBuildPlugins(programInfo, { createContent }) {
  */
 async function executeAfterBuildPlugins(programInfo) {
   /** After Build plugins */
-  console.log('\n>> Executing afterBuild plugins');
+  if (programInfo.abellConfig.plugins.length > 0) {
+    console.log('\n>> Executing afterBuild plugins');
+  }
   for (const pluginPath of programInfo.abellConfig.plugins) {
     const currentPlugin = require(pluginPath);
     if (currentPlugin.afterBuild) {
