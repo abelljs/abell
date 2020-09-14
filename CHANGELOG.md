@@ -1,6 +1,10 @@
 # Changelog
 
-## v0.5.1
+## v0.6.0 (Next)
+
+- Updates abell-renderer to v0.3.0 (Scoped CSS Feature, AST based block validation)
+
+## v0.5.1 (Latest)
 
 - Executing plugin logs when there are no plugins removed.
 - Readme Improved
