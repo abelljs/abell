@@ -49,7 +49,7 @@ describe('examples/with-components', () => {
           .html()
           .replace(/\n|\r|\s/g, '')
       ).to.equal(
-        `nav {
+        `nav[data-abell-iyCgAr] {
         background-color: #000;
         color: #fff;
       }`.replace(/\n|\r|\s/g, '')
@@ -77,7 +77,7 @@ describe('examples/with-components', () => {
           .html()
           .replace(/\n|\r|\s/g, '')
       ).to.equal(
-        `nav {
+        `nav[data-abell-iyCgAr] {
         background-color: #000;
         color: #fff;
       }`.replace(/\n|\r|\s/g, '')
@@ -97,7 +97,7 @@ describe('examples/with-components', () => {
           .html()
           .replace(/\n|\r|\s/g, '')
       ).to.equal(
-        `nav {
+        `nav[data-abell-iyCgAr] {
         background-color: #000;
         color: #fff;
       }`.replace(/\n|\r|\s/g, '')
@@ -108,13 +108,13 @@ describe('examples/with-components', () => {
   describe('bundled-css/main.abell.css', () => {
     it('should have expected CSS properties in main bundle', () => {
       const footerCSS = `
-        footer {
+        footer[data-abell-jLzQID] {
           color: #f30;
         }
       `.replace(/\s|\n|\r/g, '');
 
       const aboutCSS = `
-        .about {
+        .about[data-abell-jQcKgf] {
           color: #999;
         }
       `.replace(/\s|\n|\r/g, '');
