@@ -114,7 +114,7 @@ describe('examples/with-components', () => {
       `.replace(/\s|\n|\r/g, '');
 
       const aboutCSS = `
-        .about[data-abell-jQcKgf] {
+        .about[data-abell-fBMCHA] {
           color: #999;
         }
       `.replace(/\s|\n|\r/g, '');
