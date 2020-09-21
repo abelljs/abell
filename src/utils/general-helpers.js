@@ -186,10 +186,12 @@ function anchorsPlugin(md) {
 /**
  * console.log for errors, logs with error styles
  * @param {String} errorMessage message to log
- * @return {Void}
  */
-const logError = (errorMessage) =>
+const logError = (errorMessage) => {
   console.log(`\n${colors.boldRed('>>>')} ${errorMessage}`);
+  // prettier-ignore
+  console.log(">> If you think this is Abell's fault, It would help if you Create an Issue at https://github.com/abelljs/abell/issues \n\n"); // eslint-disable-line
+};
 
 /**
  * console.log for warnings, logs with warning styles

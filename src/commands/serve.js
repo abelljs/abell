@@ -23,7 +23,7 @@ const {
 
 const { generateSite, createHTMLFile } = require('../utils/generate-site.js');
 const { clearBundleCache } = require('../utils/abell-bundler');
-const { getFirstLine } = require('../utils/abell-fs');
+const { getFirstLine, rmdirRecursiveSync } = require('../utils/abell-fs');
 
 /**
  *
@@ -31,7 +31,15 @@ const { getFirstLine } = require('../utils/abell-fs');
  */
 async function runDevServer(programInfo) {
   // Runs Dev server with all the watchers etc.
-  await generateSite({ ...programInfo, logs: 'complete' });
+  try {
+    await generateSite({ ...programInfo, logs: 'complete' });
+  } catch (err) {
+    console.log(err);
+    logError('Abell Build Failed 😭 Detailed logs above.\n');
+    rmdirRecursiveSync(programInfo.abellConfig.outputPath);
+    process.exit(0);
+  }
+
   console.log('Starting abell-dev-server 🤠...');
 
   const adsResult = await ads.create({

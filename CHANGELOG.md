@@ -1,6 +1,11 @@
 # Changelog
 
-## v0.6.0 (Latest)
+## v0.6.2
+
+- Fix dev-server exit on error
+- Better error logs
+
+## v0.6.0
 
 - Updates abell-renderer to v0.3.0 (Scoped CSS Feature, AST based block validation) [https://github.com/abelljs/abell-renderer/blob/main/CHANGELOG.md](https://github.com/abelljs/abell-renderer/blob/main/CHANGELOG.md)
 

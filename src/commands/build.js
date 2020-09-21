@@ -41,9 +41,7 @@ async function build() {
   } catch (err) {
     console.log('\n>>');
     console.log(err);
-    logError('Abell Build Failed 😭 More logs above.\n');
-    // prettier-ignore
-    console.log(">> If you think this is Abell's fault, It would help if you Create an Issue at https://github.com/abelljs/abell/issues \n\n"); // eslint-disable-line
+    logError('Abell Build Failed 😭 Detailed logs above.\n');
     process.exit(0);
   }
 
