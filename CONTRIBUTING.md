@@ -3,12 +3,17 @@
 ## Local Setup
 
 - Fork [abelljs/abell](https://github.com/abelljs/abell)
-- `git clone https://github.com/:github-username/abell`
-- `cd abell`
-- `npm install` - to install dependencies
-- `npm link` - This will add the current directory to global packages.
-- `cd examples/main` - Directory `examples` has sample abell projects.
-- `abell build` to build project or `abell serve` to start dev server.
+
+```sh
+git clone https://github.com/:github-username/abell
+cd abell
+npm install # Installs dependencies
+npm link # This makes 'abell' command accessible from terminal
+cd examples/main
+abell build # To build project
+```
+
+Use `abell serve` to serve project
 
 ## Creating Pull Request
 
