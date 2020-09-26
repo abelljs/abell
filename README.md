@@ -45,7 +45,7 @@ I can render JavaScript! Look: Hello, WORLD 🌻
 
 ### 🕐 Changelog
 
-Changelogs are maintained in [CHANGELOG.md](CHANGELOG.md)
+Changelogs are maintained in [CHANGELOG.md](https://github.com/abelljs/abell/blob/main/CHANGELOG.md)
 
 ### 🤗 Local Installation & Contributing
 
