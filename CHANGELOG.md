@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.6.3
+
+- Less loggy logs for `beforeHTMLWrite`
+
 ## v0.6.2
 
 - Fix dev-server exit on error

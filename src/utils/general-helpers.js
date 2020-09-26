@@ -40,6 +40,7 @@ async function executeAfterBuildPlugins(programInfo) {
   }
 }
 
+const isBeforeHTMLLogged = {};
 /**
  * executes beforeHTMLWrite plugins
  * @param {string} htmlOutput HTML code in string
@@ -48,23 +49,29 @@ async function executeAfterBuildPlugins(programInfo) {
 async function executeBeforeHTMLWritePlugins(htmlOutput, programInfo) {
   for (const pluginPath of programInfo.abellConfig.plugins) {
     const currentPlugin = require(pluginPath);
+    const relativePluginPath = path.relative(process.cwd(), pluginPath);
+
     if (currentPlugin.beforeHTMLWrite) {
-      if (programInfo.logs === 'complete') {
-        console.log(
-          '> Executing beforeHTMLWrite of ' +
-            path.relative(process.cwd(), pluginPath)
-        );
+      if (
+        programInfo.logs === 'complete' &&
+        !isBeforeHTMLLogged[relativePluginPath]
+      ) {
+        console.log('> Activate beforeHTMLWrite for ' + relativePluginPath);
+        isBeforeHTMLLogged[relativePluginPath] = true;
       }
 
       try {
+        const tempHTML = htmlOutput;
         htmlOutput = await currentPlugin.beforeHTMLWrite(
           htmlOutput,
           programInfo
         );
 
-        if (!htmlOutput) throw new Error(`Plugin returned ${htmlOutput}`);
+        if (!htmlOutput) {
+          htmlOutput = tempHTML;
+        }
       } catch (err) {
-        console.log(`ERROR in ${path.relative(process.cwd(), pluginPath)}`);
+        console.log(`ERROR in ${relativePluginPath}`);
         console.log(err);
       }
     }
