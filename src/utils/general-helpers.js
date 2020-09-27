@@ -32,9 +32,7 @@ async function executeAfterBuildPlugins(programInfo) {
   for (const pluginPath of programInfo.abellConfig.plugins) {
     const currentPlugin = require(pluginPath);
     if (currentPlugin.afterBuild) {
-      if (programInfo.logs === 'complete') {
-        console.log('> Plugin ' + path.relative(process.cwd(), pluginPath));
-      }
+      console.log('> Plugin ' + path.relative(process.cwd(), pluginPath));
       await currentPlugin.afterBuild(programInfo);
     }
   }

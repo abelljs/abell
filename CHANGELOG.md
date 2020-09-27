@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.6.4
+
+- Fix `afterBuild` plugins executing after dev-server
+
 ## v0.6.3
 
 - Less loggy logs for `beforeHTMLWrite`

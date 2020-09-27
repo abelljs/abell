@@ -31,15 +31,6 @@ const { getFirstLine, rmdirRecursiveSync } = require('../utils/abell-fs');
  */
 async function runDevServer(programInfo) {
   // Runs Dev server with all the watchers etc.
-  try {
-    await generateSite({ ...programInfo, logs: 'complete' });
-  } catch (err) {
-    console.log(err);
-    logError('Abell Build Failed 😭 Detailed logs above.\n');
-    rmdirRecursiveSync(programInfo.abellConfig.outputPath);
-    process.exit(0);
-  }
-
   console.log('Starting abell-dev-server 🤠...');
 
   const adsResult = await ads.create({
@@ -256,8 +247,19 @@ async function serve(command) {
   programInfo.task = 'serve';
   programInfo.abellConfig.outputPath = '.debug';
 
+  // Build initial site before serving
+  try {
+    await generateSite({ ...programInfo, logs: 'complete' });
+  } catch (err) {
+    console.log(err);
+    logError('Abell Build Failed 😭 Detailed logs above.\n');
+    rmdirRecursiveSync(programInfo.abellConfig.outputPath);
+    process.exit(0);
+  }
+
+  await executeAfterBuildPlugins(programInfo);
+
   runDevServer(programInfo);
-  executeAfterBuildPlugins(programInfo);
 }
 
 module.exports = serve;
