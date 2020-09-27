@@ -2,9 +2,15 @@ const expect = require('chai').expect;
 const package = require('../package.json');
 
 describe('Deploy Check', () => {
-  describe('Package Name', () => {
+  describe('Package Basic Details', () => {
     it('should have name abell', () => {
       expect(package.name).to.equal('abell');
+    });
+
+    it('should not upgrade major version', () => {
+      // To avoid unknowingly bumping major version
+      const majorVer = package.version.split('.')[0];
+      expect(majorVer).to.equal('0');
     });
   });
 
