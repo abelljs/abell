@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.6.5
+
+- Add `--ignore-plugins` flag to ignore executing plugins. (Thanks to [abhijit-hota](https://github.com/abhijit-hota) for [#80](https://github.com/abelljs/abell/pull/80))
+
 ## v0.6.4
 
 - Fix `afterBuild` plugins executing after dev-server
