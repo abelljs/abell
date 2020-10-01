@@ -151,7 +151,7 @@ async function createHTMLFile(templateObj, programInfo, options) {
   }
 
   // Execute beforeHTMLWrite plugins if the --ignore-plugins flag is not passed
-  if (!programInfo.ignorePlugins) { 
+  if (!programInfo.ignorePlugins) {
     htmlOut = await executeBeforeHTMLWritePlugins(htmlOut, programInfo);
   }
 
