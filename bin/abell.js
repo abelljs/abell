@@ -20,6 +20,7 @@ program.command('build').action(build);
 program
   .command('serve')
   .option('--port [port]', 'Serve on different port')
+  .option('--ignore-plugins', 'Serve without plugins', false)
   .action(serve);
 
 /** abell -V */
