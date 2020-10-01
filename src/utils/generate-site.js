@@ -150,8 +150,10 @@ async function createHTMLFile(templateObj, programInfo, options) {
     });
   }
 
-  // Execute beforeHTMLWrite plugins
-  htmlOut = await executeBeforeHTMLWritePlugins(htmlOut, programInfo);
+  // Execute beforeHTMLWrite plugins if the --ignore-plugins flag is not passed
+  if (!programInfo.ignorePlugins) { 
+    htmlOut = await executeBeforeHTMLWritePlugins(htmlOut, programInfo);
+  }
 
   // Write into .html file
   fs.writeFileSync(outPath, htmlOut);

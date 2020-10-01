@@ -240,7 +240,11 @@ async function serve(command) {
     );
   };
 
-  await executeBeforeBuildPlugins(programInfo, { createContent });
+  programInfo.ignorePlugins = command.ignorePlugins;
+
+  if (!programInfo.ignorePlugins) {
+    await executeBeforeBuildPlugins(programInfo, { createContent });
+  }
 
   programInfo.port = command.port;
   programInfo.logs = 'minimum';
@@ -257,7 +261,9 @@ async function serve(command) {
     process.exit(0);
   }
 
-  await executeAfterBuildPlugins(programInfo);
+  if (!programInfo.ignorePlugins) {
+    await executeAfterBuildPlugins(programInfo);
+  }
 
   runDevServer(programInfo);
 }
