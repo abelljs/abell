@@ -11,6 +11,8 @@
     "abell": "bin/abell.js"
   },
   "scripts": {
+    "start": "npm dev && yarn dev",
+    "open": "concurrently \"http-server -a localhost -p 5000\" \"sleepms 1000 && open http://localhost:5000/build\""
     "test:unit": "mocha --recursive \"./tests/*.spec.js\"",
     "test:e2e": "mocha --recursive \"./examples/**/*.spec.js\"",
     "test": "mocha --recursive \"./examples/**/*.spec.js\" \"./tests/*.spec.js\"",
