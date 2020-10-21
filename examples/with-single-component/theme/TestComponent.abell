@@ -1,0 +1,18 @@
+<AbellComponent>
+<template>
+  <div>
+    Hello
+  </div>
+</template>
+<style>
+  div {
+    color: #f40;
+  }
+</style>
+
+<style>
+  div {
+    background-color: #f30;
+  }
+</style>
+</AbellComponent>

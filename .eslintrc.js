@@ -17,6 +17,7 @@ module.exports = {
     'comma-dangle': 0,
     'no-trailing-spaces': 0,
     'arrow-parens': 0,
+    'guard-for-in': 0,
     'operator-linebreak': [
       'error',
       'after',

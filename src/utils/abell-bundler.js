@@ -42,7 +42,10 @@ function clearBundleCache({ ofBundle } = {}) {
 function getComponentBundles(
   components,
   parentPath,
-  prev = { inlinedStyles: '', inlinedScripts: '' }
+  prev = {
+    inlinedStyles: { content: '', path: '' },
+    inlinedScripts: { content: '', path: '' }
+  }
 ) {
   if (components.length <= 0) {
     return prev;
@@ -51,54 +54,75 @@ function getComponentBundles(
   let out = [];
 
   for (const component of components) {
-    for (const style of component.styles) {
-      let bundlePath;
+    for (const styleIndex in component.styles) {
+      const style = component.styles[styleIndex];
+      let bundleKey;
       if (style.attributes.inlined === true) {
-        bundlePath = 'inlinedStyles-' + parentPath;
+        bundleKey = 'inlinedStyles-' + parentPath + '-' + styleIndex;
       } else if (style.attributes.bundle) {
-        bundlePath = path.join('bundled-css', style.attributes.bundle);
+        bundleKey =
+          path.join('bundled-css', style.attributes.bundle) + '-' + styleIndex;
       } else {
-        bundlePath = path.join('bundled-css', 'main.abell.css');
+        bundleKey =
+          path.join('bundled-css', 'main.abell.css') + '-' + styleIndex;
       }
 
       const alreadyBundledInfo = currentBundledCSS[style.componentPath];
 
-      if (alreadyBundledInfo && alreadyBundledInfo === bundlePath) {
+      if (
+        alreadyBundledInfo !== undefined &&
+        alreadyBundledInfo.includes(bundleKey)
+      ) {
         // style is already bundled
         style.content = '';
       } else {
-        currentBundledCSS[style.componentPath] = bundlePath;
+        if (alreadyBundledInfo === undefined) {
+          currentBundledCSS[style.componentPath] = [];
+        }
+        currentBundledCSS[style.componentPath].push(bundleKey);
       }
 
-      if (!prev[bundlePath]) {
-        prev[bundlePath] = '';
+      if (!prev[bundleKey]) {
+        prev[bundleKey] = { content: '' };
       }
-      prev[bundlePath] += style.content;
+      prev[bundleKey].path = bundleKey.slice(0, bundleKey.lastIndexOf('-'));
+      prev[bundleKey].content += style.content;
     }
 
-    for (const script of component.scripts) {
-      let bundlePath;
+    for (const scriptIndex in component.scripts) {
+      const script = component.scripts[scriptIndex];
+      let bundleKey;
       if (script.attributes.inlined === true) {
-        bundlePath = 'inlinedScripts-' + parentPath;
+        bundleKey = 'inlinedScripts-' + parentPath + '-' + scriptIndex;
       } else if (script.attributes.bundle) {
-        bundlePath = path.join('bundled-js', script.attributes.bundle);
+        bundleKey =
+          path.join('bundled-js', script.attributes.bundle) + '-' + scriptIndex;
       } else {
-        bundlePath = path.join('bundled-js', 'main.abell.js');
+        bundleKey =
+          path.join('bundled-js', 'main.abell.js') + '-' + scriptIndex;
       }
 
       const alreadyBundledInfo = currentBundledJS[script.componentPath];
 
-      if (alreadyBundledInfo && alreadyBundledInfo === bundlePath) {
+      if (
+        alreadyBundledInfo !== undefined &&
+        alreadyBundledInfo.includes(bundleKey)
+      ) {
         // script is already bundled
         script.content = '';
       } else {
-        currentBundledJS[script.componentPath] = bundlePath;
+        if (alreadyBundledInfo === undefined) {
+          currentBundledJS[script.componentPath] = [];
+        }
+        currentBundledJS[script.componentPath].push(bundleKey);
       }
 
-      if (!prev[bundlePath]) {
-        prev[bundlePath] = '';
+      if (!prev[bundleKey]) {
+        prev[bundleKey] = { content: '' };
       }
-      prev[bundlePath] += script.content;
+
+      prev[bundleKey].path = bundleKey.slice(0, bundleKey.lastIndexOf('-'));
+      prev[bundleKey].content += script.content;
     }
 
     out = { ...getComponentBundles(component.components, parentPath, prev) };
@@ -119,10 +143,13 @@ function getComponentBundles(
 function createBundles({ htmlOut, outPath, components, programInfo }) {
   const parentPath = path.relative(programInfo.abellConfig.outputPath, outPath);
   const bundleMap = getComponentBundles(components, parentPath);
-  for (let [bundlePath, bundleContent] of Object.entries(bundleMap)) {
+  for (const bundle of Object.values(bundleMap)) {
+    const bundleContent = bundle.content;
+    let bundlePath = bundle.path;
     if (!bundleContent.trim()) {
       continue;
     }
+    /** TODO: Not working for bundled styles */
     if (bundlePath.startsWith('inlinedStyles')) {
       // inline the bundleContent inside HTML in style
       htmlOut = addToHeadEnd(`\n<style>${bundleContent}</style>\n`, htmlOut);
@@ -141,25 +168,34 @@ function createBundles({ htmlOut, outPath, components, programInfo }) {
     }
   }
 
-  const cssLinks = Object.keys(bundleMap)
-    .filter((filePath) => filePath.endsWith('.css'))
-    .map(
-      (filePath) =>
-        `\n<link rel="stylesheet" href="${path.relative(
-          path.dirname(outPath),
-          path.join(programInfo.abellConfig.outputPath, filePath)
-        )}"/>\n`
-    );
+  const addedLinks = [];
+  const cssLinks = Object.values(bundleMap)
+    .filter((bundle) => bundle.path.endsWith('.css'))
+    .map((bundle) => {
+      if (addedLinks.includes(bundle.path)) {
+        return '';
+      }
 
-  const jsLinks = Object.keys(bundleMap)
-    .filter((filePath) => filePath.endsWith('.js'))
-    .map(
-      (filePath) =>
-        `\n<script src="${path.relative(
-          path.dirname(outPath),
-          path.join(programInfo.abellConfig.outputPath, filePath)
-        )}"></script>\n`
-    );
+      addedLinks.push(bundle.path);
+      return `\n<link rel="stylesheet" href="${path.relative(
+        path.dirname(outPath),
+        path.join(programInfo.abellConfig.outputPath, bundle.path)
+      )}"/>\n`;
+    });
+
+  const jsLinks = Object.values(bundleMap)
+    .filter((bundle) => bundle.path.endsWith('.js'))
+    .map((bundle) => {
+      if (addedLinks.includes(bundle.path)) {
+        return '';
+      }
+
+      addedLinks.push(bundle.path);
+      return `\n<script src="${path.relative(
+        path.dirname(outPath),
+        path.join(programInfo.abellConfig.outputPath, bundle.path)
+      )}"></script>\n`;
+    });
 
   htmlOut = addToBodyEnd(jsLinks.join('\n'), htmlOut);
   htmlOut = addToHeadEnd(cssLinks.join('\n'), htmlOut);
