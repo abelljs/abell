@@ -1,0 +1,30 @@
+<AbellComponent>
+<template>
+  <div>
+    Hello
+  </div>
+</template>
+<style>
+  div {
+    color: #f40;
+  }
+</style>
+
+<style>
+  div {
+    background-color: #f30;
+  }
+</style>
+
+<script inlined> 
+let inlinedTest = ''
+</script>
+
+<script>
+let fileTest = ''
+</script>
+
+<script>
+let fileTest2 = ''
+</script>
+</AbellComponent>
