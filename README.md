@@ -24,7 +24,7 @@ Check out https://abelljs.org for complete documentation.
 
 ## 🚀 &nbsp; Syntax Example
 
-```HTML
+```vue
 {{
   const a = 'Hello';
   const b = ', World 🌻';
