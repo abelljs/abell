@@ -33,7 +33,17 @@ function getSelector(outPath) {
   return $;
 }
 
+/**
+ * Removes space and next lines from string to support windows
+ * @param {string} inputString
+ * @return {string}
+ */
+function normalizeString(inputString) {
+  return inputString.replace(/ |\n|\r/g, '');
+}
+
 module.exports = {
   preTestSetup,
-  getSelector
+  getSelector,
+  normalizeString
 };

@@ -15,4 +15,16 @@
     background-color: #f30;
   }
 </style>
+
+<script inlined> 
+let inlinedTest = ''
+</script>
+
+<script>
+let fileTest = ''
+</script>
+
+<script>
+let fileTest2 = ''
+</script>
 </AbellComponent>
