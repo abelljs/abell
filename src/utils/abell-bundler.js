@@ -14,17 +14,29 @@ let currentBundledJS = {}; // stores map of js files as they are bundled
  */
 function clearBundleCache({ ofBundle } = {}) {
   if (ofBundle) {
-    Object.entries(currentBundledCSS)
-      .filter(([key, value]) => value.startsWith('inlinedStyles-' + ofBundle))
-      .forEach(([key, value]) => {
-        delete currentBundledCSS[key];
-      });
+    Object.entries(currentBundledCSS).forEach(([key, cssKeys]) => {
+      const notInlinedStyles = cssKeys.filter(
+        (cssKey) => !cssKey.startsWith('inlinedStyles-' + ofBundle)
+      );
 
-    Object.entries(currentBundledJS)
-      .filter(([key, value]) => value.startsWith('inlinedScripts-' + ofBundle))
-      .forEach(([key, value]) => {
+      if (notInlinedStyles.length <= 0) {
+        delete currentBundledCSS[key];
+      } else {
+        currentBundledCSS[key] = notInlinedStyles;
+      }
+    });
+
+    Object.entries(currentBundledJS).forEach(([key, jsKeys]) => {
+      const notInlinedScipts = jsKeys.filter(
+        (jsKey) => !jsKey.startsWith('inlinedScripts-' + ofBundle)
+      );
+
+      if (notInlinedScipts.length <= 0) {
         delete currentBundledJS[key];
-      });
+      } else {
+        currentBundledJS[key] = notInlinedScipts;
+      }
+    });
 
     return;
   }
