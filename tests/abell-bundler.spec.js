@@ -109,11 +109,11 @@ describe('utils/abell-bundler.js', () => {
         },
         [`bundled-css${path.sep}main.abell.css-0`]: {
           content: '',
-          path: 'bundled-css/main.abell.css'
+          path: `bundled-css${path.sep}main.abell.css`
         },
         [`bundled-js${path.sep}main.abell.js-0`]: {
           content: '',
-          path: 'bundled-js/main.abell.js'
+          path: `bundled-js${path.sep}main.abell.js`
         }
       };
 
