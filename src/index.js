@@ -2,8 +2,8 @@
  * It is very unlikely that you would want to change anything in this file
  * since it only deals with exporting right functions to users.
  *
- * When you run `abell serve` and `abell build`, `./cli.js` is the file
- * that is executed so you can follow code from cli.js for basic logic.
+ * When you run `abell serve` and `abell build`, `../bin/abell.js` is the file
+ * that is executed so you can follow code from bin/abell.js for basic logic.
  */
 
 // Typedefs
