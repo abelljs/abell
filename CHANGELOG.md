@@ -1,5 +1,31 @@
 # Changelog
 
+## v0.7.1
+
+- Fixed [#88](https://github.com/abelljs/abell/pull/88)
+
+## v0.7.0
+
+Added support for multiple styles and scripts in a single component (PR [#87](https://github.com/abelljs/abell/pull/87))
+
+This snippet will add content from second style tag to head of the index.html page, and add first style tag content to main.abell.css file.
+
+```vue
+<AbellComponent>
+<template>
+  <div>Hello</div>
+</template>
+
+<style>
+div { background-color: #333; }
+</style>
+
+<style inlined>
+div { color: #fff; }
+</style>
+</AbellComponent>
+```
+
 ## v0.6.5
 
 - Add `--ignore-plugins` flag to ignore executing plugins. (Thanks to [abhijit-hota](https://github.com/abhijit-hota) for [#80](https://github.com/abelljs/abell/pull/80))
