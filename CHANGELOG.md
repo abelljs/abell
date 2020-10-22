@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.7.2
+
+- Add space after emoji in `abell serve` ([#91](https://github.com/abelljs/abell/pull/91) by [@siddharthkp](https://github.com/siddharthkp))
+
 ## v0.7.1
 
 - Fixed [#88](https://github.com/abelljs/abell/pull/88)
