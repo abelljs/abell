@@ -48,7 +48,7 @@ async function runDevServer(programInfo) {
 
   // Print ports on screen
   console.log('='.repeat(process.stdout.columns));
-  console.log('\n\n💫 Abell dev server running.');
+  console.log('\n\n💫  Abell dev server running.');
   console.log(
     `${colors.boldGreen('Local: ')} http://localhost:${
       adsResult.httpServer.address().port
