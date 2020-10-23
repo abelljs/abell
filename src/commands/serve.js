@@ -26,14 +26,14 @@ const { generateSite, createHTMLFile } = require('../utils/generate-site.js');
 const { clearBundleCache } = require('../utils/abell-bundler');
 const { getFirstLine, rmdirRecursiveSync } = require('../utils/abell-fs');
 
-const interfaces = os.networkInterfaces();
-
 /**
  *
  * @desc get network address
  * @return {Number} address
  */
 function getNetworkAddress() {
+  const interfaces = os.networkInterfaces();
+  
   for (const name of Object.keys(interfaces)) {
     for (const interface of interfaces[name]) {
       const { address, family, internal } = interface;
