@@ -33,7 +33,6 @@ const { getFirstLine, rmdirRecursiveSync } = require('../utils/abell-fs');
  */
 function getNetworkAddress() {
   const interfaces = os.networkInterfaces();
-  
   for (const name of Object.keys(interfaces)) {
     for (const interface of interfaces[name]) {
       const { address, family, internal } = interface;
