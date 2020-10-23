@@ -1,6 +1,5 @@
 const fs = require('fs');
 const path = require('path');
-const os = require('os');
 
 const chokidar = require('chokidar');
 
@@ -16,6 +15,7 @@ const {
 const {
   executeBeforeBuildPlugins,
   executeAfterBuildPlugins,
+  getNetworkAddress,
   colors,
   exitHandler,
   clearLocalRequireCache,
@@ -25,23 +25,6 @@ const {
 const { generateSite, createHTMLFile } = require('../utils/generate-site.js');
 const { clearBundleCache } = require('../utils/abell-bundler');
 const { getFirstLine, rmdirRecursiveSync } = require('../utils/abell-fs');
-
-/**
- *
- * @desc get network address
- * @return {Number} address
- */
-function getNetworkAddress() {
-  const interfaces = os.networkInterfaces();
-  for (const name of Object.keys(interfaces)) {
-    for (const interface of interfaces[name]) {
-      const { address, family, internal } = interface;
-      if (family === 'IPv4' && !internal) {
-        return address;
-      }
-    }
-  }
-}
 
 /**
  *
@@ -64,20 +47,21 @@ async function runDevServer(programInfo) {
     }
   };
 
+  const serverPort = adsResult.httpServer.address().port;
+
   // Print ports on screen
   console.log('='.repeat(process.stdout.columns));
   console.log('\n\n💫  Abell dev server running.');
-  console.log(
-    `${colors.boldGreen('Local: ')} http://localhost:${
-      adsResult.httpServer.address().port
-    }`
-  );
-  console.log(
-    `${colors.boldGreen('Network: ')} http://${getNetworkAddress()}:${
-      adsResult.httpServer.address().port
-    } \n\n`
-  );
-  console.log('='.repeat(process.stdout.columns));
+  console.log(`${colors.boldGreen('Local: ')} http://localhost:${serverPort}`);
+
+  // check if command is `abell serve --print-ip false`
+  if (programInfo.command.printIp != 'false') {
+    // prettier-ignore
+    // eslint-disable-next-line max-len
+    console.log(`${colors.boldGreen('Network: ')} http://${getNetworkAddress()}:${serverPort}`);
+  }
+
+  console.log('\n\n' + '='.repeat(process.stdout.columns));
 
   /** WATCHERS!! */
 
@@ -251,7 +235,7 @@ async function runDevServer(programInfo) {
 
 /**
  * Executed on `abell serve`
- * @param {Object} command
+ * @param {Command} command
  */
 async function serve(command) {
   const programInfo = getProgramInfo();
@@ -263,9 +247,12 @@ async function serve(command) {
     );
   };
 
-  programInfo.ignorePlugins = command.ignorePlugins;
+  programInfo.command = {
+    ignorePlugins: command.ignorePlugins,
+    printIp: command.printIp
+  };
 
-  if (!programInfo.ignorePlugins) {
+  if (!programInfo.command.ignorePlugins) {
     await executeBeforeBuildPlugins(programInfo, { createContent });
   }
 
@@ -284,7 +271,7 @@ async function serve(command) {
     process.exit(0);
   }
 
-  if (!programInfo.ignorePlugins) {
+  if (!programInfo.command.ignorePlugins) {
     await executeAfterBuildPlugins(programInfo);
   }
 

@@ -21,6 +21,7 @@ program
   .command('serve')
   .option('--port [port]', 'Serve on different port')
   .option('--ignore-plugins', 'Serve without plugins', false)
+  .option('--print-ip [printIp]', 'Print IP in serve', true)
   .action(serve);
 
 /** abell -V */

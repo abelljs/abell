@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.7.3
+
+- Serve website over Network ([#92](https://github.com/abelljs/abell/pull/92) by [@judicaelandria](https://github.com/judicaelandria))
+- Add `--print-ip` flag to set if logs should have IP or not. default `true`.
+
 ## v0.7.2
 
 - Add space after emoji in `abell serve` ([#91](https://github.com/abelljs/abell/pull/91) by [@siddharthkp](https://github.com/siddharthkp))

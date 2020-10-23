@@ -1,4 +1,6 @@
 const path = require('path');
+const os = require('os');
+
 const { rmdirRecursiveSync } = require('./abell-fs.js');
 
 /**
@@ -76,6 +78,23 @@ async function executeBeforeHTMLWritePlugins(htmlOutput, programInfo) {
   }
 
   return htmlOutput;
+}
+
+/**
+ *
+ * @desc get network address
+ * @return {Number} address
+ */
+function getNetworkAddress() {
+  const interfaces = os.networkInterfaces();
+  for (const name of Object.keys(interfaces)) {
+    for (const interface of interfaces[name]) {
+      const { address, family, internal } = interface;
+      if (family === 'IPv4' && !internal) {
+        return address;
+      }
+    }
+  }
 }
 
 /**
@@ -217,6 +236,7 @@ module.exports = {
   executeBeforeBuildPlugins,
   executeAfterBuildPlugins,
   executeBeforeHTMLWritePlugins,
+  getNetworkAddress,
   clearLocalRequireCache,
   exitHandler,
   execRegexOnAll,
