@@ -26,6 +26,7 @@ describe('utils/build-utils.js', () => {
         .to.be.an('object')
         .to.have.keys([
           'abellConfig',
+          'command',
           'contentMap',
           'templateMap',
           'task',

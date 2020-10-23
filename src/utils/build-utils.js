@@ -34,6 +34,7 @@ function getProgramInfo() {
     templateMap: buildTemplateMap(abellConfig.themePath),
     task: '',
     logs: 'minimum',
+    command: {},
     port: 5000
   };
 
