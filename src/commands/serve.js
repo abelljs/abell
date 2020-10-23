@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const os = require('os');
 
 const chokidar = require('chokidar');
 
@@ -27,6 +28,23 @@ const { getFirstLine, rmdirRecursiveSync } = require('../utils/abell-fs');
 
 /**
  *
+ * @desc get network address
+ * @return {Number} address
+ */
+function getNetworkAddress() {
+  const interfaces = os.networkInterfaces();
+  for (const name of Object.keys(interfaces)) {
+    for (const interface of interfaces[name]) {
+      const { address, family, internal } = interface;
+      if (family === 'IPv4' && !internal) {
+        return address;
+      }
+    }
+  }
+}
+
+/**
+ *
  * @param {ProgramInfo} programInfo
  */
 async function runDevServer(programInfo) {
@@ -51,6 +69,11 @@ async function runDevServer(programInfo) {
   console.log('\n\n💫  Abell dev server running.');
   console.log(
     `${colors.boldGreen('Local: ')} http://localhost:${
+      adsResult.httpServer.address().port
+    }`
+  );
+  console.log(
+    `${colors.boldGreen('Network: ')} http://${getNetworkAddress()}:${
       adsResult.httpServer.address().port
     } \n\n`
   );
