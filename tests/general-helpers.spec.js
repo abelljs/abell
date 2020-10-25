@@ -1,5 +1,8 @@
+/**
+ * Tests src/utils/general-helpers.js
+ */
+
 /* eslint-disable max-len */
-const expect = require('chai').expect;
 const cheerio = require('cheerio');
 
 const {
@@ -21,24 +24,17 @@ describe('execRegexOnAll()', () => {
       template
     );
 
-    // prettier-ignore
-    expect(matches)
-      .to.eql([
-        [
-          " href=\"one.css\"",
-          "one.css"
-        ],
-        [
-          " href='two.html'",
-          "two.html"
-        ],
-        [
-          " src=\"three.png\"",
-          "three.png"
-        ]
-      ])
+    const matchesArr = matches.map((match) => {
+      return [match[0], match[1], match.index];
+    });
 
-    expect(matches[1].index).to.equal(template.indexOf(" href='two.html'"));
+    expect(matchesArr).toEqual([
+      [' href="one.css"', 'one.css', 26],
+      [" href='two.html'", 'two.html', 53],
+      [' src="three.png"', 'three.png', 83]
+    ]);
+
+    expect(matches[1].index).toBe(template.indexOf(" href='two.html'"));
   });
 });
 
@@ -61,8 +57,8 @@ describe('addToHeadEnd()', () => {
     );
     const $ = cheerio.load(out);
     // prettier-ignore
-    expect($('head > link[rel="stylesheet"]').attr('href')).to.equal('abell.css')
-    expect(out.includes('</head>')).to.equal(true);
+    expect($('head > link[rel="stylesheet"]').attr('href')).toBe('abell.css')
+    expect(out.includes('</head>')).toBe(true);
   });
 
   it('should add given string in <head></head> of HTML when template does not have head', () => {
@@ -80,8 +76,8 @@ describe('addToHeadEnd()', () => {
     );
     const $ = cheerio.load(out);
     // prettier-ignore
-    expect($('head > link[rel="stylesheet"]').attr('href')).to.equal('abell.css')
-    expect(out.includes('</head>')).to.equal(true);
+    expect($('head > link[rel="stylesheet"]').attr('href')).toBe('abell.css')
+    expect(out.includes('</head>')).toBe(true);
   });
 });
 
@@ -104,7 +100,7 @@ describe('addToBodyEnd()', () => {
     );
     const $ = cheerio.load(out);
     // prettier-ignore
-    expect($('body > link[rel="stylesheet"]').attr('href')).to.equal('abell.css')
-    expect(out.includes('</body>')).to.equal(true);
+    expect($('body > link[rel="stylesheet"]').attr('href')).toBe('abell.css')
+    expect(out.includes('</body>')).toBe(true);
   });
 });
