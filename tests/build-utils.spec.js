@@ -10,10 +10,10 @@ const {
   getProgramInfo,
   buildTemplateMap,
   buildContentMap,
-  // getContentMeta,
-  // getSourceNodeFromPluginNode,
-  // renderMarkdown,
-  getAbellConfig
+  getContentMeta,
+  getSourceNodeFromPluginNode,
+  getAbellConfig,
+  renderMarkdown
 } = require('../src/utils/build-utils.js');
 
 const { resPath } = require('./test-utils/helpers.js');
@@ -29,6 +29,9 @@ describe('utils/build-utils.js', () => {
     });
 
     it('should return the base info for program to execute', async () => {
+      const tempConsoleLog = console.log;
+      console.log = jest.fn((message) => message);
+
       const expectedProgramInfo = {
         abellConfig: {
           outputPath: path.join(examplePath, 'dist'),
@@ -54,6 +57,8 @@ describe('utils/build-utils.js', () => {
 
       const initialProgramInfo = getProgramInfo();
       expect(initialProgramInfo).toEqual(expectedProgramInfo);
+      expect(console.log.mock.results[0].value).toContain('Cannot find module');
+      console.log = tempConsoleLog;
     });
 
     afterAll(() => {
@@ -154,78 +159,78 @@ describe('utils/build-utils.js', () => {
     });
   });
 
-  // describe('#getSourceNodeFromPluginNode', () => {
-  //   it('should map title and $path when not given', () => {
-  //     const pluginNode = {
-  //       slug: 'blog-from-plugin',
-  //       content: `# Hello
-  //       Woop Woop`,
-  //       createdAt: new Date('3 May 2020'),
-  //       foo: 'bar'
-  //     };
+  describe('#getSourceNodeFromPluginNode', () => {
+    it('should map title and $path when not given', () => {
+      const pluginNode = {
+        slug: 'blog-from-plugin',
+        content: `# Hello
+        Woop Woop`,
+        createdAt: new Date('2020-05-02T18:30:00.000Z'),
+        foo: 'bar'
+      };
 
-  //     const contentNode = getSourceNodeFromPluginNode(pluginNode);
-  //     expect(contentNode.$slug).to.equal('blog-from-plugin');
-  //     expect(contentNode.$path).to.equal('blog-from-plugin');
-  //     expect(contentNode.title).to.equal('blog-from-plugin');
-  //     expect(contentNode.foo).to.equal('bar');
-  //     expect(contentNode.$source).to.equal('plugin');
-  //     expect(contentNode.$root).to.equal('..');
-  //     expect(contentNode.$createdAt).to.be.a('Date');
-  //     expect(contentNode.$modifiedAt).to.be.a('Date');
+      const expectedSourceNode = {
+        slug: 'blog-from-plugin',
+        content: '# Hello\n        Woop Woop',
+        createdAt: new Date('2020-05-02T18:30:00.000Z'),
+        foo: 'bar',
+        title: 'blog-from-plugin',
+        description: 'This is blog-from-plugin...',
+        $path: 'blog-from-plugin',
+        $slug: 'blog-from-plugin',
+        $createdAt: new Date('2020-05-02T18:30:00.000Z'),
+        $modifiedAt: new Date('2020-05-02T18:30:00.000Z'),
+        $root: '..',
+        $source: 'plugin'
+      };
 
-  //     expect(contentNode.$createdAt.toDateString()).to.equal('Sun May 03 2020');
-  //     expect(contentNode.$modifiedAt.toDateString()).to.equal(
-  //       'Sun May 03 2020'
-  //     );
-  //   });
-  // });
+      const contentNode = getSourceNodeFromPluginNode(pluginNode);
+      expect(contentNode).toEqual(expectedSourceNode);
+    });
+  });
 
-  // describe('#renderMarkdown()', () => {
-  //   it('should return HTML of the md file in given path', () => {
-  //     const shouldOutput = /* html */ `
-  //       <h1 id="abell-test-title-check">Abell Test Title Check</h1>
-  //       <p>Hi this my another blog.
-  //         <b>Nice</b>
-  //       </p>
-  //       <pre>
-  //         <code class="language-js">const s = 'cool'</code>
-  //       </pre>
-  //     `;
+  describe('#renderMarkdown()', () => {
+    it('should return HTML of the md file in given path', () => {
+      const markdown = renderMarkdown(
+        path.join(
+          demoPath,
+          'build-utils-demo',
+          'buildMaps',
+          'content',
+          'index.md'
+        ),
+        {
+          meta: { title: 'Abell Test Title Check' }
+        }
+      );
 
-  //     expect(
-  //       renderMarkdown(
-  //         path.join(
-  //           __dirname,
-  //           'test-utils/resources/test_demo/content/another-blog/index.md'
-  //         ),
-  //         {
-  //           meta: { title: 'Abell Test Title Check' }
-  //         }
-  //       ).replace(/[\n ]/g, '')
-  //     ).to.equal(shouldOutput.replace(/[\n ]/g, ''));
-  //   });
-  // });
+      expect(markdown).toMatchSnapshot();
+    });
+  });
 
-  // describe('#getContentMeta', () => {
-  //   it('should ', () => {
-  //     const contentPath = path.join(
-  //       __dirname,
-  //       'test-utils',
-  //       'resources',
-  //       'test_demo',
-  //       'content'
-  //     );
+  describe('#getContentMeta', () => {
+    it('should return meta content of blog on given blog name', () => {
+      const contentPath = path.join(
+        demoPath,
+        'build-utils-demo',
+        'buildMaps',
+        'content'
+      );
 
-  //     const anotherBlogMeta = getContentMeta('another-blog', { contentPath });
+      const metaContent = getContentMeta('hello-world', { contentPath });
 
-  //     expect(anotherBlogMeta.$slug).to.equal('another-blog');
-  //     expect(anotherBlogMeta.title).to.equal('Another blog');
-  //     expect(anotherBlogMeta.$source).to.equal('local');
-  //     expect(anotherBlogMeta.description).to.equal('Amazing blog right');
-  //     expect(anotherBlogMeta.$createdAt.toDateString()).to.equal(
-  //       'Mon May 11 2020'
-  //     );
-  //   });
-  // });
+      const expectedMetaContent = {
+        title: 'hello-world',
+        description: 'Hi, This is hello-world...',
+        $slug: 'hello-world',
+        $source: 'local',
+        $modifiedAt: new Date('2020-05-29T18:30:00.000Z'),
+        $createdAt: new Date('2020-05-19T18:30:00.000Z'),
+        $path: 'hello-world',
+        $root: '..'
+      };
+
+      expect(metaContent).toEqual(expectedMetaContent);
+    });
+  });
 });
