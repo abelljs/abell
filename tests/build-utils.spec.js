@@ -16,6 +16,8 @@ const {
   getAbellConfig
 } = require('../src/utils/build-utils.js');
 
+const { resPath } = require('./test-utils/helpers.js');
+
 const demoPath = path.join(__dirname, 'demos');
 
 describe('utils/build-utils.js', () => {
@@ -66,11 +68,11 @@ describe('utils/build-utils.js', () => {
       const themePath = path.join(examplePath, 'theme');
 
       const expectedTemplateMap = {
-        '[path]/index.abell': {
+        [resPath('[path]/index.abell')]: {
           $root: '..',
-          htmlPath: '[path]/index.html',
+          htmlPath: resPath('[path]/index.html'),
           shouldLoop: true,
-          templatePath: '[path]/index.abell'
+          templatePath: resPath('[path]/index.abell')
         },
         'about.abell': {
           shouldLoop: false,
@@ -99,15 +101,15 @@ describe('utils/build-utils.js', () => {
       const contentPath = path.join(examplePath, 'content');
       const contentMap = buildContentMap(contentPath);
       const expectedContentMap = {
-        'deep/extra-deep': {
+        [resPath('deep/extra-deep')]: {
           title: 'extra-deep',
           description: 'Hi, This is extra-deep...',
           $createdAt: new Date('2020-05-19T18:30:00.000Z'),
           $modifiedAt: new Date('2020-05-29T18:30:00.000Z'),
           $slug: 'extra-deep',
           $source: 'local',
-          $path: 'deep/extra-deep',
-          $root: '../..'
+          $path: resPath('deep/extra-deep'),
+          $root: resPath('../..')
         },
         'hello-world': {
           title: 'hello-world',
