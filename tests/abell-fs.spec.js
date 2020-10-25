@@ -80,7 +80,7 @@ describe("utils/abell-fs.js - Abell's file system", () => {
         'ghi.abell',
         'one/abc.abell',
         'two/def.abell'
-      ];
+      ].map(resPath);
 
       expect(filesLs).toEqual(expectedFilesLs);
     });
