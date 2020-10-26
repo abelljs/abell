@@ -22,7 +22,7 @@ const demoPath = path.join(__dirname, 'demos');
 
 describe('utils/build-utils.js', () => {
   describe('#getProgramInfo()', () => {
-    const examplePath = path.join(demoPath, 'build-utils-demo', 'programInfo');
+    const examplePath = path.join(demoPath, 'test-example-minimal');
 
     beforeAll(() => {
       process.chdir(examplePath);
@@ -67,7 +67,7 @@ describe('utils/build-utils.js', () => {
   });
 
   describe('#buildTemplateMap()', () => {
-    const examplePath = path.join(demoPath, 'build-utils-demo', 'buildMaps');
+    const examplePath = path.join(demoPath, 'test-example-main');
 
     it('should build templateMap with expected properties and values', () => {
       const themePath = path.join(examplePath, 'theme');
@@ -100,7 +100,7 @@ describe('utils/build-utils.js', () => {
   });
 
   describe('#buildContentMap()', () => {
-    const examplePath = path.join(demoPath, 'build-utils-demo', 'buildMaps');
+    const examplePath = path.join(demoPath, 'test-example-main');
 
     it('should return all the information about the content', () => {
       const contentPath = path.join(examplePath, 'content');
@@ -133,7 +133,7 @@ describe('utils/build-utils.js', () => {
   });
 
   describe('#getAbellConfig()', () => {
-    const examplePath = path.join(demoPath, 'build-utils-demo', 'buildMaps');
+    const examplePath = path.join(demoPath, 'test-example-main');
 
     beforeAll(() => {
       process.chdir(path.join(examplePath));
@@ -192,13 +192,7 @@ describe('utils/build-utils.js', () => {
   describe('#renderMarkdown()', () => {
     it('should return HTML of the md file in given path', () => {
       const markdown = renderMarkdown(
-        path.join(
-          demoPath,
-          'build-utils-demo',
-          'buildMaps',
-          'content',
-          'index.md'
-        ),
+        path.join(demoPath, 'test-example-main', 'content', 'index.md'),
         {
           meta: { title: 'Abell Test Title Check' }
         }
@@ -210,12 +204,7 @@ describe('utils/build-utils.js', () => {
 
   describe('#getContentMeta', () => {
     it('should return meta content of blog on given blog name', () => {
-      const contentPath = path.join(
-        demoPath,
-        'build-utils-demo',
-        'buildMaps',
-        'content'
-      );
+      const contentPath = path.join(demoPath, 'test-example-main', 'content');
 
       const metaContent = getContentMeta('hello-world', { contentPath });
 

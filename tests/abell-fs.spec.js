@@ -56,8 +56,7 @@ describe("utils/abell-fs.js - Abell's file system", () => {
     it('should only read the first line of the given file', async () => {
       const testFile = path.join(
         demoPath,
-        'build-utils-demo',
-        'buildMaps',
+        'test-example-main',
         'theme',
         'index.abell'
       );
