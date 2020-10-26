@@ -1,0 +1,12 @@
+{{
+  const Nav = require('./components/Nav.abell');
+  const Footer = require('./components/Footer.abell');
+}}
+
+<html>
+<body>
+  <Nav props={brand: 'NavProp1'} />
+  <main>I am Index!</main>
+  <Footer props={year: 1999} />
+</body>
+</html>

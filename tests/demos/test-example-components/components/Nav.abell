@@ -1,0 +1,13 @@
+<AbellComponent>
+<template>
+  <nav>{{ props.brand }}</nav>
+</template>
+<style>
+  nav {
+    color: #f30;
+  }
+</style>
+<script>
+  const isNav = true;
+</script>
+</AbellComponent>

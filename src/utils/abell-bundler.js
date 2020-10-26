@@ -11,6 +11,7 @@ let currentBundledJS = {}; // stores map of js files as they are bundled
  * Clears bundle cache. (Used in abell serve)
  * @param {Object} options
  * @param {String} options.ofBundle
+ * @return {Object}
  */
 function clearBundleCache({ ofBundle } = {}) {
   if (ofBundle) {
@@ -38,10 +39,13 @@ function clearBundleCache({ ofBundle } = {}) {
       }
     });
 
-    return;
+    return { currentBundledCSS, currentBundledJS };
   }
+
   currentBundledCSS = {};
   currentBundledJS = {};
+
+  return { currentBundledCSS, currentBundledJS };
 }
 
 /**
