@@ -40,7 +40,7 @@ function transformHash(content) {
   }
 
   newContent += content.slice(lastIndex);
-  return newContent;
+  return newContent.trim().replace(/\r/g, '');
 }
 
 describe('src/utils/abell-bundler.js', () => {
