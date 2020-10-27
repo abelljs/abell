@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.7.4
+
+- No user-facing changes.
+- Internal Tests are refactored
+- The paths in the output from `Abell.$root` and `Abell.$path` will be forced to use forward slash `/` in them instead of OS dependent separators.
+
 ## v0.7.3
 
 - Serve website over Network ([#92](https://github.com/abelljs/abell/pull/92) by [@judicaelandria](https://github.com/judicaelandria))
