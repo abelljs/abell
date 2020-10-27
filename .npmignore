@@ -5,6 +5,7 @@ tests/
 .eslintrc.js
 .eslintignore
 .github/
+.gitattributes
 .vscode/
 .prettierrc
 .prettierignore
