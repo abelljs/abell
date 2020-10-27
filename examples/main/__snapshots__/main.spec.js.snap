@@ -1,5 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`examples/main another-blog/* should render base info of blog 1`] = `null`;
+
+exports[`examples/main another-blog/* should render blog content 1`] = `
+"
+      <h1 id=\\"another-blog\\">Another blog</h1>
+<p>6</p>
+<p>Amazing blog right</p>
+    "
+`;
+
 exports[`examples/main dist/index.html should render basic maths and Abell Variables 1`] = `
 "
       <div>JS Test 11</div>
@@ -29,18 +39,21 @@ exports[`examples/main dist/index.html should render contentArray loop 1`] = `
               </div>
             
               <div>
-                <span class=\\"data-title\\">My First Blog (my-first-blog)</span>
-                <span class=\\"data-createdat\\">true</span>
-                <span class=\\"data-modifiedat\\">true</span>
-                <span class=\\"data-foo\\">Coming from JavaScript meta file</span>
-              </div>
-            
-              <div>
                 <span class=\\"data-title\\">Another blog (another-blog)</span>
                 <span class=\\"data-createdat\\">true</span>
                 <span class=\\"data-modifiedat\\">true</span>
                 <span class=\\"data-foo\\">bar</span>
               </div>
       </div>
+    "
+`;
+
+exports[`examples/main new-blog/ sub-blog/ should render expected blog content in index.html 1`] = `
+"
+      <h1 id=\\"inside-the-new-blog\\">Inside the new blog</h1>
+<p>../..</p>
+<p><a href=\\"hello\\">sub-blog/hello</a></p>
+<p>{{ escape this blog }}</p>
+<p>4</p>
     "
 `;

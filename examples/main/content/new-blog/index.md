@@ -2,4 +2,4 @@
 
 {{ Abell.$root }}
 
-\{{ Abell.globalMeta.siteName }}
+{{ Abell.globalMeta.siteName }}

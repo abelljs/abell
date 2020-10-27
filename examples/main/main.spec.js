@@ -1,3 +1,4 @@
+const fs = require('fs');
 const path = require('path');
 
 const {
@@ -5,12 +6,16 @@ const {
   getSelector
 } = require('../../tests/test-utils/helpers.js');
 
+const examplePath = path.join(__dirname, 'dist');
+
 describe('examples/main', () => {
   beforeAll(async () => {
     await preTestSetup('main');
   });
 
   describe('dist/index.html', () => {
+    /** Test dist/index.html */
+
     let indexSelector;
     const testComponents = [
       {
@@ -24,7 +29,7 @@ describe('examples/main', () => {
     ];
 
     beforeAll(() => {
-      indexSelector = getSelector(path.join(__dirname, 'dist', 'index.html'));
+      indexSelector = getSelector(path.join(examplePath, 'index.html'));
     });
 
     for (const testComponent of testComponents) {
@@ -34,220 +39,107 @@ describe('examples/main', () => {
     }
   });
 
-  // // another-blog example
-  // describe('another-blog/example.html', () => {
-  //   let $;
-  //   before(() => {
-  //     $ = getSelector(
-  //       path.join(__dirname, 'dist', 'another-blog', 'example.html')
-  //     );
-  //   });
-
-  //   it('should render body text', () => {
-  //     expect($('body').html().trim()).to.equal('another-blog');
-  //   });
-  // });
-
   // // another-blog index
-  // describe('another-blog/index.html', () => {
-  //   let $;
-  //   before(() => {
-  //     $ = getSelector(
-  //       path.join(__dirname, 'dist', 'another-blog', 'index.html')
-  //     );
-  //   });
+  describe('another-blog/*', () => {
+    /**
+     * Tests-
+     * another-blog/index.html
+     * & another-blog/example.html
+     */
 
-  //   it('should render header text', () => {
-  //     expect($('[id="another-blog"]').html()).to.equal('Another blog');
-  //   });
+    let indexSelector;
+    let exampleSelector;
+    const testComponents = [
+      {
+        it: 'should render base info of blog',
+        selector: '[data-test="basic-info"]'
+      },
+      {
+        it: 'should render blog content',
+        selector: '[data-test="blog-content"]'
+      }
+    ];
 
-  //   it('should render all blogs into blog container', () => {
-  //     const blogs = ['..', 'another-blog', 'another-blog'];
+    beforeAll(() => {
+      indexSelector = getSelector(
+        path.join(examplePath, 'another-blog', 'index.html')
+      );
 
-  //     $('#blog-container span').each(function (index, element) {
-  //       expect($(this).html()).to.equal(blogs[index]);
-  //     });
-  //   });
+      exampleSelector = getSelector(
+        path.join(examplePath, 'another-blog', 'example.html')
+      );
+    });
 
-  //   it('should render first para text', () => {
-  //     const dateToCheck = new Date();
-  //     dateToCheck.setFullYear(2020, 4, 9);
-  //     dateToCheck.setHours(0);
-  //     dateToCheck.setMinutes(0);
-  //     dateToCheck.setSeconds(0);
-  //     expect($('body main section p').first().html()).to.equal(
-  //       dateToCheck.toString()
-  //     );
-  //   });
+    for (const testComponent of testComponents) {
+      it(testComponent.it, () => {
+        expect(indexSelector(testComponent.selector).html()).toMatchSnapshot();
+      });
+    }
 
-  //   it('should render last para text', () => {
-  //     expect($('body main section p').last().html()).to.equal(
-  //       'Amazing blog right'
-  //     );
-  //   });
-  // });
+    it('should render name of blog in example.html', () => {
+      expect(exampleSelector('body').html().trim()).toBe('another-blog');
+    });
+  });
 
-  // // deep
-  // describe('deep/index.html', () => {
-  //   let $;
-  //   before(() => {
-  //     $ = getSelector(path.join(__dirname, 'dist', 'deep', 'index.html'));
-  //   });
+  describe('new-blog/', () => {
+    /**
+     * Tests-
+     * new-blog/*
+     */
+    it('should have index.html and example.html in new-blog', () => {
+      expect(
+        fs.existsSync(path.join(examplePath, 'new-blog', 'index.html'))
+      ).toBe(true);
 
-  //   it('should render html body text', () => {
-  //     expect($('body').html()).to.equal('ok ..');
-  //   });
-  // });
+      expect(
+        fs.existsSync(path.join(examplePath, 'new-blog', 'example.html'))
+      ).toBe(true);
+    });
 
-  // // more deep
-  // describe('deep/moredeep/index.html', () => {
-  //   let $;
-  //   before(() => {
-  //     $ = getSelector(
-  //       path.join(__dirname, 'dist', 'deep', 'moredeep', 'index.html')
-  //     );
-  //   });
+    describe('sub-blog/', () => {
+      it('should render expected blog content in index.html', () => {
+        expect(
+          getSelector(
+            path.join(examplePath, 'new-blog', 'sub-blog', 'index.html')
+          )('[data-test="blog-content"]').html()
+        ).toMatchSnapshot();
+      });
 
-  //   it('should render html body text', () => {
-  //     expect($('body').html()).to.equal(`..${path.sep}..`);
-  //   });
-  // });
+      it('should render path to the blog in example.html', () => {
+        expect(
+          getSelector(
+            path.join(examplePath, 'new-blog', 'sub-blog', 'example.html')
+          )('body')
+            .html()
+            .trim()
+        ).toBe('new-blog/sub-blog');
+      });
+    });
+  });
 
-  // // my first blog example
-  // describe('my-first-blog/example.html', () => {
-  //   let $;
-  //   before(() => {
-  //     $ = getSelector(
-  //       path.join(__dirname, 'dist', 'my-first-blog', 'example.html')
-  //     );
-  //   });
+  // deep
+  describe('deep/', () => {
+    /**
+     * Tests-
+     * deep/index.html
+     * & deep/moredeep/index.html
+     */
+    let deepIndex;
+    let moreDeepIndex;
 
-  //   it('should render html body text', () => {
-  //     expect($('body').text().trim()).to.equal('my-first-blog');
-  //   });
-  // });
+    beforeAll(() => {
+      deepIndex = getSelector(path.join(examplePath, 'deep', 'index.html'));
+      moreDeepIndex = getSelector(
+        path.join(examplePath, 'deep', 'moredeep', 'index.html')
+      );
+    });
 
-  // // my first blog index
-  // describe('my-first-blog/index.html', () => {
-  //   let $;
-  //   before(() => {
-  //     $ = getSelector(
-  //       path.join(__dirname, 'dist', 'my-first-blog', 'index.html')
-  //     );
-  //   });
+    it('should render html body text of deep/index.html', () => {
+      expect(deepIndex('body').html()).toBe('ok ..');
+    });
 
-  //   it('should render section header text', () => {
-  //     expect($('section #test').text()).to.equal('test');
-  //   });
-
-  //   it('should render section hyperlink', () => {
-  //     expect($('section p').text()).to.equal('https://makethislink.com');
-  //   });
-
-  //   it('should render all blogs into blog container', () => {
-  //     const blogs = ['..', 'my-first-blog', 'my-first-blog'];
-
-  //     $('#blog-container span').each(function (index, element) {
-  //       expect($(this).html()).to.equal(blogs[index]);
-  //     });
-  //   });
-  // });
-
-  // // new blog example
-  // describe('new-blog/example.html', () => {
-  //   let $;
-  //   before(() => {
-  //     $ = getSelector(path.join(__dirname, 'dist', 'new-blog', 'example.html'));
-  //   });
-
-  //   it('should render html body text', () => {
-  //     expect($('body').text().trim()).to.equal('new-blog');
-  //   });
-  // });
-
-  // // new blog
-  // describe('new-blog/index.html', () => {
-  //   let $;
-  //   before(() => {
-  //     $ = getSelector(path.join(__dirname, 'dist', 'new-blog', 'index.html'));
-  //   });
-
-  //   it('should render all blogs into blog container', () => {
-  //     const blogs = ['..', 'new-blog', 'new-blog'];
-
-  //     $('#blog-container span').each(function (index, element) {
-  //       expect($(this).html()).to.equal(blogs[index]);
-  //     });
-  //   });
-  //   it('should render header text', () => {
-  //     expect($('body main section #newblog').html()).to.equal('new-blog');
-  //   });
-  //   it('should render first para text', () => {
-  //     expect($('body main section p').first().html()).to.equal('..');
-  //   });
-  //   it('should render global meta site name', () => {
-  //     expect($('body main section p').last().html()).to.equal(
-  //       '{{ Abell.globalMeta.siteName }}'
-  //     );
-  //   });
-  // });
-
-  // // new blog/sub blog/example
-  // describe('new-blog/sub-blog/example.html', () => {
-  //   let $;
-  //   before(() => {
-  //     $ = getSelector(
-  //       path.join(__dirname, 'dist', 'new-blog', 'sub-blog', 'example.html')
-  //     );
-  //   });
-
-  //   it('should render html body text', () => {
-  //     expect($('body').text().trim()).to.equal(`new-blog${path.sep}sub-blog`);
-  //   });
-  // });
-
-  // describe('new-blog/sub-blog/index.html', () => {
-  //   let $;
-  //   before(() => {
-  //     $ = getSelector(
-  //       path.join(__dirname, 'dist', 'new-blog', 'sub-blog', 'index.html')
-  //     );
-  //   });
-
-  //   it('should render all blogs into blog container', () => {
-  //     const blogs = [
-  //       `..${path.sep}..`,
-  //       `new-blog${path.sep}sub-blog`,
-  //       'sub-blog'
-  //     ];
-
-  //     $('#blog-container span').each(function (index, element) {
-  //       expect($(this).html()).to.equal(blogs[index]);
-  //     });
-  //   });
-
-  //   it('should render header text', () => {
-  //     expect($('body main section #inside-the-new-blog').html()).to.equal(
-  //       'Inside the new blog'
-  //     );
-  //   });
-
-  //   it('should render first para text', () => {
-  //     expect($('body main section > p:nth-child(2)').text()).to.equal(
-  //       `..${path.sep}..`
-  //     );
-  //   });
-
-  //   it('should have relative path to index.md', () => {
-  //     expect($('body main section > p:nth-child(3) > a').attr('href')).to.equal(
-  //       `hello`
-  //     );
-  //   });
-
-  //   it('should add prefix in paths for deep level folders', () => {
-  //     expect($('main img').attr('src')).to.equal(
-  //       `..${path.sep}../image/cool.png`
-  //     );
-  //   });
-  // });
+    it('should render html of deep/moredeep/index.html', () => {
+      expect(moreDeepIndex('body').html()).toBe('../..');
+    });
+  });
 });
