@@ -1,0 +1,46 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`examples/main dist/index.html should render basic maths and Abell Variables 1`] = `
+"
+      <div>JS Test 11</div>
+      <div>Include from JSON Test hi I am from JSON</div>
+      <div>globalMeta Test Abell standard example</div>
+      <div>root test </div>
+      <div>path test </div>
+    "
+`;
+
+exports[`examples/main dist/index.html should render contentArray loop 1`] = `
+"
+      contentArray Test
+      <div>
+        <div>
+                <span class=\\"data-title\\">sub-blog (new-blog/sub-blog)</span>
+                <span class=\\"data-createdat\\">Fri May 15 2020 00:00:00 GMT+0530 (India Standard Time)</span>
+                <span class=\\"data-modifiedat\\">Sat Aug 15 2020 00:12:47 GMT+0530 (India Standard Time)</span>
+                <span class=\\"data-foo\\">undefined</span>
+              </div>
+            
+              <div>
+                <span class=\\"data-title\\">new-blog (new-blog)</span>
+                <span class=\\"data-createdat\\">Wed May 13 2020 00:00:00 GMT+0530 (India Standard Time)</span>
+                <span class=\\"data-modifiedat\\">Sat Aug 15 2020 00:12:47 GMT+0530 (India Standard Time)</span>
+                <span class=\\"data-foo\\">undefined</span>
+              </div>
+            
+              <div>
+                <span class=\\"data-title\\">My First Blog (my-first-blog)</span>
+                <span class=\\"data-createdat\\">Mon May 11 2020 00:00:00 GMT+0530 (India Standard Time)</span>
+                <span class=\\"data-modifiedat\\">Sat Aug 15 2020 00:12:47 GMT+0530 (India Standard Time)</span>
+                <span class=\\"data-foo\\">Coming from JavaScript meta file</span>
+              </div>
+            
+              <div>
+                <span class=\\"data-title\\">Another blog (another-blog)</span>
+                <span class=\\"data-createdat\\">Sat May 09 2020 00:00:00 GMT+0530 (India Standard Time)</span>
+                <span class=\\"data-modifiedat\\">Sat Aug 15 2020 00:12:47 GMT+0530 (India Standard Time)</span>
+                <span class=\\"data-foo\\">bar</span>
+              </div>
+      </div>
+    "
+`;
