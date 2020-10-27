@@ -110,13 +110,9 @@ describe('addToBodyEnd()', () => {
 
 describe('standardizePath()', () => {
   it('should always return standard web path with / as separator', () => {
-    expect(standardizePath('hello/hi/nice.html', '/')).toBe(
-      'hello/hi/nice.html'
-    );
+    expect(standardizePath('hello/hi/nice.html')).toBe('hello/hi/nice.html');
 
-    expect(standardizePath('hello\\hi\\nice.html', '\\\\')).toBe(
-      'hello/hi/nice.html'
-    );
+    expect(standardizePath('hello\\hi\\nice.html')).toBe('hello/hi/nice.html');
 
     expect(standardizePath(path.join('hello', 'hi', 'test.abell'))).toBe(
       'hello/hi/test.abell'

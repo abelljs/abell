@@ -207,8 +207,7 @@ function anchorsPlugin(md) {
   };
 }
 
-const standardizePath = (osPath, sep = path.sep) =>
-  osPath.replace(new RegExp(sep, 'g'), '/');
+const standardizePath = (osPath) => osPath.replace(/\\/g, '/');
 
 /**
  * console.log for errors, logs with error styles
