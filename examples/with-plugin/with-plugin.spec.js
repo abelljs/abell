@@ -1,59 +1,54 @@
 const fs = require('fs');
 const path = require('path');
 
-const { expect } = require('chai');
 const {
   preTestSetup,
   getSelector
-} = require('../../tests/test-utils/test-helpers.js');
+} = require('../../tests/test-utils/helpers.js');
 
 describe('examples/with-plugin', () => {
-  before(async () => {
+  const $ = {};
+  beforeAll(async () => {
     await preTestSetup('with-plugin');
+    $.index = getSelector(path.join(__dirname, 'dist', 'index.html'));
+    $.content = getSelector(
+      path.join(__dirname, 'dist', 'hello-custom-blog', 'index.html')
+    );
   });
 
-  describe('index.html', () => {
-    const $ = {};
-    before(() => {
-      $.index = getSelector(path.join(__dirname, 'dist', 'index.html'));
-      $.content = getSelector(
-        path.join(__dirname, 'dist', 'hello-custom-blog', 'index.html')
-      );
-    });
-
+  describe('beforeBuild plugin', () => {
     it('should have a hello-custom-blog folder', () => {
       expect(
         fs.existsSync(path.join(__dirname, 'dist', 'hello-custom-blog'))
-      ).to.equal(true);
+      ).toBe(true);
     });
 
     it('should render h1 of blog from content into the output html', () => {
-      expect($.content('[data-test="blog-content"] > #hello').html()).to.equal(
+      expect($.content('[data-test="blog-content"] > #hello').html()).toBe(
         'Hello'
       );
     });
+  });
 
+  describe('beforeHTMLWrite plugin', () => {
     it('should add additional css from beforeWriteHTML plugin', () => {
       expect(
         $.index('head > style')
           .html()
           .replace(/\n|\r|\s/g, '')
-      ).to.equal('body{background-color:green;}');
+      ).toBe('body{background-color:green;}');
     });
 
     it('should render all the slugs of blog', () => {
-      const expectedTitles = [
-        'my-first-blog',
-        'another-blog',
-        'blog-from-plugin',
-        'hello-custom-blog'
-      ];
+      expect($.index('[data-test="all-slugs"]').html()).toMatchSnapshot();
+    });
+  });
 
-      $.index('[data-test="all-slugs"] > div').each(function (index, element) {
-        expect($.index(this).children('.meta-slug').html()).to.equal(
-          expectedTitles[index]
-        );
-      });
+  describe('afterBuild plugin', () => {
+    it('creates after-build.txt file', () => {
+      expect(
+        fs.existsSync(path.join(__dirname, 'dist', 'after-build.txt'))
+      ).toBe(true);
     });
   });
 });

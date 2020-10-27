@@ -1,8 +1,0 @@
-{{
-  const TestComponent = require('./TestComponent.abell');
-}}
-<html>
-<body>
-  <TestComponent/>
-</body>
-</html>

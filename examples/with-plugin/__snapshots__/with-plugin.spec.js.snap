@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`examples/with-plugin beforeHTMLWrite plugin should render all the slugs of blog 1`] = `
+"
+      <div>
+            <a href=\\"my-first-blog\\">My First Blog</a><br>
+            <span class=\\"meta-slug\\">my-first-blog</span>
+          </div>
+          
+          <div>
+            <a href=\\"another-blog\\">Another blog</a><br>
+            <span class=\\"meta-slug\\">another-blog</span>
+          </div>
+          
+          <div>
+            <a href=\\"blog-from-plugin\\">blog-from-plugin</a><br>
+            <span class=\\"meta-slug\\">blog-from-plugin</span>
+          </div>
+          
+          <div>
+            <a href=\\"hello-custom-blog\\">hello-custom-blog</a><br>
+            <span class=\\"meta-slug\\">hello-custom-blog</span>
+          </div>
+      "
+`;
