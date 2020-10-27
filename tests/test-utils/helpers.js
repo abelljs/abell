@@ -10,10 +10,13 @@ const cheerio = require('cheerio');
  * @param {String} exampleName Name of the example to build
  */
 async function preTestSetup(exampleName) {
-  console.log('THIS IS WHERE I AM: ' + process.cwd());
+  const tempCWD = process.cwd();
+  process.chdir(path.join(__dirname, '..', '..'));
   const { stderr, stdout } = await exec(
     `cd examples/${exampleName} && node ../../bin/abell.js build`
   );
+
+  process.chdir(tempCWD);
   if (stderr) throw new Error(stderr);
   if (stdout.includes('Abell Build Failed')) {
     console.log(stdout);

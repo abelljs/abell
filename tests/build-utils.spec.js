@@ -28,6 +28,10 @@ describe('utils/build-utils.js', () => {
       process.chdir(examplePath);
     });
 
+    afterAll(() => {
+      process.chdir(__dirname);
+    });
+
     it('should return the base info for program to execute', async () => {
       const tempConsoleLog = console.log;
       console.log = jest.fn((message) => message);
@@ -59,10 +63,6 @@ describe('utils/build-utils.js', () => {
       expect(initialProgramInfo).toEqual(expectedProgramInfo);
       expect(console.log.mock.results[0].value).toContain('Cannot find module');
       console.log = tempConsoleLog;
-    });
-
-    afterAll(() => {
-      process.chdir(__dirname);
     });
   });
 
@@ -139,6 +139,10 @@ describe('utils/build-utils.js', () => {
       process.chdir(path.join(examplePath));
     });
 
+    afterAll(() => {
+      process.chdir(path.join(__dirname));
+    });
+
     it('should return expected object from abell.config.js', () => {
       const abellConfig = getAbellConfig();
       const expectedAbellConfig = {
@@ -152,10 +156,6 @@ describe('utils/build-utils.js', () => {
       };
 
       expect(abellConfig).toEqual(expectedAbellConfig);
-    });
-
-    afterAll(() => {
-      process.chdir(path.join(__dirname));
     });
   });
 
