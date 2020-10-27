@@ -2,13 +2,16 @@
  * Tests src/utils/general-helpers.js
  */
 
+const path = require('path');
+
 /* eslint-disable max-len */
 const cheerio = require('cheerio');
 
 const {
   execRegexOnAll,
   addToHeadEnd,
-  addToBodyEnd
+  addToBodyEnd,
+  standardizePath
 } = require('../src/utils/general-helpers.js');
 
 describe('execRegexOnAll()', () => {
@@ -102,5 +105,21 @@ describe('addToBodyEnd()', () => {
     // prettier-ignore
     expect($('body > link[rel="stylesheet"]').attr('href')).toBe('abell.css')
     expect(out.includes('</body>')).toBe(true);
+  });
+});
+
+describe('standardizePath()', () => {
+  it('should always return standard web path with / as separator', () => {
+    expect(standardizePath('hello/hi/nice.html', '/')).toBe(
+      'hello/hi/nice.html'
+    );
+
+    expect(standardizePath('hello\\hi\\nice.html', '\\\\')).toBe(
+      'hello/hi/nice.html'
+    );
+
+    expect(standardizePath(path.join('hello', 'hi', 'test.abell'))).toBe(
+      'hello/hi/test.abell'
+    );
   });
 });

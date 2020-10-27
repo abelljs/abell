@@ -207,6 +207,9 @@ function anchorsPlugin(md) {
   };
 }
 
+const standardizePath = (osPath, sep = path.sep) =>
+  osPath.replace(new RegExp(sep, 'g'), '/');
+
 /**
  * console.log for errors, logs with error styles
  * @param {String} errorMessage message to log
@@ -243,6 +246,7 @@ module.exports = {
   addToHeadEnd,
   addToBodyEnd,
   anchorsPlugin,
+  standardizePath,
   logError,
   logWarning,
   colors
