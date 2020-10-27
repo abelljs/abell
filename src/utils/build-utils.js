@@ -7,7 +7,11 @@ const md = new Remarkable({
   html: true
 });
 
-const { logWarning, anchorsPlugin } = require('./general-helpers.js');
+const {
+  logWarning,
+  anchorsPlugin,
+  standardizePath
+} = require('./general-helpers.js');
 
 const {
   recursiveFindFiles,
@@ -184,8 +188,10 @@ function getContentMeta(slug, { contentPath }) {
     $source: 'local',
     $modifiedAt: mtime,
     $createdAt: ctime,
-    $path: slug,
-    $root: path.relative(path.join(contentPath, slug), contentPath)
+    $path: standardizePath(slug),
+    $root: standardizePath(
+      path.relative(path.join(contentPath, slug), contentPath)
+    )
   };
 }
 

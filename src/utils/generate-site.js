@@ -71,8 +71,6 @@ async function createHTMLFile(templateObj, programInfo, options) {
   if (options.isContent) {
     // Extra variables when building content
     Abell.meta = options.content;
-    Abell.meta.$root = standardizePath(options.content.$root);
-    Abell.meta.$path = standardizePath(options.content.$path);
     Abell.$root = Abell.meta.$root;
     Abell.$path = Abell.meta.$path;
   }
