@@ -70,14 +70,28 @@ describe('examples/with-components', () => {
 
   describe('bundled-css/main.abell.css', () => {
     it('should have expected CSS properties in main bundle', () => {
-      const mainAbellCSS = transformHash(
-        fs.readFileSync(
+      const footerCSS = `
+        footer[data-abell-jLzQID] {
+          color: #f30;
+        }
+      `.replace(/\s|\n|\r/g, '');
+
+      const aboutCSS = `
+        .about[data-abell-fBMCHA] {
+          color: #999;
+        }
+      `.replace(/\s|\n|\r/g, '');
+
+      const mainAbellCSS = fs
+        .readFileSync(
           path.join(__dirname, 'dist', 'bundled-css', 'main.abell.css'),
           'utf-8'
         )
-      );
+        .replace(/\s|\n|\r/g, '');
 
-      expect(mainAbellCSS).toMatchSnapshot();
+      expect(
+        mainAbellCSS.includes(footerCSS) && mainAbellCSS.includes(aboutCSS)
+      ).toBe(true);
     });
   });
 

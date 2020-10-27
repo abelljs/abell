@@ -2,8 +2,6 @@
 
 exports[`examples/with-components about.html should have inlined CSS in the about page 1`] = `"nav[data-abell-1]{background-color:#000;color:#fff;}"`;
 
-exports[`examples/with-components bundled-css/main.abell.css should have expected CSS properties in main bundle 1`] = `"footer[data-abell-1]{color:#f30;}.about[data-abell-2]{color:#999;}"`;
-
 exports[`examples/with-components index.html should have inlined CSS in the index page 1`] = `"nav[data-abell-1]{background-color:#000;color:#fff;}"`;
 
 exports[`examples/with-components index.html should render html from <Nav/> 1`] = `
