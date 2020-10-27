@@ -12,36 +12,9 @@ const {
   getComponentBundles
 } = require('../src/utils/abell-bundler.js');
 
-const { resPath } = require('./test-utils/helpers.js');
-const { execRegexOnAll } = require('../src/utils/general-helpers.js');
+const { resPath, transformHash } = require('./test-utils/helpers.js');
 
 const demoPath = path.join(__dirname, 'demos');
-
-/**
- * Transforms hash like snkajda to 1, 2, 3 like numbers
- * @param {string} content style content
- * @return {string}
- */
-function transformHash(content) {
-  let newContent = '';
-  let currentNum = 0;
-  let lastIndex = 0;
-  const hashes = {};
-
-  const { matches } = execRegexOnAll(/\[data-abell-(.*?)\]/g, content);
-  for (const match of matches) {
-    if (!hashes[match[1]]) {
-      hashes[match[1]] = ++currentNum;
-    }
-    // prettier-ignore
-    // eslint-disable-next-line max-len
-    newContent += `${content.slice(lastIndex, match.index)}[data-abell-${currentNum}]`;
-    lastIndex = match.index + match[0].length;
-  }
-
-  newContent += content.slice(lastIndex);
-  return newContent.trim().replace(/\r/g, '');
-}
 
 describe('src/utils/abell-bundler.js', () => {
   it('should clear the bundles from cache', () => {
