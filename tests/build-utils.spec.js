@@ -113,8 +113,8 @@ describe('utils/build-utils.js', () => {
           $modifiedAt: new Date('2020-05-29T18:30:00.000Z'),
           $slug: 'extra-deep',
           $source: 'local',
-          $path: resPath('deep/extra-deep'),
-          $root: resPath('../..')
+          $path: 'deep/extra-deep',
+          $root: '../..'
         },
         'hello-world': {
           title: 'hello-world',
