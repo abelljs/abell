@@ -12,8 +12,8 @@
   },
   "scripts": {
     "test:unit": "jest ./tests/",
-    "test:e2e": "mocha --recursive \"./examples/**/*.spec.js\"",
-    "test": "jest ./tests/ ./examples/main/",
+    "test:e2e": "jest ./examples/main",
+    "test": "npm run test:unit && npm run test:e2e",
     "start": "cd examples/main && node ../../bin/abell.js build && serve dist",
     "dev": "echo \"1. Execute 'npm link' \n2. 'cd examples/main'\n3. 'abell serve' \"",
     "eslint": "eslint .",
