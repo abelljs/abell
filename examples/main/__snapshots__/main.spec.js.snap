@@ -16,29 +16,29 @@ exports[`examples/main dist/index.html should render contentArray loop 1`] = `
       <div>
         <div>
                 <span class=\\"data-title\\">sub-blog (new-blog/sub-blog)</span>
-                <span class=\\"data-createdat\\">Fri May 15 2020 00:00:00 GMT+0530 (India Standard Time)</span>
-                <span class=\\"data-modifiedat\\">Sat Aug 15 2020 00:12:47 GMT+0530 (India Standard Time)</span>
+                <span class=\\"data-createdat\\">true</span>
+                <span class=\\"data-modifiedat\\">true</span>
                 <span class=\\"data-foo\\">undefined</span>
               </div>
             
               <div>
                 <span class=\\"data-title\\">new-blog (new-blog)</span>
-                <span class=\\"data-createdat\\">Wed May 13 2020 00:00:00 GMT+0530 (India Standard Time)</span>
-                <span class=\\"data-modifiedat\\">Sat Aug 15 2020 00:12:47 GMT+0530 (India Standard Time)</span>
+                <span class=\\"data-createdat\\">true</span>
+                <span class=\\"data-modifiedat\\">true</span>
                 <span class=\\"data-foo\\">undefined</span>
               </div>
             
               <div>
                 <span class=\\"data-title\\">My First Blog (my-first-blog)</span>
-                <span class=\\"data-createdat\\">Mon May 11 2020 00:00:00 GMT+0530 (India Standard Time)</span>
-                <span class=\\"data-modifiedat\\">Sat Aug 15 2020 00:12:47 GMT+0530 (India Standard Time)</span>
+                <span class=\\"data-createdat\\">true</span>
+                <span class=\\"data-modifiedat\\">true</span>
                 <span class=\\"data-foo\\">Coming from JavaScript meta file</span>
               </div>
             
               <div>
                 <span class=\\"data-title\\">Another blog (another-blog)</span>
-                <span class=\\"data-createdat\\">Sat May 09 2020 00:00:00 GMT+0530 (India Standard Time)</span>
-                <span class=\\"data-modifiedat\\">Sat Aug 15 2020 00:12:47 GMT+0530 (India Standard Time)</span>
+                <span class=\\"data-createdat\\">true</span>
+                <span class=\\"data-modifiedat\\">true</span>
                 <span class=\\"data-foo\\">bar</span>
               </div>
       </div>

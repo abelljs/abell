@@ -31,8 +31,8 @@
             .map(meta => /* html */ `
               <div>
                 <span class="data-title">${meta.title} (${meta.$path})</span>
-                <span class="data-createdat">${meta.$createdAt}</span>
-                <span class="data-modifiedat">${meta.$modifiedAt}</span>
+                <span class="data-createdat">${meta.$createdAt.getMonth ? true : false}</span>
+                <span class="data-modifiedat">${meta.$modifiedAt.getMonth ? true : false}</span>
                 <span class="data-foo">${meta.foo}</span>
               </div>
             `);
