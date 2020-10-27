@@ -16,36 +16,29 @@
     const b = 1;
   }}
   <main>
-    <section>
-      JS Test <span data-test="js-in-abell-test">{{ a + b }}</span>
-    </section>
-    <section>
-      Include from JSON Test <span data-test="include-from-json-test">{{ site.greet }}</span>
-    </section>
-    <section>
-      globalMeta Test <span data-test="globalmeta-test">{{ globalMeta.siteName }}</span>
-    </section>
-    <section>
-      root test <span data-test="root-test">{{ $root }}</span>
-    </section>
-    <section>
-      path test <span data-test="path-test">{{ $path }}</span>
-    </section>
-    <section>
+    <div data-test="basic-test">
+      <div>JS Test {{ a + b }}</div>
+      <div>Include from JSON Test {{ site.greet }}</div>
+      <div>globalMeta Test {{ globalMeta.siteName }}</div>
+      <div>root test {{ $root }}</div>
+      <div>path test {{ $path }}</div>
+    </div>
+    <section data-test="contentarray-container">
       contentArray Test
-      <div data-test="contentarray-container">
+      <div>
         {{
           contentArray
-            .map(meta => `
+            .map(meta => /* html */ `
               <div>
                 <span class="data-title">${meta.title} (${meta.$path})</span>
-                <span class="data-createdat">${meta.$createdAt}</span>
-                <span class="data-modifiedat">${meta.$modifiedAt}</span>
+                <span class="data-createdat">${meta.$createdAt.getMonth ? true : false}</span>
+                <span class="data-modifiedat">${meta.$modifiedAt.getMonth ? true : false}</span>
                 <span class="data-foo">${meta.foo}</span>
               </div>
-            `).join('');
+            `);
         }}
       </div>
+    </section>
   </main>
   <script src="./test.mjs" type="module"></script>
 </body>

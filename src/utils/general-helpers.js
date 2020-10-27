@@ -88,8 +88,8 @@ async function executeBeforeHTMLWritePlugins(htmlOutput, programInfo) {
 function getNetworkAddress() {
   const interfaces = os.networkInterfaces();
   for (const name of Object.keys(interfaces)) {
-    for (const interface of interfaces[name]) {
-      const { address, family, internal } = interface;
+    for (const ipInterface of interfaces[name]) {
+      const { address, family, internal } = ipInterface;
       if (family === 'IPv4' && !internal) {
         return address;
       }
@@ -207,6 +207,8 @@ function anchorsPlugin(md) {
   };
 }
 
+const standardizePath = (osPath) => osPath.replace(/\\/g, '/');
+
 /**
  * console.log for errors, logs with error styles
  * @param {String} errorMessage message to log
@@ -243,6 +245,7 @@ module.exports = {
   addToHeadEnd,
   addToBodyEnd,
   anchorsPlugin,
+  standardizePath,
   logError,
   logWarning,
   colors

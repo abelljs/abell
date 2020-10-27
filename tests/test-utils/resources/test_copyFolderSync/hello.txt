@@ -1,1 +1,0 @@
-I will be clonned into test_rmdirRecursiveSync

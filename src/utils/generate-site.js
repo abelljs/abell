@@ -13,7 +13,10 @@ const {
 const { renderMarkdown, md } = require('./build-utils.js');
 
 const { createBundles, clearBundleCache } = require('./abell-bundler.js');
-const { executeBeforeHTMLWritePlugins } = require('./general-helpers.js');
+const {
+  executeBeforeHTMLWritePlugins,
+  standardizePath
+} = require('./general-helpers.js');
 
 /**
  * Hashmap of template content for memoization
@@ -61,15 +64,15 @@ async function createHTMLFile(templateObj, programInfo, options) {
       (a, b) => b.$createdAt.getTime() - a.$createdAt.getTime()
     ),
     contentObj: programInfo.contentMap,
-    $root: templateObj.$root,
-    $path: templateObj.htmlPath.replace(/index\.html/g, '')
+    $root: standardizePath(templateObj.$root),
+    $path: standardizePath(templateObj.htmlPath.replace(/index\.html/g, ''))
   };
 
   if (options.isContent) {
     // Extra variables when building content
-    Abell.$root = options.content.$root;
-    Abell.$path = options.content.$path;
     Abell.meta = options.content;
+    Abell.$root = Abell.meta.$root;
+    Abell.$path = Abell.meta.$path;
   }
 
   const view = {
@@ -134,9 +137,11 @@ async function createHTMLFile(templateObj, programInfo, options) {
     }
   );
 
-  const outPath = path.join(
-    programInfo.abellConfig.outputPath,
-    templateObj.htmlPath.replace('[path]', Abell.$path)
+  const outPath = path.normalize(
+    path.join(
+      programInfo.abellConfig.outputPath,
+      templateObj.htmlPath.replace('[path]', Abell.$path)
+    )
   );
 
   createPathIfAbsent(path.dirname(outPath));

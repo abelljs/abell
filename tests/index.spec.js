@@ -1,9 +1,12 @@
-const expect = require('chai').expect;
+/**
+ * Tests: /src/index.js
+ */
+
 const main = require('../src/index.js');
 
 describe('main()', () => {
   it('should export neccessary functions', () => {
-    expect(Object.keys(main)).to.have.members([
+    expect(Object.keys(main)).toEqual([
       'build',
       'generateSite',
       'createHTMLFile'

@@ -1,3 +1,6 @@
+const fs = require('fs');
+const path = require('path');
+
 /**
  * Executes before starting build
  *
@@ -61,9 +64,13 @@ function beforeHTMLWrite(htmlTemplate, programInfo) {
 
 /**
  * Runs after build of abell
+ * @param {ProgramInfo} programInfo
  */
-function afterBuild() {
-  console.log('After build working!');
+function afterBuild(programInfo) {
+  fs.writeFileSync(
+    path.join(programInfo.abellConfig.outputPath, 'after-build.txt'),
+    'This is added from after build'
+  );
 }
 
 module.exports = { beforeBuild, beforeHTMLWrite, afterBuild };

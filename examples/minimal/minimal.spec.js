@@ -1,24 +1,23 @@
 const path = require('path');
 
-const { expect } = require('chai');
 const {
   preTestSetup,
   getSelector
-} = require('../../tests/test-utils/test-helpers.js');
+} = require('../../tests/test-utils/helpers.js');
 
 describe('examples/minimal', () => {
-  before(async () => {
+  beforeAll(async () => {
     await preTestSetup('minimal');
   });
 
   describe('index.html', () => {
     let $;
-    before(() => {
+    beforeAll(() => {
       $ = getSelector(path.join(__dirname, 'dist', 'index.html'));
     });
 
     it('should render executed JavaScript even without content', () => {
-      expect($('[data-test="add-value"]').html()).to.equal(String(13));
+      expect($('[data-test="add-value"]').html()).toBe(String(13));
     });
   });
 });

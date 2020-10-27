@@ -1,8 +1,11 @@
+/**
+ * Tests: src/utils/abell-fs.js
+ */
+
 /* eslint-disable max-len */
 
 const fs = require('fs');
 const path = require('path');
-const expect = require('chai').expect;
 
 const {
   getAbsolutePath,
@@ -14,10 +17,14 @@ const {
   recursiveFindFiles
 } = require('../src/utils/abell-fs.js');
 
+const { resPath } = require('./test-utils/helpers.js');
+
+const demoPath = path.join(__dirname, 'demos');
+
 describe("utils/abell-fs.js - Abell's file system", () => {
   describe('#getAbsolutePath()', () => {
     it('should return absolute path on giving relative path', () => {
-      expect(getAbsolutePath(path.join('hi', 'hello'))).to.not.equal(
+      expect(getAbsolutePath(path.join('hi', 'hello'))).not.toBe(
         path.join('hi', 'hello')
       );
     });
@@ -25,83 +32,79 @@ describe("utils/abell-fs.js - Abell's file system", () => {
 
   describe('#replaceExtension()', () => {
     it('should change the extension of given path', () => {
-      expect(
-        replaceExtension(path.join('hi', 'hello.abell'), '.html')
-      ).to.equal(path.join('hi', 'hello.html'));
+      expect(replaceExtension(path.join('hi', 'hello.abell'), '.html')).toBe(
+        path.join('hi', 'hello.html')
+      );
     });
   });
 
   describe('#copyFolderSync(), #rmdirRecursiveSync()', () => {
     it('should copy folder from one path to other and then delete it', () => {
-      const resourcePath = path.join(__dirname, 'test-utils', 'resources');
-      const copyFrom = path.join(resourcePath, 'test_copyFolderSync');
-      const copyTo = path.join(resourcePath, 'test_rmdirRecursiveSync');
+      const copyFrom = path.join(demoPath, 'copyFolderSync');
+      const copyTo = path.join(demoPath, 'rmdirRecursiveSync');
       copyFolderSync(copyFrom, copyTo, [path.join(copyFrom, 'ignoreme.txt')]);
 
-      expect(fs.existsSync(copyTo)).to.equal(true);
-      expect(fs.readdirSync(copyTo)).to.eql(['deepcheck', 'hello.txt']);
+      expect(fs.existsSync(copyTo)).toBe(true);
+      expect(fs.readdirSync(copyTo)).toEqual(['deepcheck', 'hi.txt']);
 
       rmdirRecursiveSync(copyTo);
-      expect(fs.existsSync(copyTo)).to.equal(false);
+      expect(fs.existsSync(copyTo)).toBe(false);
     });
   });
 
   describe('#getFirstLine()', () => {
-    before(() => {
-      process.chdir(
-        path.join(__dirname, 'test-utils', 'resources', 'test_demo')
-      );
-    });
-
     it('should only read the first line of the given file', async () => {
-      expect(getFirstLine(path.join('src', 'index.abell')).trim()).to.equal(
-        '<!DOCTYPE html>'
+      const testFile = path.join(
+        demoPath,
+        'test-example-main',
+        'theme',
+        'index.abell'
       );
-    });
 
-    after(() => {
-      process.chdir(__dirname);
+      expect(getFirstLine(testFile).trim()).toBe('<!DOCTYPE html>');
     });
   });
 
   describe('#recursiveFindFiles()', () => {
-    // eslint-disable-next-line max-len
-    it('should return paths of all files in test_recursiveFindFiles directory', () => {
-      // prettier-ignore
-      // eslint-disable-next-line max-len
-      expect(recursiveFindFiles('test-utils/resources/test_recursiveFindFiles', '.abell'))
-        .to.be.an('array')
-        .that.has.members([
-          'test-utils/resources/test_recursiveFindFiles/deep/moredeep/jkl.abell',
-          'test-utils/resources/test_recursiveFindFiles/ghi.abell',
-          'test-utils/resources/test_recursiveFindFiles/one/abc.abell',
-          'test-utils/resources/test_recursiveFindFiles/two/def.abell'
-        ].map(nonCrossPlatformPaths => 
-            nonCrossPlatformPaths.replace(/\//g, path.sep)
-          )
-        );
+    it('should return paths of all files in recursiveFindFiles dir', () => {
+      const testDirectory = path.join(demoPath, 'recursiveFindFiles');
+
+      const filesLs = recursiveFindFiles(
+        testDirectory,
+        '.abell'
+      ).map((filePath) => path.relative(testDirectory, resPath(filePath)));
+
+      const expectedFilesLs = [
+        'deep/moredeep/jkl.abell',
+        'ghi.abell',
+        'one/abc.abell',
+        'two/def.abell'
+      ].map(resPath);
+
+      expect(filesLs).toEqual(expectedFilesLs);
     });
   });
 
   describe('#createPathIfAbsent()', () => {
-    before(() => {
-      process.chdir(
-        path.join(__dirname, 'test-utils', 'resources', 'test_demo')
+    it('should create /createPathIfAbsent/created/path if it is not present', () => {
+      const newPath = path.join(
+        demoPath,
+        'createPathIfAbsent',
+        'created',
+        'path'
       );
-    });
 
-    it('should create /newly/created/path if it is not present', () => {
-      const newPath = path.join(process.cwd(), 'newly', 'created', 'path');
       createPathIfAbsent(newPath);
-      expect(fs.existsSync(newPath)).to.equal(true);
+      expect(fs.existsSync(newPath)).toBe(true);
+
       // Deleting newly created path
       fs.rmdirSync(newPath);
       fs.rmdirSync(path.join(newPath, '..'));
       fs.rmdirSync(path.join(newPath, '..', '..'));
-    });
 
-    after(() => {
-      process.chdir(__dirname);
+      expect(fs.existsSync(path.join(demoPath, 'createPathIfAbsent'))).toBe(
+        false
+      );
     });
   });
 });

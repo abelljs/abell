@@ -2,106 +2,69 @@
 const fs = require('fs');
 const path = require('path');
 
-const { expect } = require('chai');
 const {
   preTestSetup,
-  getSelector
-} = require('../../tests/test-utils/test-helpers.js');
+  getSelector,
+  transformHash
+} = require('../../tests/test-utils/helpers.js');
 
 describe('examples/with-components', () => {
-  before(async () => {
+  beforeAll(async () => {
     await preTestSetup('with-components');
   });
 
   describe('index.html', () => {
     let $;
-    before(() => {
+    beforeAll(() => {
       $ = getSelector(path.join(__dirname, 'dist', 'index.html'));
     });
 
     it('should render html from <Nav/>', () => {
-      expect($('[data-test="nav-component"]').text()).to.not.equal(null);
-    });
-
-    it('should render prop passed to Nav component', () => {
-      expect($('[data-test="nav-component-prop"]').text()).to.equal('3');
-    });
-
-    it('should render data from <Brand/>', () => {
-      expect($('[data-test="brand-component"]').text()).to.equal(
-        'This is brand component'
-      );
+      expect($('[data-test="nav-component"]').html()).toMatchSnapshot();
     });
 
     it('should render data from <Footer/>', () => {
-      expect($('footer').text()).to.equal('This is Footer');
+      expect($('footer').text()).toBe('This is Footer');
     });
 
     it('should add main stylesheet link to head', () => {
-      expect($('link[rel="stylesheet"]').attr('href')).to.equal(
+      expect($('link[rel="stylesheet"]').attr('href')).toBe(
         'bundled-css/main.abell.css'.replace(/\//g, path.sep)
       );
     });
 
     it('should have inlined CSS in the index page', () => {
-      expect(
-        $('style')
-          .html()
-          .replace(/\n|\r|\s/g, '')
-      ).to.equal(
-        `nav[data-abell-iyCgAr] {
-        background-color: #000;
-        color: #fff;
-      }`.replace(/\n|\r|\s/g, '')
-      );
+      expect(transformHash($('style').html())).toMatchSnapshot();
     });
   });
 
   describe('my-first-blog/index.html', () => {
     let $;
-    before(() => {
+    beforeAll(() => {
       $ = getSelector(
         path.join(__dirname, 'dist', 'my-first-blog', 'index.html')
       );
     });
 
     it('should add main stylesheet link to head', () => {
-      expect($('link[rel="stylesheet"]').attr('href')).to.equal(
+      expect($('link[rel="stylesheet"]').attr('href')).toBe(
         '../bundled-css/main.abell.css'.replace(/\//g, path.sep)
       );
     });
 
     it('should have inlined CSS in the blog page', () => {
-      expect(
-        $('style')
-          .html()
-          .replace(/\n|\r|\s/g, '')
-      ).to.equal(
-        `nav[data-abell-iyCgAr] {
-        background-color: #000;
-        color: #fff;
-      }`.replace(/\n|\r|\s/g, '')
-      );
+      expect(transformHash($('style').html())).toMatchSnapshot();
     });
   });
 
   describe('about.html', () => {
     let $;
-    before(() => {
+    beforeAll(() => {
       $ = getSelector(path.join(__dirname, 'dist', 'about.html'));
     });
 
     it('should have inlined CSS in the about page', () => {
-      expect(
-        $('style')
-          .html()
-          .replace(/\n|\r|\s/g, '')
-      ).to.equal(
-        `nav[data-abell-iyCgAr] {
-        background-color: #000;
-        color: #fff;
-      }`.replace(/\n|\r|\s/g, '')
-      );
+      expect(transformHash($('style').html())).toMatchSnapshot();
     });
   });
 
@@ -128,7 +91,7 @@ describe('examples/with-components', () => {
 
       expect(
         mainAbellCSS.includes(footerCSS) && mainAbellCSS.includes(aboutCSS)
-      ).to.equal(true);
+      ).toBe(true);
     });
   });
 
@@ -141,7 +104,7 @@ describe('examples/with-components', () => {
             'utf-8'
           )
           .replace(/\s|\n|\r/g, '')
-      ).to.equal(
+      ).toBe(
         `document.querySelector('div.brand').innerHTML = 'Set from JS';`.replace(
           /\s|\n|\r/g,
           ''

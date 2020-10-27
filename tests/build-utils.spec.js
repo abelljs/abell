@@ -1,7 +1,10 @@
+/**
+ * Tests: src/utils/build-utils.js
+ */
+
 /* eslint-disable max-len */
-const fs = require('fs');
+// const fs = require('fs');
 const path = require('path');
-const expect = require('chai').expect;
 
 const {
   getProgramInfo,
@@ -9,123 +12,150 @@ const {
   buildContentMap,
   getContentMeta,
   getSourceNodeFromPluginNode,
-  renderMarkdown,
-  getAbellConfig
+  getAbellConfig,
+  renderMarkdown
 } = require('../src/utils/build-utils.js');
+
+const { resPath } = require('./test-utils/helpers.js');
+
+const demoPath = path.join(__dirname, 'demos');
 
 describe('utils/build-utils.js', () => {
   describe('#getProgramInfo()', () => {
-    before(() => {
-      process.chdir(
-        path.join(__dirname, 'test-utils', 'resources', 'test_demo')
-      );
+    const examplePath = path.join(demoPath, 'test-example-minimal');
+
+    beforeAll(() => {
+      process.chdir(examplePath);
+    });
+
+    afterAll(() => {
+      process.chdir(__dirname);
     });
 
     it('should return the base info for program to execute', async () => {
-      expect(getProgramInfo())
-        .to.be.an('object')
-        .to.have.keys([
-          'abellConfig',
-          'command',
-          'contentMap',
-          'templateMap',
-          'task',
-          'port',
-          'logs'
-        ]);
-    });
+      const tempConsoleLog = console.log;
+      console.log = jest.fn((message) => message);
 
-    after(() => {
-      process.chdir(__dirname);
+      const expectedProgramInfo = {
+        abellConfig: {
+          outputPath: path.join(examplePath, 'dist'),
+          themePath: path.join(examplePath, 'theme'),
+          contentPath: path.join(examplePath, 'content'),
+          plugins: [],
+          globalMeta: {}
+        },
+        contentMap: {},
+        templateMap: {
+          'index.abell': {
+            shouldLoop: false,
+            templatePath: 'index.abell',
+            htmlPath: 'index.html',
+            $root: ''
+          }
+        },
+        task: '',
+        logs: 'minimum',
+        command: {},
+        port: 5000
+      };
+
+      const initialProgramInfo = getProgramInfo();
+      expect(initialProgramInfo).toEqual(expectedProgramInfo);
+      expect(console.log.mock.results[0].value).toContain('Cannot find module');
+      console.log = tempConsoleLog;
     });
   });
 
   describe('#buildTemplateMap()', () => {
+    const examplePath = path.join(demoPath, 'test-example-main');
+
     it('should build templateMap with expected properties and values', () => {
-      const themePath = path.join(
-        __dirname,
-        'test-utils',
-        'resources',
-        'test_demo',
-        'src'
-      );
+      const themePath = path.join(examplePath, 'theme');
+
+      const expectedTemplateMap = {
+        [resPath('[path]/index.abell')]: {
+          $root: '..',
+          htmlPath: resPath('[path]/index.html'),
+          shouldLoop: true,
+          templatePath: resPath('[path]/index.abell')
+        },
+        'about.abell': {
+          shouldLoop: false,
+          templatePath: 'about.abell',
+          htmlPath: 'about.html',
+          $root: ''
+        },
+        'index.abell': {
+          shouldLoop: false,
+          templatePath: 'index.abell',
+          htmlPath: 'index.html',
+          $root: ''
+        }
+      };
 
       const templateMap = buildTemplateMap(themePath);
 
-      // Makes sure Component.abell exists in test_demo
-      expect(fs.existsSync(path.join(themePath, 'Component.abell'))).to.equal(
-        true
-      );
-
-      expect(Object.keys(templateMap)).to.have.members([
-        `[path]${path.sep}index.abell`,
-        'about.abell',
-        'index.abell'
-      ]);
-
-      expect(templateMap[`[path]${path.sep}index.abell`].shouldLoop).to.equal(
-        true
-      );
-      expect(templateMap[`[path]${path.sep}index.abell`].$root).to.equal('..');
-
-      expect(templateMap['index.abell'].shouldLoop).to.equal(false);
-      expect(templateMap['index.abell'].$root).to.equal('');
+      expect(templateMap).toEqual(expectedTemplateMap);
     });
   });
 
   describe('#buildContentMap()', () => {
+    const examplePath = path.join(demoPath, 'test-example-main');
+
     it('should return all the information about the content', () => {
-      const contentPath = path.join(
-        __dirname,
-        'test-utils',
-        'resources',
-        'test_demo',
-        'content'
-      );
-
+      const contentPath = path.join(examplePath, 'content');
       const contentMap = buildContentMap(contentPath);
+      const expectedContentMap = {
+        [resPath('deep/extra-deep')]: {
+          title: 'extra-deep',
+          description: 'Hi, This is extra-deep...',
+          $createdAt: new Date('2020-05-19T18:30:00.000Z'),
+          $modifiedAt: new Date('2020-05-29T18:30:00.000Z'),
+          $slug: 'extra-deep',
+          $source: 'local',
+          $path: 'deep/extra-deep',
+          $root: '../..'
+        },
+        'hello-world': {
+          title: 'hello-world',
+          description: 'Hi, This is hello-world...',
+          $slug: 'hello-world',
+          $source: 'local',
+          $modifiedAt: new Date('2020-05-29T18:30:00.000Z'),
+          $createdAt: new Date('2020-05-19T18:30:00.000Z'),
+          $path: 'hello-world',
+          $root: '..'
+        }
+      };
 
-      expect(Object.keys(contentMap)).to.have.members([
-        'another-blog',
-        'my-first-blog',
-        `my-first-blog${path.sep}sub-blog`
-      ]);
-
-      expect(contentMap['another-blog'].$root).to.equal('..');
-
-      expect(contentMap[`my-first-blog${path.sep}sub-blog`].$root).to.equal(
-        `..${path.sep}..`
-      );
+      expect(contentMap).toEqual(expectedContentMap);
     });
   });
 
   describe('#getAbellConfig()', () => {
-    before(() => {
-      process.chdir(
-        path.join(__dirname, 'test-utils', 'resources', 'test_demo')
-      );
+    const examplePath = path.join(demoPath, 'test-example-main');
+
+    beforeAll(() => {
+      process.chdir(path.join(examplePath));
     });
 
-    it('should return siteName from abell.config.js', () => {
+    afterAll(() => {
+      process.chdir(path.join(__dirname));
+    });
+
+    it('should return expected object from abell.config.js', () => {
       const abellConfig = getAbellConfig();
-      expect(abellConfig.globalMeta.siteName).to.equal('Abell Test Working!');
-    });
+      const expectedAbellConfig = {
+        outputPath: path.join(examplePath, 'test-output-path'),
+        themePath: path.join(examplePath, 'theme'),
+        contentPath: path.join(examplePath, 'content'),
+        plugins: ['plugin-test-1'],
+        globalMeta: {
+          test: 'pass'
+        }
+      };
 
-    it('should expect default contentPath, themePath and outputPath values', () => {
-      const abellConfig = getAbellConfig();
-      expect(Object.keys(abellConfig)).to.eql([
-        'outputPath',
-        'themePath',
-        'contentPath',
-        'plugins',
-        'globalMeta'
-      ]);
-    });
-
-    after(() => {
-      process.chdir(
-        path.join(__dirname, 'test-utils', 'resources', 'test_demo')
-      );
+      expect(abellConfig).toEqual(expectedAbellConfig);
     });
   });
 
@@ -135,72 +165,61 @@ describe('utils/build-utils.js', () => {
         slug: 'blog-from-plugin',
         content: `# Hello
         Woop Woop`,
-        createdAt: new Date('3 May 2020'),
+        createdAt: new Date('2020-05-02T18:30:00.000Z'),
         foo: 'bar'
       };
 
-      const contentNode = getSourceNodeFromPluginNode(pluginNode);
-      expect(contentNode.$slug).to.equal('blog-from-plugin');
-      expect(contentNode.$path).to.equal('blog-from-plugin');
-      expect(contentNode.title).to.equal('blog-from-plugin');
-      expect(contentNode.foo).to.equal('bar');
-      expect(contentNode.$source).to.equal('plugin');
-      expect(contentNode.$root).to.equal('..');
-      expect(contentNode.$createdAt).to.be.a('Date');
-      expect(contentNode.$modifiedAt).to.be.a('Date');
+      const expectedSourceNode = {
+        slug: 'blog-from-plugin',
+        content: '# Hello\n        Woop Woop',
+        createdAt: new Date('2020-05-02T18:30:00.000Z'),
+        foo: 'bar',
+        title: 'blog-from-plugin',
+        description: 'This is blog-from-plugin...',
+        $path: 'blog-from-plugin',
+        $slug: 'blog-from-plugin',
+        $createdAt: new Date('2020-05-02T18:30:00.000Z'),
+        $modifiedAt: new Date('2020-05-02T18:30:00.000Z'),
+        $root: '..',
+        $source: 'plugin'
+      };
 
-      expect(contentNode.$createdAt.toDateString()).to.equal('Sun May 03 2020');
-      expect(contentNode.$modifiedAt.toDateString()).to.equal(
-        'Sun May 03 2020'
-      );
+      const contentNode = getSourceNodeFromPluginNode(pluginNode);
+      expect(contentNode).toEqual(expectedSourceNode);
     });
   });
 
   describe('#renderMarkdown()', () => {
     it('should return HTML of the md file in given path', () => {
-      const shouldOutput = /* html */ `
-        <h1 id="abell-test-title-check">Abell Test Title Check</h1>
-        <p>Hi this my another blog.
-          <b>Nice</b>
-        </p>
-        <pre>
-          <code class="language-js">const s = 'cool'</code>
-        </pre>
-      `;
+      const markdown = renderMarkdown(
+        path.join(demoPath, 'test-example-main', 'content', 'index.md'),
+        {
+          meta: { title: 'Abell Test Title Check' }
+        }
+      );
 
-      expect(
-        renderMarkdown(
-          path.join(
-            __dirname,
-            'test-utils/resources/test_demo/content/another-blog/index.md'
-          ),
-          {
-            meta: { title: 'Abell Test Title Check' }
-          }
-        ).replace(/[\n ]/g, '')
-      ).to.equal(shouldOutput.replace(/[\n ]/g, ''));
+      expect(markdown).toMatchSnapshot();
     });
   });
 
   describe('#getContentMeta', () => {
-    it('should ', () => {
-      const contentPath = path.join(
-        __dirname,
-        'test-utils',
-        'resources',
-        'test_demo',
-        'content'
-      );
+    it('should return meta content of blog on given blog name', () => {
+      const contentPath = path.join(demoPath, 'test-example-main', 'content');
 
-      const anotherBlogMeta = getContentMeta('another-blog', { contentPath });
+      const metaContent = getContentMeta('hello-world', { contentPath });
 
-      expect(anotherBlogMeta.$slug).to.equal('another-blog');
-      expect(anotherBlogMeta.title).to.equal('Another blog');
-      expect(anotherBlogMeta.$source).to.equal('local');
-      expect(anotherBlogMeta.description).to.equal('Amazing blog right');
-      expect(anotherBlogMeta.$createdAt.toDateString()).to.equal(
-        'Mon May 11 2020'
-      );
+      const expectedMetaContent = {
+        title: 'hello-world',
+        description: 'Hi, This is hello-world...',
+        $slug: 'hello-world',
+        $source: 'local',
+        $modifiedAt: new Date('2020-05-29T18:30:00.000Z'),
+        $createdAt: new Date('2020-05-19T18:30:00.000Z'),
+        $path: 'hello-world',
+        $root: '..'
+      };
+
+      expect(metaContent).toEqual(expectedMetaContent);
     });
   });
 });
