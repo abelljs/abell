@@ -11,6 +11,7 @@ const cheerio = require('cheerio');
 const devServer = require('../src/abell-dev-server');
 const adsHttpServer = require('../src/abell-dev-server/http-server.js');
 const serve = require('../src/commands/serve');
+const { resPath } = require('./test-utils/helpers');
 
 const demoPath = path.join(__dirname, 'demos');
 const examplePath = path.join(demoPath, 'test-dev-server');
@@ -71,9 +72,11 @@ describe('src/abell-dev-server', () => {
     expect(console.log.mock.results.map((result) => result.value)).toEqual([
       '\n⚙️  Abell Config Changed',
       '\u001b[1m\u001b[32m>\u001b[39m\u001b[22m Site Rebuilt',
-      "\n📄 Event 'change' in content/deep/extra-deep/index.md",
-      '\u001b[1m\u001b[32m>\u001b[39m\u001b[22m Rebuilt deep/extra-deep',
-      "\n💅 Event 'change' in theme/about.abell",
+      `\n📄 Event 'change' in ${resPath('content/deep/extra-deep/index.md')}`,
+      `\u001b[1m\u001b[32m>\u001b[39m\u001b[22m Rebuilt ${resPath(
+        'deep/extra-deep'
+      )}`,
+      `\n💅 Event 'change' in ${resPath('theme/about.abell')}`,
       '\u001b[1m\u001b[32m>\u001b[39m\u001b[22m Files Rebuilt'
     ]);
 
