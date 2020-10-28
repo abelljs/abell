@@ -2,7 +2,6 @@
  * Tests: src/abell-dev-server/
  */
 
-const fs = require('fs');
 const path = require('path');
 const net = require('net');
 
@@ -42,39 +41,15 @@ describe('src/abell-dev-server', () => {
       path: process.cwd()
     });
 
-    fs.writeFileSync(
-      path.join(process.cwd(), 'index.html'),
-      '<h1>Hello World</h1>'
-    );
-
-    let res = await fetch(`http://localhost:${SERVER_DEFAULT_PORT}`);
+    const res = await fetch(`http://localhost:${SERVER_DEFAULT_PORT}`);
     expect(res.status).toBe(200);
     expect(res.headers.get('content-type')).toBe('text/html');
 
-    let text = await res.text();
-    let parsed = cheerio.load(text);
+    const text = await res.text();
+    const parsed = cheerio.load(text);
     expect(parsed('h1').text()).toBe('Hello World');
     // websocket injects javascript to the page that is being hosted
     expect(parsed('script').length).toBe(1);
-
-    // test if reloading dev server works
-    fs.writeFileSync(
-      path.join(process.cwd(), 'index.html'),
-      '<h1>Change Triggered</h1>'
-    );
-
-    devServer.reload();
-    res = await fetch(`http://localhost:${SERVER_DEFAULT_PORT}`);
-    text = await res.text();
-    parsed = cheerio.load(text);
-
-    expect(parsed('h1').text()).toBe('Change Triggered');
-    expect(parsed('script').length).toBe(1);
-
-    fs.writeFileSync(
-      path.join(process.cwd(), 'index.html'),
-      '<h1>Hello World</h1>'
-    );
   });
 
   it('should start on the next port if default port is occupied', async () => {
