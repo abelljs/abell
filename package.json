@@ -13,7 +13,7 @@
   "scripts": {
     "test:unit": "jest ./tests/",
     "test:e2e": "jest ./examples/",
-    "test": "jest",
+    "test": "jest --silent",
     "start": "cd examples/main && node ../../bin/abell.js build && serve dist",
     "dev": "echo \"1. Execute 'npm link' \n2. 'cd examples/main'\n3. 'abell serve' \"",
     "eslint": "eslint .",

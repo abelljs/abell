@@ -10,6 +10,7 @@ const cheerio = require('cheerio');
 
 const devServer = require('../src/abell-dev-server');
 const adsHttpServer = require('../src/abell-dev-server/http-server.js');
+const serve = require('../src/commands/serve');
 
 const demoPath = path.join(__dirname, 'demos');
 const examplePath = path.join(demoPath, 'test-dev-server');
@@ -40,6 +41,49 @@ describe('src/abell-dev-server', () => {
     expect(devServer.reload.toString()).toContain(
       "socketServer.send('abell-dev-server-reload')"
     );
+  });
+
+  it('should run an abell-dev-server and trigger reload', async () => {
+    const tempCWD = process.cwd();
+    const tempConsoleLog = console.log;
+    const mainExample = path.join(demoPath, 'test-example-main');
+
+    process.chdir(mainExample);
+    serverInstance = await serve({
+      port: SERVER_DEFAULT_PORT,
+      ignorePlugins: true
+    });
+
+    console.log = jest.fn((message) => message);
+    // abell.config.js - change
+    await serverInstance.listeners[0]._events.change();
+    // 'content' - all
+    await serverInstance.listeners[1]._events.all(
+      'change',
+      path.resolve(path.join('content', 'deep', 'extra-deep', 'index.md'))
+    );
+    // 'theme' - all
+    await serverInstance.listeners[2]._events.all(
+      'change',
+      path.resolve(path.join('theme', 'about.abell'))
+    );
+
+    expect(console.log.mock.results.map((result) => result.value)).toEqual([
+      '\n⚙️  Abell Config Changed',
+      '\u001b[1m\u001b[32m>\u001b[39m\u001b[22m Site Rebuilt',
+      "\n📄 Event 'change' in content/deep/extra-deep/index.md",
+      '\u001b[1m\u001b[32m>\u001b[39m\u001b[22m Rebuilt deep/extra-deep',
+      "\n💅 Event 'change' in theme/about.abell",
+      '\u001b[1m\u001b[32m>\u001b[39m\u001b[22m Files Rebuilt'
+    ]);
+
+    process.chdir(tempCWD);
+    serverInstance.httpServer.close();
+    serverInstance.wss.close();
+    console.log = tempConsoleLog;
+    for (const listener of serverInstance.listeners) {
+      listener.close();
+    }
   });
 
   it('starts and responds on default port', async () => {

@@ -189,37 +189,44 @@ async function runDevServer(programInfo) {
   };
 
   /** LISTENERS! */
+  const listeners = [];
 
   const configPath = path.join(process.cwd(), 'abell.config.js');
   if (fs.existsSync(configPath)) {
-    chokidar
-      .watch(configPath, chokidarOptions)
-      .on('change', onAbellConfigChanged);
+    listeners.push(
+      chokidar
+        .watch(configPath, chokidarOptions)
+        .on('change', onAbellConfigChanged)
+    );
   }
 
   if (fs.existsSync(programInfo.abellConfig.contentPath)) {
-    chokidar
-      .watch(programInfo.abellConfig.contentPath, chokidarOptions)
-      .on('all', (event, filePath) => {
-        // error handling
-        try {
-          onContentChanged(event, filePath);
-        } catch (err) {
-          console.log(err);
-          logError(err.message);
-        }
-      });
+    listeners.push(
+      chokidar
+        .watch(programInfo.abellConfig.contentPath, chokidarOptions)
+        .on('all', async (event, filePath) => {
+          // error handling
+          try {
+            await onContentChanged(event, filePath);
+          } catch (err) {
+            console.log(err);
+            logError(err.message);
+          }
+        })
+    );
   }
 
-  chokidar
-    .watch(programInfo.abellConfig.themePath, chokidarOptions)
-    .on('all', (event, filePath) => {
-      // error handling
-      onThemeChanged(event, filePath).catch((err) => {
-        console.log(err);
-        logError(err.message);
-      });
-    });
+  listeners.push(
+    chokidar
+      .watch(programInfo.abellConfig.themePath, chokidarOptions)
+      .on('all', async (event, filePath) => {
+        // error handling
+        await onThemeChanged(event, filePath).catch((err) => {
+          console.log(err);
+          logError(err.message);
+        });
+      })
+  );
 
   /** EXIT HANDLER */
   // do something when app is closing
@@ -231,6 +238,8 @@ async function runDevServer(programInfo) {
   process.on('SIGUSR2', exitHandler.bind(null, { exit: true }));
   // catches uncaught exceptions
   process.on('uncaughtException', exitHandler.bind(null, { exit: true }));
+
+  return { ...adsResult, listeners };
 }
 
 /**
@@ -275,7 +284,7 @@ async function serve(command) {
     await executeAfterBuildPlugins(programInfo);
   }
 
-  runDevServer(programInfo);
+  return runDevServer(programInfo);
 }
 
 module.exports = serve;
