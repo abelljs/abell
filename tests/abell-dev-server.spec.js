@@ -30,10 +30,16 @@ describe('src/abell-dev-server', () => {
   });
 
   afterEach(() => {
-    if (serverInstance.httpServer) {
+    if (serverInstance && serverInstance.httpServer) {
       serverInstance.httpServer.close();
       serverInstance.wss.close();
     }
+  });
+
+  it('should call socketServer.send function', () => {
+    expect(devServer.reload.toString()).toContain(
+      "socketServer.send('abell-dev-server-reload')"
+    );
   });
 
   it('starts and responds on default port', async () => {
