@@ -69,7 +69,16 @@ describe('src/abell-dev-server', () => {
       path.resolve(path.join('theme', 'about.abell'))
     );
 
-    expect(console.log.mock.results.map((result) => result.value)).toEqual([
+    const contentArray = console.log.mock.results.map((result) => result.value);
+
+    for (const listener of serverInstance.listeners) {
+      listener.close();
+    }
+
+    process.chdir(tempCWD);
+    console.log = tempConsoleLog;
+
+    expect(contentArray).toEqual([
       '\n⚙️  Abell Config Changed',
       '\u001b[1m\u001b[32m>\u001b[39m\u001b[22m Site Rebuilt',
       `\n📄 Event 'change' in ${resPath('content/deep/extra-deep/index.md')}`,
@@ -79,14 +88,6 @@ describe('src/abell-dev-server', () => {
       `\n💅 Event 'change' in ${resPath('theme/about.abell')}`,
       '\u001b[1m\u001b[32m>\u001b[39m\u001b[22m Files Rebuilt'
     ]);
-
-    process.chdir(tempCWD);
-    serverInstance.httpServer.close();
-    serverInstance.wss.close();
-    console.log = tempConsoleLog;
-    for (const listener of serverInstance.listeners) {
-      listener.close();
-    }
   });
 
   it('starts and responds on default port', async () => {
