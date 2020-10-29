@@ -82,9 +82,7 @@ describe('src/abell-dev-server', () => {
       '\n⚙️  Abell Config Changed',
       '\u001b[1m\u001b[32m>\u001b[39m\u001b[22m Site Rebuilt',
       `\n📄 Event 'change' in ${resPath('content/deep/extra-deep/index.md')}`,
-      `\u001b[1m\u001b[32m>\u001b[39m\u001b[22m Rebuilt ${resPath(
-        'deep/extra-deep'
-      )}`,
+      `\u001b[1m\u001b[32m>\u001b[39m\u001b[22m Rebuilt deep/extra-deep`,
       `\n💅 Event 'change' in ${resPath('theme/about.abell')}`,
       '\u001b[1m\u001b[32m>\u001b[39m\u001b[22m Files Rebuilt'
     ]);
