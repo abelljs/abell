@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.7.5
+
+- Update abell-renderer
+
 ## v0.7.4
 
 - No user-facing changes.
