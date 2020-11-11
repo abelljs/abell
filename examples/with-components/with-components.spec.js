@@ -105,7 +105,7 @@ describe('examples/with-components', () => {
           )
           .replace(/\s|\n|\r/g, '')
       ).toBe(
-        `{document.querySelector('div.brand').innerHTML = 'Set from JS';}{}`.replace(
+        `document.querySelector('div.brand').innerHTML = 'Set from JS';`.replace(
           /\s|\n|\r/g,
           ''
         )
