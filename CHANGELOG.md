@@ -1,6 +1,24 @@
 # Changelog
 
-## v0.7.5
+## v0.8.0-alpha `abell@next`
+
+- Add `Abell.programInfo` variable with information about paths and abell process.
+- **Abell Renderer Updates**
+  - Add `scopedSelector` in Abell Components! 🥳
+  - Add `__filename`, `__dirname` variables.
+  - Support components inside Abell Blocks-
+    This works now-
+
+<!-- prettier-ignore -->
+```vue
+{{ 
+  true 
+  ? <SomeComponent />
+  : `<div>False</div>` 
+}}
+```
+
+## v0.7.5 `abell@latest`
 
 - Update abell-renderer
 
