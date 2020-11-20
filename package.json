@@ -41,7 +41,7 @@
   },
   "homepage": "https://abelljs.org",
   "dependencies": {
-    "abell-renderer": "^0.4.0-alpha.2",
+    "abell-renderer": "^0.4.0",
     "chokidar": "^3.4.0",
     "commander": "^5.0.0",
     "remarkable": "^2.0.0",

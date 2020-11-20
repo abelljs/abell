@@ -1,6 +1,6 @@
 # Changelog
 
-## v0.8.0-alpha `abell@next`
+## v0.8.0 `abell@latest`
 
 - Add `Abell.programInfo` variable with information about paths and abell process.
 - **Abell Renderer Updates**
@@ -18,7 +18,7 @@
 }}
 ```
 
-## v0.7.5 `abell@latest`
+## v0.7.5
 
 - Update abell-renderer
 
