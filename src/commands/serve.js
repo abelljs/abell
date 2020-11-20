@@ -268,7 +268,7 @@ async function serve(command) {
   programInfo.port = command.port;
   programInfo.logs = 'minimum';
   programInfo.task = 'serve';
-  programInfo.abellConfig.outputPath = '.debug';
+  programInfo.abellConfig.outputPath = path.join(process.cwd(), '.debug');
 
   // Build initial site before serving
   try {

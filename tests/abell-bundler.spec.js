@@ -77,7 +77,7 @@ describe('src/utils/abell-bundler.js', () => {
         path: resPath('bundled-css/main.abell.css')
       },
       [resPath('bundled-js/main.abell.js-0')]: {
-        content: '\n  const isNav = true;\n\n  const isFooter = true;\n',
+        content: 'const isNav = true;\n\n  const isFooter = true;',
         path: resPath('bundled-js/main.abell.js')
       },
       [resPath('bundled-css/footer.css-0')]: {

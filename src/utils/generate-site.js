@@ -64,6 +64,12 @@ async function createHTMLFile(templateObj, programInfo, options) {
       (a, b) => b.$createdAt.getTime() - a.$createdAt.getTime()
     ),
     contentObj: programInfo.contentMap,
+    programInfo: {
+      themePath: programInfo.abellConfig.themePath,
+      outputPath: programInfo.abellConfig.outputPath,
+      contentPath: programInfo.abellConfig.contentPath,
+      task: programInfo.task
+    },
     $root: standardizePath(templateObj.$root),
     $path: standardizePath(templateObj.htmlPath.replace(/index\.html/g, ''))
   };
