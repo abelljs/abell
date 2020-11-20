@@ -6,6 +6,7 @@
 - **Abell Renderer Updates**
   - Add `scopedSelector` in Abell Components! 🥳
   - Add `__filename`, `__dirname` variables.
+  - Fix not printing falsy values issue `{{ 0 }}`, `{{ false }}`
   - Support components inside Abell Blocks-
     This works now-
 
