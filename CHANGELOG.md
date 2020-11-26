@@ -1,5 +1,20 @@
 # Changelog
 
+## v0.9.0-alpha.1 `abell@next`
+
+Adds `ignoreInOutput` configuration again (It was possible in earlier Abell versions)
+
+You can pass an array of file/folder which should be ignored when generating output.
+
+If there are files that output some other file. You can use this to ignore source files.
+
+```js
+// abell.config.js
+module.exports = {
+  ignoreInOutput: ['styles.scss']
+};
+```
+
 ## v0.8.0 `abell@latest`
 
 - Add `Abell.programInfo` variable with information about paths and abell process.
