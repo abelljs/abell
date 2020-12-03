@@ -1,8 +1,9 @@
 # Changelog
 
-## v0.9.0-alpha.1 `abell@next`
+## v0.9.0-alpha.2 `abell@next`
 
-Adds `ignoreInOutput` configuration again (It was possible in earlier Abell versions)
+- **ignoreInOutput**
+  Adds `ignoreInOutput` configuration again (It was possible in earlier Abell versions)
 
 You can pass an array of file/folder which should be ignored when generating output.
 
@@ -14,6 +15,8 @@ module.exports = {
   ignoreInOutput: ['styles.scss']
 };
 ```
+
+- "Built Static Files" Added to Logs.
 
 ## v0.8.0 `abell@latest`
 

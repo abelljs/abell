@@ -245,6 +245,10 @@ async function generateSite(programInfo) {
     programInfo.abellConfig.outputPath,
     ignoreCopying
   );
+
+  if (programInfo.logs === 'complete') {
+    console.log(`...Built Static Files`);
+  }
 }
 
 module.exports = { createHTMLFile, generateSite };
