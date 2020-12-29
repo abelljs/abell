@@ -1,9 +1,9 @@
 # Changelog
 
-## v0.9.0-alpha.2 `abell@next`
+## v0.9.0-alpha.3 `abell@next`
 
-- **ignoreInOutput**
-  Adds `ignoreInOutput` configuration again (It was possible in earlier Abell versions)
+1. **feat: ignoreInOutput**
+   Adds `ignoreInOutput` configuration again (It was possible in earlier Abell versions)
 
 You can pass an array of file/folder which should be ignored when generating output.
 
@@ -16,7 +16,10 @@ module.exports = {
 };
 ```
 
-- "Built Static Files" Added to Logs.
+2. **fix: dev-server changes not reflecting in multiple devices**
+   If you connect to dev-server from multiple devices, your changes will now reflect in all of them without manual reload.
+
+3. "Built Static Files" Added to Logs.
 
 ## v0.8.0 `abell@latest`
 
