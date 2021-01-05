@@ -124,6 +124,8 @@ async function createServer(options, retry) {
   const port = (retry && retry.nextPort) || (options && options.port) || 5000;
   const socketCode = /* html */ `
   <script>
+  if (window.location === window.parent.location) {
+    // Check if page is not in iframe
     const socketProtocol = location.protocol === 'http:' ? 'ws://' : 'wss://';
     const url = socketProtocol + location.host;
     const connection = new WebSocket(url);
@@ -132,6 +134,7 @@ async function createServer(options, retry) {
         location.reload();
       }
     });
+  }
   </script>
   `;
   let httpServer;
