@@ -1,6 +1,6 @@
 # Changelog
 
-## v0.9.0-alpha.3 `abell@next`
+## v0.9.0-alpha.4 `abell@next`
 
 1. **feat: ignoreInOutput**
    Adds `ignoreInOutput` configuration again (It was possible in earlier Abell versions)
@@ -20,6 +20,7 @@ module.exports = {
    If you connect to dev-server from multiple devices, your changes will now reflect in all of them without manual reload.
 
 3. "Built Static Files" Added to Logs.
+4. Upgrade abell-renderer. (Removes scopedSelector is declared bug)
 
 ## v0.8.0 `abell@latest`
 
