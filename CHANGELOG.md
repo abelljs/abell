@@ -1,6 +1,6 @@
 # Changelog
 
-## v0.9.0-alpha.4 `abell@next`
+## v0.9.0 `abell@latest`
 
 1. **feat: ignoreInOutput**
    Adds `ignoreInOutput` configuration again (It was possible in earlier Abell versions)
