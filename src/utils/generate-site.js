@@ -233,7 +233,10 @@ async function generateSite(programInfo) {
 
   const ignoreCopying = [
     ...importedFiles,
-    ...recursiveFindFiles(programInfo.abellConfig.themePath, '.abell')
+    ...recursiveFindFiles(programInfo.abellConfig.themePath, '.abell'),
+    ...(programInfo.abellConfig.ignoreInOutput || []).map((pathToIgnore) =>
+      path.join(programInfo.abellConfig.themePath, pathToIgnore)
+    )
   ];
 
   // Copy everything from src to dist except the ones mentioned in ignoreCopying.
@@ -242,6 +245,10 @@ async function generateSite(programInfo) {
     programInfo.abellConfig.outputPath,
     ignoreCopying
   );
+
+  if (programInfo.logs === 'complete') {
+    console.log(`...Built Static Files`);
+  }
 }
 
 module.exports = { createHTMLFile, generateSite };

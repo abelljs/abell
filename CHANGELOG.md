@@ -1,5 +1,27 @@
 # Changelog
 
+## v0.9.0 `abell@latest`
+
+1. **feat: ignoreInOutput**
+   Adds `ignoreInOutput` configuration again (It was possible in earlier Abell versions)
+
+You can pass an array of file/folder which should be ignored when generating output.
+
+If there are files that output some other file. You can use this to ignore source files.
+
+```js
+// abell.config.js
+module.exports = {
+  ignoreInOutput: ['styles.scss']
+};
+```
+
+2. **fix: dev-server changes not reflecting in multiple devices**
+   If you connect to dev-server from multiple devices, your changes will now reflect in all of them without manual reload.
+
+3. "Built Static Files" Added to Logs.
+4. Upgrade abell-renderer. (Removes scopedSelector is declared bug)
+
 ## v0.8.0 `abell@latest`
 
 - Add `Abell.programInfo` variable with information about paths and abell process.
