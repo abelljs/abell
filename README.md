@@ -4,7 +4,6 @@
 
 <p align="center">
   <b><a href="https://abelljs.org">https://abelljs.org</a></b><br/>
-  <b>Not ready enough for serious projects. ☠️</b>
 </p>
 <br/>
 
