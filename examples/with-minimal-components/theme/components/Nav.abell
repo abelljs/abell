@@ -8,10 +8,13 @@
     <Brand/>
   </nav>
 </template>
-<style inlined>
+<style>
   nav {
     background-color: #000;
     color: #fff;
   }
 </style>
+<script bundle="nav.js">
+  console.log('hello nav');
+</script>
 </AbellComponent>
