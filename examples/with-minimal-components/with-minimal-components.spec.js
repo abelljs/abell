@@ -16,7 +16,9 @@ describe('examples/with-components', () => {
         'utf-8'
       );
 
-      expect(indexHTML).toContain(`<script src="bundled-js/nav.js"></script>`);
+      expect(indexHTML).toContain(
+        `<script src="bundled-js${path.sep}nav.js"></script>`
+      );
     });
   });
 
