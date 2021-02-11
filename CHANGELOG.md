@@ -1,6 +1,10 @@
 # Changelog
 
-## v0.9.0 `abell@latest`
+## v0.10.0 `abell@latest`
+
+- Avoid adding style or script to parent page if the link already exists [#114](https://github.com/abelljs/abell/issues/114)
+
+## v0.9.0
 
 1. **feat: ignoreInOutput**
    Adds `ignoreInOutput` configuration again (It was possible in earlier Abell versions)
@@ -22,7 +26,7 @@ module.exports = {
 3. "Built Static Files" Added to Logs.
 4. Upgrade abell-renderer. (Removes scopedSelector is declared bug)
 
-## v0.8.0 `abell@latest`
+## v0.8.0
 
 - Add `Abell.programInfo` variable with information about paths and abell process.
 - **Abell Renderer Updates**
