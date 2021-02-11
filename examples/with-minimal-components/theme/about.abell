@@ -4,5 +4,6 @@
 <html>
 <body>
   <Nav props={foo: 9}/>
+  <script defer src="bundled-js/nav.js"></script>
 </body>
 </html>
