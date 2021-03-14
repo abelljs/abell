@@ -3,7 +3,7 @@
 }}
 <html>
 <head>
-  <link rel="preload" href="bundled-css/main.abell.css" onload="this.rel='stylesheet'; this.onload=null"/>
+  <link rel="preload" href="./bundled-css/main.abell.css" onload="this.rel='stylesheet'; this.onload=null"/>
   <title>Minimal Component Example</title>
 </head>
 <body>

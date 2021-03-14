@@ -195,7 +195,7 @@ function createBundles({ htmlOut, outPath, components, programInfo }) {
       addedLinks.push(bundle.path);
 
       if (
-        new RegExp(`<link.*?href=["']${bundle.path}["']`, 'g').test(htmlOut)
+        new RegExp(`<link.*?href=["'].?/?${bundle.path}["']`, 'g').test(htmlOut)
       ) {
         return '';
       }
@@ -216,7 +216,9 @@ function createBundles({ htmlOut, outPath, components, programInfo }) {
       addedLinks.push(bundle.path);
 
       if (
-        new RegExp(`<script.*?src=["']${bundle.path}["']`, 'g').test(htmlOut)
+        new RegExp(`<script.*?src=["'].?/?${bundle.path}["']`, 'g').test(
+          htmlOut
+        )
       ) {
         return '';
       }
