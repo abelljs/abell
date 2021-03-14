@@ -29,7 +29,7 @@ describe('examples/with-components', () => {
 
     it('should add main stylesheet link to head', () => {
       expect($('link[rel="stylesheet"]').attr('href')).toBe(
-        'bundled-css/main.abell.css'.replace(/\//g, path.sep)
+        'bundled-css/main.abell.css'
       );
     });
 
@@ -48,7 +48,7 @@ describe('examples/with-components', () => {
 
     it('should add main stylesheet link to head', () => {
       expect($('link[rel="stylesheet"]').attr('href')).toBe(
-        '../bundled-css/main.abell.css'.replace(/\//g, path.sep)
+        '../bundled-css/main.abell.css'
       );
     });
 

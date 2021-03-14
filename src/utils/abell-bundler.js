@@ -234,7 +234,7 @@ function createBundles({ htmlOut, outPath, components, programInfo }) {
           path.dirname(outPath),
           path.join(programInfo.abellConfig.outputPath, bundle.path)
         )
-        .replace(/\\/g, '')}"></script>\n`;
+        .replace(/\\/g, '/')}"></script>\n`;
     });
 
   htmlOut = addToBodyEnd(jsLinks.join('\n'), htmlOut);
