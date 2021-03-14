@@ -195,15 +195,20 @@ function createBundles({ htmlOut, outPath, components, programInfo }) {
       addedLinks.push(bundle.path);
 
       if (
-        new RegExp(`<link.*?href=["'].?/?${bundle.path}["']`, 'g').test(htmlOut)
+        new RegExp(
+          `<link.*?href=["'].?/?${bundle.path.replace(/\\/g, '/')}["']`,
+          'g'
+        ).test(htmlOut)
       ) {
         return '';
       }
 
-      return `\n<link rel="stylesheet" href="${path.relative(
-        path.dirname(outPath),
-        path.join(programInfo.abellConfig.outputPath, bundle.path)
-      )}"/>\n`;
+      return `\n<link rel="stylesheet" href="${path
+        .relative(
+          path.dirname(outPath),
+          path.join(programInfo.abellConfig.outputPath, bundle.path)
+        )
+        .replace(/\\/g, '/')}"/>\n`;
     });
 
   const jsLinks = Object.values(bundleMap)
@@ -216,17 +221,20 @@ function createBundles({ htmlOut, outPath, components, programInfo }) {
       addedLinks.push(bundle.path);
 
       if (
-        new RegExp(`<script.*?src=["'].?/?${bundle.path}["']`, 'g').test(
-          htmlOut
-        )
+        new RegExp(
+          `<script.*?src=["'].?/?${bundle.path.replace(/\\/g, '/')}["']`,
+          'g'
+        ).test(htmlOut)
       ) {
         return '';
       }
 
-      return `\n<script src="${path.relative(
-        path.dirname(outPath),
-        path.join(programInfo.abellConfig.outputPath, bundle.path)
-      )}"></script>\n`;
+      return `\n<script src="${path
+        .relative(
+          path.dirname(outPath),
+          path.join(programInfo.abellConfig.outputPath, bundle.path)
+        )
+        .replace(/\\/g, '')}"></script>\n`;
     });
 
   htmlOut = addToBodyEnd(jsLinks.join('\n'), htmlOut);

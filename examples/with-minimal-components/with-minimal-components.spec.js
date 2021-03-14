@@ -18,9 +18,7 @@ describe('examples/with-components', () => {
       );
     });
     it('should have default script import injected by abell', () => {
-      expect(indexHTML).toContain(
-        `<script src="bundled-js${path.sep}nav.js"></script>`
-      );
+      expect(indexHTML).toContain(`<script src="bundled-js/nav.js"></script>`);
     });
 
     it('should have custom style tag and not default tag', () => {
@@ -29,7 +27,7 @@ describe('examples/with-components', () => {
       );
 
       expect(indexHTML).not.toContain(
-        `<link rel="stylesheet" href="bundled-css${path.sep}main.abell.css"/>`
+        `<link rel="stylesheet" href="bundled-css/main.abell.css"/>`
       );
     });
   });
