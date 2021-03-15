@@ -8,6 +8,7 @@ describe('main()', () => {
   it('should export neccessary functions', () => {
     expect(Object.keys(main)).toEqual([
       'build',
+      'serve',
       'generateSite',
       'createHTMLFile'
     ]);
