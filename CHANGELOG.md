@@ -1,6 +1,29 @@
 # Changelog
 
-## v0.10.0 `abell@latest`
+## v0.10.3 `abell@latest`
+
+Exports `serve` function from main.
+
+Now you can do-
+```js
+const { serve } = require('abell');
+
+serve({
+  port: 5000
+});
+```
+
+and this will run the abell's dev server!
+
+## v0.10.2
+
+Link injection now handles cases like `./bundled-js/main.abell.js`, `/bundled-js/main.abell.js`, `bundled-js/main.abell.js`
+
+## v0.10.1
+
+Bump abell-renderer. Bug fix - [abelljs/abell-renderer#44](https://github.com/abelljs/abell-renderer/pull/44)
+
+## v0.10.0
 
 - Avoid adding style or script to parent page if the link already exists [#114](https://github.com/abelljs/abell/issues/114)
 

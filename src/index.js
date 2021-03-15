@@ -46,10 +46,12 @@
 const { generateSite, createHTMLFile } = require('./utils/generate-site.js');
 
 const build = require('./commands/build.js');
+const serve = require('./commands/serve.js');
 
 // Exports
 module.exports = {
   build,
+  serve,
   generateSite,
   createHTMLFile
 };
