@@ -124,17 +124,15 @@ async function createServer(options, retry) {
   const port = (retry && retry.nextPort) || (options && options.port) || 5000;
   const socketCode = /* html */ `
   <script>
-  if (window.location === window.parent.location) {
-    // Check if page is not in iframe
-    const socketProtocol = location.protocol === 'http:' ? 'ws://' : 'wss://';
-    const url = socketProtocol + location.host;
-    const connection = new WebSocket(url);
-    connection.addEventListener('message', e => {
-      if (e.data === 'abell-dev-server-reload') {
-        location.reload();
-      }
-    });
-  }
+  // Check if page is not in iframe
+  const socketProtocol = location.protocol === 'http:' ? 'ws://' : 'wss://';
+  const url = socketProtocol + location.host;
+  const connection = new WebSocket(url);
+  connection.addEventListener('message', e => {
+    if (e.data === 'abell-dev-server-reload') {
+      location.reload();
+    }
+  });
   </script>
   `;
   let httpServer;
