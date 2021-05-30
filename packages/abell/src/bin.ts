@@ -1,30 +1,26 @@
+#!/usr/bin/env node
+
 // This is the file that gets called first on `abell [command]`
 import { createCommand } from 'commander';
+
+import build from './commands/build';
+import serve from './commands/serve';
+
 const program = createCommand();
 
 // Listeners
 
 /** abell build */
-program.command('build').action((command) => {
-  console.log(command);
-});
+program.command('build').action(build);
 
 /** abell serve */
-
-type ServeOptions = {
-  port?: number;
-  ignorePlugins?: boolean;
-  printIp?: boolean;
-};
 
 program
   .command('serve')
   .option('--port [port]', 'Serve on different port')
   .option('--ignore-plugins', 'Serve without plugins', false)
   .option('--print-ip [printIp]', 'Print IP in serve', true)
-  .action((command: ServeOptions) => {
-    console.log(command);
-  });
+  .action(serve);
 
 /** abell -V */
 program.version(require('../package.json').version);
