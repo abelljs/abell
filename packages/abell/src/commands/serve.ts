@@ -4,11 +4,10 @@ type ServeOptions = {
   printIp?: boolean;
 };
 
-
-function serve(command: ServeOptions) {
-  console.log("Abell Serve");
-  console.log("Options - " + command);
-  console.log(3 + "nice");
+function serve(command: ServeOptions): void {
+  console.log('Abell Serve');
+  console.log('Options - ' + command);
+  console.log(3 + 'nice');
 }
 
 export default serve;

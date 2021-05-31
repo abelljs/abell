@@ -15,13 +15,15 @@
     "test:e2e": "jest ./examples/",
     "test": "jest --silent",
     "tsc": "tsc",
-    "eslint": "eslint packages/**/src/**/*.[jt]s",
+    "eslint": "eslint packages/**/src/**/ --ext .ts,.js",
     "prettier": "prettier --write \"packages/**/src/**/*.[jt]s\"",
     "format": "npm run prettier",
     "prepublishOnly": "npm run eslint && npm test"
   },
   "dependencies": {},
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.25.0",
+    "@typescript-eslint/parser": "^4.25.0",
     "eslint": "^7.0.0",
     "eslint-config-google": "^0.14.0",
     "eslint-config-prettier": "^6.11.0",
