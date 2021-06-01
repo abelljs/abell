@@ -11,6 +11,7 @@
     "packages/*"
   ],
   "scripts": {
+    "abell-renderer": "yarn workspace abell-renderer build && node packages/abell-renderer/dist/index.js",
     "test:unit": "jest ./tests/",
     "test:e2e": "jest ./examples/",
     "test": "jest --silent",

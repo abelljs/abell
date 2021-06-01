@@ -1,29 +1,8 @@
 import fs from 'fs';
 import path from 'path';
 
-type UserOptions = {
-  basePath: string;
-  filename: string;
-  allowRequire: boolean;
-  allowComponents: boolean;
-};
-
-type AbellComponentMap = {
-  html: string;
-  components?: Array<AbellComponentMap>;
-  styles?: {
-    attributes: Array<string>;
-    component: string;
-    componentPath: string;
-    content: string;
-  };
-  scripts?: {
-    attributes: Array<string>;
-    component: string;
-    componentPath: string;
-    content: string;
-  };
-};
+import { UserOptions, AbellComponentMap } from './types';
+import { getAbellInBuiltSandbox } from './utils';
 
 const defaultUserOptions: UserOptions = {
   basePath: '',
@@ -44,12 +23,18 @@ function render(
     (options.filename && path.dirname(options.filename)) ||
     '';
 
+  const builtInFunctions = getAbellInBuiltSandbox(options);
+
+  console.log(builtInFunctions);
+
   // Add built-in functions along with user's sandbox
 
   return {
     html: ''
   };
 }
+
+render(`<div></div>`, {}, { basePath: __dirname });
 
 export default {
   render
