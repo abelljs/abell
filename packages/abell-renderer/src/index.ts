@@ -3,6 +3,7 @@ import path from 'path';
 
 import { UserOptions, AbellComponentMap } from './types';
 import { getAbellInBuiltSandbox } from './utils';
+import abellParser from './parse-abell';
 
 const defaultUserOptions: UserOptions = {
   basePath: '',
@@ -11,7 +12,7 @@ const defaultUserOptions: UserOptions = {
   filename: '<sandbox>.abell'
 };
 
-function render(
+export function render(
   abellTemplate: string,
   // eslint-disable-next-line @typescript-eslint/ban-types
   userSandbox: object = {},
@@ -25,7 +26,9 @@ function render(
 
   const builtInFunctions = getAbellInBuiltSandbox(options);
 
-  console.log(builtInFunctions);
+  // console.log(builtInFunctions);
+  abellParser.write(abellTemplate);
+  abellParser.end();
 
   // Add built-in functions along with user's sandbox
 
@@ -33,8 +36,6 @@ function render(
     html: ''
   };
 }
-
-render(`<div></div>`, {}, { basePath: __dirname });
 
 export default {
   render
