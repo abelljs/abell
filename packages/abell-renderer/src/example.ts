@@ -1,8 +1,13 @@
 import { render } from './index';
 
 const abellString = `
-  <div>Hello, World!</div>
-  <Nav>Hi<Button>Button Text</Button></Nav>
+{{
+  const a = 3;
+  const b = 9;
+}}
+
+<b>{{ a + b }}</b>
 `;
 
-render(abellString);
+const htmlString = render(abellString, {}, { allowComponents: false });
+console.log(htmlString);

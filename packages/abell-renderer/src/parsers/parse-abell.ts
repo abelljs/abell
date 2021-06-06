@@ -1,5 +1,12 @@
 import { Parser } from 'htmlparser2';
 
+/**
+ * <Navbar>
+ * </Navbar>
+ *
+ *
+ */
+
 const parser = new Parser(
   {
     onopentag(tagName, attributes) {
@@ -9,7 +16,18 @@ const parser = new Parser(
        * If you don't need an aggregated `attributes` object,
        * have a look at the `onopentagname` and `onattribute` events.
        */
-      console.log(tagName, attributes);
+      // console.log(tagName, attributes);
+      // if ('props' in attributes) {
+      //   const abellPropsParsed = Object.entries(attributes)
+      //     .flatMap((val) => val)
+      //     .join('')
+      //     .replace('props', '');
+      //   console.log(abellPropsParsed);
+      // }
+    },
+
+    onattribute(attrName, attrValue, quotes) {
+      console.log(attrName, attrValue, quotes);
     },
 
     onclosetag(tagName) {

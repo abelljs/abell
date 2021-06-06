@@ -13,6 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "acorn": "^8.3.0",
     "htmlparser2": "^6.1.0"
   }
 }
