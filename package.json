@@ -12,6 +12,7 @@
   ],
   "scripts": {
     "abell-renderer": "yarn workspace abell-renderer",
+    "ar": "yarn workspace abell-renderer",
     "test:unit": "jest ./tests/",
     "test:e2e": "jest ./examples/",
     "test": "jest --silent",
@@ -25,6 +26,7 @@
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^4.25.0",
     "@typescript-eslint/parser": "^4.25.0",
+    "esbuild": "^0.12.9",
     "eslint": "^7.0.0",
     "eslint-config-google": "^0.14.0",
     "eslint-config-prettier": "^6.11.0",
