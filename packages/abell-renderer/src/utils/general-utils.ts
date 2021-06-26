@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { UserOptions, NodeBuiltins } from './types';
+import { UserOptions, NodeBuiltins } from '../types';
 
 export function getAbellInBuiltSandbox(options: UserOptions): NodeBuiltins {
   const builtInFunctions: NodeBuiltins = {
@@ -65,3 +65,8 @@ export const execRegexOnAll = (
 
   return { matches: allMatches, input };
 };
+
+export const isComponentImported = (abellCode: string): boolean =>
+  /(?:const|var|let) (\w*) *?= *?require\(["'`](.*?)\.abell["'`]\)/g.test(
+    abellCode
+  );

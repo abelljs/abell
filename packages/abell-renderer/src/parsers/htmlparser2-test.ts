@@ -1,4 +1,7 @@
+import vm from 'vm';
+
 import { Parser } from 'htmlparser2';
+import abellParser from './abell-parser';
 
 /**
  * <Navbar>
@@ -6,6 +9,10 @@ import { Parser } from 'htmlparser2';
  *
  *
  */
+
+let finalCode = '';
+const sandbox = { hello: 'yay' };
+const context: vm.Context = vm.createContext(sandbox); // eslint-disable-line
 
 const parser = new Parser(
   {
@@ -24,10 +31,22 @@ const parser = new Parser(
       //     .replace('props', '');
       //   console.log(abellPropsParsed);
       // }
+      finalCode += `<${tagName}>`;
+    },
+
+    ontext(textString) {
+      // const cleanJSCode = textString.replace(/{{|}}/g, '');
+      // if (cleanJSCode) {
+      //   const jsOutput = abellParser.runJS(cleanJSCode, context, 0, {});
+      //   finalCode += jsOutput;
+      // }
+      finalCode += textString;
+      console.log(textString);
+      console.log('----------------');
     },
 
     onattribute(attrName, attrValue, quotes) {
-      console.log(attrName, attrValue, quotes);
+      // console.log(attrName, attrValue, quotes);
     },
 
     onclosetag(tagName) {
@@ -38,12 +57,14 @@ const parser = new Parser(
        * equivalent opening tag before. Closing tags without corresponding
        * opening tags will be ignored.
        */
-      console.log(tagName);
+      finalCode += `</${tagName}>`;
     }
   },
   {
     lowerCaseTags: false
   }
 );
+
+export const getOutputCode = (): string => finalCode;
 
 export default parser;

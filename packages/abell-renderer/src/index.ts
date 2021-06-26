@@ -5,8 +5,8 @@ import {
   AbellComponentMap,
   UserOptionsAllowComponents
 } from './types';
-import { getAbellInBuiltSandbox } from './utils';
-import { compile } from './compiler';
+import { getAbellInBuiltSandbox } from './utils/general-utils';
+import { compile } from './parsers/abell-parser';
 
 const defaultUserOptions: UserOptions = {
   basePath: '',

@@ -1,7 +1,7 @@
 import * as vm from 'vm';
 import * as acorn from 'acorn';
-import { UserOptions, AcornNode } from './types';
-import { execRegexOnAll } from './utils';
+import { UserOptions, AcornNode } from '../types';
+import { execRegexOnAll } from '../utils/general-utils';
 
 function validateAbellBlock(
   statementTypeMap: string[],
