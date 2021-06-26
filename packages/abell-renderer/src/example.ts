@@ -1,7 +1,7 @@
 import vm from 'vm';
 
 import tokenize from './parsers/generic-tokenizer';
-import abellParser from './parsers/abell-parser';
+import abellHelpers from './parsers/abell-parser';
 
 // import { render } from './index';
 
@@ -31,7 +31,7 @@ const abellComponentString = `
   Hello World 
 
   TEST TEST
-  
+
   <div class="hello" id="hehe">{{ a + b }}</div>
   <Nice/>
 </body>
@@ -50,20 +50,9 @@ const abellComponentString = `
 // 26th June
 
 const tokenSchema = {
-  // varDeclareIdentifier: /boop (.*?)=/,
-  // nextBlock: /;/,
-  // stringLiteral: /"(.*?)"/,
-  // space: / /,
-  // lineBreak: /\n/,
-  // functionIdentifier: /([\w\d]*?)\(/,
-  // parenClose: /\)/
-  blockStart: /{{/,
-  blockEnd: /}}/,
-  componentTag: /\<[A-Z].*?\>/
-};
-
-const executeJs = (jsCode: string) => {
-  console.log(jsCode);
+  BLOCK_START: /{{/,
+  BLOCK_END: /}}/,
+  SELF_CLOSING_COMPONENT_TAG: /\<[A-Z][a-z0-9]*?\/>/
 };
 
 const tokens = tokenize(abellComponentString, tokenSchema, 'default');
@@ -73,26 +62,25 @@ let jsCodeContext = '';
 let isInsideAbellBlock = false;
 const context: vm.Context = vm.createContext({}); // eslint-disable-line
 for (const token of tokens) {
-  if (token.type === 'blockStart') {
+  if (token.type === 'BLOCK_START') {
     // abell block starts ({{)
     isInsideAbellBlock = true;
     continue;
-  } else if (token.type === 'blockEnd') {
+  } else if (token.type === 'BLOCK_END') {
     // abell block ends (}})
     isInsideAbellBlock = false;
-    const outputJS = abellParser.runJS(jsCodeContext, context, 0, {
+    const jsOutput = abellHelpers.runJS(jsCodeContext, context, 0, {
       filename: 'example.ts'
     });
-    jsCodeContext = '';
-    finalCode += outputJS;
+    jsCodeContext = ''; // set context empty since the code is executed now
+    finalCode += jsOutput;
   } else if (isInsideAbellBlock) {
     // inside the abell block
-
     // add to jsContext instead of final output
-    jsCodeContext += token.token;
+    jsCodeContext += token.text;
   } else {
     // the code outside abell block that goes directly into output
-    finalCode += token.token;
+    finalCode += token.text;
   }
 }
 console.log(finalCode);

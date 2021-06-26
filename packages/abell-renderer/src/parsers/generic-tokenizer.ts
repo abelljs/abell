@@ -31,7 +31,7 @@ function tokenize(s: string, parsers: any, deftok: 'default') {
       // where "best" is the closest to the current starting point
       if (r && r.index < m) {
         t = {
-          token: r[0],
+          text: r[0],
           type: key,
           matches: r.slice(1)
         };
@@ -42,7 +42,7 @@ function tokenize(s: string, parsers: any, deftok: 'default') {
       // there is text between last token and currently
       // matched token - push that out as default or "unknown"
       tokens.push({
-        token: s.substr(0, m),
+        text: s.substr(0, m),
         type: deftok || 'unknown'
       });
     }
@@ -50,7 +50,7 @@ function tokenize(s: string, parsers: any, deftok: 'default') {
       // push current token onto sequence
       tokens.push(t);
     }
-    s = s.substr(m + (t ? t.token.length : 0));
+    s = s.substr(m + (t ? t.text.length : 0));
   }
   return tokens;
 }
