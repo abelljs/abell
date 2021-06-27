@@ -3,6 +3,7 @@ export type UserOptionsBase = {
   filename?: string;
   allowRequire?: boolean;
   allowComponents?: boolean;
+  useNewCompiler?: boolean;
 };
 
 export interface UserOptionsAllowComponents extends UserOptionsBase {

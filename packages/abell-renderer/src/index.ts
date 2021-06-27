@@ -6,7 +6,7 @@ import {
   UserOptionsAllowComponents
 } from './types';
 import { getAbellInBuiltSandbox } from './utils/general-utils';
-import { compile } from './parsers/abell-parser';
+import { compile, newCompile } from './parsers/abell-parser';
 
 const defaultUserOptions: UserOptions = {
   basePath: '',
@@ -47,7 +47,15 @@ export function render(
     ...builtInFunctions,
     ...userSandbox
   };
-  const html = compile(abellTemplate, templateSandbox, options);
+
+  let html;
+
+  if (options.useNewCompiler) {
+    html = newCompile(abellTemplate, templateSandbox, options);
+    return html;
+  }
+
+  html = compile(abellTemplate, templateSandbox, options);
   return html;
 
   // Add built-in functions along with user's sandbox

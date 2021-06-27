@@ -2,6 +2,7 @@ import * as vm from 'vm';
 import * as acorn from 'acorn';
 import { UserOptions, AcornNode } from '../types';
 import { execRegexOnAll } from '../utils/general-utils';
+import tokenize from '../utils/generic-tokenizer';
 
 function validateAbellBlock(
   statementTypeMap: string[],
@@ -111,7 +112,6 @@ export function compile(
     let evaluatedValue = '';
     const errLineOffset = (input.slice(0, match.index).match(/\n/g) || [])
       .length;
-
     if (abellBlock.startsWith('\\{{')) {
       // if block is comment (e.g \{{ I want to print this as it is }})
       evaluatedValue = abellBlock.slice(1);
@@ -128,6 +128,67 @@ export function compile(
   renderedHTML += input.slice(lastIndex);
 
   return renderedHTML;
+}
+
+const tokenSchema = {
+  BLOCK_START: /{{/,
+  BLOCK_END: /}}/,
+  SELF_CLOSING_COMPONENT_TAG: /\<[A-Z][a-z0-9]*?\/>/,
+  NEW_LINE: /\n/
+};
+
+export function newCompile(
+  abellTemplate: string,
+  sandbox: Record<string, unknown>,
+  options: UserOptions
+): string {
+  const tokens = tokenize(abellTemplate, tokenSchema, 'default');
+  // console.log(tokens);
+  let finalCode = '';
+  let jsCodeContext = '';
+  let isInsideAbellBlock = false;
+  let currentLineNumber = 0;
+  let blockLineNumber = 0;
+  const context: vm.Context = vm.createContext(sandbox); // eslint-disable-line
+  for (const token of tokens) {
+    if (token.type === 'BLOCK_START') {
+      // abell block starts ({{)
+      isInsideAbellBlock = true;
+      blockLineNumber = 0;
+      continue;
+    } else if (token.type === 'BLOCK_END') {
+      // abell block ends (}})
+      isInsideAbellBlock = false;
+      const jsOutput = runJS(
+        jsCodeContext,
+        context,
+        currentLineNumber,
+        options
+      );
+      jsCodeContext = ''; // set context empty since the code is executed now
+      currentLineNumber += blockLineNumber; // include new lines from inside the js block
+      blockLineNumber = 0;
+      finalCode += jsOutput;
+    } else if (token.type === 'NEW_LINE') {
+      if (isInsideAbellBlock) {
+        blockLineNumber += 1;
+      } else {
+        currentLineNumber += 1;
+        finalCode += token.text;
+      }
+    } else if (!isInsideAbellBlock) {
+      // the code outside abell block that goes directly into output
+      finalCode += token.text;
+    }
+
+    if (isInsideAbellBlock) {
+      // inside the abell block
+      // add to jsContext instead of final output
+      jsCodeContext += token.text;
+    }
+  }
+
+  return finalCode;
 }
 
 export default {
