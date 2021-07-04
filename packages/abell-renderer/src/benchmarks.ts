@@ -1,6 +1,6 @@
 import { render } from './index';
 
-const repeat = 10000;
+const repeat = 1000;
 
 const abellCode = `
 <html>
@@ -25,6 +25,7 @@ let newParserExecutionTime;
 
 {
   const startTime = new Date().getTime();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const finalCode = render(
     abellCode,
     {},
@@ -36,6 +37,7 @@ let newParserExecutionTime;
 
 {
   const startTime = new Date().getTime();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const finalCode = render(abellCode, {}, { allowComponents: false });
   const executionTime = new Date().getTime() - startTime;
   oldParserExecutionTime = executionTime;

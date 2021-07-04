@@ -133,7 +133,7 @@ export function compile(
 const tokenSchema = {
   BLOCK_START: /{{/,
   BLOCK_END: /}}/,
-  SELF_CLOSING_COMPONENT_TAG: /\<[A-Z][a-z0-9]*?\/>/,
+  SELF_CLOSING_COMPONENT_TAG: /\<([A-Z][a-z0-9]*) (?:props={(.*?)})\/>/,
   NEW_LINE: /\n/
 };
 
@@ -150,6 +150,7 @@ export function newCompile(
   let currentLineNumber = 0;
   let blockLineNumber = 0;
   const context: vm.Context = vm.createContext(sandbox); // eslint-disable-line
+  console.log(tokens);
   for (const token of tokens) {
     if (token.type === 'BLOCK_START') {
       // abell block starts ({{)
@@ -176,6 +177,16 @@ export function newCompile(
         currentLineNumber += 1;
         finalCode += token.text;
       }
+    } else if (token.type === 'SELF_CLOSING_COMPONENT_TAG') {
+      const [tagName, props] = token.matches;
+      const transpiledTag = `${tagName}({${props}}).renderedHTML`;
+      const jsOutput = runJS(
+        transpiledTag,
+        context,
+        currentLineNumber,
+        options
+      );
+      finalCode += jsOutput;
     } else if (!isInsideAbellBlock) {
       // the code outside abell block that goes directly into output
       finalCode += token.text;

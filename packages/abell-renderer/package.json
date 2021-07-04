@@ -8,10 +8,10 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "ts-node ./src/example.ts",
     "dev": "yarn dev:with-esbuild",
-    "dev:with-esbuild": "nodemon -e ts -w ./src -x yarn esbuild",
+    "dev:with-esbuild": "yarn esbuild",
     "dev:with-tsnode": "nodemon -e ts -w ./src -x yarn start",
     "ts-node": "ts-node",
-    "esbuild": "esbuild src/example.ts --bundle --outfile=dev/example.js --platform=node --target=node14 && node dev/example.js",
+    "esbuild": "node scripts/dev-build.js && node dev/example/index.js",
     "build": "tsc",
     "serve": "yarn build && node dist/example.js"
   },
