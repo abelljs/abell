@@ -13,6 +13,7 @@
   "scripts": {
     "abell-renderer": "yarn workspace abell-renderer",
     "ar": "yarn workspace abell-renderer",
+    "ae": "yarn workspace abell-examples",
     "test:unit": "jest ./tests/",
     "test:e2e": "jest ./examples/",
     "test": "jest --silent",
