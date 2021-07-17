@@ -133,7 +133,7 @@ export function compile(
 const tokenSchema = {
   BLOCK_START: /{{/,
   BLOCK_END: /}}/,
-  SELF_CLOSING_COMPONENT_TAG: /\<([A-Z][a-z0-9]*) (?:props={(.*?)})\/>/,
+  SELF_CLOSING_COMPONENT_TAG: /<([A-Z][a-z0-9]*)[ \n]*?(?:props={(.*?)})? ?\/>/,
   NEW_LINE: /\n/
 };
 
@@ -179,7 +179,8 @@ export function newCompile(
       }
     } else if (token.type === 'SELF_CLOSING_COMPONENT_TAG') {
       const [tagName, props] = token.matches;
-      const transpiledTag = `${tagName}({${props}}).renderedHTML`;
+      const tagProps = props ? `{${props}}` : '';
+      const transpiledTag = `${tagName}(${tagProps}).renderedHTML`;
       const jsOutput = runJS(
         transpiledTag,
         context,
@@ -201,8 +202,3 @@ export function newCompile(
 
   return finalCode;
 }
-
-export default {
-  compile,
-  runJS
-};

@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import { parseComponent } from '../parsers/abell-component-parser';
 import { UserOptions, NodeBuiltins } from '../types';
 
 export function getAbellInBuiltSandbox(options: UserOptions): NodeBuiltins {
@@ -15,6 +16,11 @@ export function getAbellInBuiltSandbox(options: UserOptions): NodeBuiltins {
     builtInFunctions.require = (pathToRequire) => {
       const fullRequirePath = path.join(options.basePath ?? '', pathToRequire);
 
+      if (fullRequirePath.endsWith('.abell')) {
+        // TODO:
+        return (props: Record<string, unknown>) =>
+          parseComponent(fullRequirePath, props);
+      }
       if (fs.existsSync(fullRequirePath)) {
         // Local file require
         return require(fullRequirePath);

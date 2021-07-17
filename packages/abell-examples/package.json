@@ -6,16 +6,12 @@
   "types": "./dist/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon src/renderer-examples/example.js"
+    "dev": "ts-run src/renderer-examples/example.ts -w src/renderer-examples/ ../abell-renderer/src/"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "abell-renderer": "0.0.0"  
-  },
-  "nodemonConfig": {
-    "watch": ["src/renderer-examples"],
-    "ext": "js,ts,abell"
+    "abell-renderer": "1.0.0-alpha.1"  
   }
 }
