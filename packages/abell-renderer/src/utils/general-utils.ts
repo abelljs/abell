@@ -1,7 +1,10 @@
 import fs from 'fs';
 import path from 'path';
-import { parseComponent } from '../parsers/abell-component-parser';
 import { UserOptions, NodeBuiltins } from '../types';
+
+import { createAbellComponentContext } from '../parsers/abell-component-parser';
+
+const ABELL_CSS_DATA_PREFIX = 'data-abell';
 
 export function getAbellInBuiltSandbox(options: UserOptions): NodeBuiltins {
   const builtInFunctions: NodeBuiltins = {
@@ -18,8 +21,12 @@ export function getAbellInBuiltSandbox(options: UserOptions): NodeBuiltins {
 
       if (fullRequirePath.endsWith('.abell')) {
         // TODO:
-        return (props: Record<string, unknown>) =>
-          parseComponent(fullRequirePath, props);
+        const { AbellComponentCall, componentBundleMap } =
+          createAbellComponentContext(fullRequirePath, options);
+
+        console.dir(componentBundleMap, { depth: null });
+
+        return AbellComponentCall;
       }
       if (fs.existsSync(fullRequirePath)) {
         // Local file require
@@ -120,4 +127,24 @@ export const copyFolderSync = (
       }
     }
   });
+};
+
+// This function uses a single regular expression to add a data prefix to every html opening tag passed to it
+export const prefixHtmlTags = (htmlString: string, hash: string): string => {
+  const openingTagRegexp = /\<([a-zA-Z]+)(.*?)(\s?\/?)\>/gs;
+  return htmlString.replace(
+    openingTagRegexp,
+    `<$1$2 ${ABELL_CSS_DATA_PREFIX}-${hash}$3>`
+  );
+};
+
+export const normalizePath = (path: string): string => {
+  const isExtendedLengthPath = /^\\\\\?\\/.test(path);
+  const hasNonAscii = /[^\u0000-\u0080]+/.test(path); // eslint-disable-line no-control-regex
+
+  if (isExtendedLengthPath || hasNonAscii) {
+    return path;
+  }
+
+  return path.replace(/\\/g, '/');
 };

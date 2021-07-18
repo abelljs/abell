@@ -15,17 +15,19 @@
  * result => [{ token="this", type="word" },{ token=" ", type="whitespace" }, Object { token="is", type="word" }, ... ]
  *
  */
-function tokenize(s: string, parsers: any, deftok: 'default') {
-  var m,
-    r,
-    l,
-    cnt,
-    t,
-    tokens = [];
+function tokenize(
+  s: string,
+  parsers: Record<string, RegExp>,
+  deftok: 'default'
+): Array<{ text: string; type: string; matches?: string[] }> {
+  let m;
+  let r;
+  let t;
+  const tokens = [];
   while (s) {
     t = null;
     m = s.length;
-    for (var key in parsers) {
+    for (const key in parsers) {
       r = parsers[key].exec(s);
       // try to choose the best match if there are several
       // where "best" is the closest to the current starting point

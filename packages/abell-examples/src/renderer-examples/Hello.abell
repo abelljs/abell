@@ -1,9 +1,15 @@
 <AbellComponent>
+{{
+  const a = 3;
+  const b = 9;
+}}
 <template>
-  <div>Hello</div>
+  <div>Hello {{ a + b }}</div>
 </template>
-<style>
-  
+<style hello="true">
+  div {
+    color: red
+  }
 </style>
 <script>
   

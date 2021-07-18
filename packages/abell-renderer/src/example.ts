@@ -1,6 +1,4 @@
-import vm from 'vm';
 import abellRenderer from './index';
-import abellParser from './parsers/abell-parser';
 
 const abellCode = `
   <html>

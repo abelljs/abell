@@ -150,7 +150,6 @@ export function newCompile(
   let currentLineNumber = 0;
   let blockLineNumber = 0;
   const context: vm.Context = vm.createContext(sandbox); // eslint-disable-line
-  console.log(tokens);
   for (const token of tokens) {
     if (token.type === 'BLOCK_START') {
       // abell block starts ({{)
@@ -178,9 +177,12 @@ export function newCompile(
         finalCode += token.text;
       }
     } else if (token.type === 'SELF_CLOSING_COMPONENT_TAG') {
+      if (!token.matches) {
+        throw new Error("[abell-renderer]: Couldn't parse self closing tag");
+      }
       const [tagName, props] = token.matches;
       const tagProps = props ? `{${props}}` : '';
-      const transpiledTag = `${tagName}(${tagProps}).renderedHTML`;
+      const transpiledTag = `${tagName}(${tagProps}).html`;
       const jsOutput = runJS(
         transpiledTag,
         context,

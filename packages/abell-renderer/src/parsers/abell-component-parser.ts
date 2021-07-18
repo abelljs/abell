@@ -1,16 +1,167 @@
-// Turn <AbellComponent> into JavaScript
 import fs from 'fs';
-import { render } from '..';
-import { AbellComponentMap } from '../types';
+import path from 'path';
+import { AbellComponentMap, UserOptions } from '../types';
+import {
+  execRegexOnAll,
+  getAbellInBuiltSandbox,
+  normalizePath,
+  prefixHtmlTags
+} from '../utils/general-utils';
+import hash from '../utils/hash';
+import { newCompile } from './abell-parser';
+import { cssSerializer } from './css-parser';
 
-export function parseComponent(
+type AbellComponentContext = {
+  AbellComponentCall: (props: Record<string, unknown>) => AbellComponentMap;
+  componentBundleMap: Record<string, unknown>[];
+};
+
+function parseAttributes(attrString: string): Record<string, unknown> {
+  const attributeMatches = attrString.match(/(?:[^\s"']+|(["'])[^"]*\1)+/g);
+  if (!attributeMatches) {
+    return {};
+  }
+
+  return attributeMatches.reduce((prevObj, val) => {
+    const firstEqual = val.indexOf('=');
+    if (firstEqual < 0) {
+      return {
+        ...prevObj,
+        [val]: true
+      };
+    }
+    const key = val.slice(0, firstEqual);
+    let value = val.slice(firstEqual + 1).trim();
+    if (
+      (value.startsWith('"') && value.endsWith('"')) ||
+      (value.startsWith("'") && value.endsWith("'"))
+    ) {
+      value = value.slice(1, -1);
+    }
+
+    return {
+      ...prevObj,
+      [key]: value
+    };
+  }, {});
+}
+
+export function createAbellComponentContext(
   abellComponentPath: string,
-  props: Record<string, unknown>
-): {
-  renderedHTML: string | AbellComponentMap;
-} {
-  // TODO: do something better lol
+  options: UserOptions
+): AbellComponentContext {
+  // Runs when the abell component require is called
+  const componentBundleMap: Record<string, unknown>[] = [];
+
+  const basePath = path.dirname(abellComponentPath);
+  const filename = path.relative(process.cwd(), abellComponentPath);
+  const newOptions = {
+    ...options,
+    filename,
+    basePath
+  };
+  let abellComponentContent = fs.readFileSync(abellComponentPath, 'utf8');
+
+  // Add styles and scripts to component bundle map
+
+  // we use the relative path here so that hash doesn't change across machines
+  const componentHash = hash(
+    normalizePath(path.relative(process.cwd(), abellComponentPath))
+  );
+
+  const matchMapper = (isCss: boolean) => (contentMatch: string[]) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [_, blockAttributes, blockContent] = contentMatch;
+    const attributes = parseAttributes(blockAttributes);
+    const shouldPrefix = isCss && !attributes.global;
+
+    let content;
+    if (shouldPrefix) {
+      // if it is css then scope it by appending hash to css selector
+      content = cssSerializer(blockContent, componentHash);
+    } else if (!isCss && blockContent.includes('scopedSelector')) {
+      // if it is javascript then scope it by injecting scopedSelector functions
+      content = blockContent.replace(
+        /scoped(Selector|SelectorAll)\((['"`].*?["'`])\)/g,
+        `document.query$1($2 + "[data-abell-${componentHash}]")`
+      );
+    } else {
+      content = blockContent;
+    }
+
+    return {
+      component: path.basename(abellComponentPath),
+      componentPath: abellComponentPath,
+      content,
+      attributes: parseAttributes(blockAttributes)
+    };
+  };
+
+  const styleMatches = execRegexOnAll(
+    /\<style(.*?)\>(.*?)\<\/style\>/gs,
+    abellComponentContent
+  ).matches.map(matchMapper(true));
+
+  const scriptMatches = execRegexOnAll(
+    /\<script(.*?)\>(.*?)\<\/script\>/gs,
+    abellComponentContent
+  ).matches.map(matchMapper(false));
+
+  const isStyleGlobal =
+    styleMatches.length <= 0 ||
+    styleMatches.every((styleMatch) => styleMatch.attributes.global === true);
+
+  if (options && !isStyleGlobal) {
+    // ignore adding scope hash
+    abellComponentContent = prefixHtmlTags(
+      abellComponentContent,
+      componentHash
+    );
+  }
+
+  componentBundleMap.push({
+    scripts: scriptMatches,
+    styles: styleMatches
+  });
+
   return {
-    renderedHTML: render(fs.readFileSync(abellComponentPath, 'utf-8'))
+    // The function that gets called when we do <Hello props={xyz: 'hi'} />
+    AbellComponentCall: (props: Record<string, unknown>) => {
+      const componentMap = parseComponent(
+        abellComponentContent,
+        props,
+        newOptions
+      );
+      return componentMap;
+    },
+    componentBundleMap
   };
 }
+
+export function parseComponent(
+  abellComponentContent: string,
+  props: Record<string, unknown>,
+  options: UserOptions
+): AbellComponentMap {
+  const sandbox = {
+    props,
+    ...getAbellInBuiltSandbox(options)
+  };
+  const compiledComponentContent = newCompile(abellComponentContent, sandbox, {
+    filename: 'xyz'
+  });
+
+  const templateTag = compiledComponentContent.match(
+    /\<template.*?>(.*?)\<\/template>/s
+  );
+
+  return {
+    html: templateTag?.[1] ?? ''
+  };
+}
+
+/**
+ * Parse Component
+ *
+ *
+ */

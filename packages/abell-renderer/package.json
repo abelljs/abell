@@ -21,6 +21,11 @@
   "license": "ISC",
   "dependencies": {
     "acorn": "^8.3.0",
-    "htmlparser2": "^6.1.0"
+    "htmlparser2": "^6.1.0",
+    "postcss-selector-parser": "^6.0.6",
+    "stylis": "^4.0.10"
+  },
+  "devDependencies": {
+    "@types/stylis": "^4.0.1"
   }
 }
