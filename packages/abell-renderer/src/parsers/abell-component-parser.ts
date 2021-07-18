@@ -46,29 +46,11 @@ function parseAttributes(attrString: string): Record<string, unknown> {
   }, {});
 }
 
-export function createAbellComponentContext(
+function getStyleScriptMatches(
   abellComponentPath: string,
-  options: UserOptions
-): AbellComponentContext {
-  // Runs when the abell component require is called
-  const componentBundleMap: Record<string, unknown>[] = [];
-
-  const basePath = path.dirname(abellComponentPath);
-  const filename = path.relative(process.cwd(), abellComponentPath);
-  const newOptions = {
-    ...options,
-    filename,
-    basePath
-  };
-  let abellComponentContent = fs.readFileSync(abellComponentPath, 'utf8');
-
-  // Add styles and scripts to component bundle map
-
-  // we use the relative path here so that hash doesn't change across machines
-  const componentHash = hash(
-    normalizePath(path.relative(process.cwd(), abellComponentPath))
-  );
-
+  abellComponentContent: string,
+  componentHash: string
+) {
   const matchMapper = (isCss: boolean) => (contentMatch: string[]) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [_, blockAttributes, blockContent] = contentMatch;
@@ -107,12 +89,45 @@ export function createAbellComponentContext(
     abellComponentContent
   ).matches.map(matchMapper(false));
 
+  return { styleMatches, scriptMatches };
+}
+
+export function createAbellComponentContext(
+  abellComponentPath: string,
+  options: UserOptions
+): AbellComponentContext {
+  // Runs when the abell component require is called
+  const componentBundleMap: Record<string, unknown>[] = [];
+
+  const basePath = path.dirname(abellComponentPath);
+  const filename = path.relative(process.cwd(), abellComponentPath);
+  const newOptions = {
+    ...options,
+    filename,
+    basePath
+  };
+  let abellComponentContent = fs.readFileSync(abellComponentPath, 'utf8');
+
+  // Add styles and scripts to component bundle map
+
+  // we use the relative path here so that hash doesn't change across machines
+  const componentHash = hash(
+    normalizePath(path.relative(process.cwd(), abellComponentPath))
+  );
+
+  const { scriptMatches, styleMatches } = getStyleScriptMatches(
+    abellComponentPath,
+    abellComponentContent,
+    componentHash
+  );
+
   const isStyleGlobal =
     styleMatches.length <= 0 ||
     styleMatches.every((styleMatch) => styleMatch.attributes.global === true);
 
   if (options && !isStyleGlobal) {
     // ignore adding scope hash
+    // TODO: only prefix HTML tags inside the template tagx
     abellComponentContent = prefixHtmlTags(
       abellComponentContent,
       componentHash
@@ -147,12 +162,14 @@ export function parseComponent(
     props,
     ...getAbellInBuiltSandbox(options)
   };
-  const compiledComponentContent = newCompile(abellComponentContent, sandbox, {
-    filename: 'xyz'
-  });
+  const compiledComponentContent = newCompile(
+    abellComponentContent,
+    sandbox,
+    options
+  );
 
   const templateTag = compiledComponentContent.match(
-    /\<template.*?>(.*?)\<\/template>/s
+    /\<template.*?>(.*?)\<\/template>/s // TODO: remove .*? from template tag
   );
 
   return {
@@ -161,7 +178,8 @@ export function parseComponent(
 }
 
 /**
- * Parse Component
- *
+ * TODO:
+ * - Add typescript support to css-parser, and hash
+ * -
  *
  */

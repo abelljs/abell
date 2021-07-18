@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import * as stylis from 'stylis';
-import selectorParser from 'postcss-selector-parser';
+import selectorParser, { Node } from 'postcss-selector-parser';
 
 export const ABELL_CSS_DATA_PREFIX = 'data-abell';
 
@@ -8,10 +9,11 @@ export const ABELL_CSS_DATA_PREFIX = 'data-abell';
 const cssSelectorTransformer = (scopingAttribute: string) => {
   return selectorParser((selectors) => {
     selectors.each((selector) => {
-      let node = null;
+      // @ts-ignore
+      let node: Node = null;
 
       // find the last child node to insert attribute selector
-      selector.each((n) => {
+      selector.each((n: Node) => {
         if (n.type !== 'pseudo' && n.type !== 'combinator') {
           node = n;
         }
@@ -27,7 +29,9 @@ const cssSelectorTransformer = (scopingAttribute: string) => {
       }
 
       selector.insertAfter(
+        // @ts-ignore
         node,
+        // @ts-ignore
         selectorParser.attribute({
           attribute: scopingAttribute
         })
@@ -36,25 +40,27 @@ const cssSelectorTransformer = (scopingAttribute: string) => {
   });
 };
 
-const generateScopedSelector = (selector, attribute) =>
+const generateScopedSelector = (selector: string, attribute: string) =>
   cssSelectorTransformer(attribute).processSync(selector);
 
-const selectorPrefixer = (hash) => (element) => {
+const selectorPrefixer = (hash: string) => (element: stylis.Element) => {
   // rule is the AST node which has the css selector
   if (element.type === 'rule') {
     // map over each existing select and prefix it
-    const newSelectors = element.props.map((selector) => {
-      return generateScopedSelector(
-        selector,
-        `${ABELL_CSS_DATA_PREFIX}-${hash}`
-      );
-    });
-    // Mutate the old ast node with the new selectors
-    element.props = newSelectors;
+    if (typeof element.props !== 'string') {
+      const newSelectors = element.props.map((selector: string) => {
+        return generateScopedSelector(
+          selector,
+          `${ABELL_CSS_DATA_PREFIX}-${hash}`
+        );
+      });
+      // Mutate the old ast node with the new selectors
+      element.props = newSelectors;
+    }
   }
 };
 
-export const cssSerializer = (cssString, hash) => {
+export const cssSerializer = (cssString: string, hash: string): string => {
   return stylis.serialize(
     stylis.compile(cssString),
     stylis.middleware([selectorPrefixer(hash), stylis.stringify])
