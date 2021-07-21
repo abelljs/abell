@@ -3,11 +3,11 @@ import * as acorn from 'acorn';
 import { UserOptions, AcornNode } from './types';
 import tokenize from './utils/generic-tokenizer';
 
-function validateAbellBlock(
+export function validateAbellBlock(
   statementTypeMap: string[],
   jsCode: string,
   filename: string
-) {
+): void {
   if (
     !statementTypeMap.includes('VariableDeclaration') &&
     !statementTypeMap.includes('AssignmentExpression') &&
@@ -22,7 +22,7 @@ function validateAbellBlock(
   }
 }
 
-function getStatementTypeMap(jsCode: string): string[] {
+export function getStatementTypeMap(jsCode: string): string[] {
   /**
    * TODO:
    * Remove things from curly brackets {} in jsCode string since they are

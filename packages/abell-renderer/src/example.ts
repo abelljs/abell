@@ -8,7 +8,6 @@ const abellCode = `
         const b = 12;
       }}
       <div>{{ a + b }}</div>
-      <Hello />
     </body>
   </html>
 `;
@@ -21,7 +20,8 @@ const finalCode = abellRenderer.render(
   abellCode,
   {},
   {
-    allowComponents: true
+    allowComponents: true,
+    filename: 'example.abell'
   }
 );
 console.log(finalCode);

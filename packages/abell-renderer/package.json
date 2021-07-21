@@ -5,16 +5,15 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "ts-node ./src/example.ts",
+    "test": "jest",
     "dev": "yarn example:dev",
     "example:dev": "yarn ae dev",
     "dev:with-ts-run": "ts-run src/example.ts -w",
-    "dev:with-esbuild": "yarn esbuild",
-    "ts-node": "ts-node",
-    "esbuild": "node scripts/dev-build.js && node dev/example/index.js",
+    "start": "ts-run ./src/example.ts",
+    "serve": "yarn build && node dist/example.js",
     "build": "tsc",
-    "serve": "yarn build && node dist/example.js"
+    "eslint": "eslint",
+    "prepublishOnly": "yarn eslint && yarn build"
   },
   "keywords": [],
   "author": "",

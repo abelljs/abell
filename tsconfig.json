@@ -12,5 +12,5 @@
     "forceConsistentCasingInFileNames": true,
     "esModuleInterop": true,
   },
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "packages/abell-renderer/src/**/*.test.ts"]
 }

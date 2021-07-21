@@ -12,6 +12,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "abell-renderer": "1.0.0-alpha.1"  
+    "abell-renderer": "1.0.0-alpha.2"  
   }
 }
