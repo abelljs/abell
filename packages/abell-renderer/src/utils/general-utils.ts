@@ -9,7 +9,11 @@ const ABELL_CSS_DATA_PREFIX = 'data-abell';
 export function getAbellInBuiltSandbox(options: UserOptions): NodeBuiltins {
   const builtInFunctions: NodeBuiltins = {
     console: {
-      log: console.log
+      log: (message) =>
+        console.log(
+          options.filename ? colors.gray(`[${options.filename}]\n`) : undefined,
+          message
+        )
     },
     __filename: options.filename ? path.resolve(options.filename) : undefined,
     __dirname: options.basePath ? path.resolve(options.basePath) : undefined
@@ -24,7 +28,7 @@ export function getAbellInBuiltSandbox(options: UserOptions): NodeBuiltins {
         const { AbellComponentCall, componentBundleMap } =
           createAbellComponentContext(fullRequirePath, options);
 
-        console.dir(componentBundleMap, { depth: null });
+        // console.dir(componentBundleMap, { depth: null });
 
         return AbellComponentCall;
       }
@@ -49,6 +53,13 @@ export function getAbellInBuiltSandbox(options: UserOptions): NodeBuiltins {
 
   return builtInFunctions;
 }
+
+const colors = {
+  red: (message: string) => `\u001b[31m${message}\u001b[39m`,
+  yellow: (message: string) =>
+    `\u001b[1m\u001b[33m${message}\u001b[39m\u001b[22m`,
+  gray: (message: string) => `\u001b[90m${message}\u001b[39m`
+};
 
 type ExecMatches = {
   matches: RegExpExecArray[];

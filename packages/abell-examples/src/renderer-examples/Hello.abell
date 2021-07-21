@@ -1,12 +1,13 @@
 <AbellComponent>
 {{
+  const Test = require('./Test.abell');
   const a = 3;
   const b = 9;
 }}
 <template>
-  <div>Hello {{ a + b }}</div>
+  <div>Hello {{ a + b }} {{ console.log('hiiii') }}<Test /></div>
 </template>
-<style hello="true">
+<style bundle="hello.js">
   div {
     color: red
   }

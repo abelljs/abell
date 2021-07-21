@@ -133,7 +133,9 @@ export function compile(
 const tokenSchema = {
   BLOCK_START: /{{/,
   BLOCK_END: /}}/,
-  SELF_CLOSING_COMPONENT_TAG: /<([A-Z][a-z0-9]*)[ \n]*?(?:props={(.*?)})? ?\/>/,
+  SELF_CLOSING_COMPONENT_TAG:
+    // eslint-disable-next-line max-len
+    /<([A-Z][a-zA-Z0-9]*)[ \n]*?(?:data-abell-[a-zA-Z0-9]*?)?(?:props={(.*?)})?[ \n]*?\/>/,
   NEW_LINE: /\n/
 };
 
@@ -143,7 +145,7 @@ export function newCompile(
   options: UserOptions
 ): string {
   const tokens = tokenize(abellTemplate, tokenSchema, 'default');
-  // console.log(tokens);
+
   let finalCode = '';
   let jsCodeContext = '';
   let isInsideAbellBlock = false;
