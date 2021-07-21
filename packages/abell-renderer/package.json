@@ -1,6 +1,6 @@
 {
   "name": "abell-renderer",
-  "version": "1.0.0-alpha.1",
+  "version": "1.0.0-alpha.2",
   "description": "",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -8,7 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "ts-node ./src/example.ts",
     "dev": "yarn example:dev",
-    "example:dev": "yarn ae dev -w src",
+    "example:dev": "yarn ae dev",
     "dev:with-ts-run": "ts-run src/example.ts -w",
     "dev:with-esbuild": "yarn esbuild",
     "ts-node": "ts-node",

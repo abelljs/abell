@@ -1,12 +1,14 @@
+import fs from 'fs';
 import path from 'path';
 
 import {
   UserOptions,
   OutputWithComponent,
-  UserOptionsAllowComponents
+  UserOptionsAllowComponents,
+  UserOptionsBase
 } from './types';
 import { getAbellInBuiltSandbox } from './utils/general-utils';
-import { compile } from './parsers/abell-parser';
+import { compile } from './compiler';
 
 const defaultUserOptions: UserOptions = {
   basePath: '',
@@ -58,6 +60,23 @@ export function render(
   return html;
 }
 
+export function engine({ allowRequire } = { allowRequire: false }) {
+  return (
+    filePath: string,
+    options: UserOptionsBase,
+    callback: (_: null, rendered: string) => string
+  ): string => {
+    // define the template engine
+    const content = fs.readFileSync(filePath, 'utf-8');
+    const rendered = render(content, options, {
+      basePath: path.dirname(filePath),
+      allowRequire
+    });
+    return callback(null, rendered);
+  };
+}
+
 export default {
-  render
+  render,
+  engine
 };

@@ -1,7 +1,7 @@
 import * as vm from 'vm';
 import * as acorn from 'acorn';
-import { UserOptions, AcornNode } from '../types';
-import tokenize from '../utils/generic-tokenizer';
+import { UserOptions, AcornNode } from './types';
+import tokenize from './utils/generic-tokenizer';
 
 function validateAbellBlock(
   statementTypeMap: string[],

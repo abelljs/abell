@@ -12,7 +12,7 @@ import {
   prefixHtmlTags
 } from '../utils/general-utils';
 import hash from '../utils/hash';
-import { compile } from './abell-parser';
+import { compile } from '../compiler';
 import { cssSerializer } from './css-parser';
 
 type AbellComponentContext = {
