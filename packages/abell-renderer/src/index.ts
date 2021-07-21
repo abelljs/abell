@@ -2,11 +2,11 @@ import path from 'path';
 
 import {
   UserOptions,
-  AbellComponentMap,
+  OutputWithComponent,
   UserOptionsAllowComponents
 } from './types';
 import { getAbellInBuiltSandbox } from './utils/general-utils';
-import { compile, newCompile } from './parsers/abell-parser';
+import { compile } from './parsers/abell-parser';
 
 const defaultUserOptions: UserOptions = {
   basePath: '',
@@ -19,7 +19,7 @@ export function render(
   abellTemplate: string,
   userSandbox?: Record<string, unknown>,
   options?: UserOptionsAllowComponents
-): AbellComponentMap;
+): OutputWithComponent;
 
 export function render(
   abellTemplate: string,
@@ -32,37 +32,30 @@ export function render(
   // eslint-disable-next-line @typescript-eslint/ban-types
   userSandbox: Record<string, unknown> = {},
   options: UserOptions = defaultUserOptions
-): AbellComponentMap | string {
+): OutputWithComponent | string {
   // Set initial variables
   options.basePath =
     options.basePath ||
     (options.filename && path.dirname(options.filename)) ||
     '';
 
-  const builtInFunctions = getAbellInBuiltSandbox(options);
-  // console.log(builtInFunctions);
-  // abellParser.write(abellTemplate);
-  // abellParser.end();
+  const { builtInFunctions, subComponents } = getAbellInBuiltSandbox(options);
+
   const templateSandbox = {
     ...builtInFunctions,
     ...userSandbox
   };
 
-  let html;
+  const html = compile(abellTemplate, templateSandbox, options);
 
-  if (options.useNewCompiler) {
-    html = newCompile(abellTemplate, templateSandbox, options);
-    return html;
+  if (options.allowComponents) {
+    return {
+      html,
+      components: subComponents
+    };
   }
 
-  html = compile(abellTemplate, templateSandbox, options);
   return html;
-
-  // Add built-in functions along with user's sandbox
-
-  // return {
-  //   html: ''
-  // };
 }
 
 export default {

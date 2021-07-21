@@ -3,7 +3,6 @@ export type UserOptionsBase = {
   filename?: string;
   allowRequire?: boolean;
   allowComponents?: boolean;
-  useNewCompiler?: boolean;
 };
 
 export interface UserOptionsAllowComponents extends UserOptionsBase {
@@ -12,9 +11,7 @@ export interface UserOptionsAllowComponents extends UserOptionsBase {
 
 export type UserOptions = UserOptionsAllowComponents | UserOptionsBase;
 
-export type AbellComponentMap = {
-  html: string;
-  components?: Array<AbellComponentMap>;
+export interface StyleScriptsBundleInfo {
   styles?: {
     attributes: Array<string>;
     component: string;
@@ -27,6 +24,12 @@ export type AbellComponentMap = {
     componentPath: string;
     content: string;
   };
+  components?: StyleScriptsBundleInfo[];
+}
+
+export type OutputWithComponent = {
+  html: string;
+  components?: StyleScriptsBundleInfo[];
 };
 
 export type NodeBuiltins = {

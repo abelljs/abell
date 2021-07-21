@@ -1,7 +1,6 @@
 import * as vm from 'vm';
 import * as acorn from 'acorn';
 import { UserOptions, AcornNode } from '../types';
-import { execRegexOnAll } from '../utils/general-utils';
 import tokenize from '../utils/generic-tokenizer';
 
 function validateAbellBlock(
@@ -96,40 +95,6 @@ function runJS(
   return jsOutput;
 }
 
-export function compile(
-  abellTemplate: string,
-  sandbox: Record<string, unknown>,
-  options: UserOptions
-): string {
-  const context: vm.Context = vm.createContext(sandbox); // eslint-disable-line
-
-  const { matches, input } = execRegexOnAll(/\\?{{(.+?)}}/gs, abellTemplate);
-  let renderedHTML = '';
-  let lastIndex = 0;
-
-  for (const match of matches) {
-    const [abellBlock, jsCode] = match;
-    let evaluatedValue = '';
-    const errLineOffset = (input.slice(0, match.index).match(/\n/g) || [])
-      .length;
-    if (abellBlock.startsWith('\\{{')) {
-      // if block is comment (e.g \{{ I want to print this as it is }})
-      evaluatedValue = abellBlock.slice(1);
-    } else {
-      evaluatedValue = runJS(jsCode, context, errLineOffset, options);
-    }
-
-    const toAddOnIndex = match.index; // Gets the index where the executed value is to be put.
-    renderedHTML +=
-      input.slice(lastIndex, toAddOnIndex) + String(evaluatedValue).trim();
-    lastIndex = toAddOnIndex + abellBlock.length;
-  }
-
-  renderedHTML += input.slice(lastIndex);
-
-  return renderedHTML;
-}
-
 const tokenSchema = {
   BLOCK_START: /{{/,
   BLOCK_END: /}}/,
@@ -139,7 +104,7 @@ const tokenSchema = {
   NEW_LINE: /\n/
 };
 
-export function newCompile(
+export function compile(
   abellTemplate: string,
   sandbox: Record<string, unknown>,
   options: UserOptions

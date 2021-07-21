@@ -1,6 +1,10 @@
 import fs from 'fs';
 import path from 'path';
-import { AbellComponentMap, UserOptions } from '../types';
+import {
+  OutputWithComponent,
+  StyleScriptsBundleInfo,
+  UserOptions
+} from '../types';
 import {
   execRegexOnAll,
   getAbellInBuiltSandbox,
@@ -8,12 +12,12 @@ import {
   prefixHtmlTags
 } from '../utils/general-utils';
 import hash from '../utils/hash';
-import { newCompile } from './abell-parser';
+import { compile } from './abell-parser';
 import { cssSerializer } from './css-parser';
 
 type AbellComponentContext = {
-  AbellComponentCall: (props: Record<string, unknown>) => AbellComponentMap;
-  componentBundleMap: Record<string, unknown>[];
+  AbellComponentCall: (props: Record<string, unknown>) => OutputWithComponent;
+  getComponentBundleMap: () => StyleScriptsBundleInfo;
 };
 
 function parseAttributes(attrString: string): Record<string, unknown> {
@@ -97,7 +101,7 @@ export function createAbellComponentContext(
   options: UserOptions
 ): AbellComponentContext {
   // Runs when the abell component require is called
-  const componentBundleMap: Record<string, unknown>[] = [];
+  let componentBundleMap: Record<string, unknown> = {};
 
   const basePath = path.dirname(abellComponentPath);
   const filename = path.relative(process.cwd(), abellComponentPath);
@@ -134,10 +138,13 @@ export function createAbellComponentContext(
     );
   }
 
-  componentBundleMap.push({
+  componentBundleMap = {
+    component: path.basename(filename),
+    filepath: filename,
     scripts: scriptMatches,
-    styles: styleMatches
-  });
+    styles: styleMatches,
+    components: []
+  };
 
   return {
     // The function that gets called when we do <Hello props={xyz: 'hi'} />
@@ -147,9 +154,12 @@ export function createAbellComponentContext(
         props,
         newOptions
       );
+
+      // populate component bundle map with information
+      componentBundleMap.components = componentMap.components;
       return componentMap;
     },
-    componentBundleMap
+    getComponentBundleMap: () => componentBundleMap
   };
 }
 
@@ -157,12 +167,13 @@ export function parseComponent(
   abellComponentContent: string,
   props: Record<string, unknown>,
   options: UserOptions
-): AbellComponentMap {
+): OutputWithComponent {
+  const { builtInFunctions, subComponents } = getAbellInBuiltSandbox(options);
   const sandbox = {
     props,
-    ...getAbellInBuiltSandbox(options)
+    ...builtInFunctions
   };
-  const compiledComponentContent = newCompile(
+  const compiledComponentContent = compile(
     abellComponentContent,
     sandbox,
     options
@@ -173,7 +184,8 @@ export function parseComponent(
   );
 
   return {
-    html: templateTag?.[1] ?? ''
+    html: templateTag?.[1] ?? '',
+    components: subComponents
   };
 }
 

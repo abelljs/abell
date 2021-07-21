@@ -1,6 +1,7 @@
 <AbellComponent>
 {{
   const Test = require('./Test.abell');
+  const TestTwo = require('./TestTwo.abell');
   const a = 3;
   const b = 9;
 }}

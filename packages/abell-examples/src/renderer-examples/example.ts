@@ -8,9 +8,9 @@ const finalCode = abellRenderer.render(
   {},
   {
     allowComponents: true,
-    useNewCompiler: true,
     allowRequire: true,
-    basePath: __dirname
+    basePath: __dirname,
+    filename: 'index.abell'
   }
 );
-console.log(finalCode);
+console.dir(finalCode, { depth: null });

@@ -21,7 +21,6 @@ const finalCode = abellRenderer.render(
   abellCode,
   {},
   {
-    useNewCompiler: true,
     allowComponents: true
   }
 );

@@ -1,12 +1,16 @@
 import fs from 'fs';
 import path from 'path';
-import { UserOptions, NodeBuiltins } from '../types';
+import { UserOptions, NodeBuiltins, StyleScriptsBundleInfo } from '../types';
 
 import { createAbellComponentContext } from '../parsers/abell-component-parser';
 
 const ABELL_CSS_DATA_PREFIX = 'data-abell';
 
-export function getAbellInBuiltSandbox(options: UserOptions): NodeBuiltins {
+export function getAbellInBuiltSandbox(options: UserOptions): {
+  builtInFunctions: NodeBuiltins;
+  subComponents: StyleScriptsBundleInfo[];
+} {
+  const subComponents: StyleScriptsBundleInfo[] = [];
   const builtInFunctions: NodeBuiltins = {
     console: {
       log: (message) =>
@@ -25,10 +29,10 @@ export function getAbellInBuiltSandbox(options: UserOptions): NodeBuiltins {
 
       if (fullRequirePath.endsWith('.abell')) {
         // TODO:
-        const { AbellComponentCall, componentBundleMap } =
+        const { AbellComponentCall, getComponentBundleMap } =
           createAbellComponentContext(fullRequirePath, options);
 
-        // console.dir(componentBundleMap, { depth: null });
+        subComponents.push(getComponentBundleMap());
 
         return AbellComponentCall;
       }
@@ -51,7 +55,7 @@ export function getAbellInBuiltSandbox(options: UserOptions): NodeBuiltins {
     };
   }
 
-  return builtInFunctions;
+  return { builtInFunctions, subComponents };
 }
 
 const colors = {
