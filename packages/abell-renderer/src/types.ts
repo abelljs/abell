@@ -11,25 +11,24 @@ export interface UserOptionsAllowComponents extends UserOptionsBase {
 
 export type UserOptions = UserOptionsAllowComponents | UserOptionsBase;
 
+export type ContentBundle = {
+  attributes: Record<string, unknown>;
+  component: string;
+  componentPath: string;
+  content: string;
+};
+
 export interface StyleScriptsBundleInfo {
-  styles?: {
-    attributes: Array<string>;
-    component: string;
-    componentPath: string;
-    content: string;
-  };
-  scripts?: {
-    attributes: Array<string>;
-    component: string;
-    componentPath: string;
-    content: string;
-  };
+  styles: ContentBundle[];
+  scripts: ContentBundle[];
   components?: StyleScriptsBundleInfo[];
+  component: string;
+  filepath: string;
 }
 
 export type OutputWithComponent = {
   html: string;
-  components?: StyleScriptsBundleInfo[];
+  components: StyleScriptsBundleInfo[];
 };
 
 export type NodeBuiltins = {

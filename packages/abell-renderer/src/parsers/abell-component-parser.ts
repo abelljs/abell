@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import {
+  ContentBundle,
   OutputWithComponent,
   StyleScriptsBundleInfo,
   UserOptions
@@ -54,23 +55,21 @@ function getStyleScriptMatches(
   abellComponentPath: string,
   abellComponentContent: string,
   componentHash: string
-) {
-  const matchMapper = (isCss: boolean) => (contentMatch: string[]) => {
+): {
+  scriptMatches: ContentBundle[];
+  styleMatches: ContentBundle[];
+} {
+  const styleMatches = execRegexOnAll(
+    /\<style(.*?)\>(.*?)\<\/style\>/gs,
+    abellComponentContent
+  ).matches.map((contentMatch: RegExpExecArray) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [_, blockAttributes, blockContent] = contentMatch;
     const attributes = parseAttributes(blockAttributes);
-    const shouldPrefix = isCss && !attributes.global;
-
-    let content;
-    if (shouldPrefix) {
+    let content: string;
+    if (!false) {
       // if it is css then scope it by appending hash to css selector
       content = cssSerializer(blockContent, componentHash);
-    } else if (!isCss && blockContent.includes('scopedSelector')) {
-      // if it is javascript then scope it by injecting scopedSelector functions
-      content = blockContent.replace(
-        /scoped(Selector|SelectorAll)\((['"`].*?["'`])\)/g,
-        `document.query$1($2 + "[data-abell-${componentHash}]")`
-      );
     } else {
       content = blockContent;
     }
@@ -79,19 +78,34 @@ function getStyleScriptMatches(
       component: path.basename(abellComponentPath),
       componentPath: abellComponentPath,
       content,
-      attributes: parseAttributes(blockAttributes)
+      attributes
     };
-  };
-
-  const styleMatches = execRegexOnAll(
-    /\<style(.*?)\>(.*?)\<\/style\>/gs,
-    abellComponentContent
-  ).matches.map(matchMapper(true));
+  });
 
   const scriptMatches = execRegexOnAll(
     /\<script(.*?)\>(.*?)\<\/script\>/gs,
     abellComponentContent
-  ).matches.map(matchMapper(false));
+  ).matches.map((contentMatch: RegExpExecArray) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [_, blockAttributes, blockContent] = contentMatch;
+    const attributes = parseAttributes(blockAttributes);
+    let content: string;
+    if (blockContent.includes('scopedSelector')) {
+      // if it is javascript then scope it by injecting scopedSelector functions
+      content = blockContent.replace(
+        /scoped(Selector|SelectorAll)\((.*?)\)/g,
+        `document.query$1($2 + "[data-abell-${componentHash}]")`
+      );
+    } else {
+      content = blockContent;
+    }
+    return {
+      component: path.basename(abellComponentPath),
+      componentPath: abellComponentPath,
+      content,
+      attributes
+    };
+  });
 
   return { styleMatches, scriptMatches };
 }
@@ -101,8 +115,6 @@ export function createAbellComponentContext(
   options: UserOptions
 ): AbellComponentContext {
   // Runs when the abell component require is called
-  let componentBundleMap: Record<string, unknown> = {};
-
   const basePath = path.dirname(abellComponentPath);
   const filename = path.relative(process.cwd(), abellComponentPath);
   const newOptions = {
@@ -138,7 +150,7 @@ export function createAbellComponentContext(
     );
   }
 
-  componentBundleMap = {
+  const componentBundleMap: StyleScriptsBundleInfo = {
     component: path.basename(filename),
     filepath: filename,
     scripts: scriptMatches,
