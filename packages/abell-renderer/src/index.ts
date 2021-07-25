@@ -19,8 +19,8 @@ const defaultUserOptions: UserOptions = {
 
 export function render(
   abellTemplate: string,
-  userSandbox?: Record<string, unknown>,
-  options?: UserOptionsAllowComponents
+  userSandbox: Record<string, unknown>,
+  options: UserOptionsAllowComponents
 ): OutputWithComponent;
 
 export function render(
@@ -34,7 +34,7 @@ export function render(
   // eslint-disable-next-line @typescript-eslint/ban-types
   userSandbox: Record<string, unknown> = {},
   options: UserOptions = defaultUserOptions
-): OutputWithComponent | string {
+): string | OutputWithComponent {
   // Set initial variables
   options.basePath =
     options.basePath ||

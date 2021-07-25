@@ -1,0 +1,10 @@
+<AbellComponent>
+<template>
+  <div>This is a test component for testing global css.</div>
+</template>
+<style global>
+  div {
+    color: #f30;
+  }
+</style>
+</AbellComponent>

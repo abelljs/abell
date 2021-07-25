@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`render() - renders abellTemplate into HTML Text # v0.2.x API should parse and render components 1`] = `
+"<body>
+          
+  <div>123</div>
+
+        </body>"
+`;

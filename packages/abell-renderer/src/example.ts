@@ -7,7 +7,8 @@ const abellCode = `
         const a = 3;
         const b = 12;
       }}
-      <div>{{ a + b }}</div>
+      <div>\\{{ a + b }}</div>
+      <Hello props={x: 'hi'} />
     </body>
   </html>
 `;
@@ -20,7 +21,6 @@ const finalCode = abellRenderer.render(
   abellCode,
   {},
   {
-    allowComponents: true,
     filename: 'example.abell'
   }
 );

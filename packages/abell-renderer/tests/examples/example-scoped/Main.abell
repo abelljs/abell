@@ -1,0 +1,10 @@
+{{
+  const Scoped = require('./Scoped.abell');
+  const Global = require('./GlobalCss.abell');
+}}
+<html>
+<body>
+  <Scoped props={foo: 123}/>
+  <Global />
+</body>
+</html>

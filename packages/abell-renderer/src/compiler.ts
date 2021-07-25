@@ -96,11 +96,12 @@ function runJS(
 }
 
 const tokenSchema = {
+  COMMENTED_OUT_BLOCK_START: /\\{{/,
   BLOCK_START: /{{/,
   BLOCK_END: /}}/,
   SELF_CLOSING_COMPONENT_TAG:
     // eslint-disable-next-line max-len
-    /<([A-Z][a-zA-Z0-9]*)[ \n]*?(?:data-abell-[a-zA-Z0-9]*?)?(?:props={(.*?)})?[ \n]*?\/>/,
+    /<([A-Z][a-zA-Z0-9]*)[ \n]*?(?:data-abell-[a-zA-Z0-9]*?)?(?:props={(?<props>.*?)})?[ \n]*?\/>/,
   NEW_LINE: /\n/
 };
 
@@ -123,19 +124,27 @@ export function compile(
       isInsideAbellBlock = true;
       blockLineNumber = 0;
       continue;
+    } else if (token.type === 'COMMENTED_OUT_BLOCK_START') {
+      finalCode += token.text.replace(/\\/g, '');
     } else if (token.type === 'BLOCK_END') {
       // abell block ends (}})
-      isInsideAbellBlock = false;
-      const jsOutput = runJS(
-        jsCodeContext,
-        context,
-        currentLineNumber,
-        options
-      );
-      jsCodeContext = ''; // set context empty since the code is executed now
-      currentLineNumber += blockLineNumber; // include new lines from inside the js block
-      blockLineNumber = 0;
-      finalCode += jsOutput;
+      if (isInsideAbellBlock) {
+        isInsideAbellBlock = false;
+        const jsOutput = runJS(
+          jsCodeContext,
+          context,
+          currentLineNumber,
+          options
+        );
+        jsCodeContext = ''; // set context empty since the code is executed now
+        currentLineNumber += blockLineNumber; // include new lines from inside the js block
+        blockLineNumber = 0;
+        finalCode += jsOutput;
+      } else {
+        // This means that the block was never opened.
+        // For scenarios like `234 }}`
+        finalCode += token.text;
+      }
     } else if (token.type === 'NEW_LINE') {
       if (isInsideAbellBlock) {
         blockLineNumber += 1;
