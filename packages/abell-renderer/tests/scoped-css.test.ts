@@ -8,11 +8,10 @@ import { normalizePath } from '../src/utils/general-utils';
 
 describe('scoped css', () => {
   // loading and rendering test component
-  const fileData = fs
-    .readFileSync(
-      path.join(__dirname, 'examples', 'example-scoped', 'Main.abell')
-    )
-    .toString();
+  const fileData = fs.readFileSync(
+    path.join(__dirname, 'examples', 'example-scoped', 'index.abell'),
+    'utf-8'
+  );
   const basePath = path.join(__dirname, 'examples', 'example-scoped');
   const renderedComponent = render(
     fileData,
