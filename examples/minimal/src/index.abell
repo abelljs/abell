@@ -1,7 +1,0 @@
-{{
-  const a = 4;
-  const b = 9;
-}}
-<html>
-  <body><span data-test="add-value">{{ a + b }}</span></body>
-</html>

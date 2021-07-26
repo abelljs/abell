@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`prefixHTMLTags() should prefix deeply nested tree 1`] = `
+"
+      <div data-abell-testhash>
+        <ul data-abell-testhash>
+          <li data-abell-testhash><a href=\\"test\\" data-abell-testhash>test</a><a href=\\"test\\" data-abell-testhash>test</a></li>
+          <li data-abell-testhash><a href=\\"test\\" data-abell-testhash>test</a><a href=\\"test\\" data-abell-testhash>test</a></li>
+          <li data-abell-testhash><a href=\\"test\\" data-abell-testhash>test</a><a href=\\"test\\" data-abell-testhash>test</a></li>
+          <li data-abell-testhash><a href=\\"test\\" data-abell-testhash>test</a><a href=\\"test\\" data-abell-testhash>test</a></li>
+          <li data-abell-testhash><a href=\\"test\\" data-abell-testhash>test</a><a href=\\"test\\" data-abell-testhash>test</a></li>
+        </ul>
+        <div data-abell-testhash>
+          <h1 data-abell-testhash>test</h1>
+          <div data-abell-testhash>
+            <ol data-abell-testhash>
+              <ul data-abell-testhash>
+                <li data-abell-testhash>testing</li>
+                <li data-abell-testhash>testing</li>
+                <li data-abell-testhash>testing</li>
+              </ul>
+            </ol>
+          </div>
+        </div>
+      </div>
+    "
+`;

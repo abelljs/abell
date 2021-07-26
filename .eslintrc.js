@@ -3,8 +3,14 @@ module.exports = {
     es6: true,
     node: true
   },
-  extends: ['google', 'prettier'],
-  plugins: ['prettier'],
+  parser: '@typescript-eslint/parser',
+  extends: [
+    'google',
+    'prettier',
+    'plugin:@typescript-eslint/eslint-recommended',
+    'plugin:@typescript-eslint/recommended'
+  ],
+  plugins: ['prettier', '@typescript-eslint'],
   globals: {
     Atomics: 'readonly',
     SharedArrayBuffer: 'readonly'
@@ -15,6 +21,7 @@ module.exports = {
   rules: {
     'prettier/prettier': ['error'],
     'comma-dangle': 0,
+    'require-jsdoc': 0,
     'no-trailing-spaces': 0,
     'arrow-parens': 0,
     'guard-for-in': 0,

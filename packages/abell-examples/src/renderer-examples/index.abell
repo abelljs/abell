@@ -1,0 +1,9 @@
+{{
+  const Hello = require('./Hello.abell');
+}}
+<html>
+<body>
+  {{ 3 + 12 }}
+  <Hello />
+</body>
+</html>
