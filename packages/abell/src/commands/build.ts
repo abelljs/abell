@@ -1,14 +1,15 @@
 import { getProgramInfo } from '../utils/build-utils';
 
 type BuildOptions = {
-  baseWorkingDir: string;
+  baseWorkingDir?: string;
 };
 const defaultBuildOptions: BuildOptions = {
   baseWorkingDir: process.cwd()
 };
 function build(userOption: BuildOptions = defaultBuildOptions): void {
   console.log('Abell Build');
-  const programInfo = getProgramInfo(userOption.baseWorkingDir);
+  const baseWorkingDir = userOption.baseWorkingDir ?? process.cwd();
+  const programInfo = getProgramInfo(baseWorkingDir);
   console.log(programInfo);
 }
 
