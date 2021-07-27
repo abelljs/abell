@@ -1,0 +1,10 @@
+<html>
+<body>
+  {{ 
+    const a = 3;
+    const b = 4;
+  }}
+
+  <div>{{ a + b }}</div>
+</body>
+</html>

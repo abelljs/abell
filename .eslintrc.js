@@ -25,6 +25,7 @@ module.exports = {
     'no-trailing-spaces': 0,
     'arrow-parens': 0,
     'guard-for-in': 0,
+    'valid-jsdoc': 0,
     'operator-linebreak': [
       'error',
       'after',
