@@ -7,6 +7,7 @@
   "types": "./dist/exports.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "ts-run ./src/dev.ts -w",
     "build": "tsc",
     "build:all": "yarn abell-renderer build && yarn abell build",
     "start": "yarn build:all && node ./dist/exports.js"

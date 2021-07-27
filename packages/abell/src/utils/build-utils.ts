@@ -1,21 +1,26 @@
 import path from 'path';
-import { getAbsolutePath } from './abell-fs';
 
-type ProgramInfo = {
+export type ProgramInfo = {
   abellConfig: AbellConfig;
   task: 'build' | 'serve';
   logs: 'minimum' | 'full';
   port: number;
+  baseWorkingDir: string;
 };
-export function getProgramInfo(): ProgramInfo {
+
+/**
+ * All the information needed to build the abell project
+ */
+export function getProgramInfo(baseWorkingDir: string): ProgramInfo {
   // Get configured paths of destination and content
-  const abellConfig = getAbellConfig();
+  const abellConfig = getAbellConfig(baseWorkingDir);
 
   const programInfo: ProgramInfo = {
     abellConfig,
     task: 'build',
     logs: 'minimum',
-    port: 5000
+    port: 5000,
+    baseWorkingDir
   };
 
   return programInfo;
@@ -32,7 +37,7 @@ export type AbellConfig = {
 /**
  * Read Abell Configration
  */
-function getAbellConfig() {
+function getAbellConfig(baseWorkingDir: string): AbellConfig {
   const defaultConfigs: AbellConfig = {
     outputPath: 'dist',
     themePath: 'theme',
@@ -42,12 +47,12 @@ function getAbellConfig() {
   };
 
   // In dev-server, user may change the configs so in that case we should drop the old cache
-  delete require.cache[path.join(process.cwd(), 'abell.config.js')];
+  delete require.cache[path.join(baseWorkingDir, 'abell.config.js')];
 
   let requiredConfig: Partial<AbellConfig>;
   try {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
-    requiredConfig = require(path.join(process.cwd(), 'abell.config.js'));
+    requiredConfig = require(path.join(baseWorkingDir, 'abell.config.js'));
   } catch (e) {
     requiredConfig = {};
   }
@@ -57,9 +62,9 @@ function getAbellConfig() {
     ...requiredConfig
   };
 
-  const outputPath = getAbsolutePath(abellConfig.outputPath);
-  const themePath = getAbsolutePath(abellConfig.themePath);
-  const contentPath = getAbsolutePath(abellConfig.contentPath);
+  const outputPath = path.join(baseWorkingDir, abellConfig.outputPath);
+  const themePath = path.join(baseWorkingDir, abellConfig.themePath);
+  const contentPath = path.join(baseWorkingDir, abellConfig.contentPath);
 
   return {
     ...abellConfig,

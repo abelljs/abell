@@ -11,7 +11,10 @@ const program = createCommand();
 // Listeners
 
 /** abell build */
-program.command('build').action(build);
+program
+  .command('build')
+  .option('--base-dir [baseDir]', 'Base directory for the build')
+  .action(build);
 
 /** abell serve */
 
