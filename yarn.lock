@@ -978,13 +978,20 @@ abab@^2.0.3, abab@^2.0.5:
   integrity sha512-9IK9EadsbHo6jLWIpxpR6pL0sazTXV6+SQv25ZB+F7Bj9mJNaOc4nCRabwd5M/JwmUa8idz6Eci6eKfJryPs6Q==
 
 abell-renderer@0.0.0:
-  version "0.5.0-alpha.2"
-  resolved "https://registry.yarnpkg.com/abell-renderer/-/abell-renderer-0.5.0-alpha.2.tgz#05d7b2a90b5172753469614f1898b4108475b0c8"
-  integrity sha512-We7iJ6bCKlUTNGPKD9dVUjm/0OBmvBx5OJYFngdRRZJ4xGjZaN4tAPsFv1M92+ejBLhVLTMCE/FNkhLkpggLLw==
+  version "1.0.0-alpha.3"
   dependencies:
-    acorn "^8.0.1"
-    postcss-selector-parser "^6.0.2"
-    stylis "^4.0.2"
+    acorn "^8.3.0"
+    htmlparser2 "^6.1.0"
+    postcss-selector-parser "^6.0.6"
+    stylis "^4.0.10"
+
+abell-renderer@1.0.0-alpha.2:
+  version "1.0.0-alpha.3"
+  dependencies:
+    acorn "^8.3.0"
+    htmlparser2 "^6.1.0"
+    postcss-selector-parser "^6.0.6"
+    stylis "^4.0.10"
 
 acorn-globals@^6.0.0:
   version "6.0.0"
@@ -1008,11 +1015,6 @@ acorn@^7.1.1, acorn@^7.4.0:
   version "7.4.1"
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-7.4.1.tgz#feaed255973d2e77555b83dbc08851a6c63520fa"
   integrity sha512-nQyp0o1/mNdbTO1PO6kHkwSrmgZ0MT/jCCpNiwbUjGoRN4dlBhqJtoQuCnEOKzgTVwg0ZWiCoQy6SxMebQVh8A==
-
-acorn@^8.0.1:
-  version "8.4.1"
-  resolved "https://registry.yarnpkg.com/acorn/-/acorn-8.4.1.tgz#56c36251fc7cabc7096adc18f05afe814321a28c"
-  integrity sha512-asabaBSkEKosYKMITunzX177CXxQ4Q8BSSzMTKD+FefUhipQC70gfW5SiUDhYQ3vk8G+81HqQk7Fv9OXwwn9KA==
 
 acorn@^8.2.4:
   version "8.2.4"
@@ -3071,7 +3073,7 @@ please-upgrade-node@^3.2.0:
   dependencies:
     semver-compare "^1.0.0"
 
-postcss-selector-parser@^6.0.2, postcss-selector-parser@^6.0.6:
+postcss-selector-parser@^6.0.6:
   version "6.0.6"
   resolved "https://registry.yarnpkg.com/postcss-selector-parser/-/postcss-selector-parser-6.0.6.tgz#2c5bba8174ac2f6981ab631a42ab0ee54af332ea"
   integrity sha512-9LXrvaaX3+mcv5xkg5kFwqSzSH1JIObIx51PrndZwlmznwXRfxMddDvo9gve3gVR8ZTKgoFDdWkbRFmEhT4PMg==
@@ -3369,7 +3371,7 @@ strip-json-comments@^3.1.0, strip-json-comments@^3.1.1:
   resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-3.1.1.tgz#31f1281b3832630434831c310c01cccda8cbe006"
   integrity sha512-6fPc+R4ihwqP6N/aIv2f1gMH8lOVtWQHoqC4yK6oSDVVocumAsfCqjkXnqiYMhmMwS/mEHLp7Vehlt3ql6lEig==
 
-stylis@^4.0.10, stylis@^4.0.2:
+stylis@^4.0.10:
   version "4.0.10"
   resolved "https://registry.yarnpkg.com/stylis/-/stylis-4.0.10.tgz#446512d1097197ab3f02fb3c258358c3f7a14240"
   integrity sha512-m3k+dk7QeJw660eIKRRn3xPF6uuvHs/FFzjX3HQ5ove0qYsiygoAhwn5a3IYKaZPo5LrYD0rfVmtv1gNY1uYwg==
@@ -3549,10 +3551,10 @@ typedarray-to-buffer@^3.1.5:
   dependencies:
     is-typedarray "^1.0.0"
 
-typescript-run@^0.0.8:
-  version "0.0.8"
-  resolved "https://registry.yarnpkg.com/typescript-run/-/typescript-run-0.0.8.tgz#3c3812bdb47d7a1f3a03aa055b9891e10f3b9952"
-  integrity sha512-lu4LRsLizbSj/7Jn1z+XFbbzf3e69IYC1rpOrc26irbyC0FFaz3edT6toueh0MuHI4SZHXWLHrGovoAIapotdg==
+typescript-run@^0.0.9:
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/typescript-run/-/typescript-run-0.0.9.tgz#d37a5ed874104acb04fdee16f77c86d7c532fe9d"
+  integrity sha512-G/q3XNSiY64zNtntUgB6yNX7/6eljy5n/yzCDr8C6jX990p1vwILEz2l4O6zGuJtGtXkJe+CLf0pVEmR0diDhg==
   dependencies:
     chokidar "^3.5.2"
     commander "^8.0.0"
