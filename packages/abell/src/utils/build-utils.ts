@@ -28,7 +28,7 @@ export function getProgramInfo(baseWorkingDir: string): ProgramInfo {
 
 export type AbellConfig = {
   outputPath: string;
-  themePath: string;
+  sourcePath: string;
   contentPath: string;
   plugins: string[];
   globalMeta: Record<string, unknown>;
@@ -40,7 +40,7 @@ export type AbellConfig = {
 function getAbellConfig(baseWorkingDir: string): AbellConfig {
   const defaultConfigs: AbellConfig = {
     outputPath: 'dist',
-    themePath: 'theme',
+    sourcePath: 'src',
     contentPath: 'content',
     plugins: [],
     globalMeta: {}
@@ -63,13 +63,13 @@ function getAbellConfig(baseWorkingDir: string): AbellConfig {
   };
 
   const outputPath = path.join(baseWorkingDir, abellConfig.outputPath);
-  const themePath = path.join(baseWorkingDir, abellConfig.themePath);
+  const sourcePath = path.join(baseWorkingDir, abellConfig.sourcePath);
   const contentPath = path.join(baseWorkingDir, abellConfig.contentPath);
 
   return {
     ...abellConfig,
     outputPath,
-    themePath,
+    sourcePath,
     contentPath
   };
 }
