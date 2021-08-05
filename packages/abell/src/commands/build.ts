@@ -4,7 +4,8 @@ import { getProgramInfo, ProgramInfo } from '../utils/build-utils';
 import {
   createPathIfAbsent,
   recursiveFindFiles,
-  rmdirRecursiveSync
+  rmdirRecursiveSync,
+  standardizePath
 } from '../utils/abell-fs';
 import abellRenderer from 'abell-renderer/src'; // TODO: change to prod version
 
@@ -18,13 +19,22 @@ function generateSite(programInfo: ProgramInfo) {
   );
 
   for (const abellFile of abellFiles) {
+    const rootPath = path.relative(
+      path.dirname(abellFile),
+      programInfo.abellConfig.sourcePath
+    );
+    const relativeOutputPath = path
+      .relative(programInfo.abellConfig.sourcePath, abellFile)
+      .replace('.abell', '.html');
     const Abell = {
       globalMeta: programInfo.abellConfig.globalMeta,
       programInfo: {
         sourcePath: programInfo.abellConfig.sourcePath,
         outputPath: programInfo.abellConfig.outputPath,
         task: programInfo.task
-      }
+      },
+      root: standardizePath(rootPath),
+      href: relativeOutputPath.replace(/index\.html/g, '')
     };
 
     const abellTemplate = fs.readFileSync(abellFile, 'utf8');
@@ -37,9 +47,6 @@ function generateSite(programInfo: ProgramInfo) {
         basePath: path.dirname(abellFile)
       }
     );
-    const relativeOutputPath = path
-      .relative(programInfo.abellConfig.sourcePath, abellFile)
-      .replace('.abell', '.html');
 
     const outputPath = path.join(
       programInfo.abellConfig.outputPath,

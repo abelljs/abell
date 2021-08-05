@@ -1,6 +1,9 @@
 import fs from 'fs';
 import path from 'path';
 
+export const standardizePath = (osPath: string): string =>
+  osPath.replace(/\\/g, '/');
+
 /**
  * Removes the folder
  */
