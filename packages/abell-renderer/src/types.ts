@@ -1,9 +1,10 @@
-export type UserOptionsBase = {
-  basePath?: string;
-  filename?: string;
-  allowRequire?: boolean;
-  allowComponents?: boolean;
-};
+export type UserOptionsBase = Partial<{
+  baseWorkingDirectory: string;
+  basePath: string;
+  filename: string;
+  dangerouslyAllowRequire: boolean;
+  allowComponents: boolean;
+}>;
 
 export interface UserOptionsAllowComponents extends UserOptionsBase {
   allowComponents: true;
@@ -13,7 +14,7 @@ export type UserOptions = UserOptionsAllowComponents | UserOptionsBase;
 
 export type ContentBundle = {
   attributes: Record<string, unknown>;
-  component: string;
+  componentName: string;
   componentPath: string;
   content: string;
 };
@@ -22,8 +23,8 @@ export interface StyleScriptsBundleInfo {
   styles: ContentBundle[];
   scripts: ContentBundle[];
   components?: StyleScriptsBundleInfo[];
-  component: string;
-  filepath: string;
+  componentName: string;
+  componentPath: string;
 }
 
 export type OutputWithComponent = {

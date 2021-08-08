@@ -75,7 +75,7 @@ function getStyleScriptMatches(
     }
 
     return {
-      component: path.basename(abellComponentPath),
+      componentName: path.basename(abellComponentPath),
       componentPath: abellComponentPath,
       content,
       attributes
@@ -100,7 +100,7 @@ function getStyleScriptMatches(
       content = blockContent;
     }
     return {
-      component: path.basename(abellComponentPath),
+      componentName: path.basename(abellComponentPath),
       componentPath: abellComponentPath,
       content,
       attributes
@@ -151,8 +151,8 @@ export function createAbellComponentContext(
   }
 
   const componentBundleMap: StyleScriptsBundleInfo = {
-    component: path.basename(filename),
-    filepath: filename,
+    componentName: path.basename(filename),
+    componentPath: filename,
     scripts: scriptMatches,
     styles: styleMatches,
     components: []

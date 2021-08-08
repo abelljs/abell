@@ -12,34 +12,39 @@ import { compile } from './compiler';
 
 const defaultUserOptions: UserOptions = {
   basePath: '',
-  allowRequire: false,
+  dangerouslyAllowRequire: false,
   allowComponents: false,
-  filename: '<sandbox>.abell'
+  filename: '<sandbox>.abell',
+  baseWorkingDirectory: process.cwd()
 };
 
 export function render(
   abellTemplate: string,
   userSandbox: Record<string, unknown>,
-  options: UserOptionsAllowComponents
+  userOptions: UserOptionsAllowComponents
 ): OutputWithComponent;
 
 export function render(
   abellTemplate: string,
   userSandbox?: Record<string, unknown>,
-  options?: UserOptions
+  userOptions?: UserOptions
 ): string;
 
 export function render(
   abellTemplate: string,
   // eslint-disable-next-line @typescript-eslint/ban-types
   userSandbox: Record<string, unknown> = {},
-  options: UserOptions = defaultUserOptions
+  userOptions: UserOptions = defaultUserOptions
 ): string | OutputWithComponent {
   // Set initial variables
-  options.basePath =
-    options.basePath ||
-    (options.filename && path.dirname(options.filename)) ||
-    '';
+  const options = {
+    ...defaultUserOptions,
+    ...userOptions,
+    basePath:
+      userOptions.basePath ||
+      (userOptions.filename && path.dirname(userOptions.filename)) ||
+      ''
+  };
 
   const { builtInFunctions, subComponents } = getAbellInBuiltSandbox(options);
 
@@ -60,7 +65,9 @@ export function render(
   return html;
 }
 
-export function engine({ allowRequire } = { allowRequire: false }) {
+export function engine(
+  { dangerouslyAllowRequire } = { dangerouslyAllowRequire: false }
+) {
   return (
     filePath: string,
     options: UserOptionsBase,
@@ -70,7 +77,7 @@ export function engine({ allowRequire } = { allowRequire: false }) {
     const content = fs.readFileSync(filePath, 'utf-8');
     const rendered = render(content, options, {
       basePath: path.dirname(filePath),
-      allowRequire
+      dangerouslyAllowRequire
     });
     return callback(null, rendered);
   };

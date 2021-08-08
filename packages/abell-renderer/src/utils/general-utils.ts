@@ -23,7 +23,7 @@ export function getAbellInBuiltSandbox(options: UserOptions): {
     __dirname: options.basePath ? path.resolve(options.basePath) : undefined
   };
 
-  if (options.allowRequire) {
+  if (options.dangerouslyAllowRequire) {
     builtInFunctions.require = (pathToRequire) => {
       const fullRequirePath = path.join(options.basePath ?? '', pathToRequire);
 

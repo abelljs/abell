@@ -3,9 +3,11 @@
   <div>Hello</div>
 </template>
 <style>
-  
+  div {
+    color: '#f30';
+  }
 </style>
 <script>
-  
+  scopedSelector('div').innerHTML = 'hiiii';
 </script>
 </AbellComponent>

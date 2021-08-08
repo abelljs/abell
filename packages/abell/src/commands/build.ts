@@ -8,8 +8,9 @@ import {
   standardizePath
 } from '../utils/abell-fs';
 import abellRenderer from 'abell-renderer/src'; // TODO: change to prod version
+import createBundles from '../utils/abell-bundler';
 
-function generateSite(programInfo: ProgramInfo) {
+function generateSite(programInfo: ProgramInfo): void {
   rmdirRecursiveSync(programInfo.abellConfig.outputPath);
   fs.mkdirSync(programInfo.abellConfig.outputPath);
   // TODO: clear bundle cache here
@@ -47,14 +48,14 @@ function generateSite(programInfo: ProgramInfo) {
       abellTemplate,
       { abell },
       {
-        allowRequire: true,
+        dangerouslyAllowRequire: true,
         allowComponents: true,
         filename: path.relative(programInfo.baseWorkingDir, abellFile),
         basePath: path.dirname(abellFile)
       }
     );
 
-    console.dir(components, { depth: null });
+    createBundles(components);
 
     const outputPath = path.join(
       programInfo.abellConfig.outputPath,

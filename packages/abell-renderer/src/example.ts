@@ -21,7 +21,8 @@ const finalCode = abellRenderer.render(
   abellCode,
   {},
   {
-    filename: 'example.abell'
+    filename: 'example.abell',
+    allowComponents: true
   }
 );
 console.log(finalCode);
