@@ -1,5 +1,8 @@
+{{
+  const Hello = require('./Hello.abell');
+}}
 <html>
 <body>
-  {{ console.log(Abell) }}
+  <Hello />
 </body>
 </html>

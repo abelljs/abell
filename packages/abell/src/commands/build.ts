@@ -19,6 +19,11 @@ function generateSite(programInfo: ProgramInfo) {
   );
 
   for (const abellFile of abellFiles) {
+    const abellTemplate = fs.readFileSync(abellFile, 'utf8');
+    if (abellTemplate.startsWith('<AbellComponent')) {
+      continue;
+    }
+
     const rootPath = path.relative(
       path.dirname(abellFile),
       programInfo.abellConfig.sourcePath
@@ -26,7 +31,8 @@ function generateSite(programInfo: ProgramInfo) {
     const relativeOutputPath = path
       .relative(programInfo.abellConfig.sourcePath, abellFile)
       .replace('.abell', '.html');
-    const Abell = {
+
+    const abell = {
       globalMeta: programInfo.abellConfig.globalMeta,
       programInfo: {
         sourcePath: programInfo.abellConfig.sourcePath,
@@ -37,16 +43,18 @@ function generateSite(programInfo: ProgramInfo) {
       href: relativeOutputPath.replace(/index\.html/g, '')
     };
 
-    const abellTemplate = fs.readFileSync(abellFile, 'utf8');
-    const html = abellRenderer.render(
+    const { html, components } = abellRenderer.render(
       abellTemplate,
-      { Abell },
+      { abell },
       {
         allowRequire: true,
+        allowComponents: true,
         filename: path.relative(programInfo.baseWorkingDir, abellFile),
         basePath: path.dirname(abellFile)
       }
     );
+
+    console.dir(components, { depth: null });
 
     const outputPath = path.join(
       programInfo.abellConfig.outputPath,

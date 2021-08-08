@@ -1,5 +1,4 @@
 <html>
 <body>
-  {{ console.log(Abell) }}
 </body>
 </html>
