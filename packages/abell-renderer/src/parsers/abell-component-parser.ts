@@ -152,7 +152,7 @@ export function createAbellComponentContext(
 
   const componentBundleMap: StyleScriptsBundleInfo = {
     componentName: path.basename(filename),
-    componentPath: filename,
+    componentPath: path.resolve(filename),
     scripts: scriptMatches,
     styles: styleMatches,
     components: []

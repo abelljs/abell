@@ -1,0 +1,13 @@
+<AbellComponent>
+<template>
+  <span>Test</span>
+</template>
+<style>
+  span {
+    background-color: '#f30';
+  }
+</style>
+<script>
+  scopedSelector('span').innerHTML = 'yoo';
+</script>
+</AbellComponent>

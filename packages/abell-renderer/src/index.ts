@@ -83,6 +83,8 @@ export function engine(
   };
 }
 
+export * from './types';
+
 export default {
   render,
   engine
