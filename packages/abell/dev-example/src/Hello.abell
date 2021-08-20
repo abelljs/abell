@@ -10,4 +10,7 @@
 <script>
   scopedSelector('div').innerHTML = 'hiiii';
 </script>
+<script>
+  scopedSelector('div').innerHTML = 'yooo';
+</script>
 </AbellComponent>

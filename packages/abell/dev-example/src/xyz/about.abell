@@ -1,4 +1,8 @@
+{{
+  const Hello = require('../Hello.abell');
+}}
 <html>
 <body>
+  <Hello props={hello: 'hi'} />
 </body>
 </html>
