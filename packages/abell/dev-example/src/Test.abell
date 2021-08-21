@@ -2,7 +2,7 @@
 <template>
   <span>Test</span>
 </template>
-<style>
+<style inlined>
   span {
     background-color: '#f30';
   }

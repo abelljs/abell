@@ -5,6 +5,12 @@ export const standardizePath = (osPath: string): string =>
   osPath.replace(/\\/g, '/');
 
 /**
+ * Equivalent to path.relative(process.cwd(), [your-path])
+ */
+export const rel = (absolutePath: string): string =>
+  path.relative(process.cwd(), absolutePath);
+
+/**
  * Removes the folder
  */
 export function rmdirRecursiveSync(pathToRemove: string): void {

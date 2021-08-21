@@ -2,12 +2,12 @@
 <template>
   <div>Hello</div>
 </template>
-<style>
+<style inlined>
   div {
     color: '#f30';
   }
 </style>
-<script inlined>
+<script>
   scopedSelector('div').innerHTML = 'hiiii';
 </script>
 <script>

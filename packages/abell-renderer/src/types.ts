@@ -13,7 +13,7 @@ export interface UserOptionsAllowComponents extends UserOptionsBase {
 export type UserOptions = UserOptionsAllowComponents | UserOptionsBase;
 
 export type ContentBundle = {
-  attributes: Record<string, unknown>;
+  attributes: Record<string, string>;
   componentName: string;
   componentPath: string;
   content: string;

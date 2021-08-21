@@ -8,7 +8,7 @@ import {
   standardizePath
 } from './utils/abell-fs';
 import abellRenderer from 'abell-renderer';
-import createBundles from './utils/abell-bundler';
+import createBundles, { commitVirtualFileSystem } from './utils/abell-bundler';
 
 function generateSite(programInfo: ProgramInfo): void {
   rmdirRecursiveSync(programInfo.abellConfig.outputPath);
@@ -60,17 +60,18 @@ function generateSite(programInfo: ProgramInfo): void {
       relativeOutputPath
     );
 
-    createBundles({
+    const htmlWithInlinedCode = createBundles({
       components,
       html,
-      outputPath,
-      programInfo
+      outputPath
     });
 
     createPathIfAbsent(path.dirname(outputPath));
 
-    fs.writeFileSync(outputPath, html);
+    fs.writeFileSync(outputPath, htmlWithInlinedCode);
   }
+
+  commitVirtualFileSystem();
 }
 
 export default generateSite;

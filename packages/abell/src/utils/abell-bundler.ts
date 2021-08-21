@@ -1,5 +1,6 @@
-import { StyleScriptsBundleInfo } from 'abell-renderer'; // @TODO: change src to dist
-import { ProgramInfo } from './build-utils';
+import { ContentBundle, StyleScriptsBundleInfo } from 'abell-renderer'; // @TODO: change src to dist
+import { rel } from './abell-fs';
+import { addToBodyEnd, addToHeadEnd } from './general-utils';
 
 type VirtualFileSystemType = Record<
   string,
@@ -19,7 +20,8 @@ const createBlockIdentifier = ({
   componentPath: string;
   index: string;
 }): string => {
-  return `${componentPath}-${index}`;
+  // Id example: src/Home/Hero.abell:0
+  return `${rel(componentPath)}:${index}`;
 };
 
 const isAlreadyBundled = (bundleName: string, id: string): boolean => {
@@ -28,6 +30,48 @@ const isAlreadyBundled = (bundleName: string, id: string): boolean => {
   }
 
   return virtualFileSystem[bundleName].bundledIds.includes(id);
+};
+
+const getBundleName = (
+  attributes: Record<string, string>,
+  outputPath: string,
+  blockType: 'js' | 'css'
+): string => {
+  let bundleName = '';
+  if (attributes.inlined) {
+    bundleName = `inlined:${blockType}:${rel(outputPath)}`;
+  } else if (attributes.bundle) {
+    bundleName = attributes.bundle;
+  } else {
+    bundleName = `main.abell.${blockType}`;
+  }
+  return bundleName;
+};
+
+type BundleContentProps = {
+  contentBlock: ContentBundle;
+  blockIndex: string;
+  blockType: 'js' | 'css';
+  outputPath: string;
+};
+const bundleContentToVirtualFiles = ({
+  contentBlock,
+  blockIndex,
+  blockType,
+  outputPath
+}: BundleContentProps) => {
+  const bundleName = getBundleName(
+    contentBlock.attributes,
+    outputPath,
+    blockType
+  );
+  const id = createBlockIdentifier({
+    componentPath: contentBlock.componentPath,
+    index: blockIndex
+  });
+  if (!isAlreadyBundled(bundleName, id)) {
+    writeToVirtualFile(bundleName, id, contentBlock.content);
+  }
 };
 
 const writeToVirtualFile = (
@@ -47,43 +91,60 @@ const writeToVirtualFile = (
   virtualFileSystem[bundleName].bundleName = bundleName;
 };
 
+export const commitVirtualFileSystem = (): void => {
+  console.log(virtualFileSystem);
+};
+
 type CreateBundleProps = {
   components: StyleScriptsBundleInfo[];
   html: string;
   outputPath: string;
-  programInfo: ProgramInfo;
 };
 function createBundles({
   components,
   html,
-  outputPath,
-  programInfo
-}: CreateBundleProps): void {
+  outputPath
+}: CreateBundleProps): string {
+  // 1. Bundle
   for (const component of components) {
     for (const scriptIndex in component.scripts) {
       const scriptBlock = component.scripts[scriptIndex];
-      const id = createBlockIdentifier({
-        componentPath: scriptBlock.componentPath,
-        index: scriptIndex
+      bundleContentToVirtualFiles({
+        contentBlock: scriptBlock,
+        blockIndex: scriptIndex,
+        blockType: 'js',
+        outputPath
       });
-      if (!isAlreadyBundled('main.abell.js', id)) {
-        writeToVirtualFile('main.abell.js', id, scriptBlock.content);
-      }
     }
 
     for (const styleIndex in component.styles) {
       const styleBlock = component.styles[styleIndex];
-      const id = createBlockIdentifier({
-        componentPath: styleBlock.componentPath,
-        index: styleIndex
+      bundleContentToVirtualFiles({
+        contentBlock: styleBlock,
+        blockIndex: styleIndex,
+        blockType: 'css',
+        outputPath
       });
-      if (!isAlreadyBundled('main.abell.css', id)) {
-        writeToVirtualFile('main.abell.css', id, styleBlock.content);
-      }
     }
   }
 
-  console.log(virtualFileSystem);
+  // 2. Write inlined bundles to HTML output
+  let outputHTML = '';
+  console.log();
+  const inlinedCss =
+    virtualFileSystem[`inlined:css:${rel(outputPath)}`]?.content ?? '';
+
+  const inlinedJs =
+    virtualFileSystem[`inlined:js:${rel(outputPath)}`]?.content ?? '';
+
+  if (inlinedCss.trim()) {
+    outputHTML = addToHeadEnd(`<style>${inlinedCss}</style>`, html);
+  }
+  if (inlinedJs.trim()) {
+    outputHTML = addToBodyEnd(`<script>${inlinedJs}</script>`, outputHTML);
+  }
+
+  return outputHTML;
 }
 
 export default createBundles;
