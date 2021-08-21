@@ -61,7 +61,7 @@ function generateSite(programInfo: ProgramInfo): void {
     );
 
     createBundles({
-      bundleInfoArr: components,
+      components,
       html,
       outputPath,
       programInfo

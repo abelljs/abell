@@ -1,4 +1,4 @@
-import { ContentBundle, StyleScriptsBundleInfo } from 'abell-renderer'; // @TODO: change src to dist
+import { StyleScriptsBundleInfo } from 'abell-renderer'; // @TODO: change src to dist
 import { ProgramInfo } from './build-utils';
 
 type VirtualFileSystemType = Record<
@@ -18,7 +18,7 @@ const createBlockIdentifier = ({
 }: {
   componentPath: string;
   index: string;
-}) => {
+}): string => {
   return `${componentPath}-${index}`;
 };
 
@@ -32,8 +32,8 @@ const isAlreadyBundled = (bundleName: string, id: string): boolean => {
 
 const writeToVirtualFile = (
   bundleName: string,
-  contentBundle: ContentBundle,
-  id: string
+  id: string,
+  content: string
 ): void => {
   if (!virtualFileSystem[bundleName]) {
     virtualFileSystem[bundleName] = {
@@ -43,42 +43,42 @@ const writeToVirtualFile = (
     };
   }
   virtualFileSystem[bundleName].bundledIds.push(id);
-  virtualFileSystem[bundleName].content += contentBundle.content;
+  virtualFileSystem[bundleName].content += content;
   virtualFileSystem[bundleName].bundleName = bundleName;
 };
 
 type CreateBundleProps = {
-  bundleInfoArr: StyleScriptsBundleInfo[];
+  components: StyleScriptsBundleInfo[];
   html: string;
   outputPath: string;
   programInfo: ProgramInfo;
 };
 function createBundles({
-  bundleInfoArr,
+  components,
   html,
   outputPath,
   programInfo
 }: CreateBundleProps): void {
-  for (const bundleInfo of bundleInfoArr) {
-    for (const scriptIndex in bundleInfo.scripts) {
-      const scriptBundle = bundleInfo.scripts[scriptIndex];
+  for (const component of components) {
+    for (const scriptIndex in component.scripts) {
+      const scriptBlock = component.scripts[scriptIndex];
       const id = createBlockIdentifier({
-        componentPath: scriptBundle.componentPath,
+        componentPath: scriptBlock.componentPath,
         index: scriptIndex
       });
       if (!isAlreadyBundled('main.abell.js', id)) {
-        writeToVirtualFile('main.abell.js', scriptBundle, id);
+        writeToVirtualFile('main.abell.js', id, scriptBlock.content);
       }
     }
 
-    for (const styleIndex in bundleInfo.styles) {
-      const styleBundle = bundleInfo.styles[styleIndex];
+    for (const styleIndex in component.styles) {
+      const styleBlock = component.styles[styleIndex];
       const id = createBlockIdentifier({
-        componentPath: styleBundle.componentPath,
+        componentPath: styleBlock.componentPath,
         index: styleIndex
       });
       if (!isAlreadyBundled('main.abell.css', id)) {
-        writeToVirtualFile('main.abell.css', styleBundle, id);
+        writeToVirtualFile('main.abell.css', id, styleBlock.content);
       }
     }
   }

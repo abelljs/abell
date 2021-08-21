@@ -7,7 +7,7 @@
     color: '#f30';
   }
 </style>
-<script>
+<script inlined>
   scopedSelector('div').innerHTML = 'hiiii';
 </script>
 <script>
