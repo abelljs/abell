@@ -1,16 +1,13 @@
 <AbellComponent>
+{{
+  const Test = require('./Test.abell');
+}}
 <template>
-  <div>Hello</div>
+  <div><Test /></div>
 </template>
-<style inlined>
+<style>
   div {
     color: '#f30';
   }
 </style>
-<script>
-  scopedSelector('div').innerHTML = 'hiiii';
-</script>
-<script>
-  scopedSelector('div').innerHTML = 'yooo';
-</script>
 </AbellComponent>

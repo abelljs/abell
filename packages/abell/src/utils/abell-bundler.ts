@@ -1,5 +1,7 @@
+import fs from 'fs';
+import path from 'path';
 import { ContentBundle, StyleScriptsBundleInfo } from 'abell-renderer'; // @TODO: change src to dist
-import { rel } from './abell-fs';
+import { createPathIfAbsent, rel } from './abell-fs';
 import { addToBodyEnd, addToHeadEnd } from './general-utils';
 
 type VirtualFileSystemType = Record<
@@ -11,7 +13,7 @@ type VirtualFileSystemType = Record<
   }
 >;
 
-const virtualFileSystem: VirtualFileSystemType = {};
+let virtualFileSystem: VirtualFileSystemType = {};
 
 const createBlockIdentifier = ({
   componentPath,
@@ -34,44 +36,22 @@ const isAlreadyBundled = (bundleName: string, id: string): boolean => {
 
 const getBundleName = (
   attributes: Record<string, string>,
-  outputPath: string,
+  relativeHTMLOutputPath: string,
   blockType: 'js' | 'css'
 ): string => {
+  const htmlPathKey = relativeHTMLOutputPath
+    .replace(/\//g, '-')
+    .replace('.html', '');
   let bundleName = '';
   if (attributes.inlined) {
-    bundleName = `inlined:${blockType}:${rel(outputPath)}`;
+    bundleName = `inlined:${blockType}:${htmlPathKey}`;
   } else if (attributes.bundle) {
-    bundleName = attributes.bundle;
+    bundleName =
+      attributes.bundle.replace(blockType, '') + htmlPathKey + '.' + blockType;
   } else {
-    bundleName = `main.abell.${blockType}`;
+    bundleName = `main.abell.${htmlPathKey}.${blockType}`;
   }
   return bundleName;
-};
-
-type BundleContentProps = {
-  contentBlock: ContentBundle;
-  blockIndex: string;
-  blockType: 'js' | 'css';
-  outputPath: string;
-};
-const bundleContentToVirtualFiles = ({
-  contentBlock,
-  blockIndex,
-  blockType,
-  outputPath
-}: BundleContentProps) => {
-  const bundleName = getBundleName(
-    contentBlock.attributes,
-    outputPath,
-    blockType
-  );
-  const id = createBlockIdentifier({
-    componentPath: contentBlock.componentPath,
-    index: blockIndex
-  });
-  if (!isAlreadyBundled(bundleName, id)) {
-    writeToVirtualFile(bundleName, id, contentBlock.content);
-  }
 };
 
 const writeToVirtualFile = (
@@ -91,29 +71,73 @@ const writeToVirtualFile = (
   virtualFileSystem[bundleName].bundleName = bundleName;
 };
 
-export const commitVirtualFileSystem = (): void => {
-  console.log(virtualFileSystem);
+export const commitVirtualFileSystem = (outputPath: string): void => {
+  const ABELL_OUTPUT_BUNDLES_DIR = path.join(outputPath, 'abell-bundles');
+  for (const virtualFile of Object.values(virtualFileSystem)) {
+    if (virtualFile.bundleName.startsWith('inlined:')) {
+      continue;
+    }
+    const bundleOutputPath = path.join(
+      ABELL_OUTPUT_BUNDLES_DIR,
+      virtualFile.bundleName
+    );
+    createPathIfAbsent(ABELL_OUTPUT_BUNDLES_DIR);
+    fs.writeFileSync(bundleOutputPath, virtualFile.content);
+  }
+};
+
+type BundleContentProps = {
+  contentBlock: ContentBundle;
+  blockIndex: string;
+  blockType: 'js' | 'css';
+  relativeHTMLOutputPath: string;
+};
+const bundleContentToVirtualFiles = ({
+  contentBlock,
+  blockIndex,
+  blockType,
+  relativeHTMLOutputPath
+}: BundleContentProps) => {
+  const bundleName = getBundleName(
+    contentBlock.attributes,
+    relativeHTMLOutputPath,
+    blockType
+  );
+  const id = createBlockIdentifier({
+    componentPath: contentBlock.componentPath,
+    index: blockIndex
+  });
+  if (!isAlreadyBundled(bundleName, id)) {
+    writeToVirtualFile(bundleName, id, contentBlock.content);
+  }
 };
 
 type CreateBundleProps = {
   components: StyleScriptsBundleInfo[];
   html: string;
+  htmlOutputPath: string;
   outputPath: string;
 };
 function createBundles({
   components,
   html,
+  htmlOutputPath,
   outputPath
 }: CreateBundleProps): string {
+  // @TODO:
+  // Forgot to handle nested components lol ;__;
   // 1. Bundle
+  virtualFileSystem = {};
+  const relativeHTMLOutputPath = path.relative(outputPath, htmlOutputPath);
   for (const component of components) {
+    console.log(component);
     for (const scriptIndex in component.scripts) {
       const scriptBlock = component.scripts[scriptIndex];
       bundleContentToVirtualFiles({
         contentBlock: scriptBlock,
         blockIndex: scriptIndex,
         blockType: 'js',
-        outputPath
+        relativeHTMLOutputPath
       });
     }
 
@@ -123,22 +147,31 @@ function createBundles({
         contentBlock: styleBlock,
         blockIndex: styleIndex,
         blockType: 'css',
-        outputPath
+        relativeHTMLOutputPath
       });
     }
   }
 
+  commitVirtualFileSystem(outputPath);
+
   // 2. Write inlined bundles to HTML output
-  let outputHTML = '';
-  console.log();
+  let outputHTML = html;
+  let contentThatGoesToHeadEnd = '';
+  console.log(Object.keys(virtualFileSystem));
   const inlinedCss =
-    virtualFileSystem[`inlined:css:${rel(outputPath)}`]?.content ?? '';
+    virtualFileSystem[
+      getBundleName({ inlined: 'true' }, relativeHTMLOutputPath, 'css')
+    ]?.content ?? '';
 
   const inlinedJs =
-    virtualFileSystem[`inlined:js:${rel(outputPath)}`]?.content ?? '';
+    virtualFileSystem[
+      getBundleName({ inlined: 'true' }, relativeHTMLOutputPath, 'js')
+    ]?.content ?? '';
+
+  contentThatGoesToHeadEnd = `<style>${inlinedCss}</style>`;
 
   if (inlinedCss.trim()) {
-    outputHTML = addToHeadEnd(`<style>${inlinedCss}</style>`, html);
+    outputHTML = addToHeadEnd(contentThatGoesToHeadEnd, html);
   }
   if (inlinedJs.trim()) {
     outputHTML = addToBodyEnd(`<script>${inlinedJs}</script>`, outputHTML);

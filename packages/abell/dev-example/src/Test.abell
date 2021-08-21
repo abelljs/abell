@@ -7,7 +7,7 @@
     background-color: '#f30';
   }
 </style>
-<script>
+<script inlined>
   scopedSelector('span').innerHTML = 'yoo';
 </script>
 </AbellComponent>

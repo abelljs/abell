@@ -1,9 +1,10 @@
 {{
   const Hello = require('./Hello.abell');
-  // const Test = require('./Test.abell');
+  const Test = require('./Test.abell');
 }}
 <html>
 <body>
   <Hello props={hello: 'hi'} />
+  <Test />
 </body>
 </html>
