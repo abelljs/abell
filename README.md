@@ -7,6 +7,8 @@
 </p>
 <br/>
 
+**WARNING: This is not the latest abell code. You will find latest abell code in `main` branch. This is abell v1 code that is currently in development**
+
 a JavaScript based static-site-generator to help you create JSON, Markdown, or static-data based websites with minimal setup in a syntax you almost already know. Built on top of [abelljs/abell-renderer](https://github.com/abelljs/abell-renderer)
 
 **Documentation:** https://abelljs.org
