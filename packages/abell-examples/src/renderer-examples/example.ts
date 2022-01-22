@@ -8,7 +8,7 @@ const finalCode = abellRenderer.render(
   {},
   {
     allowComponents: true,
-    allowRequire: true,
+    dangerouslyAllowRequire: true,
     basePath: __dirname,
     filename: 'index.abell'
   }

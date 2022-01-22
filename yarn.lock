@@ -978,15 +978,7 @@ abab@^2.0.3, abab@^2.0.5:
   integrity sha512-9IK9EadsbHo6jLWIpxpR6pL0sazTXV6+SQv25ZB+F7Bj9mJNaOc4nCRabwd5M/JwmUa8idz6Eci6eKfJryPs6Q==
 
 abell-renderer@0.0.0:
-  version "1.0.0-alpha.3"
-  dependencies:
-    acorn "^8.3.0"
-    htmlparser2 "^6.1.0"
-    postcss-selector-parser "^6.0.6"
-    stylis "^4.0.10"
-
-abell-renderer@1.0.0-alpha.2:
-  version "1.0.0-alpha.3"
+  version "1.0.0-alpha.5"
   dependencies:
     acorn "^8.3.0"
     htmlparser2 "^6.1.0"
