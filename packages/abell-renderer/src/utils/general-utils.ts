@@ -2,8 +2,6 @@ import fs from 'fs';
 import path from 'path';
 import { UserOptions, NodeBuiltins, StyleScriptsBundleInfo } from '../types';
 
-import { createAbellComponentContext } from '../parsers/abell-component-parser';
-
 const ABELL_CSS_DATA_PREFIX = 'data-abell';
 
 export function getAbellInBuiltSandbox(options: UserOptions): {
@@ -23,28 +21,24 @@ export function getAbellInBuiltSandbox(options: UserOptions): {
     __dirname: options.basePath ? path.resolve(options.basePath) : undefined
   };
 
-  if (options.allowRequire) {
+  if (options.dangerouslyAllowRequire) {
     builtInFunctions.require = (pathToRequire) => {
       const fullRequirePath = path.join(options.basePath ?? '', pathToRequire);
 
-      if (fullRequirePath.endsWith('.abell')) {
-        // TODO:
-        const { AbellComponentCall, getComponentBundleMap } =
-          createAbellComponentContext(fullRequirePath, options);
-
-        subComponents.push(getComponentBundleMap());
-
-        return AbellComponentCall;
-      }
       if (fs.existsSync(fullRequirePath)) {
         // Local file require
-        return require(fullRequirePath);
+        try {
+          return require(fullRequirePath);
+        } catch (err) {
+          return fs.readFileSync(fullRequirePath, 'utf-8');
+        }
       }
 
       try {
         // NPM Package or NodeJS Module
         return require(pathToRequire);
       } catch (err) {
+        // @ts-ignore
         if (err.code === 'MODULE_NOT_FOUND') {
           // throw custom error here.
           throw new Error('MODULE_NOT_FOUND');
@@ -137,6 +131,7 @@ export const copyFolderSync = (
         try {
           fs.rmdirSync(toElement);
         } catch (err) {
+          // @ts-ignore
           if (err.code !== 'ENOTEMPTY') throw err;
         }
       }

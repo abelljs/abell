@@ -25,7 +25,7 @@ describe('render() - renders abellTemplate into HTML Text', () => {
         {
           basePath: path.join(__dirname, 'examples', 'example2'),
           allowComponents: true,
-          allowRequire: true
+          dangerouslyAllowRequire: true
         }
       );
       expect(html.trim()).toMatchSnapshot();
@@ -103,6 +103,8 @@ describe('render() - renders abellTemplate into HTML Text', () => {
       try {
         render('{{ IamUndefined }}', {}, { filename: 'render.spec.abell' });
       } catch (err) {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         errorStackFirstLine = err.stack.split('at')[1];
       }
       expect(errorStackFirstLine.trim().startsWith('render.spec.abell:1')).toBe(
@@ -139,9 +141,9 @@ describe('render() - renders abellTemplate into HTML Text', () => {
         <div>{{ a + b }} {{ path.join('hi', 'hello') }} {{ hiHelloPath }}</div>
       `;
 
-      expect(render(abellTemplate, {}, { allowRequire: true }).trim()).toBe(
-        `<div>8 hi${path.sep}hello hi${path.sep}hello</div>`
-      );
+      expect(
+        render(abellTemplate, {}, { dangerouslyAllowRequire: true }).trim()
+      ).toBe(`<div>8 hi${path.sep}hello hi${path.sep}hello</div>`);
     });
 
     // eslint-disable-next-line max-len

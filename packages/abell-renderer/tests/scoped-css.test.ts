@@ -17,7 +17,7 @@ describe('scoped css', () => {
     fileData,
     {},
     {
-      allowRequire: true,
+      dangerouslyAllowRequire: true,
       allowComponents: true,
       basePath
     }
