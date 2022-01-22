@@ -1,7 +1,7 @@
 export type UserOptionsBase = {
   basePath?: string;
   filename?: string;
-  allowRequire?: boolean;
+  dangerouslyAllowRequire?: boolean;
   allowComponents?: boolean;
 };
 

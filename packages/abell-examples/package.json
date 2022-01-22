@@ -6,12 +6,12 @@
   "types": "./dist/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "ts-run src/renderer-examples/example.ts -w src/renderer-examples/ ../abell-renderer/src/"
+    "dev": "ts-run src/abell-one-renderer/example.ts -w src/abell-one-renderer/ ../abell-renderer/src/"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "abell-renderer": "1.0.0-alpha.2"  
+    "abell-renderer": "1.0.0-alpha.5"  
   }
 }

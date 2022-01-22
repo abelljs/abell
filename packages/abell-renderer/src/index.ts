@@ -12,7 +12,7 @@ import { compile } from './compiler';
 
 const defaultUserOptions: UserOptions = {
   basePath: '',
-  allowRequire: false,
+  dangerouslyAllowRequire: false,
   allowComponents: false,
   filename: '<sandbox>.abell'
 };
@@ -60,7 +60,9 @@ export function render(
   return html;
 }
 
-export function engine({ allowRequire } = { allowRequire: false }) {
+export function engine(
+  { dangerouslyAllowRequire } = { dangerouslyAllowRequire: false }
+) {
   return (
     filePath: string,
     options: UserOptionsBase,
@@ -70,7 +72,7 @@ export function engine({ allowRequire } = { allowRequire: false }) {
     const content = fs.readFileSync(filePath, 'utf-8');
     const rendered = render(content, options, {
       basePath: path.dirname(filePath),
-      allowRequire
+      dangerouslyAllowRequire
     });
     return callback(null, rendered);
   };

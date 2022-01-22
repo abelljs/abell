@@ -1,0 +1,15 @@
+{{
+  const { render } = require('abell-renderer')
+  const navbar = require('./navbar.abell');
+  const footer = require('./footer.html');
+}}
+<html>
+<body>
+  {{ render(navbar) }}
+  <main>
+    <h2>About Us</h2>
+  </main>
+  {{ footer }}
+  <script type="module" src="/entry-index.js"></script>
+</body>
+</html>
