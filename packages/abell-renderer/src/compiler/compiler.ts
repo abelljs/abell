@@ -7,7 +7,10 @@ const isDeclarationBlock = (blockCount: number, blockContent: string) => {
   return false;
 };
 
-export function compile(abellTemplate: string): string {
+export function compile(
+  abellTemplate: string,
+  filename = '<anonymous>.abell'
+): string {
   const tokenSchema = {
     COMMENTED_OUT_BLOCK_START: /\\{{/,
     BLOCK_START: /{{/,
@@ -29,7 +32,8 @@ export function compile(abellTemplate: string): string {
       if (isDeclarationBlock(blockCount, blockCode)) {
         declarations = blockCode;
       } else {
-        htmlCode += `\${${blockCode}}`;
+        // JS Code
+        htmlCode += `\${e(${blockCode})}`;
       }
       blockCode = '';
     } else {
@@ -42,12 +46,29 @@ export function compile(abellTemplate: string): string {
     }
   }
 
-  console.log({ declarations });
-  console.log({ htmlString: htmlCode });
+  // console.log({ declarations });
+  // console.log({ htmlString: htmlCode });
 
   const jsOut = `
   ${declarations}
-  const html = \`${htmlCode.trim()}\`;
+  const e = (val) => {
+    if (typeof val === 'function') {
+      return val();
+    }
+
+    if (!val) {
+      return '';
+    }
+
+    return val;
+  };
+  export const html = (props = {}) => {
+    const Abell = { props };
+    const console = { 
+      log: (...args) => { console.log('[${filename}]:', ...args); return ''; } 
+    };
+    return \`${htmlCode.trim()}\`
+  };
   export default html;
   `;
 
