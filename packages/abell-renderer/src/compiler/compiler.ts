@@ -63,9 +63,14 @@ export function compile(
     return val;
   };
   export const html = (props = {}) => {
-    const Abell = { props };
-    const console = { 
-      log: (...args) => { console.log('[${filename}]:', ...args); return ''; } 
+    const Abell = { 
+      props, 
+      console: {
+        log: (...args) => {
+          console.log('\\u001b[90m[${filename}]:\\u001b[39m', ...args);
+          return '';
+        }
+      }
     };
     return \`${htmlCode.trim()}\`
   };
