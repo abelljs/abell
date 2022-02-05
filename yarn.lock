@@ -978,7 +978,17 @@ abab@^2.0.3, abab@^2.0.5:
   integrity sha512-9IK9EadsbHo6jLWIpxpR6pL0sazTXV6+SQv25ZB+F7Bj9mJNaOc4nCRabwd5M/JwmUa8idz6Eci6eKfJryPs6Q==
 
 abell-renderer@0.0.0:
+  version "1.0.0-alpha.8"
+  dependencies:
+    acorn "^8.3.0"
+    htmlparser2 "^6.1.0"
+    postcss-selector-parser "^6.0.6"
+    stylis "^4.0.10"
+
+abell-renderer@1.0.0-alpha.7:
   version "1.0.0-alpha.7"
+  resolved "https://registry.yarnpkg.com/abell-renderer/-/abell-renderer-1.0.0-alpha.7.tgz#6ff4fcd15f295eee9444bfbe52b08471f7b6162c"
+  integrity sha512-23dab78I4NYuZDD7GRNWkY32UYTuKdaW2Hzlb7xgS1uYe6VTqLzQEcj0a4tGNsO3EaGt7C9mZRaeASdb5p7o3A==
   dependencies:
     acorn "^8.3.0"
     htmlparser2 "^6.1.0"
