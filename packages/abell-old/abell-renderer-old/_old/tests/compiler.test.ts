@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import { compile, getStatementTypeMap } from '../src/compiler';
+import { compile, getStatementTypeMap } from '../../compiler/compiler';
 
 describe('compile() - Executes JavaScript passed to it as string', () => {
   it('should output added value when addition is performed on two values', () => {

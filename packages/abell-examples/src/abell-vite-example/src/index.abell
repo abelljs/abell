@@ -1,0 +1,10 @@
+{{
+  import navbar from './navbar.abell';
+}}
+
+<html>
+<body>
+  {{ navbar }}
+  {{ 3 + 1 }}
+</body>
+</html>
