@@ -2,9 +2,15 @@ import fs from 'fs';
 import path from 'path';
 import { build as viteBuild } from 'vite';
 
-import { SOURCE_DIR, TEMP_OUTPUT_DIR, OUTPUT_DIR } from './constants.js';
+import { getPaths } from './constants.js';
 
 async function generate() {
+  const { TEMP_OUTPUT_DIR, SOURCE_DIR, OUTPUT_DIR, ENTRY_BUILD_PATH } =
+    getPaths({
+      env: 'production',
+      cwd: process.cwd()
+    });
+
   // Generate server build
   await viteBuild({
     build: {
@@ -17,7 +23,7 @@ async function generate() {
   const createdHTMLFiles = [];
   const INDEX_HTML_PATH = path.join(SOURCE_DIR, 'index.html');
   // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const { render } = require(path.join(TEMP_OUTPUT_DIR, 'entry.build.js'));
+  const { render } = require(ENTRY_BUILD_PATH);
   const appHtml = await render('/');
   fs.writeFileSync(INDEX_HTML_PATH, appHtml);
   createdHTMLFiles.push(INDEX_HTML_PATH);

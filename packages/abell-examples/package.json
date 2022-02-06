@@ -2,8 +2,6 @@
   "name": "abell-examples",
   "version": "0.0.0",
   "description": "",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "abell dev",
@@ -13,8 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "abell": "1.0.0-alpha.1",
-    "vite": "^2.7.13"
+    "abell": "1.0.0-alpha.1"
   },
   "devDependencies": {}
 }

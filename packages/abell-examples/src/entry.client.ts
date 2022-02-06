@@ -2,6 +2,6 @@ const app = document.querySelector<HTMLDivElement>('#app');
 
 if (app) {
   app.innerHTML = `
-    <h1>Hello Vite!</h1>
+    <h1>Hello Viite!</h1>
   `;
 }

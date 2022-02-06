@@ -1,7 +1,7 @@
 import path from 'path';
 import express, { Request, Response } from 'express';
 import { createServer as createViteServer } from 'vite';
-import { ASSETS_DIR, ENTRY_BUILD_PATH, SOURCE_DIR, cwd } from './constants';
+import { getPaths } from './constants';
 
 const isProd = process.env.NODE_ENV === 'production';
 
@@ -13,7 +13,11 @@ type ServeOptions = {
 
 async function createServer(serverOptions: ServeOptions = { port: 3000 }) {
   const app = express();
-
+  const cwd = process.cwd();
+  const { SOURCE_DIR, ASSETS_DIR, ENTRY_BUILD_PATH } = getPaths({
+    env: 'development',
+    cwd
+  });
   const vite = await createViteServer({
     server: { middlewareMode: 'ssr' },
     root: SOURCE_DIR,
@@ -52,7 +56,9 @@ async function createServer(serverOptions: ServeOptions = { port: 3000 }) {
   });
 
   app.listen(serverOptions.port, () => {
-    console.log(`Server listening on port ${serverOptions.port}`);
+    console.log(
+      `Server listening on port http://localhost:${serverOptions.port}`
+    );
   });
 }
 
