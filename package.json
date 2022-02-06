@@ -13,7 +13,6 @@
   "scripts": {
     "abell": "yarn workspace abell",
     "ae": "yarn workspace abell-examples",
-    "test": "yarn ar test",
     "tsc": "tsc",
     "eslint": "eslint packages/**/**/**/ --ext .ts,.js",
     "prettier": "prettier --write \"packages/**/**/**/*.[jt]s\"",
