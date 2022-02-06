@@ -3,11 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "node ../../../abell/dist/bin.js dev",
-    "generate": "NODE_ENV=production node ../../../abell/dist/bin.js generate",
-    "build:client": "vite build --outDir dist/client",
-    "build:static": "vite build --outDir dist/static",
-    "build:server": "vite build --outDir dist/temp --ssr src/entry.build.ts",
-    "build": "tsc && yarn build:client && yarn build:server"
+    "generate": "NODE_ENV=production node ../../../abell/dist/bin.js generate"
   },
   "devDependencies": {
     "typescript": "^4.4.4",
