@@ -12,8 +12,6 @@
   ],
   "scripts": {
     "abell": "yarn workspace abell",
-    "abell-renderer": "yarn workspace abell-renderer",
-    "ar": "yarn workspace abell-renderer",
     "ae": "yarn workspace abell-examples",
     "test": "yarn ar test",
     "tsc": "tsc",

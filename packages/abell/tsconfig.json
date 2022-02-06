@@ -6,10 +6,5 @@
     "rootDir": "src"
   },
   "include": ["src"],
-  "exclude": ["node_modules", "dist"],
-  "references": [
-    {
-      "path": "../abell-renderer/"
-    }
-  ]
+  "exclude": ["node_modules", "dist"]
 }
