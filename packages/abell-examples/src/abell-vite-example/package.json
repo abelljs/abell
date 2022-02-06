@@ -7,7 +7,7 @@
     "build:static": "vite build --outDir dist/static",
     "build:server": "vite build --outDir dist/temp --ssr src/entry.build.ts",
     "build": "tsc && yarn build:client && yarn build:server",
-    "generate": "yarn build:static && yarn build:server && node abell-smol/generate.js"
+    "generate": "NODE_ENV=production node abell-smol/generate.js"
   },
   "devDependencies": {
     "typescript": "^4.4.4",

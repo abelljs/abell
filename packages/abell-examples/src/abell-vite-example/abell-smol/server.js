@@ -1,7 +1,6 @@
-const path = require('path');
 const express = require('express');
 const { createServer: createViteServer } = require('vite');
-const { ROOT, SERVER_PORT, ENTRY_BUILD_PATH } = require('./constants');
+const { ASSETS_DIR, SERVER_PORT, ENTRY_BUILD_PATH } = require('./constants');
 
 const isProd = process.env.NODE_ENV === 'production';
 
@@ -15,7 +14,7 @@ async function createServer() {
   app.use(vite.middlewares);
 
   if (isProd) {
-    app.use('/assets', express.static(path.join(ROOT, 'assets')));
+    app.use('/assets', express.static(ASSETS_DIR));
   }
 
   app.use('*', async (req, res) => {
