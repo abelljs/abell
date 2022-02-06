@@ -1,6 +1,13 @@
+const path = require('path');
 const express = require('express');
 const { createServer: createViteServer } = require('vite');
-const { ASSETS_DIR, SERVER_PORT, ENTRY_BUILD_PATH } = require('./constants');
+const {
+  ASSETS_DIR,
+  SERVER_PORT,
+  ENTRY_BUILD_PATH,
+  SOURCE_DIR,
+  cwd
+} = require('./constants');
 
 const isProd = process.env.NODE_ENV === 'production';
 
@@ -8,7 +15,9 @@ async function createServer() {
   const app = express();
 
   const vite = await createViteServer({
-    server: { middlewareMode: 'ssr' }
+    server: { middlewareMode: 'ssr' },
+    root: SOURCE_DIR,
+    configFile: path.join(cwd, 'vite.config.ts')
   });
   // use vite's connect instance as middleware
   app.use(vite.middlewares);

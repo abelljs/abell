@@ -14,6 +14,7 @@ const TEMP_OUTPUT_DIR = path.join(ROOT, '__temp_abell');
 const OUTPUT_DIR = ROOT;
 
 module.exports = {
+  cwd,
   SERVER_PORT,
   SOURCE_DIR,
   ENTRY_BUILD_PATH,
