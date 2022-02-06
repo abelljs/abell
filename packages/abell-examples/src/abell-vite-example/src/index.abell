@@ -1,10 +1,10 @@
 {{
   import navbar from './navbar.abell';
 }}
-
 <html>
 <body>
   {{ navbar }}
-  {{ 3 + 11 }}
+  <div id="app"></div>
+  <script type="module" src="/src/entry.client.ts"></script>
 </body>
 </html>
