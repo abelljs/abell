@@ -6,7 +6,8 @@
   "types": "./dist/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "ts-run src/abell-one-renderer/example.ts -w src/abell-one-renderer/ ../abell-renderer/src/"
+    "dev": "abell dev",
+    "generate": "abell generate"
   },
   "keywords": [],
   "author": "",
