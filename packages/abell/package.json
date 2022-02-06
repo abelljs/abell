@@ -1,6 +1,6 @@
 {
   "name": "abell",
-  "version": "1.0.0-alpha.1",
+  "version": "1.0.0-alpha.10",
   "description": "",
   "bin": "./dist/bin.js",
   "main": "./dist/index.js",
