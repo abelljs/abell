@@ -4,9 +4,10 @@
   "scripts": {
     "dev": "node abell-smol/server.js",
     "build:client": "vite build --outDir dist/client",
-    "build:server": "vite build --outDir dist/server --ssr src/entry-server.ts",
+    "build:static": "vite build --outDir dist/static",
+    "build:server": "vite build --outDir dist/temp --ssr src/entry.build.ts",
     "build": "tsc && yarn build:client && yarn build:server",
-    "generate": "vite build --outDir dist/static && npm run build:server && node abell-smol/generate.js"
+    "generate": "yarn build:static && yarn build:server && node abell-smol/generate.js"
   },
   "devDependencies": {
     "typescript": "^4.4.4",

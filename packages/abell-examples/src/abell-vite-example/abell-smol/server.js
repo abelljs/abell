@@ -1,16 +1,9 @@
 const path = require('path');
 const express = require('express');
 const { createServer: createViteServer } = require('vite');
+const { ROOT, SERVER_PORT, ENTRY_BUILD_PATH } = require('./constants');
 
-const cwd = process.cwd();
 const isProd = process.env.NODE_ENV === 'production';
-const { resolve } = path;
-
-const ROOT = isProd ? resolve(cwd, '/dist') : cwd;
-const SERVER_PORT = 3000;
-const ENTRY_BUILD_PATH = isProd
-  ? path.join(ROOT, 'temp', 'entry.build.ts')
-  : path.join(ROOT, 'src', 'entry.build.ts');
 
 async function createServer() {
   const app = express();
