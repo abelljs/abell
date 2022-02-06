@@ -1,0 +1,45 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`compile() should successfully compile single expressions 1`] = `
+"
+  
+  const e = (val) => val ? val : '';
+  export const html = (props) => {
+    const Abell = { props };
+    const console = { 
+      log: (...args) => { console.log('[<anonymous>.abell]:', ...args); return ''; } 
+    };
+    return \`<body>\${e( 3 + 4 )}</body>\`
+  };
+  export default html;
+  "
+`;
+
+exports[`compile() should successfully compile with declarations 1`] = `
+"
+  
+      import fs from 'fs';
+      import path from 'path';
+      import { compile } from 'abell-renderer';
+    
+  const e = (val) => val ? val : '';
+  export const html = (props) => {
+    const Abell = { props };
+    const console = { 
+      log: (...args) => { console.log('[<anonymous>.abell]:', ...args); return ''; } 
+    };
+    return \`<body>
+      \${e( 3 + 4 )}
+      <b>\${e( 'Helloo'.toUpperCase() )}</b>
+      <div>
+        \${e(
+          [1, 2, 3].map(i => 
+            i * 2
+          )
+        )}
+      </div>
+    </body>\`
+  };
+  export default html;
+  "
+`;

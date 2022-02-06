@@ -1,5 +1,2 @@
-import abellRenderer from 'abell-renderer';
-
-module.exports = {
-  test: abellRenderer.render
-};
+export { compile } from './compiler';
+export { vitePluginAbell } from './vite-plugin-abell';

@@ -8,6 +8,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
+    "dev": "node ./dist/bin.js dev",
     "build:all": "yarn abell-renderer build && yarn abell build",
     "start": "yarn build:all && node ./dist/exports.js"
   },
@@ -33,5 +34,9 @@
   "dependencies": {
     "abell-renderer": "0.0.0",
     "commander": "^7.2.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.13",
+    "express": "^4.17.2"
   }
 }
