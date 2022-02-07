@@ -1,45 +1,31 @@
-import path from 'path';
 import express, { Request, Response } from 'express';
 import { createServer as createViteServer } from 'vite';
 import { getPaths } from '../utils/constants';
-
-const isProd = process.env.NODE_ENV === 'production';
+import { getConfigPath } from '../utils/general-utils';
 
 type ServeOptions = {
-  port?: number;
-  ignorePlugins?: boolean;
-  printIp?: boolean;
+  port: string;
 };
 
-async function createServer(serverOptions: ServeOptions = { port: 3000 }) {
+async function createServer(serverOptions: ServeOptions) {
   const app = express();
   const cwd = process.cwd();
-  const { SOURCE_DIR, ASSETS_DIR, ENTRY_BUILD_PATH } = getPaths({
+  const { SOURCE_DIR, ENTRY_BUILD_PATH } = getPaths({
     env: 'development',
     cwd
   });
   const vite = await createViteServer({
     server: { middlewareMode: 'ssr' },
     root: SOURCE_DIR,
-    configFile: path.join(cwd, 'vite.config.ts')
+    configFile: getConfigPath(cwd)
   });
   // use vite's connect instance as middleware
   app.use(vite.middlewares);
-
-  if (isProd) {
-    app.use('/assets', express.static(ASSETS_DIR));
-  }
-
   app.use('*', async (req: Request, res: Response) => {
     const url = req.originalUrl;
 
     try {
-      let render;
-      if (isProd) {
-        ({ render } = require(ENTRY_BUILD_PATH));
-      } else {
-        ({ render } = await vite.ssrLoadModule(ENTRY_BUILD_PATH));
-      }
+      const { render } = await vite.ssrLoadModule(ENTRY_BUILD_PATH);
 
       // transforms the paths
       const html = await vite.transformIndexHtml(url, await render(url));
@@ -55,7 +41,7 @@ async function createServer(serverOptions: ServeOptions = { port: 3000 }) {
     }
   });
 
-  app.listen(serverOptions.port, () => {
+  app.listen(Number(serverOptions.port), () => {
     console.log(
       `Server listening on port http://localhost:${serverOptions.port}`
     );

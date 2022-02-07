@@ -17,10 +17,7 @@ program.command('generate').alias('build').action(build);
 program
   .command('dev')
   .alias('serve')
-  // @ts-ignore
-  .option('--port [port]', 'Serve on different port', 3000)
-  .option('--ignore-plugins', 'Serve without plugins', false)
-  .option('--print-ip [printIp]', 'Print IP in serve', true)
+  .option('--port [port]', 'Serve on different port', '3000')
   .action(serve);
 
 /** abell -V */
