@@ -8,16 +8,6 @@ type PathOptions = {
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const getPaths = ({ env, cwd }: PathOptions) => {
-  const rootDir = fs.readdirSync(cwd);
-  if (
-    !rootDir.includes('vite.config.js') &&
-    !rootDir.includes('vite.config.ts')
-  ) {
-    throw new Error(
-      'No vite.config.js or vite.config.ts found in root directory'
-    );
-  }
-
   const isProd = env === 'production';
   const OUTPUT_DIR = path.join(cwd, 'dist');
   const SOURCE_DIR = path.join(cwd, 'src');
