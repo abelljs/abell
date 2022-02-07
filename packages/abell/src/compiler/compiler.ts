@@ -1,4 +1,4 @@
-import tokenize from '../generic-tokenizer';
+import tokenize from '../utils/generic-tokenizer';
 
 const isDeclarationBlock = (blockCount: number, blockContent: string) => {
   if (blockCount < 2 && blockContent.includes('import')) {

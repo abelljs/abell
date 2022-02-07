@@ -1,7 +1,7 @@
 import path from 'path';
 import express, { Request, Response } from 'express';
 import { createServer as createViteServer } from 'vite';
-import { getPaths } from './constants';
+import { getPaths } from '../utils/constants';
 
 const isProd = process.env.NODE_ENV === 'production';
 

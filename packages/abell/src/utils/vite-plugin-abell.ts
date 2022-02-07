@@ -1,5 +1,5 @@
 import path from 'path';
-import { compile } from './compiler';
+import { compile } from '../compiler';
 const fileRegex = /\.abell$/;
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types

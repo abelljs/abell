@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { build as viteBuild } from 'vite';
 
-import { getPaths } from './constants.js';
+import { getPaths } from '../utils/constants.js';
 
 async function generate() {
   const { TEMP_OUTPUT_DIR, SOURCE_DIR, OUTPUT_DIR, ENTRY_BUILD_PATH } =

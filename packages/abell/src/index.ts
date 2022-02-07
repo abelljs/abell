@@ -1,2 +1,2 @@
 export { compile } from './compiler';
-export { vitePluginAbell } from './vite-plugin-abell';
+export { vitePluginAbell } from './utils/vite-plugin-abell';
