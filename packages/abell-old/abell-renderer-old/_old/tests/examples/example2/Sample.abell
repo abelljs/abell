@@ -1,9 +1,0 @@
-<AbellComponent>
-<template>
-  <div>{{ props.foo }}</div>
-</template>
-<style global>
-</style>
-<script>
-</script>
-</AbellComponent>
