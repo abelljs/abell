@@ -5,13 +5,16 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "abell dev",
-    "generate": "abell generate"
+    "generate": "abell generate",
+    "build:abell": "yarn workspace abell build"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "abell": "1.0.0-alpha.1"
+    "abell": "1.0.0-alpha.13"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "@stitches/core": "^1.2.6"
+  }
 }

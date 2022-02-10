@@ -6,6 +6,17 @@ const fileRegex = /\.abell$/;
 export function vitePluginAbell() {
   return {
     name: 'abell',
+    // @TODO: figure out a way to dynamically import all abell pages in entry.build.ts
+    // resolveId(id: string) {
+    //   if (id === virtualModuleId) {
+    //     return resolvedVirtualModuleId;
+    //   }
+    // },
+    // load(id: string) {
+    //   if (id === resolvedVirtualModuleId) {
+    //     return `export const msg = "from virtual module"`;
+    //   }
+    // },
     transform(src: string, id: string) {
       if (fileRegex.test(id)) {
         const filename = path.relative(process.cwd(), id);

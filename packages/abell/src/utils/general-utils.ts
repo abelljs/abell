@@ -3,17 +3,33 @@ import path from 'path';
 import { vitePluginAbell } from './vite-plugin-abell';
 import {
   defineConfig as viteDefineConfig,
-  UserConfig,
-  UserConfigExport
+  UserConfig as ViteUserConfig,
+  UserConfigExport as ViteUserConfigExport
 } from 'vite';
 
-export const defineConfig = (config: UserConfig): UserConfigExport => {
+type AbellOptions = {
+  pagesDir?: string;
+};
+
+interface AbellViteConfig extends ViteUserConfig {
+  abell?: AbellOptions;
+}
+
+// let abellConfig: AbellOptions = {};
+
+export const defineConfig = (config: AbellViteConfig): ViteUserConfigExport => {
   const userPlugins = config.plugins || [];
+  // abellConfig = config.abell ?? {};
+
   return viteDefineConfig({
     ...config,
     plugins: [vitePluginAbell(), ...userPlugins]
   });
 };
+
+// export const getAbellConfig = (): AbellOptions => {
+//   return abellConfig;
+// };
 
 export const getConfigPath = (cwd: string): string => {
   const possibleConfigFiles = [

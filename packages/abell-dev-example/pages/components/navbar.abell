@@ -1,0 +1,10 @@
+{{
+  import { button } from './nav.css.ts';
+
+}}
+<div>
+  <button class="{{ button }}">test</button>
+  <nav>
+  {{ 'navbar'.toUpperCase() }}
+  </nav>
+</div>
