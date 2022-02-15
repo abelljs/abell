@@ -15,8 +15,6 @@ interface AbellViteConfig extends ViteUserConfig {
   abell?: AbellOptions;
 }
 
-// let abellConfig: AbellOptions = {};
-
 export const defineConfig = (config: AbellViteConfig): ViteUserConfigExport => {
   const userPlugins = config.plugins || [];
   const abellConfig = config.abell ?? {};
@@ -26,10 +24,6 @@ export const defineConfig = (config: AbellViteConfig): ViteUserConfigExport => {
     plugins: [vitePluginAbell(abellConfig), ...userPlugins]
   });
 };
-
-// export const getAbellConfig = (): AbellOptions => {
-//   return abellConfig;
-// };
 
 export const getConfigPath = (cwd: string): string => {
   const possibleConfigFiles = [

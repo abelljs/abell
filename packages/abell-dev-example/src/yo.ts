@@ -11,6 +11,7 @@ const getFilePathFromURL = (url: string) => {
 
 export function render(url: string): string {
   if (url.includes('favicon')) return '';
+  console.log('this renderr');
   const abellFilePath = getFilePathFromURL(url);
   return abellPages[abellFilePath].default();
 }
