@@ -14,12 +14,7 @@ async function createServer(serverOptions: ServeOptions) {
     env: 'development',
     cwd
   });
-  // const ENTRY_BUILD_PATH = path.join(
-  //   __dirname,
-  //   '..',
-  //   'defaults',
-  //   'entry.build.js'
-  // );
+
   const vite = await createViteServer({
     server: { middlewareMode: 'ssr' },
     root: SOURCE_DIR,

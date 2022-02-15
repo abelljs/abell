@@ -7,7 +7,7 @@ import {
   UserConfigExport as ViteUserConfigExport
 } from 'vite';
 
-type AbellOptions = {
+export type AbellOptions = {
   pagesDir?: string;
 };
 
@@ -19,11 +19,11 @@ interface AbellViteConfig extends ViteUserConfig {
 
 export const defineConfig = (config: AbellViteConfig): ViteUserConfigExport => {
   const userPlugins = config.plugins || [];
-  // abellConfig = config.abell ?? {};
+  const abellConfig = config.abell ?? {};
 
   return viteDefineConfig({
     ...config,
-    plugins: [vitePluginAbell(), ...userPlugins]
+    plugins: [vitePluginAbell(abellConfig), ...userPlugins]
   });
 };
 

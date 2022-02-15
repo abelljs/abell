@@ -1,4 +1,4 @@
-const abellPages = import.meta.globEager(`../pages/*.abell`);
+const abellPages = import.meta.globEager('../pages/*.abell');
 
 const getFilePathFromURL = (url: string) => {
   const basePath = '../pages';

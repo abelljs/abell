@@ -1,6 +1,6 @@
 {
   "name": "abell",
-  "version": "1.0.0-alpha.13",
+  "version": "1.0.0-alpha.15",
   "description": "",
   "bin": "./dist/bin.js",
   "main": "./dist/index.js",
@@ -11,7 +11,7 @@
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc",
+    "build": "tsc && node scripts/post-build.js",
     "eslint": "eslint",
     "dev": "node ./dist/bin.js dev",
     "prepublishOnly": "yarn eslint && yarn build"
