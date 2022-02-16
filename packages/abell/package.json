@@ -10,11 +10,12 @@
     "types.d.ts"
   ],
   "scripts": {
-    "test": "jest",
+    "test": "vitest",
+    "test:once": "vitest run",
     "build": "tsc && node scripts/post-build.js",
     "eslint": "eslint",
     "dev": "node ./dist/bin.js dev",
-    "prepublishOnly": "yarn eslint && yarn build"
+    "prepublishOnly": "yarn test:once && yarn eslint && yarn build"
   },
   "repository": {
     "type": "git",

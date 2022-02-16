@@ -1,13 +1,28 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1
 
-exports[`compile() should successfully compile single expressions 1`] = `
+exports[`compile() > should successfully compile single expressions 1`] = `
 "
   
-  const e = (val) => val ? val : '';
-  export const html = (props) => {
-    const Abell = { props };
-    const console = { 
-      log: (...args) => { console.log('[<anonymous>.abell]:', ...args); return ''; } 
+  const e = (val) => {
+    if (typeof val === 'function') {
+      return val();
+    }
+
+    if (!val) {
+      return '';
+    }
+
+    return val;
+  };
+  export const html = (props = {}) => {
+    const Abell = { 
+      props, 
+      console: {
+        log: (...args) => {
+          console.log('\\\\u001b[90m[<anonymous>.abell]:\\\\u001b[39m', ...args);
+          return '';
+        }
+      }
     };
     return \`<body>\${e( 3 + 4 )}</body>\`
   };
@@ -15,18 +30,33 @@ exports[`compile() should successfully compile single expressions 1`] = `
   "
 `;
 
-exports[`compile() should successfully compile with declarations 1`] = `
+exports[`compile() > should successfully compile with declarations 1`] = `
 "
   
       import fs from 'fs';
       import path from 'path';
       import { compile } from 'abell-renderer';
     
-  const e = (val) => val ? val : '';
-  export const html = (props) => {
-    const Abell = { props };
-    const console = { 
-      log: (...args) => { console.log('[<anonymous>.abell]:', ...args); return ''; } 
+  const e = (val) => {
+    if (typeof val === 'function') {
+      return val();
+    }
+
+    if (!val) {
+      return '';
+    }
+
+    return val;
+  };
+  export const html = (props = {}) => {
+    const Abell = { 
+      props, 
+      console: {
+        log: (...args) => {
+          console.log('\\\\u001b[90m[<anonymous>.abell]:\\\\u001b[39m', ...args);
+          return '';
+        }
+      }
     };
     return \`<body>
       \${e( 3 + 4 )}
