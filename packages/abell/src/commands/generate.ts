@@ -7,11 +7,15 @@ import { getConfigPath } from '../utils/general-utils';
 
 async function generate() {
   const cwd = process.cwd();
-  const { TEMP_OUTPUT_DIR, SOURCE_DIR, OUTPUT_DIR, ENTRY_BUILD_PATH } =
-    getPaths({
-      env: 'production',
-      cwd: process.cwd()
-    });
+  const {
+    TEMP_OUTPUT_DIR,
+    SOURCE_DIR,
+    OUTPUT_DIR,
+    OUT_ENTRY_BUILD_PATH,
+    SOURCE_ENTRY_BUILD_PATH
+  } = getPaths({
+    cwd: process.cwd()
+  });
 
   const configFile = getConfigPath(cwd);
 
@@ -19,28 +23,27 @@ async function generate() {
   await viteBuild({
     build: {
       outDir: TEMP_OUTPUT_DIR,
-      ssr: path.join(SOURCE_DIR, 'entry.build.ts')
+      ssr: SOURCE_ENTRY_BUILD_PATH
     },
     configFile
   });
 
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const { render } = require(OUT_ENTRY_BUILD_PATH);
+
   // Generate index.html
   const createdHTMLFiles = [];
-  {
-    const INDEX_HTML_PATH = path.join(SOURCE_DIR, 'index.html');
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const { render } = require(ENTRY_BUILD_PATH);
-    const appHtml = await render('/');
-    fs.writeFileSync(INDEX_HTML_PATH, appHtml);
-    createdHTMLFiles.push(INDEX_HTML_PATH);
-  }
-  {
-    const INDEX_HTML_PATH = path.join(SOURCE_DIR, 'about.html');
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const { render } = require(ENTRY_BUILD_PATH);
-    const appHtml = await render('/about');
-    fs.writeFileSync(INDEX_HTML_PATH, appHtml);
-    createdHTMLFiles.push(INDEX_HTML_PATH);
+  const urlsToBuild = ['/'];
+
+  for (const url of urlsToBuild) {
+    // @TODO: make them generate in async mode
+    const appHtml = await render(url);
+    const htmlPath = path.join(
+      SOURCE_DIR,
+      `${url === '/' ? 'index' : url}.html`
+    );
+    fs.writeFileSync(htmlPath, appHtml);
+    createdHTMLFiles.push(htmlPath);
   }
 
   // Static build

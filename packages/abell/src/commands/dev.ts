@@ -10,8 +10,7 @@ type ServeOptions = {
 async function createServer(serverOptions: ServeOptions) {
   const app = express();
   const cwd = process.cwd();
-  const { SOURCE_DIR, ENTRY_BUILD_PATH } = getPaths({
-    env: 'development',
+  const { SOURCE_DIR, SOURCE_ENTRY_BUILD_PATH } = getPaths({
     cwd
   });
 
@@ -26,7 +25,7 @@ async function createServer(serverOptions: ServeOptions) {
     const url = req.originalUrl;
 
     try {
-      const { render } = await vite.ssrLoadModule(ENTRY_BUILD_PATH);
+      const { render } = await vite.ssrLoadModule(SOURCE_ENTRY_BUILD_PATH);
 
       // transforms the paths
       const html = await vite.transformIndexHtml(url, await render(url));

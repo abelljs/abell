@@ -1,21 +1,18 @@
 import path from 'path';
 import { compile } from '../compiler';
 import { AbellOptions } from './general-utils';
-const fileRegex = /\.abell$/;
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export function vitePluginAbell(abellConfig: AbellOptions) {
+export function vitePluginAbell(abellOptions?: AbellOptions) {
   return {
     name: 'abell',
     transform(src: string, id: string) {
       // resolve pages directory in default entry build
       if (id.endsWith('secret.default.entry.build.js')) {
-        if (!abellConfig?.pagesDir) {
-          throw new Error('Oops no pagesDir config found in vite.config');
-        }
+        const indexPath = abellOptions?.indexPath ?? './src/index.abell';
         const userConfiguredPagesDir = path.join(
           process.cwd(),
-          abellConfig.pagesDir
+          path.dirname(indexPath)
         );
         const abellDirPath = path.relative(__dirname, userConfiguredPagesDir);
         const entryBuildSrc = src.replaceAll(
@@ -25,7 +22,8 @@ export function vitePluginAbell(abellConfig: AbellOptions) {
         return { code: entryBuildSrc };
       }
 
-      if (fileRegex.test(id)) {
+      // transpile abell files into js code
+      if (id.endsWith('.abell')) {
         const filename = path.relative(process.cwd(), id);
         const code = compile(src, filename);
         return {
