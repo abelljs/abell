@@ -23,7 +23,8 @@ async function generate() {
   await viteBuild({
     build: {
       outDir: TEMP_OUTPUT_DIR,
-      ssr: SOURCE_ENTRY_BUILD_PATH
+      ssr: SOURCE_ENTRY_BUILD_PATH,
+      ssrManifest: true
     },
     configFile
   });
@@ -51,7 +52,6 @@ async function generate() {
     root: SOURCE_DIR,
     build: {
       outDir: OUTPUT_DIR,
-      emptyOutDir: false,
       rollupOptions: {
         input: createdHTMLFiles
       }
@@ -63,7 +63,6 @@ async function generate() {
     fs.unlinkSync(HTML_FILE);
   }
 
-  console.log('Generated index.html');
   console.log('`npx serve dist` to run static server');
 }
 
