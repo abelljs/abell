@@ -41,7 +41,7 @@ export const getConfigPath = (cwd: string): string => {
 };
 
 /**
- * @TODO Write tests for this
+ * Get filepath on giving URL
  */
 export const getFilePathFromURL = (url: string, basePath: string): string => {
   if (url === '/') {
@@ -63,3 +63,53 @@ export const getFilePathFromURL = (url: string, basePath: string): string => {
   console.warn(`[abell]: Abell couldn't figure out path from URL '${url}'`);
   return '';
 };
+
+/**
+ * Get URL string from filepath
+ */
+export const getURLFromFilePath = (
+  filePath: string,
+  basePath: string
+): string => {
+  const baseName = path.relative(basePath, filePath);
+  let route = baseName.replace('index.abell', '').replace('.abell', '');
+  if (!route.startsWith('/')) {
+    route = `/${route}`;
+  }
+
+  if (route.endsWith('/') && route.length > 1) {
+    route = route.slice(0, -1);
+  }
+  return route;
+};
+
+/**
+ * Find files with certain extension inside the base directory
+ */
+export function recursiveFindFiles(
+  base: string,
+  ext: '.abell' | '.html',
+  inputFiles: string[] | undefined = undefined,
+  inputResult: string[] | undefined = undefined
+): string[] {
+  const files = inputFiles || fs.readdirSync(base);
+  let result = inputResult || [];
+
+  for (const file of files) {
+    const newbase = path.join(base, file);
+    if (fs.statSync(newbase).isDirectory()) {
+      result = recursiveFindFiles(
+        newbase,
+        ext,
+        fs.readdirSync(newbase),
+        result
+      );
+    } else {
+      if (file.endsWith(ext)) {
+        result.push(newbase);
+      }
+    }
+  }
+
+  return result;
+}

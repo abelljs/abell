@@ -3,7 +3,11 @@ import path from 'path';
 import { build as viteBuild } from 'vite';
 
 import { getPaths } from '../utils/constants';
-import { getConfigPath } from '../utils/general-utils';
+import {
+  getConfigPath,
+  getURLFromFilePath,
+  recursiveFindFiles
+} from '../utils/general-utils';
 
 async function generate() {
   const cwd = process.cwd();
@@ -16,6 +20,8 @@ async function generate() {
   } = getPaths({
     cwd: process.cwd()
   });
+
+  const PAGES_ROOT = SOURCE_DIR; // make this configurable!!
 
   const configFile = getConfigPath(cwd);
 
@@ -34,13 +40,16 @@ async function generate() {
 
   // Generate index.html
   const createdHTMLFiles = [];
-  const urlsToBuild = ['/'];
+  const abellFiles = recursiveFindFiles(PAGES_ROOT, '.abell');
+  const urlsToBuild = abellFiles.map((abellFilePath) =>
+    getURLFromFilePath(abellFilePath, PAGES_ROOT)
+  );
 
   for (const url of urlsToBuild) {
     // @TODO: make them generate in async mode
     const appHtml = await render(url);
     const htmlPath = path.join(
-      SOURCE_DIR,
+      PAGES_ROOT,
       `${url === '/' ? 'index' : url}.html`
     );
     fs.writeFileSync(htmlPath, appHtml);
@@ -49,9 +58,10 @@ async function generate() {
 
   // Static build
   await viteBuild({
-    root: SOURCE_DIR,
+    root: PAGES_ROOT,
     build: {
       outDir: OUTPUT_DIR,
+      emptyOutDir: true,
       rollupOptions: {
         input: createdHTMLFiles
       }

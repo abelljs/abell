@@ -1,0 +1,6 @@
+<html>
+<body>
+  {{ 9 + 1 }}
+  <script type="module" src="./entry.client.ts"></script>
+</body>
+</html>
