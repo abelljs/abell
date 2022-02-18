@@ -3,6 +3,7 @@ import path from 'path';
 import { vitePluginAbell } from './vite-plugin-abell';
 import {
   defineConfig as viteDefineConfig,
+  loadConfigFromFile,
   UserConfig as ViteUserConfig,
   UserConfigExport as ViteUserConfigExport
 } from 'vite';
@@ -113,3 +114,16 @@ export function recursiveFindFiles(
 
   return result;
 }
+
+export const getAbellConfig = async (
+  configFile: string
+): Promise<AbellOptions> => {
+  // const viteConfig = (await import(configFile)).default;
+  // return viteConfig.abell;
+  const configResponse = await loadConfigFromFile(
+    { command: 'build', mode: 'production' },
+    configFile
+  );
+
+  return (configResponse?.config as AbellViteConfig).abell ?? {};
+};
