@@ -10,14 +10,16 @@ type ServeOptions = {
 async function createServer(serverOptions: ServeOptions) {
   const app = express();
   const cwd = process.cwd();
-  const { SOURCE_DIR, SOURCE_ENTRY_BUILD_PATH } = getPaths({
-    cwd
+  const configFile = getConfigPath(cwd);
+  const { SOURCE_ENTRY_BUILD_PATH, PAGES_ROOT } = await getPaths({
+    cwd,
+    configFile
   });
 
   const vite = await createViteServer({
     server: { middlewareMode: 'ssr' },
-    root: SOURCE_DIR,
-    configFile: getConfigPath(cwd)
+    root: PAGES_ROOT,
+    configFile
   });
   // use vite's connect instance as middleware
   app.use(vite.middlewares);

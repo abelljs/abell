@@ -4,7 +4,6 @@ import { build as viteBuild } from 'vite';
 
 import { getPaths } from '../utils/constants';
 import {
-  getAbellConfig,
   getConfigPath,
   getURLFromFilePath,
   recursiveFindFiles
@@ -12,25 +11,18 @@ import {
 
 async function generate() {
   const cwd = process.cwd();
+  const configFile = getConfigPath(cwd);
+
   const {
     TEMP_OUTPUT_DIR,
-    SOURCE_DIR,
+    PAGES_ROOT,
     OUTPUT_DIR,
     OUT_ENTRY_BUILD_PATH,
     SOURCE_ENTRY_BUILD_PATH
-  } = getPaths({
-    cwd
+  } = await getPaths({
+    cwd,
+    configFile
   });
-
-  const configFile = getConfigPath(cwd);
-
-  const abellConfig = await getAbellConfig(configFile);
-  let PAGES_ROOT: string;
-  if (abellConfig.indexPath) {
-    PAGES_ROOT = path.dirname(path.join(cwd, abellConfig.indexPath));
-  } else {
-    PAGES_ROOT = SOURCE_DIR;
-  }
 
   // Generate server build
   await viteBuild({
