@@ -45,24 +45,33 @@ export const getConfigPath = (cwd: string): string => {
  * Get filepath on giving URL
  */
 export const getFilePathFromURL = (url: string, basePath: string): string => {
+  let filePath = '';
+
   if (url === '/') {
-    return path.join(basePath, '/index.abell');
+    filePath = path.join(basePath, '/index.abell');
+  } else {
+    let baseName = '';
+    if (fs.existsSync(path.join(basePath, `${url}.abell`))) {
+      // For paths like `/about.abell`
+      baseName = `${url}.abell`;
+      filePath = path.join(basePath, baseName);
+    } else if (fs.existsSync(path.join(basePath, url, `index.abell`))) {
+      // For paths like `/about/index.abell`
+      baseName = `${url}/index.abell`;
+      filePath = path.join(basePath, baseName);
+    } else {
+      filePath = '';
+      // Couldn't figure out path from url
+      console.warn(`[abell]: Abell couldn't figure out path from URL '${url}'`);
+    }
   }
 
-  let baseName = '';
-  if (fs.existsSync(path.join(basePath, `${url}.abell`))) {
-    // For paths like `/about.abell`
-    baseName = `${url}.abell`;
-    return path.join(basePath, baseName);
-  } else if (fs.existsSync(path.join(basePath, url, `index.abell`))) {
-    // For paths like `/about/index.abell`
-    baseName = `${url}/index.abell`;
-    return path.join(basePath, baseName);
+  // if filePath is not relative or absolute, make it relative or absolute
+  if (!filePath.startsWith('./') && !filePath.startsWith('/')) {
+    filePath = `./${filePath}`;
   }
 
-  // Couldn't figure out path from url
-  console.warn(`[abell]: Abell couldn't figure out path from URL '${url}'`);
-  return '';
+  return filePath;
 };
 
 /**

@@ -7,11 +7,17 @@ import {
 } from '../general-utils';
 
 const BASE_PATH = path.join(__dirname, 'test-files');
-const prefix = (fileName: string): string => path.join(BASE_PATH, fileName);
+const prefix = (fileName: string, baseOverride?: string): string =>
+  path.join(baseOverride ?? BASE_PATH, fileName);
 
 describe('getFilePathFromURL()', () => {
   test('should return index.abell on `/` route', () => {
     expect(getFilePathFromURL('/', BASE_PATH)).toBe(prefix('index.abell'));
+  });
+
+  test('should return index.abell on `/` route', () => {
+    const base = '.';
+    expect(getFilePathFromURL('/', base)).toBe('./index.abell');
   });
 
   test('should return about.abell on `/about` route', () => {
