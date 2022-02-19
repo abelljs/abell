@@ -1,10 +1,8 @@
 import fs from 'fs';
 import path from 'path';
-import { getAbellConfig } from './general-utils';
 
 type PathOptions = {
   cwd: string;
-  configFile: string;
 };
 
 const DEFAULT_ENTRY_BUILD_PATH = path.join(
@@ -15,7 +13,7 @@ const DEFAULT_ENTRY_BUILD_PATH = path.join(
 );
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export const getPaths = async ({ cwd, configFile }: PathOptions) => {
+export const getPaths = async ({ cwd }: PathOptions) => {
   const OUTPUT_DIR = path.join(cwd, 'dist');
   const SOURCE_DIR = path.join(cwd, 'src');
   const ASSETS_DIR = path.join(cwd, 'assets');
@@ -36,13 +34,7 @@ export const getPaths = async ({ cwd, configFile }: PathOptions) => {
     );
   }
 
-  const abellConfig = await getAbellConfig(configFile);
-  let PAGES_ROOT: string;
-  if (abellConfig.indexPath) {
-    PAGES_ROOT = path.dirname(path.join(cwd, abellConfig.indexPath));
-  } else {
-    PAGES_ROOT = SOURCE_DIR;
-  }
+  const PAGES_ROOT = SOURCE_DIR;
 
   return {
     SOURCE_ENTRY_BUILD_PATH,

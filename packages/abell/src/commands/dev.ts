@@ -12,8 +12,7 @@ async function createServer(serverOptions: ServeOptions) {
   const cwd = process.cwd();
   const configFile = getConfigPath(cwd);
   const { SOURCE_ENTRY_BUILD_PATH, PAGES_ROOT } = await getPaths({
-    cwd,
-    configFile
+    cwd
   });
 
   const vite = await createViteServer({
