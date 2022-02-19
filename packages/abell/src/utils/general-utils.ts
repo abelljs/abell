@@ -74,6 +74,74 @@ export const getFilePathFromURL = (url: string, basePath: string): string => {
   return filePath;
 };
 
+type AbellPagesGlobImport = Record<
+  string,
+  {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    default: (props?: any) => string;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    html?: (props?: any) => string;
+  }
+>;
+const findIndexPath = (abellPages: AbellPagesGlobImport): string => {
+  // filter all index.abell files. One of them is going to be root index.abell
+  const abellIndexPaths = Object.keys(abellPages).filter((abellPage) =>
+    abellPage.endsWith('index.abell')
+  );
+
+  // index.abell with shortest path is going to root index.abell
+  let shortestPathLength = abellIndexPaths[0].length;
+  let likelyRootIndexPath = abellIndexPaths[0];
+  for (const abellPath of abellIndexPaths) {
+    if (abellPath.length < shortestPathLength) {
+      shortestPathLength = abellPath.length;
+      likelyRootIndexPath = abellPath;
+    }
+  }
+
+  return likelyRootIndexPath;
+};
+
+const arePathsEqual = (pathOne: string, pathTwo: string): boolean =>
+  path.resolve(pathOne) === path.resolve(pathTwo);
+
+/**
+ *
+ * @param url URL from server (e.g. `/`, `/about`)
+ * @param abellPages Response of glob import. You can get it by running following-
+ * ```ts
+ * const abellPages = import.meta.globEager('./src/*.abell');
+ * ```
+ * @returns
+ */
+export const findAbellFileFromURL = (
+  url: string,
+  abellPages: AbellPagesGlobImport
+): string | undefined => {
+  const rootIndexPath = findIndexPath(abellPages);
+  const basePath = path.dirname(rootIndexPath);
+
+  if (url === '/') {
+    return rootIndexPath;
+  }
+
+  const directPath = path.join(basePath, `${url}.abell`);
+  const nestedIndexPath = path.join(basePath, url, 'index.abell');
+
+  for (const abellPage of Object.keys(abellPages)) {
+    if (arePathsEqual(abellPage, directPath)) {
+      return abellPage;
+    }
+
+    if (arePathsEqual(abellPage, nestedIndexPath)) {
+      return abellPage;
+    }
+  }
+
+  // couldn't figure out :( page.
+  return undefined;
+};
+
 /**
  * Get URL string from filepath
  */
