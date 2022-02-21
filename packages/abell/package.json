@@ -1,18 +1,9 @@
 {
   "name": "abell",
-  "version": "1.0.0-alpha.25",
+  "version": "1.0.0-alpha.30",
   "description": "",
-  "bin": "./dist/bin.cjs",
-  "main": "./dist/index.cjs",
-  "exports": {
-    "import": "./dist/index.mjs",
-    "require": "./dist/index.cjs"
-  },
-  "typesVersions": {
-    "*": {
-      "*": ["dist/*"]
-    }
-  },
+  "bin": "./dist/bin.js",
+  "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "files": [
     "dist",
@@ -21,7 +12,6 @@
   "scripts": {
     "test": "vitest",
     "test:once": "vitest run",
-    "unbuild": "unbuild",
     "build": "tsc && node scripts/post-build.js",
     "eslint": "eslint",
     "dev": "node ./dist/bin.js dev",

@@ -4,9 +4,6 @@
     /* Basic Options */
     "outDir": "dist",
     "rootDir": "src",
-    "module": "ES2020", // (A)
-    "moduleResolution": "Node", // (B)
-    "allowSyntheticDefaultImports": true, // (C)
   },
   "include": ["src"],
   "exclude": ["node_modules", "dist", "scripts","src/defaults"]
