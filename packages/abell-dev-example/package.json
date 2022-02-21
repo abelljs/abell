@@ -1,5 +1,5 @@
 {
-  "name": "abell-examples",
+  "name": "abell-dev-example",
   "version": "0.0.0",
   "description": "",
   "scripts": {
@@ -12,7 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "abell": "1.0.0-alpha.21"
+    "abell": "1.0.0-alpha.30"
   },
   "devDependencies": {
     "@stitches/core": "^1.2.6"

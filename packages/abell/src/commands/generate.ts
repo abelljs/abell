@@ -20,8 +20,7 @@ async function generate() {
     OUT_ENTRY_BUILD_PATH,
     SOURCE_ENTRY_BUILD_PATH
   } = await getPaths({
-    cwd,
-    configFile
+    cwd
   });
 
   // Generate server build

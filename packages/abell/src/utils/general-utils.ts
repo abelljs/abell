@@ -3,14 +3,12 @@ import path from 'path';
 import { vitePluginAbell } from './vite-plugin-abell';
 import {
   defineConfig as viteDefineConfig,
-  loadConfigFromFile,
   UserConfig as ViteUserConfig,
   UserConfigExport as ViteUserConfigExport
 } from 'vite';
 
-export type AbellOptions = {
-  indexPath?: string;
-};
+// @TODO add options here
+export type AbellOptions = Record<string, never>;
 
 interface AbellViteConfig extends ViteUserConfig {
   abell?: AbellOptions;
@@ -78,9 +76,7 @@ type AbellPagesGlobImport = Record<
   string,
   {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    default: (props?: any) => string;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    html?: (props?: any) => string;
+    [key: string]: any;
   }
 >;
 const findIndexPath = (abellPages: AbellPagesGlobImport): string => {
@@ -191,16 +187,3 @@ export function recursiveFindFiles(
 
   return result;
 }
-
-export const getAbellConfig = async (
-  configFile: string
-): Promise<AbellOptions> => {
-  // const viteConfig = (await import(configFile)).default;
-  // return viteConfig.abell;
-  const configResponse = await loadConfigFromFile(
-    { command: 'build', mode: 'production' },
-    configFile
-  );
-
-  return (configResponse?.config as AbellViteConfig).abell ?? {};
-};
