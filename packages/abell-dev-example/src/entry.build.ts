@@ -1,5 +1,7 @@
-import { findAbellFileFromURL } from 'abell';
-const abellPages = import.meta.globEager('../pages/*.abell');
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+const { findAbellFileFromURL } = require('abell');
+const abellPages = import.meta.globEager('./*.abell');
 
 export function render(url: string): string {
   if (url.includes('favicon')) return '';
