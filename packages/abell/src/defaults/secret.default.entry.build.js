@@ -6,8 +6,8 @@ const abellPages = import.meta.globEager(`{{ abellPagesDir }}/*.abell`);
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export function render(url) {
-  if (url.includes('favicon')) return '';
+  if (url.includes('favicon')) return undefined;
   const abellFilePath = findAbellFileFromURL(url, abellPages);
-  if (!abellFilePath) return '404';
+  if (!abellFilePath) return undefined;
   return abellPages[abellFilePath].default();
 }

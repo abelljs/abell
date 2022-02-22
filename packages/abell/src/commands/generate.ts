@@ -46,6 +46,7 @@ async function generate() {
   for (const url of urlsToBuild) {
     // @TODO: make them generate in async mode
     const appHtml = await render(url);
+    if (!appHtml) continue;
     const htmlPath = path.join(
       PAGES_ROOT,
       `${url === '/' ? 'index' : url}.html`
