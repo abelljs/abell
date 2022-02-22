@@ -3,7 +3,9 @@ import { compile } from './index';
 
 describe('compile()', () => {
   test('should successfully compile single expressions', () => {
-    const out = compile('<body>{{ 3 + 4 }}</body>');
+    const out = compile('<body>{{ 3 + 4 }}</body>', {
+      filepath: __dirname
+    });
     expect(out).toMatchSnapshot();
   });
 
@@ -26,7 +28,9 @@ describe('compile()', () => {
       </div>
     </body>
     `;
-    const out = compile(abellCode);
+    const out = compile(abellCode, {
+      filepath: __dirname
+    });
     expect(out).toMatchSnapshot();
   });
 });

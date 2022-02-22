@@ -1,6 +1,7 @@
 <html>
 <body>
-  {{ 9 + 1 }}
+  {{ 9 + 89 }}
+  <div id="app"></div>
   <script type="module" src="./entry.client.ts"></script>
 </body>
 </html>

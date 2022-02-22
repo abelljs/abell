@@ -1,6 +1,6 @@
 <html>
 <body>
-  {{ 3 + 21 }}
+  {{ 3 + 22 }}
   <div id="app"></div>
   <script src="./entry.client.ts" type="module"></script>
 </body>

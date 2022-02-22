@@ -1,10 +1,13 @@
 {
   "name": "abell",
-  "version": "1.0.0-alpha.30",
+  "version": "1.0.0-alpha.31",
   "description": "",
   "bin": "./dist/bin.js",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "exports": {
+    "./*": "./dist/*"
+  },
   "files": [
     "dist",
     "types.d.ts"

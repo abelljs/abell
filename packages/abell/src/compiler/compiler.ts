@@ -1,16 +1,26 @@
+import path from 'path';
 import tokenize from '../utils/generic-tokenizer';
 
 const isDeclarationBlock = (blockCount: number, blockContent: string) => {
-  if (blockCount < 2 && blockContent.includes('import')) {
+  if (blockCount < 2 && blockContent.includes('import ')) {
     return true;
   }
   return false;
 };
 
+type CompileOptions = {
+  filepath: string;
+  cwd?: string;
+};
+
 export function compile(
   abellTemplate: string,
-  filename = '<anonymous>.abell'
+  options: CompileOptions
 ): string {
+  const filename = path.relative(
+    options.cwd ?? process.cwd(),
+    options.filepath
+  );
   const tokenSchema = {
     COMMENTED_OUT_BLOCK_START: /\\{{/,
     BLOCK_START: /{{/,
@@ -46,20 +56,14 @@ export function compile(
     }
   }
 
-  // console.log({ declarations });
-  // console.log({ htmlString: htmlCode });
-
   const jsOut = `
+  import { default as _path } from 'path';
   ${declarations}
+  const __filename = '${options.filepath}';
+  const __dirname = _path.dirname(__filename);
   const e = (val) => {
-    if (typeof val === 'function') {
-      return val();
-    }
-
-    if (!val) {
-      return '';
-    }
-
+    if (typeof val === 'function') return val();
+    if (!val) return '';
     return val;
   };
   export const html = (props = {}) => {
