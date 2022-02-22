@@ -17,7 +17,7 @@
     "eslint": "eslint packages/**/**/**/ --ext .ts,.js",
     "prettier": "prettier --write \"packages/**/**/**/*.[jt]s\"",
     "format": "npm run prettier",
-    "prepublishOnly": "npm run eslint && npm test"
+    "prepublishOnly": "echo \"NOT FROM THE ROOT!! sorry for caps hehe\" && fail"
   },
   "dependencies": {},
   "devDependencies": {

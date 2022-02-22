@@ -101,6 +101,14 @@ const findIndexPath = (abellPages: AbellPagesGlobImport): string => {
 const arePathsEqual = (pathOne: string, pathTwo: string): boolean =>
   path.resolve(pathOne) === path.resolve(pathTwo);
 
+type URLToAbellOptions = {
+  ignoreUnderscoreURLs?: boolean;
+};
+
+const defaultURLToAbellOptions: URLToAbellOptions = {
+  ignoreUnderscoreURLs: true
+};
+
 /**
  *
  * @param url URL from server (e.g. `/`, `/about`)
@@ -108,12 +116,20 @@ const arePathsEqual = (pathOne: string, pathTwo: string): boolean =>
  * ```ts
  * const abellPages = import.meta.globEager('./src/*.abell');
  * ```
- * @returns
+ * @param options Options
+ * @param options.ignoreUnderscoreURLs return undefined on underscore URLs like '_components/navbar'. (Default: true)
  */
 export const findAbellFileFromURL = (
   url: string,
-  abellPages: AbellPagesGlobImport
+  abellPages: AbellPagesGlobImport,
+  options: URLToAbellOptions = {}
 ): string | undefined => {
+  const finalOptions = { ...defaultURLToAbellOptions, ...options };
+  if (finalOptions.ignoreUnderscoreURLs) {
+    if (url.includes('/_')) {
+      return undefined;
+    }
+  }
   const rootIndexPath = findIndexPath(abellPages);
   const basePath = path.dirname(rootIndexPath);
 
