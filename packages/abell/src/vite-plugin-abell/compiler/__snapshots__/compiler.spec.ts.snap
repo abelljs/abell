@@ -1,58 +1,55 @@
 // Vitest Snapshot v1
 
 exports[`compile() > should successfully compile single expressions 1`] = `
-"
-  import { default as _path } from 'path';
-  
-  const __filename = '/Users/saurabhdaware/Desktop/projects/abell-org/abell/packages/abell/src/vite-plugin-abell/compiler';
-  const __dirname = _path.dirname(__filename);
-  const e = (val) => {
-    if (typeof val === 'function') return val();
-    if (!val) return '';
-    return val;
-  };
-  export const html = (props = {}) => {
-    const Abell = { 
-      props, 
-      console: {
-        log: (...args) => {
-          console.log('\\\\u001b[90m[src/vite-plugin-abell/compiler]:\\\\u001b[39m', ...args);
-          return '';
-        }
+"import { default as _path } from 'path';
+
+const __filename = '/Users/saurabhdaware/Desktop/projects/abell-org/abell/packages/abell/src/vite-plugin-abell/compiler';
+const __dirname = _path.dirname(__filename);
+const e = (val) => {
+  if (typeof val === 'function') return val();
+  if (!val) return '';
+  return val;
+};
+export const html = (props = {}) => {
+  const Abell = { 
+    props, 
+    console: {
+      log: (...args) => {
+        console.log('\\\\u001b[90m[src/vite-plugin-abell/compiler]:\\\\u001b[39m', ...args);
+        return '';
       }
-    };
-    return \`<body>\${e( 3 + 4 )}</body>\`
+    }
   };
-  export default html;
-  "
+  return \`<body>\${e( 3 + 4 )}</body>\`
+};
+export default html;"
 `;
 
 exports[`compile() > should successfully compile with declarations 1`] = `
-"
-  import { default as _path } from 'path';
-  
+"import { default as _path } from 'path';
+
       import fs from 'fs';
       import path from 'path';
       import { compile } from 'abell-renderer';
     
-  const __filename = '/Users/saurabhdaware/Desktop/projects/abell-org/abell/packages/abell/src/vite-plugin-abell/compiler';
-  const __dirname = _path.dirname(__filename);
-  const e = (val) => {
-    if (typeof val === 'function') return val();
-    if (!val) return '';
-    return val;
-  };
-  export const html = (props = {}) => {
-    const Abell = { 
-      props, 
-      console: {
-        log: (...args) => {
-          console.log('\\\\u001b[90m[src/vite-plugin-abell/compiler]:\\\\u001b[39m', ...args);
-          return '';
-        }
+const __filename = '/Users/saurabhdaware/Desktop/projects/abell-org/abell/packages/abell/src/vite-plugin-abell/compiler';
+const __dirname = _path.dirname(__filename);
+const e = (val) => {
+  if (typeof val === 'function') return val();
+  if (!val) return '';
+  return val;
+};
+export const html = (props = {}) => {
+  const Abell = { 
+    props, 
+    console: {
+      log: (...args) => {
+        console.log('\\\\u001b[90m[src/vite-plugin-abell/compiler]:\\\\u001b[39m', ...args);
+        return '';
       }
-    };
-    return \`<body>
+    }
+  };
+  return \`<body>
       \${e( 3 + 4 )}
       <b>\${e( 'Helloo'.toUpperCase() )}</b>
       <div>
@@ -63,7 +60,6 @@ exports[`compile() > should successfully compile with declarations 1`] = `
         )}
       </div>
     </body>\`
-  };
-  export default html;
-  "
+};
+export default html;"
 `;
