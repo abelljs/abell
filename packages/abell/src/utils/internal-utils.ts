@@ -104,7 +104,7 @@ export const getConfigPath = (cwd: string): string => {
     }
   }
 
-  return path.resolve(__dirname, '../defaults/vite.config');
+  return path.resolve(__dirname, '../../defaults/vite.config');
 };
 
 type PathOptions = {
