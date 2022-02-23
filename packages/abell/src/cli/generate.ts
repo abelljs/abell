@@ -2,14 +2,14 @@ import fs from 'fs';
 import path from 'path';
 import { build as viteBuild } from 'vite';
 
-import { getPaths } from '../utils/constants';
 import {
   getConfigPath,
   getURLFromFilePath,
-  recursiveFindFiles
-} from '../utils/general-utils';
+  recursiveFindFiles,
+  getBasePaths
+} from '../utils/internal-utils';
 
-async function generate() {
+async function generate(): Promise<void> {
   const cwd = process.cwd();
   const configFile = getConfigPath(cwd);
 
@@ -19,7 +19,7 @@ async function generate() {
     OUTPUT_DIR,
     OUT_ENTRY_BUILD_PATH,
     SOURCE_ENTRY_BUILD_PATH
-  } = await getPaths({
+  } = await getBasePaths({
     cwd
   });
 
@@ -75,8 +75,4 @@ async function generate() {
   console.log('`npx serve dist` to run static server');
 }
 
-function build(): void {
-  generate();
-}
-
-export default build;
+export default generate;

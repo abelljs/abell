@@ -3,22 +3,22 @@
 // This is the file that gets called first on `abell [command]`
 import { createCommand } from 'commander';
 
-import build from './commands/generate';
-import serve from './commands/dev';
+import generate from './cli/generate';
+import dev from './cli/dev';
 
 const program = createCommand();
 
 // Listeners
 
 /** abell generate */
-program.command('generate').alias('build').action(build);
+program.command('generate').alias('build').action(generate);
 
 /** abell dev */
 program
   .command('dev')
   .alias('serve')
   .option('--port [port]', 'Serve on different port', '3000')
-  .action(serve);
+  .action(dev);
 
 /** abell -V */
 // eslint-disable-next-line @typescript-eslint/no-var-requires

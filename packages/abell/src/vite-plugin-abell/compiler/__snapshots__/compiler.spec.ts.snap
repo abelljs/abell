@@ -4,7 +4,7 @@ exports[`compile() > should successfully compile single expressions 1`] = `
 "
   import { default as _path } from 'path';
   
-  const __filename = '/Users/saurabhdaware/Desktop/projects/abell-org/abell/packages/abell/src/compiler';
+  const __filename = '/Users/saurabhdaware/Desktop/projects/abell-org/abell/packages/abell/src/vite-plugin-abell/compiler';
   const __dirname = _path.dirname(__filename);
   const e = (val) => {
     if (typeof val === 'function') return val();
@@ -16,7 +16,7 @@ exports[`compile() > should successfully compile single expressions 1`] = `
       props, 
       console: {
         log: (...args) => {
-          console.log('\\\\u001b[90m[src/compiler]:\\\\u001b[39m', ...args);
+          console.log('\\\\u001b[90m[src/vite-plugin-abell/compiler]:\\\\u001b[39m', ...args);
           return '';
         }
       }
@@ -35,7 +35,7 @@ exports[`compile() > should successfully compile with declarations 1`] = `
       import path from 'path';
       import { compile } from 'abell-renderer';
     
-  const __filename = '/Users/saurabhdaware/Desktop/projects/abell-org/abell/packages/abell/src/compiler';
+  const __filename = '/Users/saurabhdaware/Desktop/projects/abell-org/abell/packages/abell/src/vite-plugin-abell/compiler';
   const __dirname = _path.dirname(__filename);
   const e = (val) => {
     if (typeof val === 'function') return val();
@@ -47,7 +47,7 @@ exports[`compile() > should successfully compile with declarations 1`] = `
       props, 
       console: {
         log: (...args) => {
-          console.log('\\\\u001b[90m[src/compiler]:\\\\u001b[39m', ...args);
+          console.log('\\\\u001b[90m[src/vite-plugin-abell/compiler]:\\\\u001b[39m', ...args);
           return '';
         }
       }

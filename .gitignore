@@ -119,3 +119,5 @@ playground/
 
 # Typescript build dir during dev server
 dev/
+
+garbage

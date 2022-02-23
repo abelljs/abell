@@ -1,5 +1,5 @@
 import path from 'path';
-import tokenize from '../utils/generic-tokenizer';
+import tokenize from './generic-tokenizer';
 
 const isDeclarationBlock = (blockCount: number, blockContent: string) => {
   if (blockCount < 2 && blockContent.includes('import ')) {
@@ -57,29 +57,29 @@ export function compile(
   }
 
   const jsOut = `
-  import { default as _path } from 'path';
-  ${declarations}
-  const __filename = '${options.filepath}';
-  const __dirname = _path.dirname(__filename);
-  const e = (val) => {
-    if (typeof val === 'function') return val();
-    if (!val) return '';
-    return val;
-  };
-  export const html = (props = {}) => {
-    const Abell = { 
-      props, 
-      console: {
-        log: (...args) => {
-          console.log('\\u001b[90m[${filename}]:\\u001b[39m', ...args);
-          return '';
-        }
+import { default as _path } from 'path';
+${declarations}
+const __filename = '${options.filepath}';
+const __dirname = _path.dirname(__filename);
+const e = (val) => {
+  if (typeof val === 'function') return val();
+  if (!val) return '';
+  return val;
+};
+export const html = (props = {}) => {
+  const Abell = { 
+    props, 
+    console: {
+      log: (...args) => {
+        console.log('\\u001b[90m[${filename}]:\\u001b[39m', ...args);
+        return '';
       }
-    };
-    return \`${htmlCode.trim()}\`
+    }
   };
-  export default html;
-  `;
+  return \`${htmlCode.trim()}\`
+};
+export default html;
+`.trim();
 
   return jsOut;
 }

@@ -1,17 +1,16 @@
 import express, { Request, Response } from 'express';
 import { createServer as createViteServer } from 'vite';
-import { getPaths } from '../utils/constants';
-import { getConfigPath } from '../utils/general-utils';
+import { getConfigPath, getBasePaths } from '../utils/internal-utils';
 
-type ServeOptions = {
+type DevOptions = {
   port: string;
 };
 
-async function createServer(serverOptions: ServeOptions) {
+async function dev(serverOptions: DevOptions): Promise<void> {
   const app = express();
   const cwd = process.cwd();
   const configFile = getConfigPath(cwd);
-  const { SOURCE_ENTRY_BUILD_PATH, PAGES_ROOT } = await getPaths({
+  const { SOURCE_ENTRY_BUILD_PATH, PAGES_ROOT } = await getBasePaths({
     cwd
   });
 
@@ -29,7 +28,8 @@ async function createServer(serverOptions: ServeOptions) {
       const { render } = await vite.ssrLoadModule(SOURCE_ENTRY_BUILD_PATH);
 
       // transforms the paths
-      const html = await vite.transformIndexHtml(url, await render(url));
+      const renderedContent: string | undefined = await render(url);
+      const html = await vite.transformIndexHtml(url, renderedContent ?? '');
 
       res.status(200).set({ 'Content-Type': 'text/html' }).end(html);
       // @ts-ignore
@@ -49,8 +49,4 @@ async function createServer(serverOptions: ServeOptions) {
   });
 }
 
-function serve(command: ServeOptions): void {
-  createServer(command);
-}
-
-export default serve;
+export default dev;

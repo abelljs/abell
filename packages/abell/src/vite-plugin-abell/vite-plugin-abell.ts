@@ -1,6 +1,6 @@
 import path from 'path';
-import { compile } from '../compiler';
-import { AbellOptions } from './general-utils';
+import { compile } from './compiler';
+import { AbellOptions } from '../utils/internal-utils';
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export function vitePluginAbell(abellOptions?: AbellOptions) {
@@ -15,7 +15,10 @@ export function vitePluginAbell(abellOptions?: AbellOptions) {
           process.cwd(),
           path.dirname(indexPath)
         );
-        const abellDirPath = path.relative(__dirname, userConfiguredPagesDir);
+        const abellDirPath = path.relative(
+          path.dirname(id),
+          userConfiguredPagesDir
+        );
         const entryBuildSrc = src.replaceAll(
           '{{ abellPagesDir }}',
           abellDirPath
