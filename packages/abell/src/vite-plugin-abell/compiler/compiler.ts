@@ -1,4 +1,4 @@
-import path from 'path';
+/* eslint-disable max-len */
 import tokenize from './generic-tokenizer';
 
 const isDeclarationBlock = (blockCount: number, blockContent: string) => {
@@ -17,10 +17,6 @@ export function compile(
   abellTemplate: string,
   options: CompileOptions
 ): string {
-  const filename = path.relative(
-    options.cwd ?? process.cwd(),
-    options.filepath
-  );
   const tokenSchema = {
     COMMENTED_OUT_BLOCK_START: /\\{{/,
     BLOCK_START: /{{/,
@@ -58,25 +54,15 @@ export function compile(
 
   const jsOut = `
 import { default as _path } from 'path';
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+const { evaluateAbellBlock: e } = require('abell/dist/utils/internal-utils');
 ${declarations}
 const __filename = '${options.filepath}';
 const __dirname = _path.dirname(__filename);
-const e = (val) => {
-  if (typeof val === 'function') return val();
-  if (!val) return '';
-  return val;
-};
 export const html = (props = {}) => {
-  const Abell = { 
-    props, 
-    console: {
-      log: (...args) => {
-        console.log('\\u001b[90m[${filename}]:\\u001b[39m', ...args);
-        return '';
-      }
-    }
-  };
-  return \`${htmlCode.trim()}\`
+  const Abell = { props, __filename, __dirname };
+  return \`${htmlCode}\`
 };
 export default html;
 `.trim();

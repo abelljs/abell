@@ -153,3 +153,26 @@ export const getBasePaths = async ({ cwd }: PathOptions) => {
     OUTPUT_DIR
   };
 };
+
+/**
+ * Evaluates the abell block.
+ *
+ * Internally used to clean the output and return correct value.
+ *
+ */
+// eslint-disable-next-line
+export const evaluateAbellBlock = (val: any): string => {
+  if (val === undefined || val === null) return ''; // never print undefined or null
+  if (typeof val === 'function') return val(); // if function, execute the function
+  if (Array.isArray(val)) return val.join(''); // if array, join the array with ''
+  return val;
+};
+
+// type AbellVariable = {
+//   console: {
+//     log: (val: unknown[]) => void;
+//   };
+//   props: Record<string, unknown>;
+//   dirname: string;
+//   filename: string;
+// };
