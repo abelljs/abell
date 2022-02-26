@@ -8,15 +8,34 @@ const isDeclarationBlock = (blockCount: number, blockContent: string) => {
   return false;
 };
 
-type CompileOptions = {
+interface CompileOptions {
   filepath: string;
   cwd?: string;
-};
+  outputType?: 'js-string' | 'html-declaration-object';
+}
+
+interface HTMLOutputCompileOptions extends CompileOptions {
+  outputType: 'html-declaration-object';
+}
+
+interface JSOutputCompileOptions extends CompileOptions {
+  outputType?: 'js-string';
+}
+
+type CompileOutputType = string | { html: string; declarations: string };
 
 export function compile(
   abellTemplate: string,
+  options: HTMLOutputCompileOptions
+): { html: string; declarations: string };
+export function compile(
+  abellTemplate: string,
+  options: JSOutputCompileOptions
+): string;
+export function compile(
+  abellTemplate: string,
   options: CompileOptions
-): string {
+): CompileOutputType {
   const tokenSchema = {
     COMMENTED_OUT_BLOCK_START: /\\{{/,
     BLOCK_START: /{{/,
@@ -50,6 +69,13 @@ export function compile(
         htmlCode += token.text;
       }
     }
+  }
+
+  if (options.outputType === 'html-declaration-object') {
+    return {
+      html: htmlCode,
+      declarations
+    };
   }
 
   const jsOut = `
