@@ -7,12 +7,6 @@ import path from 'path';
 
 export type AbellOptions = Record<string, never>;
 
-/**
- * matches paths and returns boolean
- */
-export const arePathsEqual = (pathOne: string, pathTwo: string): boolean =>
-  path.resolve(pathOne) === path.resolve(pathTwo);
-
 export type AbellPagesGlobImport = Record<
   string,
   {
@@ -59,37 +53,6 @@ export const getURLFromFilePath = (
   }
   return route;
 };
-
-/**
- * Find files with certain extension inside the base directory
- */
-export function recursiveFindFiles(
-  base: string,
-  ext: '.abell' | '.html',
-  inputFiles: string[] | undefined = undefined,
-  inputResult: string[] | undefined = undefined
-): string[] {
-  const files = inputFiles || fs.readdirSync(base);
-  let result = inputResult || [];
-
-  for (const file of files) {
-    const newbase = path.join(base, file);
-    if (fs.statSync(newbase).isDirectory()) {
-      result = recursiveFindFiles(
-        newbase,
-        ext,
-        fs.readdirSync(newbase),
-        result
-      );
-    } else {
-      if (file.endsWith(ext)) {
-        result.push(newbase);
-      }
-    }
-  }
-
-  return result;
-}
 
 export const getConfigPath = (cwd: string): string => {
   const possibleConfigFiles = [
@@ -167,12 +130,3 @@ export const evaluateAbellBlock = (val: any): string => {
   if (Array.isArray(val)) return val.join(''); // if array, join the array with ''
   return val;
 };
-
-// type AbellVariable = {
-//   console: {
-//     log: (val: unknown[]) => void;
-//   };
-//   props: Record<string, unknown>;
-//   dirname: string;
-//   filename: string;
-// };

@@ -1,5 +1,5 @@
 import { test, describe, expect } from 'vitest';
-import { recursiveFindFiles, getURLFromFilePath } from '../internal-utils';
+import { getURLFromFilePath } from '../internal-utils';
 import { BASE_PATH, prefix } from './test-utils';
 
 describe('getURLFromFilePath()', () => {
@@ -22,15 +22,5 @@ describe('getURLFromFilePath()', () => {
     expect(getURLFromFilePath(prefix('nested/index.abell/'), BASE_PATH)).toBe(
       '/nested'
     );
-  });
-});
-
-describe('recursiveFindFiles()', () => {
-  test('should return array of abell files paths', () => {
-    expect(recursiveFindFiles(BASE_PATH, '.abell')).toEqual([
-      prefix('_components/navbar.abell'),
-      prefix('about.abell'),
-      prefix('nested/index.abell')
-    ]);
   });
 });

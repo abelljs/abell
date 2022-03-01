@@ -13,10 +13,11 @@ import {
 } from 'vite';
 import {
   AbellPagesGlobImport,
-  arePathsEqual,
   findIndexPath,
-  AbellOptions
+  AbellOptions,
+  getURLFromFilePath
 } from './internal-utils';
+import { Route } from '../type-utils';
 
 export interface AbellViteConfig extends ViteUserConfig {
   abell?: AbellOptions;
@@ -43,54 +44,46 @@ export const defineConfig = (config: AbellViteConfig): ViteUserConfigExport => {
   });
 };
 
-type URLToAbellOptions = {
+type AbellMakeRouteOptions = {
   ignoreUnderscoreURLs?: boolean;
 };
 
-const defaultURLToAbellOptions: URLToAbellOptions = {
+const defaultAbellMakeRouteOptions: AbellMakeRouteOptions = {
   ignoreUnderscoreURLs: true
 };
 
 /**
  *
- * @param url URL from server (e.g. `/`, `/about`)
+ * Can be used to build routes from file-system.
+ *
+ * Returns the Route[] object on giving globImport object.
+ *
  * @param abellPages Response of glob import. You can get it by running following-
  * ```ts
+ * import { makeRoutesFromGlobImport } from 'abell'
  * const abellPages = import.meta.globEager('./src/*.abell');
+ *
+ * export const makeRoutes = () => {
+ * return makeRoutesFromGlobImport(abellPages);
+ * }
  * ```
- * @param options Options
- * @param options.ignoreUnderscoreURLs return undefined on underscore URLs like '_components/navbar'. (Default: true)
+ * @returns {Route[]}
  */
-export const findAbellFileFromURL = (
-  url: string,
+export const makeRoutesFromGlobImport = (
   abellPages: AbellPagesGlobImport,
-  options: URLToAbellOptions = {}
-): string | undefined => {
-  const finalOptions = { ...defaultURLToAbellOptions, ...options };
-  if (finalOptions.ignoreUnderscoreURLs) {
-    if (url.includes('/_')) {
-      return undefined;
-    }
-  }
+  options: AbellMakeRouteOptions = defaultAbellMakeRouteOptions
+): Route[] => {
+  const routes: Route[] = [];
   const rootIndexPath = findIndexPath(abellPages);
   const basePath = path.dirname(rootIndexPath);
-
-  if (url === '/') {
-    return rootIndexPath;
-  }
-
-  const directPath = path.join(basePath, `${url}.abell`);
-  const nestedIndexPath = path.join(basePath, url, 'index.abell');
-
   for (const abellPage of Object.keys(abellPages)) {
-    if (arePathsEqual(abellPage, directPath)) {
-      return abellPage;
+    if (options.ignoreUnderscoreURLs && abellPage.includes('/_')) {
+      continue;
     }
-
-    if (arePathsEqual(abellPage, nestedIndexPath)) {
-      return abellPage;
-    }
+    routes.push({
+      path: getURLFromFilePath(abellPage, basePath),
+      render: (...args) => abellPages[abellPage].default(...args)
+    });
   }
-
-  return undefined;
+  return routes;
 };

@@ -2,12 +2,8 @@ import fs from 'fs';
 import path from 'path';
 import { build as viteBuild } from 'vite';
 
-import {
-  getConfigPath,
-  getURLFromFilePath,
-  recursiveFindFiles,
-  getBasePaths
-} from '../utils/internal-utils';
+import { getConfigPath, getBasePaths } from '../utils/internal-utils';
+import { Route } from '../type-utils';
 
 async function generate(): Promise<void> {
   const cwd = process.cwd();
@@ -34,22 +30,18 @@ async function generate(): Promise<void> {
   });
 
   // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const { render } = require(OUT_ENTRY_BUILD_PATH);
+  const { makeRoutes } = require(OUT_ENTRY_BUILD_PATH);
+  const routes: Route[] = await makeRoutes();
 
   // Generate index.html
   const createdHTMLFiles = [];
-  const abellFiles = recursiveFindFiles(PAGES_ROOT, '.abell');
-  const urlsToBuild = abellFiles.map((abellFilePath) =>
-    getURLFromFilePath(abellFilePath, PAGES_ROOT)
-  );
 
-  for (const url of urlsToBuild) {
-    // @TODO: make them generate in async mode
-    const appHtml = await render(url);
+  for (const route of routes) {
+    const appHtml = route.render();
     if (!appHtml) continue;
     const htmlPath = path.join(
       PAGES_ROOT,
-      `${url === '/' ? 'index' : url}.html`
+      `${route.path === '/' ? 'index' : route.path}.html`
     );
     fs.writeFileSync(htmlPath, appHtml);
     createdHTMLFiles.push(htmlPath);

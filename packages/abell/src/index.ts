@@ -3,6 +3,8 @@
 export { vitePluginAbell } from './vite-plugin-abell';
 export {
   defineConfig,
-  findAbellFileFromURL,
-  AbellViteConfig
+  AbellViteConfig,
+  makeRoutesFromGlobImport
 } from './utils/api';
+
+export { Route } from './type-utils';

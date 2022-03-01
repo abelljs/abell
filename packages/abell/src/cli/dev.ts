@@ -1,6 +1,7 @@
 import express, { Request, Response } from 'express';
 import { createServer as createViteServer } from 'vite';
 import { getConfigPath, getBasePaths } from '../utils/internal-utils';
+import { Route } from '../type-utils';
 
 type DevOptions = {
   port: string;
@@ -19,16 +20,25 @@ async function dev(serverOptions: DevOptions): Promise<void> {
     root: PAGES_ROOT,
     configFile
   });
+
   // use vite's connect instance as middleware
   app.use(vite.middlewares);
   app.use('*', async (req: Request, res: Response) => {
     const url = req.originalUrl;
 
-    try {
-      const { render } = await vite.ssrLoadModule(SOURCE_ENTRY_BUILD_PATH);
+    const { makeRoutes } = await vite.ssrLoadModule(SOURCE_ENTRY_BUILD_PATH);
+    const routes: Route[] = await makeRoutes();
 
-      // transforms the paths
-      const renderedContent: string | undefined = await render(url);
+    try {
+      const currentRoute = routes.find((route) => route.path === url);
+      if (!currentRoute) {
+        return res
+          .status(404)
+          .set({ 'Content-Type': 'text/html' })
+          .end('not found');
+      }
+
+      const renderedContent: string | undefined = currentRoute.render();
       const html = await vite.transformIndexHtml(url, renderedContent ?? '');
 
       res.status(200).set({ 'Content-Type': 'text/html' }).end(html);
