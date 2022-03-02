@@ -39,6 +39,23 @@ export const findIndexPath = (abellPages: AbellPagesGlobImport): string => {
 };
 
 /**
+ * Recursively creates the path
+ * @param {string} pathToCreate path that you want to create
+ */
+export function createPathIfAbsent(pathToCreate: string): void {
+  // prettier-ignore
+  pathToCreate
+    .split(path.sep)
+    .reduce((prevPath, folder) => {
+      const currentPath = path.join(prevPath, folder, path.sep);
+      if (!fs.existsSync(currentPath)) {
+        fs.mkdirSync(currentPath);
+      }
+      return currentPath;
+    }, '');
+}
+
+/**
  * Get URL string from filepath.
  *
  * Used in `generate` to build URLs from all the files paths

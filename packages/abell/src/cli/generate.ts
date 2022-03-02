@@ -2,7 +2,11 @@ import fs from 'fs';
 import path from 'path';
 import { build as viteBuild } from 'vite';
 
-import { getConfigPath, getBasePaths } from '../utils/internal-utils';
+import {
+  getConfigPath,
+  getBasePaths,
+  createPathIfAbsent
+} from '../utils/internal-utils';
 import { Route } from '../type-utils';
 
 async function generate(): Promise<void> {
@@ -43,6 +47,7 @@ async function generate(): Promise<void> {
       PAGES_ROOT,
       `${route.path === '/' ? 'index' : route.path}.html`
     );
+    createPathIfAbsent(path.dirname(htmlPath));
     fs.writeFileSync(htmlPath, appHtml);
     createdHTMLFiles.push(htmlPath);
   }
