@@ -1,6 +1,6 @@
 {
   "name": "abell",
-  "version": "1.0.0-alpha.36",
+  "version": "1.0.0-alpha.37",
   "description": "",
   "bin": "./dist/bin.js",
   "main": "./dist/index.js",
@@ -13,7 +13,7 @@
   "scripts": {
     "test": "vitest",
     "test:once": "vitest run",
-    "build": "tsc && node scripts/post-build.js",
+    "build": "tsc --project tsconfig.build.json && node scripts/post-build.js",
     "eslint": "eslint",
     "dev": "node ./dist/bin.js dev",
     "prepublishOnly": "yarn test:once && yarn eslint && yarn build"

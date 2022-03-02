@@ -21,13 +21,6 @@ describe('compile()', () => {
     <body>
       {{ 3 + 4 }}
       <b>{{ 'Helloo'.toUpperCase() }}</b>
-      <div>
-        {{
-          [1, 2, 3].map(i => 
-            i * 2
-          )
-        }}
-      </div>
     </body>
     `;
     const out = compile(abellCode, {
@@ -45,13 +38,6 @@ describe('compile()', () => {
       "<body>
             \${e( 3 + 4 )}
             <b>\${e( 'Helloo'.toUpperCase() )}</b>
-            <div>
-              \${e(
-                [1, 2, 3].map(i =>
-                  i * 2
-                )
-              )}
-            </div>
           </body>"
     `);
   });
