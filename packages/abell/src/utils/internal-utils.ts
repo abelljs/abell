@@ -20,6 +20,11 @@ export const findIndexPath = (abellPages: AbellPagesGlobImport): string => {
     abellPage.endsWith('index.abell')
   );
 
+  // Only one index file in import
+  if (abellIndexPaths.length === 1) {
+    return abellIndexPaths[0];
+  }
+
   // index.abell with shortest path is going to root index.abell
   let shortestPathLength = abellIndexPaths[0].length;
   let likelyRootIndexPath = abellIndexPaths[0];
