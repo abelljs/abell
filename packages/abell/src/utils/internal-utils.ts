@@ -42,7 +42,8 @@ export const findIndexPath = (abellPages: AbellPagesGlobImport): string => {
  * Recursively creates the path
  * @param {string} pathToCreate path that you want to create
  */
-export function createPathIfAbsent(pathToCreate: string): void {
+export function createPathIfAbsent(pathToCreate: string): string[] {
+  const createdDirectories: string[] = [];
   // prettier-ignore
   pathToCreate
     .split(path.sep)
@@ -50,9 +51,12 @@ export function createPathIfAbsent(pathToCreate: string): void {
       const currentPath = path.join(prevPath, folder, path.sep);
       if (!fs.existsSync(currentPath)) {
         fs.mkdirSync(currentPath);
+        createdDirectories.push(currentPath);
       }
       return currentPath;
     }, '');
+
+  return createdDirectories;
 }
 
 /**

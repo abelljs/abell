@@ -39,6 +39,7 @@ async function generate(): Promise<void> {
 
   // Generate index.html
   const createdHTMLFiles = [];
+  const createdDirectories = [];
 
   for (const route of routes) {
     const appHtml = route.render();
@@ -47,7 +48,9 @@ async function generate(): Promise<void> {
       PAGES_ROOT,
       `${route.path === '/' ? 'index' : route.path}.html`
     );
-    createPathIfAbsent(path.dirname(htmlPath));
+    // @TODO get created directories and delete them later
+    const newDirs = createPathIfAbsent(path.dirname(htmlPath));
+    createdDirectories.push(...newDirs);
     fs.writeFileSync(htmlPath, appHtml);
     createdHTMLFiles.push(htmlPath);
   }
@@ -67,6 +70,11 @@ async function generate(): Promise<void> {
 
   for (const HTML_FILE of createdHTMLFiles) {
     fs.unlinkSync(HTML_FILE);
+  }
+
+  // remove directories
+  for (const newDir of createdDirectories) {
+    fs.rmdirSync(newDir);
   }
 
   console.log('`npx serve dist` to run static server');
