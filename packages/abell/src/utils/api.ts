@@ -40,7 +40,7 @@ export const defineConfig = (config: AbellViteConfig): ViteUserConfigExport => {
 
   return viteDefineConfig({
     ...config,
-    plugins: [vitePluginAbell(config.abell), ...userPlugins]
+    plugins: [vitePluginAbell(), ...userPlugins]
   });
 };
 

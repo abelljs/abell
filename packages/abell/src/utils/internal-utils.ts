@@ -4,7 +4,7 @@
 
 import fs from 'fs';
 import path from 'path';
-import { loadConfigFromFile } from 'vite';
+import { loadConfigFromFile, UserConfig as ViteUserConfig } from 'vite';
 
 export type AbellOptions = Record<string, never>;
 
@@ -102,6 +102,21 @@ type PathOptions = {
   command: 'generate' | 'dev';
 };
 
+export const getViteConfig = async ({
+  configFile,
+  command
+}: PathOptions): Promise<ViteUserConfig> => {
+  const viteConfigObj = await loadConfigFromFile(
+    {
+      command: command === 'generate' ? 'build' : 'serve',
+      mode: command === 'generate' ? 'production' : 'development'
+    },
+    configFile
+  );
+
+  return viteConfigObj?.config ?? {};
+};
+
 const DEFAULT_ENTRY_BUILD_PATH = path.join(
   __dirname,
   '..',
@@ -112,15 +127,8 @@ const DEFAULT_ENTRY_BUILD_PATH = path.join(
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const getBasePaths = async ({ configFile, command }: PathOptions) => {
-  const viteConfig = await loadConfigFromFile(
-    {
-      command: command === 'generate' ? 'build' : 'serve',
-      mode: command === 'generate' ? 'production' : 'development'
-    },
-    configFile
-  );
-
-  const ROOT = viteConfig?.config.root ?? process.cwd();
+  const viteConfig = await getViteConfig({ configFile, command });
+  const ROOT = viteConfig.root ?? process.cwd();
 
   const OUTPUT_DIR = path.join(ROOT, 'dist');
   const ASSETS_DIR = path.join(ROOT, 'assets');
