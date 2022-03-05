@@ -15,12 +15,13 @@ async function generate(): Promise<void> {
 
   const {
     TEMP_OUTPUT_DIR,
-    PAGES_ROOT,
+    ROOT,
     OUTPUT_DIR,
     OUT_ENTRY_BUILD_PATH,
     SOURCE_ENTRY_BUILD_PATH
   } = await getBasePaths({
-    cwd
+    configFile,
+    command: 'generate'
   });
 
   // Generate server build
@@ -45,10 +46,9 @@ async function generate(): Promise<void> {
     const appHtml = route.render();
     if (!appHtml) continue;
     const htmlPath = path.join(
-      PAGES_ROOT,
+      ROOT,
       `${route.path === '/' ? 'index' : route.path}.html`
     );
-    // @TODO get created directories and delete them later
     const newDirs = createPathIfAbsent(path.dirname(htmlPath));
     createdDirectories.push(...newDirs);
     fs.writeFileSync(htmlPath, appHtml);
@@ -57,7 +57,6 @@ async function generate(): Promise<void> {
 
   // Static build
   await viteBuild({
-    root: PAGES_ROOT,
     build: {
       outDir: OUTPUT_DIR,
       emptyOutDir: true,

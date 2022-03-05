@@ -10,7 +10,7 @@ export function vitePluginAbell(abellOptions?: AbellOptions) {
       // This is hack for dynamic global imports. We can't do dynamic global imports in current codebase
       // resolve pages directory in default entry build
       if (id.endsWith('secret.default.entry.build.js')) {
-        const indexPath = abellOptions?.indexPath ?? './src/index.abell';
+        const indexPath = abellOptions?.indexPath ?? './index.abell';
         const userConfiguredPagesDir = path.join(
           process.cwd(),
           path.dirname(indexPath)

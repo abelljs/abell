@@ -4,6 +4,7 @@
 
 import fs from 'fs';
 import path from 'path';
+import { loadConfigFromFile } from 'vite';
 
 export type AbellOptions = Record<string, never>;
 
@@ -97,7 +98,8 @@ export const getConfigPath = (cwd: string): string => {
 };
 
 type PathOptions = {
-  cwd: string;
+  configFile: string;
+  command: 'generate' | 'dev';
 };
 
 const DEFAULT_ENTRY_BUILD_PATH = path.join(
@@ -109,12 +111,21 @@ const DEFAULT_ENTRY_BUILD_PATH = path.join(
 );
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export const getBasePaths = async ({ cwd }: PathOptions) => {
-  const OUTPUT_DIR = path.join(cwd, 'dist');
-  const SOURCE_DIR = path.join(cwd, 'src');
-  const ASSETS_DIR = path.join(cwd, 'assets');
+export const getBasePaths = async ({ configFile, command }: PathOptions) => {
+  const viteConfig = await loadConfigFromFile(
+    {
+      command: command === 'generate' ? 'build' : 'serve',
+      mode: command === 'generate' ? 'production' : 'development'
+    },
+    configFile
+  );
+
+  const ROOT = viteConfig?.config.root ?? process.cwd();
+
+  const OUTPUT_DIR = path.join(ROOT, 'dist');
+  const ASSETS_DIR = path.join(ROOT, 'assets');
   const TEMP_OUTPUT_DIR = path.join(OUTPUT_DIR, '__temp_abell');
-  let SOURCE_ENTRY_BUILD_PATH = path.join(SOURCE_DIR, 'entry.build');
+  let SOURCE_ENTRY_BUILD_PATH = path.join(ROOT, 'entry.build');
   let OUT_ENTRY_BUILD_PATH = path.join(TEMP_OUTPUT_DIR, 'entry.build.js');
 
   const ENTRY_BUILD_PATH_JS = SOURCE_ENTRY_BUILD_PATH + '.js';
@@ -130,15 +141,12 @@ export const getBasePaths = async ({ cwd }: PathOptions) => {
     );
   }
 
-  const PAGES_ROOT = SOURCE_DIR;
-
   return {
     SOURCE_ENTRY_BUILD_PATH,
     OUT_ENTRY_BUILD_PATH,
     TEMP_OUTPUT_DIR,
-    SOURCE_DIR,
     ASSETS_DIR,
-    PAGES_ROOT,
+    ROOT,
     OUTPUT_DIR
   };
 };

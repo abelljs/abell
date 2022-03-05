@@ -1,7 +1,0 @@
-<html>
-<body>
-  {{ 2 + 7 }}
-  <div id="app"></div>
-  <script type="module" src="./entry.client.ts"></script>
-</body>
-</html>

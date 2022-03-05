@@ -11,13 +11,13 @@ async function dev(serverOptions: DevOptions): Promise<void> {
   const app = express();
   const cwd = process.cwd();
   const configFile = getConfigPath(cwd);
-  const { SOURCE_ENTRY_BUILD_PATH, PAGES_ROOT } = await getBasePaths({
-    cwd
+  const { SOURCE_ENTRY_BUILD_PATH } = await getBasePaths({
+    configFile,
+    command: 'dev'
   });
 
   const vite = await createViteServer({
     server: { middlewareMode: 'ssr' },
-    root: PAGES_ROOT,
     configFile
   });
 
