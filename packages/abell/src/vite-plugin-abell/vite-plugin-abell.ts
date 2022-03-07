@@ -20,10 +20,10 @@ export function vitePluginAbell(): PluginOption {
           path.dirname(id),
           config.root ?? process.cwd()
         );
-        const entryBuildSrc = src.replaceAll(
-          '{{ abellPagesDir }}',
-          abellDirPath
-        );
+        const abellIndexPath = path.join(__dirname, '..', 'index');
+        const entryBuildSrc = src
+          .replaceAll('{{ abellPagesDir }}', abellDirPath)
+          .replaceAll('{{ abellIndexPath }}', abellIndexPath);
         return { code: entryBuildSrc };
       }
 

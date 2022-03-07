@@ -1,4 +1,5 @@
 /* eslint-disable max-len */
+import path from 'path';
 import tokenize from './generic-tokenizer';
 
 const isDeclarationBlock = (blockCount: number, blockContent: string) => {
@@ -78,13 +79,21 @@ export function compile(
     };
   }
 
+  const internalUtilsPath = path.join(
+    __dirname,
+    '..',
+    '..',
+    'utils',
+    'internal-utils'
+  );
+
   const jsOut = `
 import { default as _path } from 'path';
 import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
-const { evaluateAbellBlock: e } = require('abell/dist/utils/internal-utils');
+const { evaluateAbellBlock: e } = require(${JSON.stringify(internalUtilsPath)});
 ${declarations}
-const __filename = '${options.filepath}';
+const __filename = ${JSON.stringify(options.filepath)};
 const __dirname = _path.dirname(__filename);
 export const html = (props = {}) => {
   const Abell = { props, __filename, __dirname };
