@@ -4,9 +4,15 @@
 
 import fs from 'fs';
 import path from 'path';
-import { loadConfigFromFile, UserConfig as ViteUserConfig } from 'vite';
+import {
+  loadConfigFromFile,
+  EsbuildTransformOptions,
+  UserConfig as ViteUserConfig
+} from 'vite';
 
-export type AbellOptions = Record<string, never>;
+export type AbellOptions = {
+  esbuild?: EsbuildTransformOptions;
+};
 
 export type AbellPagesGlobImport = Record<
   string,
@@ -166,9 +172,19 @@ export const getBasePaths = async ({ configFile, command }: PathOptions) => {
  *
  */
 // eslint-disable-next-line
-export const evaluateAbellBlock = (val: any): string => {
+export const evaluateAbellBlock = (val: unknown): string | boolean | number => {
   if (val === undefined || val === null) return ''; // never print undefined or null
-  if (typeof val === 'function') return val(); // if function, execute the function
+  if (typeof val === 'function') return evaluateAbellBlock(val()); // if function, execute the function
   if (Array.isArray(val)) return val.join(''); // if array, join the array with ''
-  return val;
+  if (typeof val === 'object') return JSON.stringify(val); // if object, stringify object
+  if (
+    typeof val === 'string' ||
+    typeof val === 'boolean' || // string, boolean, number can take care of stringifying at the end
+    typeof val === 'number'
+  ) {
+    return val;
+  }
+
+  // force stringification on rest
+  return String(val);
 };

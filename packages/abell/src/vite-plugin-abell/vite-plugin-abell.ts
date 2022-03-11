@@ -1,9 +1,10 @@
 import path from 'path';
-import { PluginOption } from 'vite';
+import { PluginOption, transformWithEsbuild } from 'vite';
+import { AbellOptions } from '../utils/internal-utils';
 import { compile } from './compiler';
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export function vitePluginAbell(): PluginOption {
+export function vitePluginAbell(abellOptions?: AbellOptions): PluginOption {
   let config: {
     root: string;
   };
@@ -12,7 +13,7 @@ export function vitePluginAbell(): PluginOption {
     configResolved(resolvedConfig) {
       config = resolvedConfig;
     },
-    transform(src: string, id: string) {
+    async transform(src: string, id: string) {
       // This is hack for dynamic global imports. We can't do dynamic global imports in current codebase
       // resolve pages directory in default entry build
       if (id.endsWith('secret.default.entry.build.js')) {
@@ -29,12 +30,22 @@ export function vitePluginAbell(): PluginOption {
 
       // transpile abell files into js code
       if (id.endsWith('.abell')) {
-        const code = compile(src, {
+        const jsCode = compile(src, {
           filepath: id,
           cwd: process.cwd()
         });
+        let outCode = jsCode;
+        // If loader is not defined, skip the esbuild transform
+        if (abellOptions?.esbuild?.loader) {
+          const esbuildOut = await transformWithEsbuild(
+            jsCode,
+            id,
+            abellOptions.esbuild
+          );
+          outCode = esbuildOut.code;
+        }
         return {
-          code
+          code: outCode
         };
       }
     }

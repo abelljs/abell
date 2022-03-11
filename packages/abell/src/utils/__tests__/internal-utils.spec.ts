@@ -58,4 +58,16 @@ describe('evaluateAbellBlock()', () => {
   test('should return 0 on given 0', () => {
     expect(evaluateAbellBlock(0)).toBe(0);
   });
+
+  test('should return string response for recursive functions', () => {
+    expect(evaluateAbellBlock(() => () => [1, 2, 3])).toBe('123');
+  });
+
+  test('should return nothing for null returning function', () => {
+    expect(evaluateAbellBlock(() => null)).toBe('');
+  });
+
+  test('should return stringified object on json', () => {
+    expect(evaluateAbellBlock({ hi: 'hey' })).toBe('{"hi":"hey"}');
+  });
 });
