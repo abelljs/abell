@@ -1,6 +1,6 @@
 {
   "name": "abell-monorepo",
-  "version": "0.0.1",
+  "version": "0.0.2-0",
   "description": "Abell is a static blog generator that generates blog in Vanilla JavaScript",
   "private": "true",
   "funding": {
