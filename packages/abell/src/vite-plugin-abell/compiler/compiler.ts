@@ -1,13 +1,7 @@
 /* eslint-disable max-len */
 import path from 'path';
+import { isDeclarationBlock, parseAttributes } from './utils';
 import tokenize from './generic-tokenizer';
-
-const isDeclarationBlock = (blockCount: number, blockContent: string) => {
-  if (blockCount < 2 && blockContent.includes('import ')) {
-    return true;
-  }
-  return false;
-};
 
 interface CompileOptions {
   filepath: string;
@@ -39,18 +33,27 @@ export function compile(
 ): CompileOutputType {
   const tokenSchema = {
     COMMENTED_OUT_BLOCK_START: /\\{{/,
+    STYLE_START: /<style(.*?)>/,
+    STYLE_END: /<\/style>/,
     BLOCK_START: /{{/,
     BLOCK_END: /}}/
   };
   const tokens = tokenize(abellTemplate, tokenSchema, 'default');
 
   let isInsideAbellBlock = false;
+  let isInsideCSSBlock = false;
   let htmlCode = '';
   let blockCode = '';
+  let cssCode = '';
   let declarations = '';
   let blockCount = 0;
   for (const token of tokens) {
     if (token.type === 'BLOCK_START') {
+      if (isInsideCSSBlock) {
+        throw new Error(
+          '[abell-compiler]: Abell blocks are not allowed inside <style> tag'
+        );
+      }
       isInsideAbellBlock = true;
       blockCount++;
     } else if (token.type === 'BLOCK_END') {
@@ -62,10 +65,21 @@ export function compile(
         htmlCode += `\${e(${blockCode})}`;
       }
       blockCode = '';
+    } else if (token.type === 'STYLE_START') {
+      if (token?.matches?.[0].includes('export')) {
+        const styleTagAttributes = parseAttributes(token.matches[0]);
+        if (styleTagAttributes.export) {
+          isInsideCSSBlock = true;
+        }
+      }
+    } else if (token.type === 'STYLE_END') {
+      isInsideCSSBlock = false;
     } else {
       // normal string;
       if (isInsideAbellBlock) {
         blockCode += token.text;
+      } else if (isInsideCSSBlock) {
+        cssCode += token.text;
       } else {
         htmlCode += token.text;
       }
@@ -78,6 +92,8 @@ export function compile(
       declarations
     };
   }
+
+  console.log({ cssCode, htmlCode });
 
   const internalUtilsPath = path.join(
     __dirname,

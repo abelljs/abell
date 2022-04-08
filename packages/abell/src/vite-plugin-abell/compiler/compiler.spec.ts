@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import { describe, test, expect } from 'vitest';
 import { compile } from './index';
 
@@ -40,5 +41,23 @@ describe('compile()', () => {
             <b>\${e( 'Helloo'.toUpperCase() )}</b>
           </body>"
     `);
+  });
+
+  test('dev-server', () => {
+    const abellCode = `
+    <nav>hello</nav>
+
+    <style export>
+    nav {
+      color: red;
+    }
+    </style>
+    `;
+
+    const out = compile(abellCode, {
+      filepath: __dirname
+    });
+
+    expect(1).toBe(1);
   });
 });
