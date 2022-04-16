@@ -1,11 +1,16 @@
 {{
   import navbar from './navbar.abell';
+  import footer from './footer.abell';
 }}
 <html>
 <head>
 </head>
 <body>
   {{ navbar }}
+  <ul>
+    <li>List outside of navbar scope</li>
+  </ul>
+  {{ footer }}
   <script src="./hello.js" type="module"></script>
 </body>
 </html>

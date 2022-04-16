@@ -12,7 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "abell": "1.0.0-alpha.39"
+    "abell": "1.0.0-alpha.50"
   },
   "devDependencies": {
     "@stitches/core": "^1.2.6"

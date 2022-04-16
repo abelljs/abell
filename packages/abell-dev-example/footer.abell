@@ -1,12 +1,13 @@
-<nav>
+<footer>
   <ul>
     <li><a href="/">Home</a></li>
     <li><a href="/about">About</a></li>
   </ul>
-</nav>
+</footer>
 
 <style>
 ul {
-  background-color: #ddd;
+  background-color: red;
+  color: white;
 }
 </style>
