@@ -1,5 +1,11 @@
+{{
+  import navbar from './navbar.abell';
+}}
 <html>
+<head>
+</head>
 <body>
-  {{ 3 + 1 }}
+  {{ navbar }}
+  <script src="./hello.js" type="module"></script>
 </body>
 </html>

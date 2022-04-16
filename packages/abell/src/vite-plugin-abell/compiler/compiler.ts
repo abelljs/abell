@@ -2,6 +2,19 @@
 import path from 'path';
 import { isDeclarationBlock, parseAttributes } from './utils';
 import tokenize from './generic-tokenizer';
+import {
+  generateHashFromPath,
+  getScopedCSS,
+  injectCSSHashToHTML
+} from './scope-css';
+
+/**
+ * CSS Plan-
+ *
+ * 1. Scope css in the component itself
+ * 2. Collect and bundle styles in the plugin
+ *
+ */
 
 interface CompileOptions {
   filepath: string;
@@ -18,6 +31,12 @@ interface JSOutputCompileOptions extends CompileOptions {
 }
 
 type CompileOutputType = string | { html: string; declarations: string };
+type CSSAttributes = Record<string, string | boolean>;
+type CSSCollectionType = {
+  text: string;
+  attributes: CSSAttributes;
+  scopedCSS?: string;
+}[];
 
 export function compile(
   abellTemplate: string,
@@ -31,6 +50,7 @@ export function compile(
   abellTemplate: string,
   options: CompileOptions
 ): CompileOutputType {
+  const cssCollection: CSSCollectionType = [];
   const tokenSchema = {
     COMMENTED_OUT_BLOCK_START: /\\{{/,
     STYLE_START: /<style(.*?)>/,
@@ -44,7 +64,8 @@ export function compile(
   let isInsideCSSBlock = false;
   let htmlCode = '';
   let blockCode = '';
-  let cssCode = '';
+  let cssCodeBlock = '';
+  let cssAttributes: Record<string, string | boolean> = {};
   let declarations = '';
   let blockCount = 0;
   for (const token of tokens) {
@@ -66,25 +87,50 @@ export function compile(
       }
       blockCode = '';
     } else if (token.type === 'STYLE_START') {
-      if (token?.matches?.[0].includes('export')) {
-        const styleTagAttributes = parseAttributes(token.matches[0]);
-        if (styleTagAttributes.export) {
-          isInsideCSSBlock = true;
-        }
+      if (token.matches) {
+        cssAttributes = parseAttributes(token.matches[0]);
+      } else {
+        cssAttributes = {};
       }
+      isInsideCSSBlock = true;
     } else if (token.type === 'STYLE_END') {
       isInsideCSSBlock = false;
+      cssCollection.push({
+        attributes: cssAttributes,
+        text: cssCodeBlock
+      });
+      cssCodeBlock = '';
+      cssAttributes = {};
     } else {
       // normal string;
       if (isInsideAbellBlock) {
         blockCode += token.text;
       } else if (isInsideCSSBlock) {
-        cssCode += token.text;
+        cssCodeBlock += token.text;
       } else {
         htmlCode += token.text;
       }
     }
   }
+
+  const isHTMLPage = htmlCode.includes('</html>') && htmlCode.includes('<html');
+  const relativeFilePath = path.relative(process.cwd(), options.filepath);
+  const componentHash = generateHashFromPath(relativeFilePath);
+  if (!isHTMLPage) {
+    // If not parent HTML Page (it's a component!), inject scope css attributes
+    htmlCode = injectCSSHashToHTML(htmlCode, componentHash);
+  }
+
+  let styleTagsString = '';
+  for (const cssBlock of cssCollection) {
+    if (cssBlock.attributes.scoped === 'false' || isHTMLPage) {
+      styleTagsString += `<style abell-ignored>${cssBlock.text}</style>`;
+      continue;
+    }
+    cssBlock.scopedCSS = getScopedCSS(cssBlock.text, componentHash);
+    styleTagsString += `<style abell-generated>${cssBlock.scopedCSS}</style>`;
+  }
+  htmlCode = styleTagsString + htmlCode;
 
   if (options.outputType === 'html-declaration-object') {
     return {
@@ -92,8 +138,6 @@ export function compile(
       declarations
     };
   }
-
-  console.log({ cssCode, htmlCode });
 
   const internalUtilsPath = path.join(
     __dirname,

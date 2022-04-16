@@ -1,4 +1,5 @@
 /* eslint-disable max-len */
+import path from 'path';
 import { describe, test, expect } from 'vitest';
 import { compile } from './index';
 
@@ -8,7 +9,9 @@ describe('compile()', () => {
       filepath: __dirname,
       outputType: 'html-declaration-object'
     });
-    expect(out.html).toMatchInlineSnapshot('"<body>${e( 3 + 4 )}</body>"');
+    expect(out.html).toMatchInlineSnapshot(
+      '"<body data-abell-heumYD>${e( 3 + 4 )}</body>"'
+    );
     expect(out.declarations).toMatchInlineSnapshot('""');
   });
 
@@ -36,28 +39,49 @@ describe('compile()', () => {
           "
     `);
     expect(out.html.trim()).toMatchInlineSnapshot(`
-      "<body>
+      "<body data-abell-heumYD>
             \${e( 3 + 4 )}
-            <b>\${e( 'Helloo'.toUpperCase() )}</b>
+            <b data-abell-heumYD>\${e( 'Helloo'.toUpperCase() )}</b>
           </body>"
     `);
   });
+});
 
-  test('dev-server', () => {
+describe('scoped css', () => {
+  test('should scope the css', () => {
     const abellCode = `
     <nav>hello</nav>
 
     <style export>
+    nav {
+      color: yellow;
+    }
+    </style>
+
+    <style hello="hi">
+    nav {
+      color: blue;
+    }
+    </style>
+
+    <style scoped="false">
     nav {
       color: red;
     }
     </style>
     `;
 
-    const out = compile(abellCode, {
-      filepath: __dirname
+    const { html } = compile(abellCode, {
+      filepath: path.join(process.cwd(), 'test.abell'),
+      outputType: 'html-declaration-object'
     });
-
-    expect(1).toBe(1);
+    expect(html.trim()).toMatchInlineSnapshot(`
+      "<style abell-generated>nav[data-abell-duqnjx]{color:yellow;}</style><style abell-generated>nav[data-abell-duqnjx]{color:blue;}</style><style abell-ignored>
+          nav {
+            color: red;
+          }
+          </style>
+          <nav data-abell-duqnjx>hello</nav>"
+    `);
   });
 });

@@ -1,7 +1,9 @@
 /**
  * Parse string attributes to object
  */
-export function parseAttributes(attributes: string): Record<string, string> {
+export function parseAttributes(
+  attributes: string
+): Record<string, string | boolean> {
   const attributeMatches = attributes.match(/(?:[^\s"']+|(["'])[^"]*\1)+/g);
   if (!attributeMatches) {
     return {};
