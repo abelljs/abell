@@ -1,9 +1,14 @@
 {{
-  import navbar from './navbar.abell';
-  import footer from './footer.abell';
+  import navbar from './_navbar.abell';
+  import footer from './_footer.abell';
 }}
 <html>
 <head>
+  <style>
+  body {
+    background-color: black;
+  }
+  </style>
 </head>
 <body>
   {{ navbar }}

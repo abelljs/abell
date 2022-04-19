@@ -2,6 +2,7 @@
   "name": "abell-dev-example",
   "version": "0.0.0",
   "description": "",
+  "main": "./vite.config.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "abell dev",
