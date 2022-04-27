@@ -31,6 +31,7 @@ async function generate(): Promise<void> {
       ssr: SOURCE_ENTRY_BUILD_PATH,
       ssrManifest: true
     },
+    logLevel: 'warn',
     configFile
   });
 
