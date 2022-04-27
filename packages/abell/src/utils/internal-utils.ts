@@ -73,10 +73,11 @@ export function createPathIfAbsent(pathToCreate: string): string[] {
  */
 export const getURLFromFilePath = (
   filePath: string,
-  basePath: string
+  basePath: string,
+  ext: '.abell' | '.md' = '.abell'
 ): string => {
   const baseName = path.relative(basePath, filePath);
-  let route = baseName.replace('index.abell', '').replace('.abell', '');
+  let route = baseName.replace('index' + ext, '').replace(ext, '');
   if (!route.startsWith('/')) {
     route = `/${route}`;
   }

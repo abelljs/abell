@@ -70,9 +70,19 @@ const defaultAbellMakeRouteOptions: AbellMakeRouteOptions = {
  * @returns {Route[]}
  */
 export const makeRoutesFromGlobImport = (
-  abellPages: AbellPagesGlobImport,
+  abellOrMarkdownPages: AbellPagesGlobImport,
   options: AbellMakeRouteOptions = defaultAbellMakeRouteOptions
 ): Route[] => {
+  const abellPages: AbellPagesGlobImport = {};
+  const markdownPages: AbellPagesGlobImport = {};
+  for (const [filepath, importValue] of Object.entries(abellOrMarkdownPages)) {
+    if (filepath.endsWith('.abell')) {
+      abellPages[filepath] = importValue;
+    } else if (filepath.endsWith('.md')) {
+      markdownPages[filepath] = importValue;
+    }
+  }
+
   const routes: Route[] = [];
   const rootIndexPath = findIndexPath(abellPages);
   const basePath = path.dirname(rootIndexPath);
@@ -83,6 +93,34 @@ export const makeRoutesFromGlobImport = (
     routes.push({
       path: getURLFromFilePath(abellPage, basePath),
       render: (...args) => abellPages[abellPage].default(...args)
+    });
+  }
+
+  // Return markdown html and if contains layout attribute, then resolve abell file
+  for (const markdownPage of Object.keys(markdownPages)) {
+    if (options.ignoreUnderscoreURLs && markdownPage.includes('/_')) {
+      continue;
+    }
+    const abellLayoutPath = path.join(
+      path.dirname(markdownPage),
+      markdownPages[markdownPage].attributes.layout
+    );
+    const matchingAbellLayoutPath = Object.keys(abellPages).find((abellPage) =>
+      abellPage.includes(abellLayoutPath)
+    );
+
+    routes.push({
+      path: getURLFromFilePath(markdownPage, basePath, '.md'),
+      render: (...args) => {
+        if (!matchingAbellLayoutPath) {
+          return markdownPages[markdownPage].default;
+        }
+
+        return abellPages[matchingAbellLayoutPath].default({
+          children: markdownPages[markdownPage].default,
+          ...args
+        });
+      }
     });
   }
   return routes;

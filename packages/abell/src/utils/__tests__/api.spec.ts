@@ -45,4 +45,26 @@ describe('makeRoutesFromGlobImport()', () => {
     ]);
     expect(renderOutputs).toEqual(['index', 'about', 'nested', 'nav', 'nav2']);
   });
+
+  test('should support markdown pages with layout attribute', () => {
+    const abellAndMarkdownPages = {
+      './src/index.abell': {
+        default: () => 'index'
+      },
+      './src/_test.abell': {
+        default: ({ children }: { children: string }) =>
+          `<div>${children}</div>`
+      },
+      './hello-world.md': {
+        attributes: {
+          layout: './_test.abell'
+        },
+        default: '<h2>Hello</h2>'
+      }
+    };
+    const routes = makeRoutesFromGlobImport(abellAndMarkdownPages);
+    for (const route of routes) {
+      console.log({ path: route.path, html: route.render() });
+    }
+  });
 });
