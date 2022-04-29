@@ -9,10 +9,11 @@ import {
 } from './scope-css';
 
 /**
+ * TODO:
  * CSS Plan-
  *
  * 1. Scope css in the component itself
- * 2. Collect and bundle styles in the plugin
+ * 2. Collect and bundle styles in the plugin (New Vite versions will handle this out of the box)
  *
  */
 
@@ -62,8 +63,8 @@ export function compile(
 
   let isInsideAbellBlock = false;
   let isInsideCSSBlock = false;
-  let htmlCode = '';
-  let blockCode = '';
+  let htmlCodeBlock = '';
+  let abellCodeBlock = '';
   let cssCodeBlock = '';
   let cssAttributes: Record<string, string | boolean> = {};
   let declarations = '';
@@ -74,21 +75,24 @@ export function compile(
       blockCount++;
     } else if (token.type === 'BLOCK_END') {
       isInsideAbellBlock = false;
-      if (isDeclarationBlock(blockCount, blockCode)) {
-        declarations = blockCode;
+      if (isDeclarationBlock(blockCount, abellCodeBlock)) {
+        declarations = abellCodeBlock;
       } else {
         // JS Code
-        htmlCode += `\${e(${blockCode})}`;
+        htmlCodeBlock += `\${e(${abellCodeBlock})}`;
       }
-      blockCode = '';
-    } else if (token.type === 'STYLE_START' && !htmlCode.includes('<html')) {
+      abellCodeBlock = '';
+    } else if (
+      token.type === 'STYLE_START' &&
+      !htmlCodeBlock.includes('<html')
+    ) {
       if (token.matches) {
         cssAttributes = parseAttributes(token.matches[0]);
       } else {
         cssAttributes = {};
       }
       isInsideCSSBlock = true;
-    } else if (token.type === 'STYLE_END' && !htmlCode.includes('<html')) {
+    } else if (token.type === 'STYLE_END' && !htmlCodeBlock.includes('<html')) {
       isInsideCSSBlock = false;
       cssCollection.push({
         attributes: cssAttributes,
@@ -97,23 +101,23 @@ export function compile(
       cssCodeBlock = '';
       cssAttributes = {};
     } else {
-      // normal string;
       if (isInsideAbellBlock) {
-        blockCode += token.text;
+        abellCodeBlock += token.text;
       } else if (isInsideCSSBlock) {
         cssCodeBlock += token.text;
       } else {
-        htmlCode += token.text;
+        htmlCodeBlock += token.text;
       }
     }
   }
 
-  const isHTMLPage = htmlCode.includes('</html>') && htmlCode.includes('<html');
+  const isHTMLPage =
+    htmlCodeBlock.includes('</html>') && htmlCodeBlock.includes('<html');
   const relativeFilePath = path.relative(process.cwd(), options.filepath);
   const componentHash = generateHashFromPath(relativeFilePath);
   if (!isHTMLPage) {
     // If not parent HTML Page (it's a component!), inject scope css attributes
-    htmlCode = injectCSSHashToHTML(htmlCode, componentHash);
+    htmlCodeBlock = injectCSSHashToHTML(htmlCodeBlock, componentHash);
   }
 
   let styleTagsString = '';
@@ -125,11 +129,11 @@ export function compile(
     cssBlock.scopedCSS = getScopedCSS(cssBlock.text, componentHash);
     styleTagsString += `<style abell-generated>${cssBlock.scopedCSS}</style>`;
   }
-  htmlCode = styleTagsString + htmlCode;
+  htmlCodeBlock = styleTagsString + htmlCodeBlock;
 
   if (options.outputType === 'html-declaration-object') {
     return {
-      html: htmlCode,
+      html: htmlCodeBlock,
       declarations
     };
   }
@@ -152,7 +156,7 @@ const __filename = ${JSON.stringify(options.filepath)};
 const __dirname = _path.dirname(__filename);
 export const html = (props = {}) => {
   const Abell = { props, __filename, __dirname };
-  return \`${htmlCode}\`
+  return \`${htmlCodeBlock}\`
 };
 export default html;
 `.trim();
