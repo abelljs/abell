@@ -70,11 +70,6 @@ export function compile(
   let blockCount = 0;
   for (const token of tokens) {
     if (token.type === 'BLOCK_START') {
-      if (isInsideCSSBlock) {
-        throw new Error(
-          '[abell-compiler]: Abell blocks are not allowed inside <style> tag'
-        );
-      }
       isInsideAbellBlock = true;
       blockCount++;
     } else if (token.type === 'BLOCK_END') {
