@@ -84,4 +84,72 @@ describe('scoped css', () => {
           <nav data-abell-duqnjx>hello</nav>"
     `);
   });
+
+  test('should not scope the css on html page', () => {
+    const abellCode = `
+    <html>
+    <head>
+    <style>
+    nav {
+      color: yellow;
+    }
+    </style>
+    </head>
+    <body>
+      <nav>hello</nav>
+    </body>
+    </html>
+    `;
+
+    const { html } = compile(abellCode, {
+      filepath: path.join(process.cwd(), 'test.abell'),
+      outputType: 'html-declaration-object'
+    });
+    expect(html.trim()).toMatchInlineSnapshot(`
+      "<html>
+          <head>
+          <style>
+          nav {
+            color: yellow;
+          }
+          </style>
+          </head>
+          <body>
+            <nav>hello</nav>
+          </body>
+          </html>"
+    `);
+  });
+
+  test('should handle abell blocks inside style tag', () => {
+    const abellCode = `
+    <html>
+    <head>
+    <style>
+    {{ 2 + 1 }}
+    </style>
+    </head>
+    <body>
+      <nav>hello</nav>
+    </body>
+    </html>
+    `;
+
+    const { html } = compile(abellCode, {
+      filepath: path.join(process.cwd(), 'test.abell'),
+      outputType: 'html-declaration-object'
+    });
+    expect(html.trim()).toMatchInlineSnapshot(`
+      "<html>
+          <head>
+          <style>
+          \${e( 2 + 1 )}
+          </style>
+          </head>
+          <body>
+            <nav>hello</nav>
+          </body>
+          </html>"
+    `);
+  });
 });

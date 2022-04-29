@@ -81,14 +81,14 @@ export function compile(
         htmlCode += `\${e(${blockCode})}`;
       }
       blockCode = '';
-    } else if (token.type === 'STYLE_START') {
+    } else if (token.type === 'STYLE_START' && !htmlCode.includes('<html')) {
       if (token.matches) {
         cssAttributes = parseAttributes(token.matches[0]);
       } else {
         cssAttributes = {};
       }
       isInsideCSSBlock = true;
-    } else if (token.type === 'STYLE_END') {
+    } else if (token.type === 'STYLE_END' && !htmlCode.includes('<html')) {
       isInsideCSSBlock = false;
       cssCollection.push({
         attributes: cssAttributes,
