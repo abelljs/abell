@@ -12,10 +12,10 @@ body {
 </head>
 <body>
   {{ navbar }}
-  <ul>
-    <li>List outside of navbar scope</li>
+  <ul class="outer-ul">
+    <li>Outer Li</li>
   </ul>
   {{ footer }}
-  <script src="./hello.js" type="module"></script>
+  <script src="./hello.ts" type="module"></script>
 </body>
 </html>

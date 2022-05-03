@@ -115,7 +115,6 @@ oldsrc/
 local/
 mochatests/
 old-code/
-playground/
 
 # Typescript build dir during dev server
 dev/

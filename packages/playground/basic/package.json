@@ -1,0 +1,13 @@
+{
+  "name": "basic",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "abell:version": "npx abell --version",
+    "dev": "yarn abell:version && npx abell dev",
+    "generate": "yarn abell:version && npx abell generate"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

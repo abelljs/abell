@@ -1,0 +1,12 @@
+<nav>
+  <ul>
+    <li><a href="/">Nav Home</a></li>
+    <li><a href="/about">Nav About</a></li>
+  </ul>
+</nav>
+
+<style>
+ul {
+  background-color: #ddd;
+}
+</style>
