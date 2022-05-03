@@ -1,5 +1,9 @@
 import { test, describe, expect } from 'vitest';
-import { getURLFromFilePath, evaluateAbellBlock } from '../internal-utils';
+import {
+  getURLFromFilePath,
+  evaluateAbellBlock,
+  getFilePathFromURL
+} from '../internal-utils';
 import { BASE_PATH, prefix } from './test-utils';
 
 describe('getURLFromFilePath()', () => {
@@ -21,6 +25,22 @@ describe('getURLFromFilePath()', () => {
 
     expect(getURLFromFilePath(prefix('nested/index.abell/'), BASE_PATH)).toBe(
       '/nested'
+    );
+  });
+});
+
+describe('getFilePathFromURL()', () => {
+  test('should return `index.abell` on /', () => {
+    expect(getFilePathFromURL('/', BASE_PATH)).toBe(prefix('index.abell'));
+  });
+
+  test('should return `about.abell` route on /about', () => {
+    expect(getFilePathFromURL('/about', BASE_PATH)).toBe(prefix('about.abell'));
+  });
+
+  test('should return `/nested/index.abell` route on /nested', () => {
+    expect(getFilePathFromURL('/nested', BASE_PATH)).toBe(
+      prefix('nested/index.abell')
     );
   });
 });
