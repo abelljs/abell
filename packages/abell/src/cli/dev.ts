@@ -1,6 +1,10 @@
 import express, { Request, Response } from 'express';
 import { createServer as createViteServer } from 'vite';
-import { getConfigPath, getBasePaths } from '../utils/internal-utils';
+import {
+  getConfigPath,
+  getBasePaths,
+  getFilePathFromURL
+} from '../utils/internal-utils';
 import { Route } from '../type-utils';
 
 type DevOptions = {
@@ -11,7 +15,7 @@ async function dev(serverOptions: DevOptions): Promise<void> {
   const app = express();
   const cwd = process.cwd();
   const configFile = getConfigPath(cwd);
-  const { SOURCE_ENTRY_BUILD_PATH } = await getBasePaths({
+  const { SOURCE_ENTRY_BUILD_PATH, ROOT } = await getBasePaths({
     configFile,
     command: 'dev'
   });
@@ -25,6 +29,7 @@ async function dev(serverOptions: DevOptions): Promise<void> {
   app.use(vite.middlewares);
   app.use('*', async (req: Request, res: Response) => {
     const url = req.originalUrl;
+    const abellFilePath = getFilePathFromURL(url, ROOT);
 
     const { makeRoutes } = await vite.ssrLoadModule(SOURCE_ENTRY_BUILD_PATH);
     const routes: Route[] = await makeRoutes();
@@ -39,7 +44,10 @@ async function dev(serverOptions: DevOptions): Promise<void> {
       }
 
       const renderedContent: string | undefined = currentRoute.render();
-      const html = await vite.transformIndexHtml(url, renderedContent ?? '');
+      const html = await vite.transformIndexHtml(
+        abellFilePath,
+        renderedContent ?? ''
+      );
 
       res.status(200).set({ 'Content-Type': 'text/html' }).end(html);
       // @ts-ignore

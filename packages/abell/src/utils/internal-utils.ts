@@ -87,6 +87,17 @@ export const getURLFromFilePath = (
   return route;
 };
 
+export const getFilePathFromURL = (url: string, basePath: string): string => {
+  const indexPath = path.join(basePath, url, 'index.abell');
+  const directPath = path.join(basePath, `${url}.abell`);
+
+  if (fs.existsSync(directPath)) {
+    return directPath;
+  }
+
+  return indexPath;
+};
+
 export const getConfigPath = (cwd: string): string => {
   const possibleConfigFiles = [
     'vite.config.ts',
