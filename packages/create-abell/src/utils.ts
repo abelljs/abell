@@ -113,3 +113,20 @@ export function copyFolderSync(
     }
   });
 }
+
+export function deleteDir(unNormalizedPathToRemove: string): void {
+  const pathToRemove = normalizePath(unNormalizedPathToRemove);
+  if (fs.existsSync(pathToRemove)) {
+    fs.readdirSync(pathToRemove).forEach((file) => {
+      const curPath = path.join(pathToRemove, file);
+      if (fs.lstatSync(curPath).isDirectory()) {
+        // recurse
+        deleteDir(curPath);
+      } else {
+        // delete file
+        fs.unlinkSync(curPath);
+      }
+    });
+    fs.rmdirSync(pathToRemove);
+  }
+}

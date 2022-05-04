@@ -5,7 +5,7 @@ import {
   scaffoldTemplate,
   setNameInPackageJSON
 } from './steps';
-import { run } from './utils';
+import { deleteDir, run } from './utils';
 
 export type CreateAbellOptions = {
   installer?: 'npm' | 'yarn';
@@ -37,7 +37,10 @@ async function create(
   // 4. Set name in project's package.json
   setNameInPackageJSON(`${projectPath}/package.json`, projectDisplayName);
 
-  // 5. Log Success @todo
+  // 5. Delete `.git`
+  deleteDir(`${projectPath}/.git`);
+
+  // 6. Log Success @todo
   console.log('yay');
 }
 
