@@ -1,0 +1,35 @@
+{
+  "name": "create-abell",
+  "version": "0.0.14",
+  "description": "Boilerplate for abell app. npx create-abell-app my-blog",
+  "main": "dist/create.js",
+  "types": "dist/create.d.ts",
+  "bin": {
+    "create-abell": "dist/bin.js"
+  },
+  "scripts": {
+    "build": "tsc && node scripts/post-build.js",
+    "scaffold": "cd scaffold-dir && node ../dist/bin.js",
+    "postinstall": "mkdir scaffold-dir"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abelljs/create-abell-app.git"
+  },
+  "keywords": [
+    "abell"
+  ],
+  "author": "saurabhdaware",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/abelljs/abell/issues"
+  },
+  "homepage": "https://github.com/abelljs/abell#readme",
+  "dependencies": {
+    "commander": "^9.2.0",
+    "prompts": "^2.4.2"
+  },
+  "devDependencies": {
+    "@types/prompts": "^2.0.14"
+  }
+}
