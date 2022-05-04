@@ -1,7 +1,7 @@
 {
   "name": "create-abell",
   "version": "0.0.14",
-  "description": "Boilerplate for abell app. npx create-abell-app my-blog",
+  "description": "Boilerplate for abell. npx create-abell my-blog",
   "main": "dist/create.js",
   "types": "dist/create.d.ts",
   "bin": {
@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/abelljs/create-abell-app.git"
+    "url": "git+https://github.com/abelljs/abell.git"
   },
   "keywords": [
     "abell"

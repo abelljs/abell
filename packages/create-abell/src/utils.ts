@@ -12,6 +12,9 @@ export const colors = {
     `\u001b[1m\u001b[32m${message}\u001b[39m\u001b[22m`
 };
 
+export const normalizePath = (pathString: string): string =>
+  pathString.split('/').join(path.sep);
+
 const windowsifyCommand = (command: string): string => {
   if (!isWindows) {
     return command;
@@ -23,22 +26,28 @@ const windowsifyCommand = (command: string): string => {
 export async function run(
   command: string,
   { cwd }: { cwd: string } = { cwd: process.cwd() }
-): Promise<void> {
+): Promise<1 | 0> {
   const commandArgs = windowsifyCommand(command).split(' ');
   return new Promise((resolve, reject) => {
-    const child = spawn(commandArgs[0], [...commandArgs.slice(1)], {
-      cwd,
-      stdio: 'inherit'
-    });
+    try {
+      const child = spawn(commandArgs[0], [...commandArgs.slice(1)], {
+        cwd,
+        stdio: 'inherit'
+      });
 
-    child.on('close', (code) => {
-      if (code === 0) {
-        resolve();
-      } else {
-        // eslint-disable-next-line prefer-promise-reject-errors
-        reject();
-      }
-    });
+      child.on('close', (code) => {
+        if (code === 0) {
+          resolve(0);
+        } else {
+          console.log(`oops ${command} failed`);
+          // eslint-disable-next-line prefer-promise-reject-errors
+          reject(1);
+        }
+      });
+    } catch (err) {
+      // eslint-disable-next-line prefer-promise-reject-errors
+      reject(1);
+    }
   });
 }
 

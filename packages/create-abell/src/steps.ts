@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import prompts from 'prompts';
-import { colors, copyFolderSync, run } from './utils';
+import { colors, copyFolderSync, normalizePath, run } from './utils';
 
 /**
  * Prompts user for projectName if not defined, returns the information required related to project
@@ -37,7 +37,7 @@ export const getProjectInfo = async (projectNameArg: string | undefined) => {
     }
   }
 
-  return { projectName, projectDisplayName, projectPath };
+  return { projectDisplayName, projectPath };
 };
 
 /**
@@ -115,9 +115,26 @@ export const scaffoldTemplate = async ({
     console.log(`\n${colors.green('>')} Fetching Template from GitHub ✨\n\n`);
 
     try {
-      await run(`git clone ${template} ${projectPath}`);
+      const errorCode = await run(`git clone ${template} ${projectPath}`);
+      if (errorCode === 1) {
+        throw new Error('[create-abell]: Could not git clone project');
+      }
     } catch (err) {
       throw err;
     }
+  }
+};
+
+export const setNameInPackageJSON = (
+  packagePath: string,
+  appName: string
+): void => {
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const packageJSON = require(normalizePath(packagePath));
+    packageJSON.name = appName;
+    fs.writeFileSync(packagePath, JSON.stringify(packageJSON, null, 2));
+  } catch (err) {
+    // Do nothing. Skip the step if error.
   }
 };
