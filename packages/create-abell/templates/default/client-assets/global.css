@@ -1,0 +1,13 @@
+body {
+  color: #111;
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: center;
+}
+
+button {
+  cursor: pointer;
+}
+
+.subtext {
+  font-size: 1.2rem;
+}

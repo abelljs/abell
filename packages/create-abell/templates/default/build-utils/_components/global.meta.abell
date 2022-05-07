@@ -1,0 +1,6 @@
+{{
+  import data from '../data';
+}}
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ props.title || data.defaultTitle }}</title>
+<link rel="stylesheet" href="./client-assets/global.css" />
