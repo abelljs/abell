@@ -18,8 +18,13 @@ export const colors = {
 export const log = {
   success: (message: string): void =>
     console.log(`${colors.green('✓')} ${message}`),
-  failure: (message: string): void =>
-    console.log(`${colors.red('✗')} ${message}`),
+  failure: (message: string, shouldLog = true): string => {
+    const coloredMessage = `${colors.red('✗')} ${message}`;
+    if (shouldLog) {
+      console.log(coloredMessage);
+    }
+    return coloredMessage;
+  },
   info: (message: string): void =>
     console.log(`${colors.cyan('>>')} ${message}`)
 };

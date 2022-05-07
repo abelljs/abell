@@ -9,8 +9,9 @@
   },
   "scripts": {
     "build": "tsc && node scripts/post-build.js",
-    "scaffold": "cd scaffold-dir && node ../dist/bin.js",
-    "postinstall": "mkdir scaffold-dir",
+    "dev": "nodemon --exec \"yarn build\" --watch src --watch templates -e js,ts,abell,css",
+    "clean-scaffolds": "node scripts/clean-scaffolds.js",
+    "scaffold": "npm run clean-scaffolds && cd scaffold-dir && node ../dist/bin.js",
     "prepublishOnly": "yarn build"
   },
   "repository": {

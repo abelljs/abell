@@ -23,7 +23,7 @@ async function create(
   const relProjectPath = relative(projectPath);
   const template = getTemplate(options.template);
   const installCommand = await getInstallCommand(options.installer);
-  log.info(`Scaffolding ${relProjectPath} using  \`${template}\` template`);
+  log.info(`Scaffolding \`${relProjectPath}\` using  \`${template}\` template`);
 
   // 2. Scaffold Project
   await scaffoldTemplate({

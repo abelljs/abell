@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import prompts from 'prompts';
-import { colors, copyFolderSync, normalizePath, run } from './utils';
+import { colors, copyFolderSync, log, normalizePath, run } from './utils';
 
 /**
  * Prompts user for projectName if not defined, returns the information required related to project
@@ -17,7 +17,13 @@ export const getProjectInfo = async (projectNameArg: string | undefined) => {
         name: 'projectName',
         initial: 'hello-abell'
       })
-    ).projectName as string;
+    ).projectName;
+  } else {
+    projectName = projectNameArg;
+  }
+
+  if (!projectName) {
+    throw new Error(log.failure('Project name is required', false));
   }
 
   const projectSlugName = projectName.toLowerCase().replace(/ |_/g, '-');
