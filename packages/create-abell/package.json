@@ -1,0 +1,37 @@
+{
+  "name": "create-abell",
+  "version": "0.0.15",
+  "description": "Boilerplate for abell. npx create-abell my-blog",
+  "main": "dist/create.js",
+  "types": "dist/create.d.ts",
+  "bin": {
+    "create-abell": "dist/bin.js"
+  },
+  "scripts": {
+    "build": "tsc && node scripts/post-build.js",
+    "dev": "nodemon --exec \"yarn build\" --watch src --watch templates -e js,ts,abell,css",
+    "clean-scaffolds": "node scripts/clean-scaffolds.js",
+    "scaffold": "npm run clean-scaffolds && cd scaffold-dir && node ../dist/bin.js",
+    "prepublishOnly": "yarn build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abelljs/abell.git"
+  },
+  "keywords": [
+    "abell"
+  ],
+  "author": "saurabhdaware",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/abelljs/abell/issues"
+  },
+  "homepage": "https://github.com/abelljs/abell#readme",
+  "dependencies": {
+    "commander": "^9.2.0",
+    "prompts": "^2.4.2"
+  },
+  "devDependencies": {
+    "@types/prompts": "^2.0.14"
+  }
+}
