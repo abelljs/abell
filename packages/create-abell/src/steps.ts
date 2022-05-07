@@ -79,9 +79,9 @@ export const getInstallCommand = async (
  */
 export const getTemplate = (templateVal: string | undefined): string => {
   // return default when value is not defined
-  if (!templateVal) return 'js';
+  if (!templateVal) return 'default';
 
-  if (templateVal === 'js' || templateVal === 'ts') {
+  if (templateVal === 'default' || templateVal === 'minimal') {
     // 'default' and 'minimal' are valid templates. Return them as it is
     return templateVal;
   }
@@ -103,17 +103,17 @@ export const scaffoldTemplate = async ({
   projectPath: string;
   template: string;
 }): Promise<void> => {
-  console.log('scaffolding app');
-  if (template === 'js' || template === 'ts') {
+  if (template === 'default' || template === 'minimal') {
     // copy default template from templates directory
     const templatesDir = path.join(__dirname, '..', 'templates');
-    copyFolderSync(path.join(templatesDir, template), projectPath, [
-      path.join(templatesDir, template, 'node_modules')
+    const templatePath = path.join(templatesDir, template);
+    copyFolderSync(templatePath, projectPath, [
+      path.join(templatePath, 'node_modules'),
+      path.join(templatePath, 'yarn.lock'),
+      path.join(templatePath, 'dist')
     ]);
   } else {
     // Execute git clone
-    console.log(`\n${colors.green('>')} Fetching Template from GitHub ✨\n\n`);
-
     try {
       const errorCode = await run(`git clone ${template} ${projectPath}`);
       if (errorCode === 1) {

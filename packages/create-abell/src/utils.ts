@@ -4,12 +4,24 @@ import { spawn } from 'child_process';
 
 const isWindows = /^win/.test(process.platform);
 
+export const relative = (pathString: string): string =>
+  path.relative(process.cwd(), pathString);
+
 export const colors = {
   red: (message: string): string =>
     `\u001b[1m\u001b[31m${message}\u001b[39m\u001b[22m`,
   cyan: (message: string): string => `\u001b[36m${message}\u001b[39m`,
   green: (message: string): string =>
     `\u001b[1m\u001b[32m${message}\u001b[39m\u001b[22m`
+};
+
+export const log = {
+  success: (message: string): void =>
+    console.log(`${colors.green('✓')} ${message}`),
+  failure: (message: string): void =>
+    console.log(`${colors.red('✗')} ${message}`),
+  info: (message: string): void =>
+    console.log(`${colors.cyan('>>')} ${message}`)
 };
 
 export const normalizePath = (pathString: string): string =>

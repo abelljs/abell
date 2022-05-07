@@ -5,7 +5,7 @@ import {
   scaffoldTemplate,
   setNameInPackageJSON
 } from './steps';
-import { deleteDir, run } from './utils';
+import { deleteDir, log, relative, run } from './utils';
 
 export type CreateAbellOptions = {
   installer?: 'npm' | 'yarn';
@@ -20,8 +20,10 @@ async function create(
   const { projectDisplayName, projectPath } = await getProjectInfo(
     projectNameArg
   );
+  const relProjectPath = relative(projectPath);
   const template = getTemplate(options.template);
   const installCommand = await getInstallCommand(options.installer);
+  log.info(`Scaffolding ${relProjectPath} using  \`${template}\` template`);
 
   // 2. Scaffold Project
   await scaffoldTemplate({
@@ -29,10 +31,15 @@ async function create(
     template
   });
 
+  log.info(`Running \`${installCommand}\``);
   // 3. Install Dependencies
-  await run(installCommand, {
-    cwd: projectPath
-  });
+  try {
+    await run(installCommand, {
+      cwd: projectPath
+    });
+  } catch (err) {
+    log.failure(`Could not install dependencies. Skipping ${installCommand}`);
+  }
 
   // 4. Set name in project's package.json
   setNameInPackageJSON(`${projectPath}/package.json`, projectDisplayName);
@@ -41,7 +48,11 @@ async function create(
   deleteDir(`${projectPath}/.git`);
 
   // 6. Log Success @todo
-  console.log('yay');
+  log.success(`${projectDisplayName} scaffolded successfully`);
+  const runCommand = installCommand === 'yarn' ? 'yarn dev' : 'npm run dev';
+  log.info(
+    `cd ${relProjectPath} and run \`${runCommand}\` to run the dev-server`
+  );
 }
 
 export default create;

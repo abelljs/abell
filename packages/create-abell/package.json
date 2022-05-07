@@ -10,7 +10,8 @@
   "scripts": {
     "build": "tsc && node scripts/post-build.js",
     "scaffold": "cd scaffold-dir && node ../dist/bin.js",
-    "postinstall": "mkdir scaffold-dir"
+    "postinstall": "mkdir scaffold-dir",
+    "prepublishOnly": "yarn build"
   },
   "repository": {
     "type": "git",
