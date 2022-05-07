@@ -19,7 +19,7 @@ export const log = {
   success: (message: string): void =>
     console.log(`${colors.green('✓')} ${message}`),
   failure: (message: string, shouldLog = true): string => {
-    const coloredMessage = `${colors.red('✗')} ${message}`;
+    const coloredMessage = `${colors.red('✗ [create-abell]:')} ${message}`;
     if (shouldLog) {
       console.log(coloredMessage);
     }

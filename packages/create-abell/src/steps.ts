@@ -123,7 +123,7 @@ export const scaffoldTemplate = async ({
     try {
       const errorCode = await run(`git clone ${template} ${projectPath}`);
       if (errorCode === 1) {
-        throw new Error('[create-abell]: Could not git clone project');
+        throw new Error(log.failure('Git clone failed', false));
       }
     } catch (err) {
       throw err;
