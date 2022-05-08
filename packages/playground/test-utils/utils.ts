@@ -3,11 +3,21 @@ import path from 'path';
 import { spawn } from 'child_process';
 import { JSDOM } from 'jsdom';
 
+const isWindows = /^win/.test(process.platform);
+
+const windowsifyCommand = (command: string): string => {
+  if (isWindows) {
+    return command.replace('yarn', 'yarn.cmd');
+  }
+
+  return command;
+};
+
 let dir: string = __dirname;
 export async function run(cwd: string): Promise<void> {
   dir = cwd;
   return new Promise((resolve, reject) => {
-    const child = spawn('yarn', ['generate'], {
+    const child = spawn(windowsifyCommand('yarn'), ['generate'], {
       cwd,
       stdio: 'inherit'
     });

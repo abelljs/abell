@@ -33,11 +33,11 @@ export const normalizePath = (pathString: string): string =>
   pathString.split('/').join(path.sep);
 
 const windowsifyCommand = (command: string): string => {
-  if (!isWindows) {
-    return command;
+  if (isWindows) {
+    return command.replace('npm', 'npm.cmd').replace('yarn', 'yarn.cmd');
   }
 
-  return command.replace('npm', 'npm.cmd').replace('yarn', 'yarn.cmd');
+  return command;
 };
 
 export async function run(
