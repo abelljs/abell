@@ -48,6 +48,9 @@ export const findIndexPath = (abellPages: AbellPagesGlobImport): string => {
 export const normalizePath = (pathString: string): string =>
   pathString.split('/').join(path.sep);
 
+export const urlifyPath = (pathString: string): string =>
+  pathString.split(path.sep).join('/');
+
 /**
  * Recursively creates the path
  * @param {string} pathToCreate path that you want to create
@@ -87,7 +90,7 @@ export const getURLFromFilePath = (
   if (route.endsWith('/') && route.length > 1) {
     route = route.slice(0, -1);
   }
-  return normalizePath(route);
+  return urlifyPath(route);
 };
 
 export const getFilePathFromURL = (url: string, basePath: string): string => {
