@@ -1,5 +1,5 @@
-dist/
-old-code/
-dev/
+dist
+old-code
 node_modules
-scripts/
+scripts
+scaffold-dir

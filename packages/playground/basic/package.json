@@ -5,7 +5,7 @@
   "scripts": {
     "abell:version": "npx abell --version",
     "dev": "yarn abell:version && npx abell dev",
-    "generate": "yarn abell:version && npx abell generate"
+    "generate": "npx abell generate"
   },
   "keywords": [],
   "author": "",

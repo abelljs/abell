@@ -12,9 +12,11 @@
   ],
   "scripts": {
     "abell": "yarn workspace abell",
+    "create-abell": "yarn workspace create-abell",
     "play": "yarn workspace playground",
-    "eslint": "eslint packages/**/**/**/ --ext .ts,.js",
+    "eslint": "eslint packages/**/src/**/**/ --ext ts,js",
     "prettier": "prettier --write \"packages/**/**/**/*.[jt]s\"",
+    "test:once": "yarn abell test:once && yarn play test:once && yarn create-abell test:once",
     "format": "npm run prettier",
     "prepublishOnly": "echo \"NOT FROM THE ROOT!! sorry for caps hehe\" && fail"
   },

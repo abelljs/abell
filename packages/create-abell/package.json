@@ -8,6 +8,8 @@
     "create-abell": "dist/bin.js"
   },
   "scripts": {
+    "test": "vitest",
+    "test:once": "vitest run",
     "build": "tsc && node scripts/post-build.js",
     "dev": "nodemon --exec \"yarn build\" --watch src --watch templates -e js,ts,abell,css",
     "clean-scaffolds": "node scripts/clean-scaffolds.js",
