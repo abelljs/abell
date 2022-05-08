@@ -82,7 +82,9 @@ export const getURLFromFilePath = (
   basePath: string
 ): string => {
   const baseName = path.relative(basePath, filePath);
-  let route = baseName.replace('index.abell', '').replace('.abell', '');
+  let route = urlifyPath(
+    baseName.replace('index.abell', '').replace('.abell', '')
+  );
   if (!route.startsWith('/')) {
     route = `/${route}`;
   }
@@ -90,7 +92,7 @@ export const getURLFromFilePath = (
   if (route.endsWith('/') && route.length > 1) {
     route = route.slice(0, -1);
   }
-  return urlifyPath(route);
+  return route;
 };
 
 export const getFilePathFromURL = (url: string, basePath: string): string => {
