@@ -5,6 +5,12 @@
  * Saurabh has absolutely no idea how this works.
  */
 
+export type Token<T> = {
+  text: string;
+  type: keyof T | 'default';
+  matches?: string[];
+};
+
 /*
  * Tiny tokenizer
  *
@@ -15,11 +21,11 @@
  * result => [{ token="this", type="word" },{ token=" ", type="whitespace" }, Object { token="is", type="word" }, ... ]
  *
  */
-function tokenize(
+function tokenize<T extends Record<string, RegExp>>(
   s: string,
-  parsers: Record<string, RegExp>,
+  parsers: T,
   deftok: 'default'
-): Array<{ text: string; type: string; matches?: string[] }> {
+): Token<T>[] {
   let m;
   let r;
   let t;
