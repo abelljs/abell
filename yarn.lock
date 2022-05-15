@@ -278,8 +278,10 @@ abbrev@1:
   resolved "https://registry.yarnpkg.com/abbrev/-/abbrev-1.1.1.tgz#f8f2c887ad10bf67f634f005b6987fed3179aac8"
   integrity sha512-nne9/IiQ/hzIhY6pdDnbBtz7DjPTKrY00P/zvPSm5pOFkl6xuGrGnXn/VtTNNfNtAfZ9/1RtehkszU9qcTii0Q==
 
-"abell@link:packages/abell":
-  version "1.0.0-alpha.55"
+abell@next:
+  version "1.0.0-alpha.54"
+  resolved "https://registry.yarnpkg.com/abell/-/abell-1.0.0-alpha.54.tgz#8d11cdfcf0376662c87e7b7c47d24628deeda506"
+  integrity sha512-8X0BCTcVueNEQzPoaEDLPrZA47GoW2PlBQJ9zIV/44toJSIK1DoDQjzy+kP7wfXBFPyxiiFh2Ljpnt4jdEGotA==
   dependencies:
     commander "^7.2.0"
     express "^4.17.2"
