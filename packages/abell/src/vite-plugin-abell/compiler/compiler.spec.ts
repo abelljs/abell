@@ -1,19 +1,18 @@
 /* eslint-disable max-len */
 import path from 'path';
 import { describe, test, expect } from 'vitest';
-import { getSyntaxBlocks } from './compiler';
 import { compile } from './index';
 
 describe('compile()', () => {
   test('should successfully compile single expressions', () => {
     const out = compile('<body>{{ 3 + 4 }}</body>', {
       filepath: __dirname,
-      outputType: 'html-declaration-object'
+      outputType: 'syntax-blocks'
     });
-    expect(out.html).toMatchInlineSnapshot(
+    expect(out.out.text).toMatchInlineSnapshot(
       '"<body data-abell-heumYD>${e( 3 + 4 )}</body>"'
     );
-    expect(out.declarations).toMatchInlineSnapshot('""');
+    expect(out.declarationsBlock.text).toMatchInlineSnapshot('""');
   });
 
   test('should successfully compile with declarations', () => {
@@ -30,16 +29,16 @@ describe('compile()', () => {
     `;
     const out = compile(abellCode, {
       filepath: __dirname,
-      outputType: 'html-declaration-object'
+      outputType: 'syntax-blocks'
     });
-    expect(out.declarations).toMatchInlineSnapshot(`
+    expect(out.declarationsBlock.text).toMatchInlineSnapshot(`
       "
             import fs from 'fs';
             import path from 'path';
             import { compile } from 'abell-renderer';
           "
     `);
-    expect(out.html.trim()).toMatchInlineSnapshot(`
+    expect(out.out.text.trim()).toMatchInlineSnapshot(`
       "<body data-abell-heumYD>
             \${e( 3 + 4 )}
             <b data-abell-heumYD>\${e( 'Helloo'.toUpperCase() )}</b>
@@ -72,11 +71,11 @@ describe('scoped css', () => {
     </style>
     `;
 
-    const { html } = compile(abellCode, {
+    const { out } = compile(abellCode, {
       filepath: path.join(process.cwd(), 'test.abell'),
-      outputType: 'html-declaration-object'
+      outputType: 'syntax-blocks'
     });
-    expect(html.trim()).toMatchInlineSnapshot(`
+    expect(out.text.trim()).toMatchInlineSnapshot(`
       "<style abell-generated>nav[data-abell-duqnjx]{color:yellow;}</style><style abell-generated>nav[data-abell-duqnjx]{color:blue;}</style><style abell-ignored>
           nav {
             color: red;
@@ -102,11 +101,11 @@ describe('scoped css', () => {
     </html>
     `;
 
-    const { html } = compile(abellCode, {
+    const { out } = compile(abellCode, {
       filepath: path.join(process.cwd(), 'test.abell'),
-      outputType: 'html-declaration-object'
+      outputType: 'syntax-blocks'
     });
-    expect(html.trim()).toMatchInlineSnapshot(`
+    expect(out.text.trim()).toMatchInlineSnapshot(`
       "<html>
           <head>
           <style>
@@ -122,7 +121,7 @@ describe('scoped css', () => {
     `);
   });
 
-  test.only('should handle abell blocks inside style tag', () => {
+  test('should handle abell blocks inside style tag', () => {
     const abellCode = `
     {{
       import x from '.xyz'
@@ -139,22 +138,21 @@ describe('scoped css', () => {
     </html>
     `;
 
-    compile(abellCode, {
+    const { out } = compile(abellCode, {
       filepath: path.join(process.cwd(), 'test.abell'),
-      outputType: 'html-declaration-object'
+      outputType: 'syntax-blocks'
     });
-    expect(1).toBe(1);
-    // expect(html.trim()).toMatchInlineSnapshot(`
-    //   "<html>
-    //       <head>
-    //       <style>
-    //       \${e( 2 + 1 )}
-    //       </style>
-    //       </head>
-    //       <body>
-    //         <nav>hello</nav>
-    //       </body>
-    //       </html>"
-    // `);
+    expect(out.text.trim()).toMatchInlineSnapshot(`
+      "<html>
+          <head>
+          <style>
+          \${e( 2 + 1 )}
+          </style>
+          </head>
+          <body>
+            <nav>hello</nav>
+          </body>
+          </html>"
+    `);
   });
 });
