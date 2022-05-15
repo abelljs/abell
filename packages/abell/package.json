@@ -13,7 +13,8 @@
   "scripts": {
     "test": "vitest",
     "test:once": "vitest run",
-    "build": "tsc --project tsconfig.build.json && node scripts/post-build.js",
+    "build": "tsc --project tsconfig.build.json",
+    "postbuild": "node ../../scripts/post-build.js abell",
     "eslint": "eslint",
     "dev": "nodemon --exec \"yarn build\" --watch src -e js,ts",
     "prepublishOnly": "yarn test:once && yarn eslint && yarn build"
