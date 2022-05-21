@@ -13,7 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "abell": "next"
+    "abell": "^1.0.0-alpha.55"
   },
   "devDependencies": {
     "@types/jsdom": "^16.2.14",
