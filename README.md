@@ -2,7 +2,9 @@
 
 <p align="center"> <img width="500" alt="Cover of Abell" src="https://user-images.githubusercontent.com/30949385/169687569-a05b87a3-0aa3-4ac3-b8a3-086cc0b8491d.png#gh-dark-mode-only" /></p>
 
-<p align="center"><a href="https://npmjs.org/package/abell"><img alt="GitHub package.json version" src="https://img.shields.io/github/package-json/v/abelljs/abell/main?style=for-the-badge&labelColor=black&logo=npm&label=abell&color=darkred"></a> &nbsp;<a href="https://discord.gg/ndsVpRG"><img src="https://img.shields.io/badge/discord-join%20chat-738ADB?style=for-the-badge&logo=discord&logoColor=738ADB&labelColor=black"/></a>&nbsp; <a href="https://twitter.com/abellland"><img alt="Twitter profile badge of @abellland" src="https://img.shields.io/badge/follow-@AbellLand-1DA1F2?style=for-the-badge&logo=twitter&logoColor=1DA1F2&labelColor=black"/></a> </p>
+<p align="center"><a href="https://npmjs.org/package/abell"><img alt="GitHub package.json version" src="https://img.shields.io/github/package-json/v/abelljs/abell/main?style=for-the-badge&labelColor=322&logo=npm&label=abell&color=darkred"></a> &nbsp;<a href="https://abelljs.org/"><img alt="Documentation abelljs.org" src="https://img.shields.io/badge/Documentation-abelljs.org-3254E9?style=for-the-badge&labelColor=000e60&logo=readthedocs&logoColor=eee"/></a> &nbsp;<a href="https://discord.gg/ndsVpRG"><img src="https://img.shields.io/badge/discord-join%20chat-738ADB?style=for-the-badge&logo=discord&logoColor=738ADB&labelColor=225"/></a></p>
+
+<h1 aria-hidden="true"></h1>
 
 <br/>
 
