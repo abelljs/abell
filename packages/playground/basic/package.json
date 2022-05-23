@@ -3,9 +3,8 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "abell": "../node_modules/.bin/abell",
-    "dev": "yarn abell --version && yarn abell dev",
-    "generate": "yarn abell generate"
+    "dev": "npx abell --version && npx abell dev",
+    "generate": "npx abell generate"
   },
   "keywords": [],
   "author": "",
