@@ -1,5 +1,4 @@
 /* eslint-disable max-len */
-import path from 'path';
 import { StyleTagAttributes } from '../../type-utils';
 import tokenize from './generic-tokenizer';
 import { getScopedHTML } from './scope-css';
@@ -82,21 +81,9 @@ export function compile(
     };
   }
 
-  const internalUtilsPath = path.join(
-    __dirname,
-    '..',
-    '..',
-    'utils',
-    'internal-utils'
-  );
-
   const jsOut = `
   import { default as _path } from 'path';
-  import { createRequire } from 'module';
-  const require = createRequire(import.meta.url);
-  const { evaluateAbellBlock: e } = require(${JSON.stringify(
-    internalUtilsPath
-  )});
+  import { evaluateAbellBlock as e } from 'abell';
   ${declarationsBlock.text}
   const __filename = ${JSON.stringify(options.filepath)};
   const __dirname = _path.dirname(__filename);

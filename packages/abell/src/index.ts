@@ -8,3 +8,5 @@ export {
 } from './utils/api';
 
 export { Route } from './type-utils';
+
+export { evaluateAbellBlock } from './utils/internal-utils';

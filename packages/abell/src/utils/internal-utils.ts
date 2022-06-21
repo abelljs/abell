@@ -119,7 +119,7 @@ export const getConfigPath = (cwd: string): string => {
     }
   }
 
-  return path.resolve(__dirname, '../../defaults/vite.config');
+  return path.resolve(__dirname, '../../../defaults/vite.config');
 };
 
 type PathOptions = {
@@ -144,6 +144,7 @@ export const getViteConfig = async ({
 
 const DEFAULT_ENTRY_BUILD_PATH = path.join(
   __dirname,
+  '..',
   '..',
   '..',
   'defaults',

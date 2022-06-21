@@ -8,7 +8,9 @@
     "url": "https://patreon.com/saurabhdaware"
   },
   "workspaces": [
-    "packages/*"
+    "packages/abell",
+    "packages/create-abell",
+    "packages/playground/*"
   ],
   "scripts": {
     "abell": "yarn workspace abell",
