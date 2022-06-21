@@ -34,7 +34,8 @@ Check out https://abelljs.org for complete documentation.
 
 ## 🚀 &nbsp; Syntax Example
 
-```jsx
+```vue
+<!-- index.abell -->
 <html>
   <body>
     I can render JavaScript! Look: {{ 10 + 10 }}
@@ -42,9 +43,9 @@ Check out https://abelljs.org for complete documentation.
 </html>
 ```
 
-This code outputs:
-
+Output:
 ```html
+<!-- index.html -->
 <html>
   <body>
     I can render JavaScript! Look: 20
@@ -52,29 +53,10 @@ This code outputs:
 </html>
 ```
 
-### 🤗 Local Installation & Contributing
+### 🤗 Contributing
 
-Fork [abelljs/abell](https://github.com/abelljs/abell), Then follow these commands
-
-```sh
-git clone https://github.com/:github-username/abell # Get a copy of the codebase in your codebase
-cd abell
-npm install # Installs all the dependencies
-npm link # This command will add the current directory to global packages.
-cd examples/main # Directory `examples` has sample abell projects.
-abell build # command to build project or
-abell serve # command to start dev server.
-```
-
-We would love to have contributions! The contributing guidelines along with local setup guide is mentioned in [CONTRIBUTING.md](CONTRIBUTING.md)
-
-### 💙 Related Repositories
-
-- [abelljs/abell-website](https://github.com/abelljs/abell-website): Code of Documentation website of Abell (https://abelljs.org)
-- [abelljs/abell-renderer](https://github.com/abelljs/abell-renderer): Low-level API that deals with rendering of `.abell` files.
+The contributions might get a bit difficult to do right now since I am not quiet clear on which path the Abell is going to go. I will recommend contributing once Abell v1 gets a bit stable.
 
 ---
 
-[<img alt="Buy me a Coffee Button" width=200 src="https://c5.patreon.com/external/logo/become_a_patron_button.png">](https://www.patreon.com/bePatron?u=31891872) &nbsp; [<img alt="Buy me a Coffee Button" width=200 src="https://cdn.buymeacoffee.com/buttons/default-yellow.png">](https://www.buymeacoffee.com/saurabhdaware)
-
-If you want to know the status and get updates you can follow me on [Twitter @saurabhcodes](https://twitter.com/saurabhcodes)
+If you like my work, you can sponsor me on GitHub: https://github.com/sponsors/saurabhdaware 🌻
