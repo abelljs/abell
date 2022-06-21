@@ -7,6 +7,8 @@ import {
   getBasePaths,
   createPathIfAbsent
 } from '../utils/internal-utils';
+// @ts-expect-error
+import loadModule from '../../defaults/loadModule.js';
 import { Route } from '../type-utils';
 
 async function generate(): Promise<void> {
@@ -35,8 +37,7 @@ async function generate(): Promise<void> {
     configFile
   });
 
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const { makeRoutes } = require(OUT_ENTRY_BUILD_PATH);
+  const { makeRoutes } = await loadModule(OUT_ENTRY_BUILD_PATH);
   const routes: Route[] = await makeRoutes();
 
   // Generate index.html

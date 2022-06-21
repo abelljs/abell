@@ -1,8 +1,7 @@
-import { createRequire } from 'module';
-const require = createRequire(import.meta.url);
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const { makeRoutesFromGlobImport } = require('{{ abellIndexPath }}');
-const abellPages = import.meta.globEager(`{{ abellPagesDir }}/*.abell`);
+import { makeRoutesFromGlobImport } from 'abell';
+const abellPages = import.meta.glob('{{ abellPagesDir }}/*.abell', {
+  eager: true
+});
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export function makeRoutes() {
