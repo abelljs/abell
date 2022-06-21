@@ -3,8 +3,11 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "dev": "npx abell --version && npx abell dev",
-    "generate": "npx abell generate"
+    "dev": "abell --version && abell dev",
+    "generate": "abell --version && abell generate"
+  },
+  "dependencies": {
+    "abell": ">= 1.0.0-alpha.50 < 1.0.0-alpha.99999"
   },
   "keywords": [],
   "author": "",
