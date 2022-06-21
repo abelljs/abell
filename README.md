@@ -12,11 +12,15 @@
 
 <br/>
 
-***WARNING!*** *This is not the latest abell code. You will find latest abell code in `main` branch. This is abell v1 code that is currently in development.*
+> **Warning**
+>
+> This is not the latest abell code. You will find latest abell code in `main` branch. This is abell v1 code that is currently in development.*
 
-a JavaScript based static-site-generator to help you create JSON, Markdown, or static-data based websites with minimal setup using a syntax you almost already know.
+a JavaScript based static-site-generator to help you create JSON, Markdown, or static-data based websites with minimal setup and using a syntax you almost already know.
 
-**Documentation:** https://abelljs.org
+**Documentation:** https://abelljs.org (v0 documentation)
+
+v1 documentation is in progress. Till then you can check out the example code here - https://stackblitz.com/edit/vitejs-vite-riynxn?file=package.json
 
 ## 📖 &nbsp; Create Abell Project
 
@@ -31,27 +35,22 @@ Check out https://abelljs.org for complete documentation.
 ## 🚀 &nbsp; Syntax Example
 
 ```jsx
-{{
-  const a = 'Hello';
-  const b = ', World 🌻';
-}}
-
 <html>
   <body>
-    I can render JavaScript! Look: {{ a + b.toUpperCase() }}
+    I can render JavaScript! Look: {{ 10 + 10 }}
   </body>
 </html>
 ```
 
 This code outputs:
 
-```sh
-I can render JavaScript! Look: Hello, WORLD 🌻
+```html
+<html>
+  <body>
+    I can render JavaScript! Look: 20
+  </body>
+</html>
 ```
-
-### 🕐 Changelog
-
-Changelogs are maintained in [CHANGELOG.md](https://github.com/abelljs/abell/blob/main/CHANGELOG.md)
 
 ### 🤗 Local Installation & Contributing
 
