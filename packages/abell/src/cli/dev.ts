@@ -21,7 +21,8 @@ async function dev(serverOptions: DevOptions): Promise<void> {
   });
 
   const vite = await createViteServer({
-    server: { middlewareMode: 'ssr' },
+    server: { middlewareMode: true },
+    appType: 'custom',
     configFile
   });
 

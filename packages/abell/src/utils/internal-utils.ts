@@ -119,7 +119,7 @@ export const getConfigPath = (cwd: string): string => {
     }
   }
 
-  return path.resolve(__dirname, '../../defaults/vite.config');
+  return path.resolve(__dirname, '../../defaults/vite.config.js');
 };
 
 type PathOptions = {
@@ -159,7 +159,7 @@ export const getBasePaths = async ({ configFile, command }: PathOptions) => {
   const ASSETS_DIR = path.join(ROOT, 'assets');
   const TEMP_OUTPUT_DIR = path.join(OUTPUT_DIR, '__temp_abell');
   let SOURCE_ENTRY_BUILD_PATH = path.join(ROOT, 'entry.build');
-  let OUT_ENTRY_BUILD_PATH = path.join(TEMP_OUTPUT_DIR, 'entry.build.js');
+  let OUT_ENTRY_BUILD_PATH = path.join(TEMP_OUTPUT_DIR, 'entry.build.mjs');
 
   const ENTRY_BUILD_PATH_JS = SOURCE_ENTRY_BUILD_PATH + '.js';
   const ENTRY_BUILD_PATH_TS = SOURCE_ENTRY_BUILD_PATH + '.ts';
@@ -170,7 +170,7 @@ export const getBasePaths = async ({ configFile, command }: PathOptions) => {
     SOURCE_ENTRY_BUILD_PATH = DEFAULT_ENTRY_BUILD_PATH; // use default entry build
     OUT_ENTRY_BUILD_PATH = path.join(
       TEMP_OUTPUT_DIR,
-      'secret.default.entry.build.js'
+      'secret.default.entry.build.mjs'
     );
   }
 

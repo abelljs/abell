@@ -1,3 +1,2 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const { defineConfig } = require('abell');
-module.exports = defineConfig({});
+import { defineConfig } from 'abell';
+export default defineConfig({});
