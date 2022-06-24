@@ -45,11 +45,34 @@ export const findIndexPath = (abellPages: AbellPagesGlobImport): string => {
   return likelyRootIndexPath;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const VERSION = `v${require('../../package.json').version}`;
+
 export const normalizePath = (pathString: string): string =>
   pathString.split('/').join(path.sep);
 
 export const urlifyPath = (pathString: string): string =>
   pathString.split(path.sep).join('/');
+
+/**
+ * Removes the folder
+ * @param {String} pathToRemove path to the directory which you want to remove
+ */
+export function rmdirRecursiveSync(pathToRemove: string): void {
+  if (fs.existsSync(pathToRemove)) {
+    fs.readdirSync(pathToRemove).forEach((file) => {
+      const curPath = path.join(pathToRemove, file);
+      if (fs.lstatSync(curPath).isDirectory()) {
+        // recurse
+        rmdirRecursiveSync(curPath);
+      } else {
+        // delete file
+        fs.unlinkSync(curPath);
+      }
+    });
+    fs.rmdirSync(pathToRemove);
+  }
+}
 
 /**
  * Recursively creates the path
@@ -142,14 +165,6 @@ export const getViteConfig = async ({
   return viteConfigObj?.config ?? {};
 };
 
-const DEFAULT_ENTRY_BUILD_PATH = path.join(
-  __dirname,
-  '..',
-  '..',
-  'defaults',
-  'secret.default.entry.build.js'
-);
-
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const getBasePaths = async ({ configFile, command }: PathOptions) => {
   const viteConfig = await getViteConfig({ configFile, command });
@@ -163,10 +178,29 @@ export const getBasePaths = async ({ configFile, command }: PathOptions) => {
 
   const ENTRY_BUILD_PATH_JS = SOURCE_ENTRY_BUILD_PATH + '.js';
   const ENTRY_BUILD_PATH_TS = SOURCE_ENTRY_BUILD_PATH + '.ts';
+
+  // Used when the project does not have `entry.build.ts` file in root
+  const DEFAULT_ENTRY_BUILD_PATH = path.join(
+    process.cwd(),
+    'node_modules',
+    '.abell',
+    VERSION,
+    'secret.default.entry.build.js'
+  );
   if (
     !fs.existsSync(ENTRY_BUILD_PATH_JS) &&
     !fs.existsSync(ENTRY_BUILD_PATH_TS)
   ) {
+    if (!fs.existsSync(DEFAULT_ENTRY_BUILD_PATH)) {
+      createPathIfAbsent(path.dirname(DEFAULT_ENTRY_BUILD_PATH));
+      fs.copyFileSync(
+        path.resolve(
+          `${__dirname}/../../defaults/secret.default.entry.build.js`
+        ),
+        DEFAULT_ENTRY_BUILD_PATH
+      );
+    }
+
     SOURCE_ENTRY_BUILD_PATH = DEFAULT_ENTRY_BUILD_PATH; // use default entry build
     OUT_ENTRY_BUILD_PATH = path.join(
       TEMP_OUTPUT_DIR,
@@ -179,6 +213,7 @@ export const getBasePaths = async ({ configFile, command }: PathOptions) => {
     OUT_ENTRY_BUILD_PATH,
     TEMP_OUTPUT_DIR,
     ASSETS_DIR,
+    DEFAULT_ENTRY_BUILD_PATH,
     ROOT,
     OUTPUT_DIR
   };
