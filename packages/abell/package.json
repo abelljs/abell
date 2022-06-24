@@ -1,6 +1,6 @@
 {
   "name": "abell",
-  "version": "1.0.0-alpha.63",
+  "version": "1.0.0-alpha.64",
   "description": "",
   "bin": "./dist/bin.js",
   "main": "./dist/index.js",
@@ -16,7 +16,7 @@
     "build": "tsc --project tsconfig.build.json",
     "postbuild": "node ../../scripts/post-build.js abell",
     "eslint": "eslint",
-    "dev": "nodemon --exec \"yarn build\" --watch src -e js,ts",
+    "dev": "nodemon --exec \"yarn build\" --watch src --watch defaults -e js,ts",
     "prepublishOnly": "yarn test:once && yarn eslint && yarn build"
   },
   "repository": {

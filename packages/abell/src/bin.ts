@@ -6,7 +6,7 @@ import { createCommand } from 'commander';
 
 import generate from './cli/generate';
 import dev from './cli/dev';
-import { rmdirRecursiveSync } from './utils/internal-utils';
+import { NODE_MODULES_DIR, rmdirRecursiveSync } from './utils/internal-utils';
 
 const program = createCommand();
 
@@ -24,7 +24,7 @@ program
 
 /** Used after postinstall  */
 program.command('clear-cache').action(() => {
-  const ABELL_CACHE_DIR = path.join(process.cwd(), 'node_modules', '.abell');
+  const ABELL_CACHE_DIR = path.join(NODE_MODULES_DIR, '.abell');
   rmdirRecursiveSync(ABELL_CACHE_DIR);
 });
 

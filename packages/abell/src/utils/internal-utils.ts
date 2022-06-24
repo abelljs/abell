@@ -47,6 +47,8 @@ export const findIndexPath = (abellPages: AbellPagesGlobImport): string => {
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const VERSION = `v${require('../../package.json').version}`;
+export const ABELL_PACKAGE_ROOT = path.join(__dirname, '..', '..');
+export const NODE_MODULES_DIR = path.join(ABELL_PACKAGE_ROOT, '..');
 
 export const normalizePath = (pathString: string): string =>
   pathString.split('/').join(path.sep);
@@ -181,8 +183,7 @@ export const getBasePaths = async ({ configFile, command }: PathOptions) => {
 
   // Used when the project does not have `entry.build.ts` file in root
   const DEFAULT_ENTRY_BUILD_PATH = path.join(
-    process.cwd(),
-    'node_modules',
+    NODE_MODULES_DIR,
     '.abell',
     VERSION,
     'secret.default.entry.build.js'
