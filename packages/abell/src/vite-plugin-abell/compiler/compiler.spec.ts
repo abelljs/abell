@@ -15,6 +15,27 @@ describe('compile()', () => {
     expect(out.declarationsBlock.text).toMatchInlineSnapshot('""');
   });
 
+  test('should create first block as declaration block with declarations comment', () => {
+    const abellCode = `
+    {{
+      // declarations
+      const a = 3;
+    }}
+    <body>{{ a }}</body>
+    `;
+    const out = compile(abellCode, {
+      filepath: __dirname,
+      outputType: 'syntax-blocks'
+    });
+    expect(out.out.text.trim()).toMatchInlineSnapshot(
+      '"<body data-abell-heumYD>${e( a )}</body>"'
+    );
+    expect(out.declarationsBlock.text.trim()).toMatchInlineSnapshot(`
+      "// declarations
+            const a = 3;"
+    `);
+  });
+
   test('should successfully compile with declarations', () => {
     const abellCode = `
     {{

@@ -37,7 +37,11 @@ export const isDeclarationBlock = (
   blockCount: number,
   blockContent: string
 ): boolean => {
-  if (blockCount < 2 && blockContent.includes('import ')) {
+  if (
+    blockCount < 2 &&
+    (blockContent.includes('import ') ||
+      blockContent.includes('// declaration'))
+  ) {
     return true;
   }
   return false;
