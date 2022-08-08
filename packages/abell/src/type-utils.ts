@@ -3,6 +3,9 @@ type RenderContext = Record<string, unknown>;
 export type Route = {
   path: string;
   render: (ctx?: RenderContext) => string | undefined;
+  routeOptions?: {
+    outputPathPattern?: '[route]/index.html' | '[route].html';
+  };
 };
 
 export type StyleTagAttributes = Record<string, string | boolean>;

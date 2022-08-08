@@ -47,10 +47,13 @@ async function generate(): Promise<void> {
   for (const route of routes) {
     const appHtml = route.render();
     if (!appHtml) continue;
-    const htmlPath = path.join(
+    let htmlPath = path.join(
       ROOT,
       `${route.path === '/' ? 'index' : route.path}.html`
     );
+    if (route.routeOptions?.outputPathPattern === '[route]/index.html') {
+      htmlPath = path.join(ROOT, route.path, 'index.html');
+    }
     const newDirs = createPathIfAbsent(path.dirname(htmlPath));
     createdDirectories.push(...newDirs);
     fs.writeFileSync(htmlPath, appHtml);

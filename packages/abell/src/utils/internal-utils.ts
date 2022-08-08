@@ -226,7 +226,6 @@ export const getBasePaths = async ({ configFile, command }: PathOptions) => {
  * Internally used to clean the output and return correct value.
  *
  */
-// eslint-disable-next-line
 export const evaluateAbellBlock = (val: unknown): string | boolean | number => {
   if (val === undefined || val === null) return ''; // never print undefined or null
   if (typeof val === 'function') return evaluateAbellBlock(val()); // if function, execute the function

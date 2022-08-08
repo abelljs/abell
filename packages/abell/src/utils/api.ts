@@ -82,7 +82,10 @@ export const makeRoutesFromGlobImport = (
     }
     routes.push({
       path: getURLFromFilePath(abellPage, basePath),
-      render: (...args) => abellPages[abellPage].default(...args)
+      render: (...args) => abellPages[abellPage].default(...args),
+      routeOptions: {
+        outputPathPattern: '[route].html'
+      }
     });
   }
   return routes;
