@@ -12,6 +12,32 @@ const program = createCommand();
 
 // Listeners
 
+/**
+ * @TODO
+ *
+ * When we try `npx abell dev` or `npx abell generate` on project which doesn't have package.json,
+ * - Add package.json
+ * - Install abell
+ * - Run the command
+ * - Remove added files
+ */
+
+/**
+ * @TODO
+ *
+ * Add option in makeRoutes to copy the assets somehow so that paths are resolved correctly
+ *
+ * ORRRR from plugin, change markdown URLs to resolved URLs
+ *
+ * Basically somehow get the local directory paths working in markdown
+ */
+
+/**
+ * What I worked on last time,
+ *
+ * Added option to set outputPathPattern to '[route]/index.html'
+ */
+
 /** abell generate */
 program.command('generate').alias('build').action(generate);
 
