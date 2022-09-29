@@ -9,9 +9,7 @@ describe('compile()', () => {
       filepath: __dirname,
       outputType: 'syntax-blocks'
     });
-    expect(out.out.text).toMatchInlineSnapshot(
-      '"<body data-abell-heumYD>${e( 3 + 4 )}</body>"'
-    );
+    expect(out.out.text).toMatchInlineSnapshot('"<body>${e( 3 + 4 )}</body>"');
     expect(out.declarationsBlock.text).toMatchInlineSnapshot('""');
   });
 
@@ -28,7 +26,7 @@ describe('compile()', () => {
       outputType: 'syntax-blocks'
     });
     expect(out.out.text.trim()).toMatchInlineSnapshot(
-      '"<body data-abell-heumYD>${e( a )}</body>"'
+      '"<body>${e( a )}</body>"'
     );
     expect(out.declarationsBlock.text.trim()).toMatchInlineSnapshot(`
       "// declarations
@@ -60,9 +58,9 @@ describe('compile()', () => {
           "
     `);
     expect(out.out.text.trim()).toMatchInlineSnapshot(`
-      "<body data-abell-heumYD>
+      "<body>
             \${e( 3 + 4 )}
-            <b data-abell-heumYD>\${e( 'Helloo'.toUpperCase() )}</b>
+            <b>\${e( 'Helloo'.toUpperCase() )}</b>
           </body>"
     `);
   });
@@ -139,6 +137,43 @@ describe('scoped css', () => {
             <nav>hello</nav>
           </body>
           </html>"
+    `);
+  });
+
+  test('should not scope the css when there are no style tags', () => {
+    const abellCode = `
+    <nav>hello</nav>
+    `;
+
+    const { out } = compile(abellCode, {
+      filepath: path.join(process.cwd(), 'test.abell'),
+      outputType: 'syntax-blocks'
+    });
+    expect(out.text.trim()).toMatchInlineSnapshot('"<nav>hello</nav>"');
+  });
+
+  test('should not scope the css when there are no scoped style tags', () => {
+    const abellCode = `
+    <nav>hello</nav>
+    <style scoped="false">
+    nav {
+      color: red;
+    }
+    </style>
+    `;
+
+    const { out } = compile(abellCode, {
+      filepath: path.join(process.cwd(), 'test.abell'),
+      outputType: 'syntax-blocks'
+    });
+
+    expect(out.text.trim()).toMatchInlineSnapshot(`
+      "<style abell-ignored>
+          nav {
+            color: red;
+          }
+          </style>
+          <nav>hello</nav>"
     `);
   });
 

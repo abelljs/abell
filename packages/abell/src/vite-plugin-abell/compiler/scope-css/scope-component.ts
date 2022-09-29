@@ -21,7 +21,7 @@ export const getScopedHTML = (
   let styleTags = '';
   const relativeFilePath = path.relative(process.cwd(), filepath);
   const componentHash = generateHashFromPath(relativeFilePath);
-  htmlOut = injectCSSHashToHTML(htmlOut, componentHash);
+  let hasScopedCSS = false;
   for (const cssBlock of cssBlocks) {
     const flatStringAttributes = flattenAttributes(cssBlock.attributes);
     if (cssBlock.attributes.scoped === 'false') {
@@ -30,8 +30,13 @@ export const getScopedHTML = (
       continue;
     }
 
+    hasScopedCSS = true;
     const scopedCSS = getScopedCSS(cssBlock.text, componentHash);
     styleTags += `<style abell-generated>${scopedCSS}</style>`;
+  }
+
+  if (hasScopedCSS) {
+    htmlOut = injectCSSHashToHTML(htmlOut, componentHash);
   }
 
   return styleTags + htmlOut; // prepend style tags before html
