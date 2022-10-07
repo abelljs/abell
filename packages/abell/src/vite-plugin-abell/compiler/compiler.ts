@@ -87,7 +87,7 @@ export function compile(
   ${declarationsBlock.text}
   const __filename = ${JSON.stringify(options.filepath)};
   const __dirname = _path.dirname(__filename);
-  const root = path.relative(__dirname, ${JSON.stringify(options.cwd)})
+  const root = _path.relative(__dirname, ${JSON.stringify(options.cwd)})
   export const html = (props = {}) => {
     const Abell = { props, __filename, __dirname };
     return \`${htmlOut}\`
