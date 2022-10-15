@@ -197,7 +197,7 @@ export const getBasePaths = async ({ configFile, command }: PathOptions) => {
   const ASSETS_DIR = path.join(ROOT, 'assets');
   const TEMP_OUTPUT_DIR = path.join(OUTPUT_DIR, '__temp_abell');
   let SOURCE_ENTRY_BUILD_PATH = path.join(ROOT, 'entry.build');
-  let OUT_ENTRY_BUILD_PATH = path.join(TEMP_OUTPUT_DIR, 'entry.build.mjs');
+  let OUT_ENTRY_BUILD_PATH = path.join(TEMP_OUTPUT_DIR, 'entry.build.js');
 
   const ENTRY_BUILD_PATH_JS = SOURCE_ENTRY_BUILD_PATH + '.js';
   const ENTRY_BUILD_PATH_TS = SOURCE_ENTRY_BUILD_PATH + '.ts';
