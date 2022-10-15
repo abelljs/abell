@@ -2,13 +2,17 @@
 
 // This is the file that gets called first on `abell [command]`
 import path from 'path';
-import { createCommand } from 'commander';
+import commander from 'commander';
 
-import generate from './cli/generate';
-import dev from './cli/dev';
-import { NODE_MODULES_DIR, rmdirRecursiveSync } from './utils/internal-utils';
+import generate from './cli/generate.js';
+import dev from './cli/dev.js';
+import {
+  NODE_MODULES_DIR,
+  rmdirRecursiveSync,
+  getAbellVersion
+} from './utils/internal-utils.js';
 
-const program = createCommand();
+const program = commander.createCommand();
 
 // Listeners
 
@@ -56,6 +60,6 @@ program.command('clear-cache').action(() => {
 
 /** abell -V */
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-program.version(require('../package.json').version);
+program.version(getAbellVersion());
 
 program.parse(process.argv); // required for commander to parse arguments

@@ -1,1 +1,1 @@
-export * from './vite-plugin-abell';
+export * from './vite-plugin-abell.js';

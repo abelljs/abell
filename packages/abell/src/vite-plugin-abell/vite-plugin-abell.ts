@@ -1,7 +1,7 @@
 import path from 'path';
 import { PluginOption, transformWithEsbuild } from 'vite';
-import { AbellOptions } from '../utils/internal-utils';
-import { compile } from './compiler';
+import { AbellOptions } from '../utils/internal-utils.js';
+import { compile } from './compiler/index.js';
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export function vitePluginAbell(abellOptions?: AbellOptions): PluginOption {

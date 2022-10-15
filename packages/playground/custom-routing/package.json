@@ -2,6 +2,7 @@
   "name": "custom-routing",
   "version": "1.0.0",
   "description": "",
+  "type": "module",
   "scripts": {
     "dev": "npx abell --version && npx abell dev",
     "generate": "npx abell generate"

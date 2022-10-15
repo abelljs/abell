@@ -5,7 +5,7 @@
  */
 
 import path from 'path';
-import { vitePluginAbell } from '../vite-plugin-abell';
+import { vitePluginAbell } from '../vite-plugin-abell/index.js';
 import {
   defineConfig as viteDefineConfig,
   UserConfig as ViteUserConfig,
@@ -16,8 +16,8 @@ import {
   findIndexPath,
   AbellOptions,
   getURLFromFilePath
-} from './internal-utils';
-import { Route } from '../type-utils';
+} from './internal-utils.js';
+import { Route } from '../type-utils.js';
 
 export interface AbellViteConfig extends ViteUserConfig {
   abell?: AbellOptions;

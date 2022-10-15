@@ -1,4 +1,4 @@
-import { ABELL_CSS_DATA_PREFIX } from './css-parser';
+import { ABELL_CSS_DATA_PREFIX } from './css-parser.js';
 
 export const injectCSSHashToHTML = (
   htmlString: string,

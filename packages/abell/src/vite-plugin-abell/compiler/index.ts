@@ -1,2 +1,2 @@
-export * from './compiler';
-export { default } from './compiler';
+export * from './compiler.js';
+export { default } from './compiler.js';

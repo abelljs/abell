@@ -9,6 +9,10 @@ import {
   EsbuildTransformOptions,
   UserConfig as ViteUserConfig
 } from 'vite';
+import * as url from 'url';
+
+// @ts-ignore
+const __dirname = url.fileURLToPath(new url.URL('.', import.meta.url));
 
 export type AbellOptions = {
   esbuild?: EsbuildTransformOptions;
@@ -45,8 +49,25 @@ export const findIndexPath = (abellPages: AbellPagesGlobImport): string => {
   return likelyRootIndexPath;
 };
 
+export const getPackageJSON = (): Record<string, string> => {
+  const packageJson = JSON.parse(
+    fs.readFileSync(new url.URL('../../package.json', import.meta.url), 'utf-8')
+  );
+  return packageJson;
+};
+
+let abellVersion: string | undefined = undefined;
+export const getAbellVersion = (): string => {
+  if (abellVersion) {
+    return abellVersion;
+  }
+  // Just memoizing the version number to avoid reading package.json multiple times
+  abellVersion = getPackageJSON().version;
+  return abellVersion;
+};
+
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const VERSION = `v${require('../../package.json').version}`;
+const VERSION = `v${getAbellVersion()}`;
 export const ABELL_PACKAGE_ROOT = path.join(__dirname, '..', '..');
 export const NODE_MODULES_DIR = path.join(ABELL_PACKAGE_ROOT, '..');
 
@@ -205,7 +226,7 @@ export const getBasePaths = async ({ configFile, command }: PathOptions) => {
     SOURCE_ENTRY_BUILD_PATH = DEFAULT_ENTRY_BUILD_PATH; // use default entry build
     OUT_ENTRY_BUILD_PATH = path.join(
       TEMP_OUTPUT_DIR,
-      'secret.default.entry.build.mjs'
+      'secret.default.entry.build.js'
     );
   }
 

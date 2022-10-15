@@ -1,8 +1,8 @@
 import path from 'path';
-import { CSSBlockType, StyleTagAttributes } from '../../../type-utils';
-import { getScopedCSS } from './css-parser';
-import { generateHashFromPath } from './generate-hash';
-import { injectCSSHashToHTML } from './inject-css-hash';
+import { CSSBlockType, StyleTagAttributes } from '../../../type-utils.js';
+import { getScopedCSS } from './css-parser.js';
+import { generateHashFromPath } from './generate-hash.js';
+import { injectCSSHashToHTML } from './inject-css-hash.js';
 
 const ABELL_SPECIAL_CSS_ATTRIBUTES = ['scoped'];
 const flattenAttributes = (attributes: StyleTagAttributes) => {

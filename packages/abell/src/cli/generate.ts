@@ -6,9 +6,9 @@ import {
   getConfigPath,
   getBasePaths,
   createPathIfAbsent
-} from '../utils/internal-utils';
-// @ts-expect-error
-import loadModule from '../../defaults/loadModule.js';
+} from '../utils/internal-utils.js';
+
+// import loadModule from '../../defaults/loadModule.js';
 import { Route } from '../type-utils';
 
 async function generate(): Promise<void> {
@@ -37,7 +37,7 @@ async function generate(): Promise<void> {
     configFile
   });
 
-  const { makeRoutes } = await loadModule(OUT_ENTRY_BUILD_PATH);
+  const { makeRoutes } = await import(OUT_ENTRY_BUILD_PATH);
   const routes: Route[] = await makeRoutes();
 
   // Generate index.html
