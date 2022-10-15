@@ -8,7 +8,6 @@ import {
   createPathIfAbsent
 } from '../utils/internal-utils.js';
 
-// import loadModule from '../../defaults/loadModule.js';
 import { Route } from '../type-utils';
 
 async function generate(): Promise<void> {
