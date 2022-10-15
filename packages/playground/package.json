@@ -13,7 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "abell": "1.0.0-alpha.68"
+    "abell": "1.0.0-alpha.71"
   },
   "devDependencies": {
     "@types/jsdom": "^16.2.14",
