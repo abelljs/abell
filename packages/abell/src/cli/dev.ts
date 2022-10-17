@@ -4,7 +4,7 @@ import {
   getConfigPath,
   getBasePaths,
   getFilePathFromURL
-} from '../utils/internal-utils';
+} from '../utils/internal-utils.js';
 import { Route } from '../type-utils';
 
 type DevOptions = {

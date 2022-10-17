@@ -1,7 +1,7 @@
-import { isDeclarationBlock, parseAttributes } from './utils';
-import { Token } from './generic-tokenizer';
-import { AbstractSyntaxArrayType } from '../../type-utils';
-import { TokenSchemaType } from './token-schema';
+import { isDeclarationBlock, parseAttributes } from './utils.js';
+import { Token } from './generic-tokenizer.js';
+import { AbstractSyntaxArrayType } from '../../type-utils.js';
+import { TokenSchemaType } from './token-schema.js';
 
 export const getSyntaxBlocks = (
   tokens: Token<TokenSchemaType>[],

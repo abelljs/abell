@@ -1,9 +1,9 @@
 /* eslint-disable max-len */
-import { StyleTagAttributes } from '../../type-utils';
-import tokenize from './generic-tokenizer';
-import { getScopedHTML } from './scope-css';
-import { getSyntaxBlocks } from './syntax-blocks';
-import { tokenSchema, TokenSchemaType } from './token-schema';
+import { StyleTagAttributes } from '../../type-utils.js';
+import tokenize from './generic-tokenizer.js';
+import { getScopedHTML } from './scope-css/index.js';
+import { getSyntaxBlocks } from './syntax-blocks.js';
+import { tokenSchema, TokenSchemaType } from './token-schema.js';
 
 /**
  * TODO:
