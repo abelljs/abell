@@ -64,6 +64,31 @@ describe('compile()', () => {
           </body>"
     `);
   });
+
+  test('should ignore the nested abell blocks', () => {
+    const abellCode = `
+    <body>
+      Evaulation Block: {{ 3 + 4 }}
+      Evaluation Block with Nesting: {{ 'start-{{ 2 + 1 }}-end' }}
+      Evaluation Block with Nesting: {{ 'start-{{ {{ 2 + 1 }} }}-end' }}
+      Escaped Block: \\{{ 2 + 1 }}
+    </body>
+    `;
+    const out = compile(abellCode, {
+      filepath: __dirname,
+      outputType: 'syntax-blocks'
+    });
+    expect(out.out.text).toMatchInlineSnapshot(`
+      "
+          <body>
+            Evaulation Block: \${e( 3 + 4 )}
+            Evaluation Block with Nesting: \${e( 'start-{{ 2 + 1 }}-end' )}
+            Evaluation Block with Nesting: \${e( 'start-{{ {{ 2 + 1 }} }}-end' )}
+            Escaped Block: \\\\{{ 2 + 1 }}
+          </body>
+          "
+    `);
+  });
 });
 
 describe('scoped css', () => {

@@ -9,6 +9,7 @@ export const getSyntaxBlocks = (
 ): AbstractSyntaxArrayType => {
   const blockState = {
     isInsideAbellBlock: false,
+    abellNestedBlockLevelCount: 0,
     isInsideCSSBlock: false,
     blockCount: 0,
     cssAttributes: {} as Record<string, string | boolean>
@@ -39,6 +40,12 @@ export const getSyntaxBlocks = (
        *
        * Token: `{{`
        */
+      if (blockState.isInsideAbellBlock) {
+        // We're already inside abell block so this is a nested block.
+        texts.abellText += token.text;
+        blockState.abellNestedBlockLevelCount++;
+        continue;
+      }
       blockState.isInsideAbellBlock = true;
       blockState.blockCount++;
     } else if (token.type === 'BLOCK_END') {
@@ -47,6 +54,12 @@ export const getSyntaxBlocks = (
        *
        * Token: `}}`
        */
+
+      if (blockState.abellNestedBlockLevelCount > 0) {
+        texts.abellText += token.text;
+        blockState.abellNestedBlockLevelCount--;
+        continue;
+      }
 
       if (!blockState.isInsideAbellBlock) {
         addToHTML(token.text);
