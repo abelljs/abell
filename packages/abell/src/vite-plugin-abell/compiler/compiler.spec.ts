@@ -129,6 +129,31 @@ describe('scoped css', () => {
     `);
   });
 
+  test.skip('should scope the css when HTML is broken', () => {
+    const abellCode = `
+    {{ '<' + 'nav' + '>' + 'yo</nav>' }}
+    <nav>hello</nav>
+    <style>
+    nav {
+      color: yellow;
+    }
+    </style>
+    `;
+
+    const { out } = compile(abellCode, {
+      filepath: path.join(process.cwd(), 'test.abell'),
+      outputType: 'syntax-blocks'
+    });
+
+    // This will pass right now because the snapshot is as per the current code,
+    // but ideally it should add abell scope css token to generated HTML as well.
+    expect(out.text.trim()).toMatchInlineSnapshot(`
+      "<style abell-generated>nav[data-abell-duqnjx]{color:yellow;}</style>
+          \${e( '<' + 'nav' + '>' + 'yo</nav>' )}
+          <nav data-abell-duqnjx>hello</nav>"
+    `);
+  });
+
   test('should not scope the css on html page', () => {
     const abellCode = `
     <html>
