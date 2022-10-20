@@ -1,6 +1,6 @@
 {
   "name": "create-abell",
-  "version": "0.0.15",
+  "version": "0.0.16",
   "description": "Boilerplate for abell. npx create-abell my-blog",
   "main": "dist/create.js",
   "types": "dist/create.d.ts",
