@@ -1,0 +1,15 @@
+[build]
+command = "npm run docs:generate"
+publish = "./packages/docs/dist"
+
+[[redirects]]
+from = "/docs"
+to = "/getting-started"
+
+[[redirects]]
+from = "/new"
+to = "https://codesandbox.io/s/abell-playground-wcdq2"
+
+[[redirects]]
+from = "/tutorial/create-portfolio"
+to = "/tutorial/"

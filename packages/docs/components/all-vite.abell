@@ -1,0 +1,76 @@
+{{
+  import editor from './editor.abell';
+
+  const editorBuilder = {
+    files: {
+      'About.mdx': `
+      **About Heading**
+
+      <div>Hello from {'mdx'.toUpperCase()}</div>
+      `,
+      'index.abell': `
+        {{
+          import About from './About.mdx';
+        }}
+        <html>
+        <body>
+          <div>{{ About }}</div>
+        </body>
+        </html>
+      `,
+      'vite.config.ts': `
+      import { defineConfig } from "abell";
+      import vitePluginMdxToHTML from "vite-plugin-mdx-to-html";
+
+      export default defineConfig({
+        // Vite Configs
+        plugins: [vitePluginMdxToHTML()]
+      })
+        `,
+      'package.json': `
+        {
+          "scripts": {
+            "dev": "abell dev",
+            "generate": "abell generate"
+          },
+          "devDependencies": {
+            "abell": "^1.0.0"
+          }
+        }
+        `
+    },
+    activeFile: 'vite.config.ts',
+    minHeight: '400px',
+    showURLBar: true,
+    output: {
+      '/': {
+        screen: '<b>About Heading</b><p>Hello from MDX</p>'
+      },
+    }
+  }
+}}
+
+<section>
+  <h2>It's all just Vite <img src="/icons/vite.png" width="40" /></h2>
+  <p>Abell is built with a very little abstraction on top of Vite so it supports almost all Vite plugins. There is no <code>abell.config.ts</code>, we just use <code>vite.config.ts</code> 🤗</p>
+  {{ editor({ editorBuilder }) }}
+</section>
+
+<style>
+h2 {
+  margin: 0px;
+}
+
+section > p {
+  padding: 24px 0px;
+}
+
+.start-project-steps {
+  padding: 0px 0px 24px 0px;
+}
+
+ol {
+  font-size: 1.2rem;
+  line-height: 2.5rem;
+}
+</style>

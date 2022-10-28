@@ -1,0 +1,7 @@
+node_modules/
+dist/
+.debug
+dump/
+.env
+oldtheme/
+theme/fonts

@@ -1,0 +1,32 @@
+{
+  "name": "abell-docs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "private": "true",
+  "scripts": {
+    "dev": "abell dev",
+    "generate": "abell generate",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abelljs/abell-website.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/abelljs/abell-website/issues"
+  },
+  "homepage": "https://github.com/abelljs/abell-website#readme",
+  "dependencies": {
+    "@fontsource/inter": "^4.5.12",
+    "abell": "^1.0.0-alpha.72",
+    "vite-plugin-md-to-html": "^0.0.18"
+  },
+  "devDependencies": {
+    "highlight.js": "^11.6.0"
+  }
+}
