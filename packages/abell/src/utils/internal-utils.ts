@@ -204,7 +204,8 @@ export const getBasePaths = async ({ configFile, command }: PathOptions) => {
 
   // Used when the project does not have `entry.build.ts` file in root
   const DEFAULT_ENTRY_BUILD_PATH = path.join(
-    NODE_MODULES_DIR,
+    ROOT,
+    'node_modules',
     '.abell',
     VERSION,
     'secret.default.entry.build.js'

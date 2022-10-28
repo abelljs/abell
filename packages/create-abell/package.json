@@ -12,10 +12,10 @@
     "test:once": "vitest run",
     "build": "tsc",
     "postbuild": "node ../../scripts/post-build.js create-abell",
-    "dev": "nodemon --exec \"yarn build\" --watch src --watch templates -e js,ts,abell,css",
-    "clean-scaffolds": "node scripts/clean-scaffolds.js",
-    "scaffold": "npm run clean-scaffolds && cd scaffold-dir && node ../dist/bin.js",
-    "prepublishOnly": "yarn build"
+    "dev": "nodemon --exec \"pnpm build\" --watch src --watch templates -e js,ts,abell,css",
+    "clear-cache": "node scripts/clean-scaffolds.js",
+    "scaffold": "pnpm run clean-scaffolds && cd scaffold-dir && node ../dist/bin.js",
+    "prepublishOnly": "pnpm build"
   },
   "repository": {
     "type": "git",
