@@ -20,7 +20,7 @@
     "prettier": "prettier --write \"packages/**/**/**/*.[jt]s\"",
     "test:playground": "cd playground && vitest",
     "test:playground:once": "cd playground && vitest run",
-    "test:once": "pnpm test:playground:once",
+    "test:once": "pnpm abell:build && pnpm test:playground:once",
     "format": "npm run prettier",
     "prepublishOnly": "echo \"NOT FROM THE ROOT!! sorry for caps hehe\" && fail"
   },
