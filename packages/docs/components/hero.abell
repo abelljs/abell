@@ -1,0 +1,48 @@
+<section>
+  <div class="abell-heading-container">
+    <h1><a href="/">Abell v1</a></h1>
+    <p>A Static-Site-Generator <br/>for JavaScript Developers</p>
+
+    <div class="buttons-container">
+      <a href="/getting-started/" class="button-primary">Get Started</a>&nbsp;&nbsp;
+      <a href="https://github.com/abelljs/abell" class="button-secondary">GitHub</a>
+    </div>
+  </div>
+  <img class="abs-abell-logo" width="600" src="./assets/abell-2022-noshadow.png" alt="" />
+</section>
+
+<style>
+section {
+  padding: 120px 20px 200px 140px;
+  position: relative;
+}
+
+.abs-abell-logo {
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
+  filter: blur(1.4rem);
+  z-index: -1;
+}
+
+h1 {
+  font-size: 2rem;
+  background: linear-gradient(to top left, #111, var(--primary-hover));
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 0px;
+  font-weight: 800;
+}
+
+p {
+  font-size: 4rem;
+  font-weight: 800;
+  margin: 64px 0px;
+  line-height: 5.2rem;
+}
+
+.buttons-container {
+  padding: 24px 0px;
+}
+</style>

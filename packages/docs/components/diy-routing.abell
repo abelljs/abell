@@ -1,0 +1,69 @@
+{{
+  import editor from './editor.abell';
+
+  const editorBuilder = {
+    files: {
+      'index.abell': `
+        <body>Hello from Index Page!!</body>
+      `,
+      'entry.build.ts': `
+        import { Route } from 'abell';
+        import index from './index.abell';
+
+        export const makeRoutes =  (): Route[] => {
+          return [
+            {
+              path: '/',
+              // abell components are functions that return HTML string
+              render: () => index()
+            },
+            {
+              path: '/about',
+              render: () => {
+                return '<body>We can return any HTML string here</body>';
+              }
+            }
+          ]
+        }
+        `,
+      'package.json': `
+        {
+          "scripts": {
+            "dev": "abell dev",
+            "generate": "abell generate"
+          },
+          "devDependencies": {
+            "abell": "^1.0.0"
+          }
+        }
+        `
+    },
+    activeFile: 'entry.build.ts',
+    minHeight: '600px',
+    showURLBar: true,
+    output: {
+      '/': {
+        screen: 'Hello from Index Page!!'
+      },
+      '/about': {
+        screen: 'We can return any HTML string here'
+      }
+    }
+  }
+}}
+
+<section>
+  <h2>Override the Router with your own logic</h2>
+  <p>Opt out of the default file-system routing with <code>makeRoutes</code> API</p>
+  {{ editor({ editorBuilder }) }}
+</section>
+
+<style>
+h2 {
+  margin: 0px;
+}
+
+p {
+  padding: 24px 0px;
+}
+</style>

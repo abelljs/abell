@@ -1,0 +1,26 @@
+{{
+  import headMeta from './components/meta.abell';
+  import hero from './components/hero.abell';
+  import gettingStarted from './components/getting-started.abell';
+  import noConfig from './components/no-config.abell';
+  import diyRouting from './components/diy-routing.abell';
+  import allVite from './components/all-vite.abell';
+}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {{ 
+    headMeta({ 
+      title: 'Abell v1 - A Static Site Generator for JavaScript Developers' 
+    })
+  }}
+</head>
+<body>
+  {{ hero }}
+  {{ gettingStarted }}
+  {{ noConfig }}
+  {{ diyRouting }}
+  {{ allVite }}
+  <script src="./client/main.ts" type="module"></script>
+</body>
+</html>

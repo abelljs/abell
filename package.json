@@ -14,6 +14,8 @@
     "abell": "yarn workspace abell",
     "create-abell": "yarn workspace create-abell",
     "play": "yarn workspace playground",
+    "docs": "yarn workspace abell-docs",
+    "docs:generate": "yarn docs generate",
     "eslint": "eslint packages/**/src/**/**/ --ext ts,js",
     "prettier": "prettier --write \"packages/**/**/**/*.[jt]s\"",
     "test:once": "yarn abell test:once && yarn play test:once && yarn create-abell test:once",
