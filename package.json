@@ -11,11 +11,10 @@
     "packages/*"
   ],
   "scripts": {
-    "dev": "pnpm -r --parallel --filter ...abell run dev",
     "abell": "pnpm --filter abell dev",
-    "abell:build": "pnpm --filter abell build",
-    "abell-docs": "pnpm --filter abell-docs dev",
-    "abell-docs:generate": "pnpm --filter abell-docs generate",
+    "abell:build": "pnpm --filter ...abell clear-cache && pnpm --filter abell build",
+    "docs:dev": "pnpm abell:build && pnpm --filter docs dev",
+    "docs:generate": "pnpm --filter docs generate",
     "// Linting Stuff Starts from Here": "",
     "eslint": "eslint packages/**/src/**/**/ --ext ts,js",
     "prettier": "prettier --write \"packages/**/**/**/*.[jt]s\"",

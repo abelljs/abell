@@ -58,18 +58,6 @@ importers:
     devDependencies:
       '@types/prompts': 2.4.1
 
-  packages/create-abell/scaffold-dir/hello-abell:
-    specifiers:
-      abell: ^1.0.0-alpha.72
-    devDependencies:
-      abell: link:../../../abell
-
-  packages/create-abell/templates/default:
-    specifiers:
-      abell: ^1.0.0-alpha.72
-    devDependencies:
-      abell: link:../../../abell
-
   packages/docs:
     specifiers:
       '@fontsource/inter': ^4.5.12
@@ -93,12 +81,6 @@ importers:
     devDependencies:
       '@types/jsdom': 16.2.15
       jsdom: 19.0.0
-
-  packages/playground/basic:
-    specifiers: {}
-
-  packages/playground/custom-routing:
-    specifiers: {}
 
 packages:
 
