@@ -32,6 +32,9 @@ jobs:
       - name: Install deps
         run: pnpm install
 
+      - name: Build Abell
+        run: pnpm --filter abell build
+
       - name: Run Playground Tests
         run: pnpm --filter './playground/**' test:once
 
