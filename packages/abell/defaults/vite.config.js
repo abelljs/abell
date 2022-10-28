@@ -1,2 +1,2 @@
-import { defineConfig } from 'abell';
+import { defineConfig } from '../dist/index.js';
 export default defineConfig({});

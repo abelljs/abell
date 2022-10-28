@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 import { describe, test, expect, beforeAll } from 'vitest';
-import { run, getDocument } from '../test-utils/utils';
+import { run, getDocument } from './test-utils.js';
 
 describe('basic', () => {
   beforeAll(async () => {
