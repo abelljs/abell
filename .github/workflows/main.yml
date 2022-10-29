@@ -36,7 +36,7 @@ jobs:
         run: pnpm --filter abell build
 
       - name: Add Abell to Global
-        run: pnpm add ./packages/abell -g
+        run: ls && pnpm add ./packages/abell -g
 
       - name: Print Abell Version
         run: abell --version
