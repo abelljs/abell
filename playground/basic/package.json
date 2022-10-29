@@ -8,7 +8,7 @@
     "dev": "abell --version && abell dev",
     "test": "vitest",
     "test:once": "vitest run",
-    "generate": "npx abell generate"
+    "generate": "abell generate"
   },
   "keywords": [],
   "author": "",

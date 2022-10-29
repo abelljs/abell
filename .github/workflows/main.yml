@@ -35,8 +35,11 @@ jobs:
       - name: Build Abell
         run: pnpm --filter abell build
 
-      - name: LS the basic playground
-        run: ls ./playground/basic
+      - name: Install Local Abell
+        run: npm i -g ./packages/abell/
+
+      - name: Print Abell Version
+        run: abell --version
 
       - name: Run Playground Tests
         run: pnpm --filter './playground/**' test:once
