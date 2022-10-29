@@ -35,6 +35,9 @@ jobs:
       - name: Build Abell
         run: pnpm --filter abell build
 
+      - name: LS the basic playground
+        run: ls ./playground/basic
+
       - name: Run Playground Tests
         run: pnpm --filter './playground/**' test:once
 
