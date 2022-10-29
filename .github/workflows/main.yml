@@ -35,12 +35,6 @@ jobs:
       - name: Build Abell
         run: pnpm --filter abell build
 
-      - name: Add Abell to Global
-        run: ls && pnpm add ./packages/abell -g
-
-      - name: Print Abell Version
-        run: abell --version
-
       - name: Run Playground Tests
         run: pnpm --filter './playground/**' test:once
 
