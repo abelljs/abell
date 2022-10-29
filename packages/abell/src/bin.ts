@@ -1,16 +1,11 @@
 #!/usr/bin/env node
 
 // This is the file that gets called first on `abell [command]`
-import path from 'path';
 import commander from 'commander';
 
 import generate from './cli/generate.js';
 import dev from './cli/dev.js';
-import {
-  NODE_MODULES_DIR,
-  rmdirRecursiveSync,
-  getAbellVersion
-} from './utils/internal-utils.js';
+import { getAbellVersion, clearCache } from './utils/internal-utils.js';
 
 const program = commander.createCommand();
 
@@ -53,10 +48,7 @@ program
   .action(dev);
 
 /** Used after postinstall  */
-program.command('clear-cache').action(() => {
-  const ABELL_CACHE_DIR = path.join(NODE_MODULES_DIR, '.abell');
-  rmdirRecursiveSync(ABELL_CACHE_DIR);
-});
+program.command('clear-cache').action(clearCache);
 
 /** abell -V */
 // eslint-disable-next-line @typescript-eslint/no-var-requires

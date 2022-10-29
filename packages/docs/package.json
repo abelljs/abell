@@ -1,5 +1,5 @@
 {
-  "name": "abell-docs",
+  "name": "docs",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -8,6 +8,7 @@
   "scripts": {
     "dev": "abell dev",
     "generate": "abell generate",
+    "clear-cache": "abell clear-cache",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -23,7 +24,7 @@
   "homepage": "https://github.com/abelljs/abell-website#readme",
   "dependencies": {
     "@fontsource/inter": "^4.5.12",
-    "abell": "^1.0.0-alpha.72",
+    "abell": "workspace:*",
     "vite-plugin-md-to-html": "^0.0.18"
   },
   "devDependencies": {

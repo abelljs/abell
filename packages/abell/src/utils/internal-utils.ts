@@ -12,7 +12,7 @@ import {
 import * as url from 'url';
 
 // @ts-ignore
-const __dirname = url.fileURLToPath(new url.URL('.', import.meta.url));
+const $dirname = url.fileURLToPath(new url.URL('.', import.meta.url));
 
 export type AbellOptions = {
   esbuild?: EsbuildTransformOptions;
@@ -68,7 +68,7 @@ export const getAbellVersion = (): string => {
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const VERSION = `v${getAbellVersion()}`;
-export const ABELL_PACKAGE_ROOT = path.join(__dirname, '..', '..');
+export const ABELL_PACKAGE_ROOT = path.join($dirname, '..', '..');
 export const NODE_MODULES_DIR = path.join(ABELL_PACKAGE_ROOT, '..');
 
 export const normalizePath = (pathString: string): string =>
@@ -165,7 +165,7 @@ export const getConfigPath = (cwd: string): string => {
     }
   }
 
-  return path.resolve(__dirname, '../../defaults/vite.config.js');
+  return path.resolve($dirname, '../../defaults/vite.config.js');
 };
 
 type PathOptions = {
@@ -188,6 +188,8 @@ export const getViteConfig = async ({
   return viteConfigObj?.config ?? {};
 };
 
+let isGetBasePathsFunctionCalled = false;
+
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const getBasePaths = async ({ configFile, command }: PathOptions) => {
   const viteConfig = await getViteConfig({ configFile, command });
@@ -204,7 +206,8 @@ export const getBasePaths = async ({ configFile, command }: PathOptions) => {
 
   // Used when the project does not have `entry.build.ts` file in root
   const DEFAULT_ENTRY_BUILD_PATH = path.join(
-    NODE_MODULES_DIR,
+    ROOT,
+    'node_modules',
     '.abell',
     VERSION,
     'secret.default.entry.build.js'
@@ -213,11 +216,12 @@ export const getBasePaths = async ({ configFile, command }: PathOptions) => {
     !fs.existsSync(ENTRY_BUILD_PATH_JS) &&
     !fs.existsSync(ENTRY_BUILD_PATH_TS)
   ) {
-    if (!fs.existsSync(DEFAULT_ENTRY_BUILD_PATH)) {
+    // Run this the first time getBasePaths is called. Ignore after that.
+    if (!isGetBasePathsFunctionCalled) {
       createPathIfAbsent(path.dirname(DEFAULT_ENTRY_BUILD_PATH));
       fs.copyFileSync(
         path.resolve(
-          `${__dirname}/../../defaults/secret.default.entry.build.js`
+          `${$dirname}/../../defaults/secret.default.entry.build.js`
         ),
         DEFAULT_ENTRY_BUILD_PATH
       );
@@ -230,6 +234,8 @@ export const getBasePaths = async ({ configFile, command }: PathOptions) => {
     );
   }
 
+  isGetBasePathsFunctionCalled = true;
+
   return {
     SOURCE_ENTRY_BUILD_PATH,
     OUT_ENTRY_BUILD_PATH,
@@ -240,6 +246,25 @@ export const getBasePaths = async ({ configFile, command }: PathOptions) => {
     OUTPUT_DIR
   };
 };
+
+export async function clearCache(
+  { log } = {
+    log: true
+  }
+): Promise<void> {
+  const configFile = getConfigPath(process.cwd());
+  const { ROOT } = await getBasePaths({
+    configFile,
+    command: 'generate'
+  });
+  const ABELL_CACHE_DIR = path.join(ROOT, 'node_modules', '.abell');
+  if (fs.existsSync(ABELL_CACHE_DIR)) {
+    rmdirRecursiveSync(ABELL_CACHE_DIR);
+    if (log) {
+      console.log('>> Abell cache go whoooshhhh 🧹');
+    }
+  }
+}
 
 /**
  * Evaluates the abell block.

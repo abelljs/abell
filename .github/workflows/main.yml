@@ -3,11 +3,7 @@
 
 name: Tests and ESLint
 
-on:
-  push:
-    branches: [main, 'one']
-  pull_request:
-    branches: [main]
+on: push
 
 jobs:
   test:
@@ -15,18 +11,38 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [14.x, 16.x]
-        os: ['windows-latest', 'macos-latest']
+        node-version: [18.x]
+        os: ['macos-latest', 'windows-latest']
 
     steps:
-      - uses: actions/checkout@v2
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2.2.4
         with:
-          node-version: ${{ matrix.node-version }}
-      - run: npm i -g yarn
-      - run: yarn
-      - run: yarn test:once
+          version: 7.14.0
+
+      - name: Set node version to ${{ matrix.node_version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node_version }}
+          cache: 'pnpm'
+
+      - name: Install deps
+        run: pnpm install
+
+      - name: Build Abell
+        run: pnpm --filter abell build
+
+      - name: Install Local Abell
+        run: npm i -g ./packages/abell/
+
+      - name: Print Abell Version
+        run: abell --version
+
+      - name: Run Playground Tests
+        run: pnpm --filter './playground/**' test:once
 
   # lint:
   #   runs-on: ubuntu-latest

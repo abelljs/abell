@@ -26,6 +26,7 @@ module.exports = {
     'valid-jsdoc': 0,
     'arrow-parens': 0,
     'guard-for-in': 0,
+    'spaced-comment': 0,
     'operator-linebreak': [
       'error',
       'after',

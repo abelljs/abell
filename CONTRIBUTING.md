@@ -1,3 +1,7 @@
+> **Warning**
+>
+> Sorry the CONTRIBUTING.md is outdated. I will update it soon.
+
 # Contributing to Abell
 
 ## Local Setup
