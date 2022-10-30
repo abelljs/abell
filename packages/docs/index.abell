@@ -17,6 +17,7 @@
 </head>
 <body>
   {{ hero }}
+  <h2>This site is WIP</h2>
   {{ gettingStarted }}
   {{ noConfig }}
   {{ diyRouting }}
