@@ -63,7 +63,7 @@ importers:
   packages/docs:
     specifiers:
       '@fontsource/inter': ^4.5.12
-      abell: workspace:../abell
+      abell: workspace:*
       highlight.js: ^11.6.0
       vite-plugin-md-to-html: ^0.0.18
     dependencies:
