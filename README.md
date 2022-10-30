@@ -55,7 +55,7 @@ Output:
 
 ### 🤗 Contributing
 
-The contributions might get a bit difficult to do right now since I am not quiet clear on which path the Abell is going to go. I will recommend contributing once Abell v1 gets a bit stable.
+Check out [CONTRIBUTING.md](https://github.com/abelljs/abell/blob/one/CONTRIBUTING.md)
 
 ---
 
