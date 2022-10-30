@@ -24,7 +24,7 @@
   "homepage": "https://github.com/abelljs/abell-website#readme",
   "dependencies": {
     "@fontsource/inter": "^4.5.12",
-    "abell": "workspace:*",
+    "abell": "workspace:../abell",
     "vite-plugin-md-to-html": "^0.0.18"
   },
   "devDependencies": {
