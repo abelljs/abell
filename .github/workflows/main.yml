@@ -12,7 +12,7 @@ jobs:
     strategy:
       matrix:
         node-version: [18.x]
-        os: ['macos-latest', 'windows-latest']
+        os: ['macos-latest']
 
     steps:
       - name: Checkout
@@ -41,17 +41,19 @@ jobs:
       - name: Print Abell Version
         run: abell --version
 
-      - name: Run Playground Tests
-        run: pnpm --filter './playground/**' test:once
+      - name: Run All Tests
+        run: pnpm run test:once
 
-  # lint:
-  #   runs-on: ubuntu-latest
+      - name: Run ESLint
+        run: pnpm run eslint
 
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #     - name: ESLint
-  #       uses: actions/setup-node@v1
-  #       with:
-  #         node-version: 10
-  #     - run: npm ci
-  #     - run: npm run eslint
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: ESLint
+        uses: actions/setup-node@v1
+        with:
+          node-version: 10
+      - run: npm ci
