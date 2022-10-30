@@ -46,14 +46,3 @@ jobs:
 
       - name: Run ESLint
         run: pnpm run eslint
-
-  lint:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v2
-      - name: ESLint
-        uses: actions/setup-node@v1
-        with:
-          node-version: 10
-      - run: npm ci
