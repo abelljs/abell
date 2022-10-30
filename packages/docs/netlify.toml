@@ -1,5 +1,5 @@
 [build]
-command = "npm run docs:generate"
+command = "npm run docs:generate:ci"
 publish = "./packages/docs/dist"
 
 [[redirects]]

@@ -19,6 +19,7 @@
     "create-abell": "pnpm --filter create-abell scaffold",
     "docs:dev": "pnpm abell:build && pnpm --filter docs dev",
     "docs:generate": "pnpm --filter docs generate",
+    "docs:generate:ci": "pnpm abell:build && pnpm install && pnpm docs:generate",
     "packages:test:once": "pnpm --filter \"./packages/**\" test:once",
     "playground:test": "cd playground && vitest",
     "playground:test:once": "pnpm --filter \"./playground/**\" test:once",
