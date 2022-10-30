@@ -35,11 +35,8 @@ jobs:
       - name: Build Abell
         run: pnpm --filter abell build
 
-      - name: Install Local Abell
-        run: npm i -g ./packages/abell/
-
-      - name: Print Abell Version
-        run: abell --version
+      - name: Link abell deps
+        run: pnpm install
 
       - name: Run All Tests
         run: pnpm run test:once
