@@ -1,0 +1,42 @@
+{{
+  import headMeta from './components/meta.abell';
+  import abellLogo from './assets/abell-2022-noshadow.png';
+}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {{ 
+    headMeta({ 
+      title: 'Abell v1 - A Static Site Generator for JavaScript Developers' 
+    })
+  }}
+</head>
+<body>
+  <div class="docs-page-container display-flex">
+    <header>
+      <a class="brand-title" href="/">
+        <img width="40" src="{{ abellLogo }}" />
+        <span>Abell <small style="color: #888;">v1</small></span>
+      </a>
+      <nav>
+        <ul>
+          <li><a href="/why-abell">Why Abell</a></li>
+          <li><a href="/getting-started" class="active">Getting Started</a></li>
+          <li><a href="/syntax">Syntax Guide</a></li>
+        </ul>
+      </nav>
+    </header>
+    <main class="content">
+      <h1>This is the Heading One</h1>
+      
+      <h2>Will it work?</h2>
+
+      <p>Lets se!!</p>
+    </main>
+  </div>
+  <script src="./client/main.ts" type="module"></script>
+  <script type="module">
+  import "/client/docs.css";
+  </script>
+</body>
+</html>

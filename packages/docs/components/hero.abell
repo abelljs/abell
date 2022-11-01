@@ -4,7 +4,7 @@
     <p>A Static-Site-Generator <br/>for JavaScript Developers</p>
 
     <div class="buttons-container">
-      <a href="/getting-started/" class="button-primary">Get Started</a>&nbsp;&nbsp;
+      <a href="/getting-started" class="button-primary">Get Started</a>&nbsp;&nbsp;
       <a href="https://github.com/abelljs/abell" class="button-secondary">GitHub</a>
     </div>
   </div>

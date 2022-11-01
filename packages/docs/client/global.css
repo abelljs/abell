@@ -11,6 +11,12 @@
   --blue-10: #E7EBFD;
   --primary: var(--blue-4);
   --primary-hover: var(--blue-5);
+  --semi-bold: bold;
+}
+
+html, body {
+  margin: 0px;
+  padding: 0px;
 }
 
 body {
@@ -93,4 +99,8 @@ h3 {
 
 section {
   padding: 100px 120px;
+}
+
+.display-flex {
+  display: flex;
 }

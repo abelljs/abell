@@ -28,7 +28,11 @@
     "vite-plugin-md-to-html": "^0.0.18"
   },
   "devDependencies": {
+    "@types/react": "^18.0.24",
+    "@types/react-dom": "^18.0.8",
     "highlight.js": "^11.6.0",
-    "node-fetch": "^3.2.10"
+    "node-fetch": "^3.2.10",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   }
 }
