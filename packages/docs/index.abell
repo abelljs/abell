@@ -1,6 +1,7 @@
 {{
   import headMeta from './components/meta.abell';
   import hero from './components/hero.abell';
+  import sponsors from './components/sponsors.abell';
   import gettingStarted from './components/getting-started.abell';
   import noConfig from './components/no-config.abell';
   import diyRouting from './components/diy-routing.abell';
@@ -17,8 +18,8 @@
 </head>
 <body>
   {{ hero }}
-  <h2>This site is WIP</h2>
   {{ gettingStarted }}
+  {{ sponsors }}
   {{ noConfig }}
   {{ diyRouting }}
   {{ allVite }}

@@ -1,5 +1,5 @@
 <section>
-<h2>Scaffold an Abell Project</h2>
+<h2>Scaffold Abell Project</h2>
 <h3>Start with <code>create-abell</code> CLI</h3>
 <pre><code class="hljs language-sh"><span class="text-large"><b>npx create-abell</b></span>
 <div style="color: #888">
@@ -7,7 +7,7 @@
 <span>✔</span> Select Installer › npm
 </div>
 <span class="color-green">✔</span> hello-abell scaffolded successfully 🎉
-<span class="color-blue">ℹ</span> Use <i>\`cd hello-abell && npm run dev\`</i> to run the dev-server ⚡️</code></pre>
+<span class="color-blue">›</span> Use <i>\`cd hello-abell && npm run dev\`</i> to run the dev-server ⚡️</code></pre>
 </section>
 
 <style>

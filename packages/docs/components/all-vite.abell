@@ -50,27 +50,18 @@
   }
 }}
 
-<section>
+<section class="all-vite">
   <h2>It's all just Vite <img src="/icons/vite.png" width="40" /></h2>
   <p>Abell is built with a very little abstraction on top of Vite so it supports almost all Vite plugins. There is no <code>abell.config.ts</code>, we just use <code>vite.config.ts</code> 🤗</p>
   {{ editor({ editorBuilder }) }}
 </section>
 
 <style>
-h2 {
+.all-vite h2 {
   margin: 0px;
 }
 
-section > p {
+.all-vite > p {
   padding: 24px 0px;
-}
-
-.start-project-steps {
-  padding: 0px 0px 24px 0px;
-}
-
-ol {
-  font-size: 1.2rem;
-  line-height: 2.5rem;
 }
 </style>
