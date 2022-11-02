@@ -1,5 +1,6 @@
 ---
 menu: Why Abell
+index: 0
 ---
 
 # Why Abell

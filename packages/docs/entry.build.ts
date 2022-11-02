@@ -13,10 +13,14 @@ const filePathToURL = (filePath: string, base = './content') => {
   return filePath.replace(`${base}/`, '/').replace('.md', '');
 };
 
-const docsPaths = Object.entries(contentMd).map(([mdPath, mdModule]) => ({
-  path: filePathToURL(mdPath),
-  menuTitle: mdModule.attributes.menu
-}));
+const docsPaths = Object.entries(contentMd)
+  .sort(
+    ([_, a], [_x, b]) => Number(a.attributes.index) - Number(b.attributes.index)
+  )
+  .map(([mdPath, mdModule]) => ({
+    path: filePathToURL(mdPath),
+    menuTitle: mdModule.attributes.menu
+  }));
 
 const docsRoutes: Route[] = Object.entries(contentMd).map(
   ([mdPath, mdModule]) => {
