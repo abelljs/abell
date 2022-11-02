@@ -1,0 +1,9 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "module": "ESNext",
+    "types": ["abell/types", "../abell/node_modules/vite/client"]
+  },
+  "include": ["."],
+  "exclude": ["node_modules", "dist"]
+}

@@ -20,18 +20,23 @@
       </a>
       <nav>
         <ul>
-          <li><a href="/why-abell">Why Abell</a></li>
-          <li><a href="/getting-started" class="active">Getting Started</a></li>
-          <li><a href="/syntax">Syntax Guide</a></li>
+          {{
+            props.docsPaths.map((docsPath) => /* html */`
+            <li>
+              <a 
+                href="${docsPath.path}" 
+                class="${docsPath.path.includes(props.path) ? 'active' : ''}"
+              >
+                ${docsPath.menuTitle}
+              </a>
+            </li>
+            `)
+          }}
         </ul>
       </nav>
     </header>
     <main class="content">
-      <h1>This is the Heading One</h1>
-      
-      <h2>Will it work?</h2>
-
-      <p>Lets se!!</p>
+      {{ props.content }}
     </main>
   </div>
   <script src="./client/main.ts" type="module"></script>
