@@ -27,7 +27,7 @@
                 href="${docsPath.path}" 
                 class="${docsPath.path.includes(props.path) ? 'active' : ''}"
               >
-                ${docsPath.menuTitle}
+                ${docsPath.title}
               </a>
             </li>
             `)

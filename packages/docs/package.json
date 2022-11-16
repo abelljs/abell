@@ -24,8 +24,10 @@
   "homepage": "https://github.com/abelljs/abell-website#readme",
   "dependencies": {
     "@fontsource/inter": "^4.5.12",
+    "@mdx-js/rollup": "^2.1.5",
     "abell": "workspace:*",
-    "vite-plugin-md-to-html": "^0.0.18"
+    "vite-plugin-md-to-html": "^0.0.18",
+    "vite-plugin-mdx-to-html": "0.0.15-rollup-base.1"
   },
   "devDependencies": {
     "@types/react": "^18.0.24",
