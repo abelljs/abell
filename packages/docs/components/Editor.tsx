@@ -128,9 +128,8 @@ const EditorCodePreview = (props: EditorProps): JSX.Element => {
             className={`path-${outPath.replace(/\//g, '-')} ${
               outPath === '/' ? 'show' : ''
             }`}
-          >
-            {outObject.screen}
-          </div>
+            dangerouslySetInnerHTML={{ __html: outObject.screen }}
+          />
         ))}
       </div>
     </div>
