@@ -8,7 +8,7 @@ declare module 'react?server' {
   export = all;
 }
 
-declare module 'vite-plugin-md-to-html?server' {
-  import * as all from 'vite-plugin-md-to-html';
-  export = all;
-}
+// Fallback declaration
+// Set "tsserver plugin paths" setting in vscode to "./packages/docs"
+// For more accurate types
+declare module '*?server';

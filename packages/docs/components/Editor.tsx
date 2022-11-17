@@ -1,7 +1,7 @@
 // React is not bundled on client-side 🤯
 // Thanks to https://github.com/bluwy/vite-plugin-iso-import
 import React from 'react?server';
-import { md } from '../utils/md.js';
+import { md } from '../utils/md.js?server';
 import '../client/editor.scss';
 
 const getLanguageLogo = (
@@ -60,7 +60,7 @@ const EditorFileExplorer = (props: EditorProps) => {
         {Object.keys(props.files).map((filename) => {
           const languageLogo = getLanguageLogo(filename);
           return (
-            <li className="flex row">
+            <li key={filename} className="flex row">
               <button
                 className={`flex row ${
                   filename === props.activeFile ? 'active' : ''
@@ -93,6 +93,7 @@ const EditorCodeDisplay = (props: EditorProps): JSX.Element => {
         const language = getLanguageExtension(extension);
         return (
           <div
+            key={filename}
             className={`file-${filename.replace(/\./g, '-')} ${
               filename === props.activeFile ? 'show' : ''
             }`}
@@ -115,7 +116,7 @@ const EditorCodePreview = (props: EditorProps): JSX.Element => {
         <div className="url-bar">
           <select>
             {outPaths.map((outPath) => (
-              <option>
+              <option key={outPath}>
                 http://localhost:3000<span className="path">{outPath}</span>
               </option>
             ))}
@@ -125,6 +126,7 @@ const EditorCodePreview = (props: EditorProps): JSX.Element => {
       <div className="screen">
         {Object.entries(props.output).map(([outPath, outObject]) => (
           <div
+            key={outPath}
             className={`path-${outPath.replace(/\//g, '-')} ${
               outPath === '/' ? 'show' : ''
             }`}

@@ -5,6 +5,7 @@
     "target": "ES2017",
     "types": ["abell/types", "../abell/node_modules/vite/client", "./global.d.ts"],
     "lib": ["DOM"],
+    "plugins": [{ "name": "vite-plugin-iso-import" }]
   },
   "include": ["."],
   "exclude": ["node_modules", "dist"]
