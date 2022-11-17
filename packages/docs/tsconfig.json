@@ -2,7 +2,9 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "module": "ESNext",
-    "types": ["abell/types", "../abell/node_modules/vite/client"]
+    "target": "ES2017",
+    "types": ["abell/types", "../abell/node_modules/vite/client", "./global.d.ts"],
+    "lib": ["DOM"],
   },
   "include": ["."],
   "exclude": ["node_modules", "dist"]

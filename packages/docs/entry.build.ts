@@ -26,7 +26,7 @@ export const makeRoutes = (): Route[] => {
   return [
     {
       path: '/',
-      render: index
+      render: () => `${index()}`
     },
     ...docsPaths.map((docPath) => ({
       path: docPath.path,

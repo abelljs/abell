@@ -1,5 +1,5 @@
 {{
-  import editor from './editor.abell';
+  import editor from '../utils/editor.ts';
 
   const editorBuilder = {
     files: {
@@ -55,7 +55,7 @@
 <section>
   <h2>Override the Router with your own logic</h2>
   <p>Opt out of the default file-system routing with <code>makeRoutes</code> API</p>
-  {{ editor({ editorBuilder }) }}
+  {{ editor(editorBuilder) }}
 </section>
 
 <style>

@@ -1,5 +1,5 @@
 {{
-  import editor from './editor.abell';
+  import editor from '../utils/editor.ts';
 
   const editorBuilder = {
     files: {
@@ -45,7 +45,7 @@
       <li><code>npx abell dev</code> and your dev-server will start running 🥳</li>
     </ol>
   </div>
-  {{ editor({ editorBuilder }) }}
+  {{ editor(editorBuilder) }}
 </section>
 
 <style>

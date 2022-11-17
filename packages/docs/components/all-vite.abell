@@ -1,5 +1,5 @@
 {{
-  import editor from './editor.abell';
+  import editor from '../utils/editor.ts';
 
   const editorBuilder = {
     files: {
@@ -41,7 +41,6 @@
     },
     activeFile: 'vite.config.ts',
     minHeight: '400px',
-    showURLBar: true,
     output: {
       '/': {
         screen: '<b>About Heading</b><p>Hello from MDX</p>'
@@ -53,7 +52,7 @@
 <section class="all-vite">
   <h2>It's all just Vite <img src="/icons/vite.png" width="40" /></h2>
   <p>Abell is built with a very little abstraction on top of Vite so it supports almost all Vite plugins. There is no <code>abell.config.ts</code>, we just use <code>vite.config.ts</code> 🤗</p>
-  {{ editor({ editorBuilder }) }}
+  {{ editor(editorBuilder) }}
 </section>
 
 <style>

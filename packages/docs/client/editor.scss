@@ -1,0 +1,109 @@
+.editor {
+  background-color: #f7f7f7;
+    display: flex;
+    color: var(--blue-1);
+    font-size: 1rem;
+    border-radius: 2px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.07), 
+                0 2px 4px rgba(0,0,0,0.07), 
+                0 4px 8px rgba(0,0,0,0.07), 
+                0 8px 16px rgba(0,0,0,0.07),
+                0 16px 32px rgba(0,0,0,0.07), 
+                0 32px 64px rgba(0,0,0,0.07);
+
+  .flex {
+    display: flex;
+    align-items: center;
+    align-self: center;
+  }
+  .flex.row {
+    flex-direction: row;
+  }
+  
+  button {
+    background-color: transparent;
+    color: inherit;
+    border: none;
+    font-size: 1rem;
+    padding: 8px 12px;
+    cursor: pointer;
+    display: block;
+    width: 100%;
+    opacity: 0.5;
+  }
+  
+  button:hover {
+    background-color: #fff;
+    opacity: 0.6;
+  }
+  
+  button.active {
+    background-color: #fff;
+    border-left: 2px solid var(--blue-5);
+    opacity: 1;
+  }
+  
+  .file-explorer {
+    width: 200px;
+    padding: 12px 0px;
+  }
+  .code-display {
+    background-color: #fff;
+    flex: 1;
+    padding: 0px 24px;
+  }
+  .code-display > div {
+    display: none;
+  }
+  .code-display > div.show {
+    display: block;
+  }
+  
+  .code-preview {
+    width: 250px;
+    background-color: #fff;
+    color: #111;
+    border-left: 3px solid #f7f7f7;
+    font-size: 1rem;
+  }
+  
+  .code-preview .url-bar {
+    padding: 0px 8px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.009), 
+              0 2px 4px rgba(0,0,0,0.009), 
+              0 4px 8px rgba(0,0,0,0.009), 
+              0 8px 16px rgba(0,0,0,0.009),
+              0 16px 32px rgba(0,0,0,0.009), 
+              0 32px 64px rgba(0,0,0,0.009);
+  }
+  
+  .code-preview .url-bar > select {
+    padding: 8px 0px;
+    font-size: 0.9rem;
+    display: block;
+    width: 100%;
+    border: none;
+    color: #444;
+  }
+  
+  .code-preview .screen p {
+    padding-bottom: 0px 0px;
+    margin: 0px;
+  }
+  
+  .code-preview .screen {
+    padding: 24px 24px;
+  }
+  
+  .code-preview .screen > div {
+    display: none;
+  }
+  .code-preview .screen > div.show {
+    display: block;
+  }
+  
+  ul {
+    list-style: none;
+    padding: 0px;
+  }
+}
