@@ -1,5 +1,5 @@
 // eslint-disable-next-line camelcase
-import { EXPERIMENTAL_md } from 'vite-plugin-md-to-html';
+import { EXPERIMENTAL_md } from 'vite-plugin-md-to-html?server';
 
 export const md = (args: TemplateStringsArray): string => {
   // eslint-disable-next-line new-cap
