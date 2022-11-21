@@ -11,14 +11,14 @@ import whyAbellContent from './content/why-abell.mdx';
 // Docs Routes
 const docsPaths = [
   {
-    path: '/getting-started',
-    title: 'Getting Started',
-    content: gettingStartedContent
-  },
-  {
     path: '/why-abell',
     title: 'Why Abell',
     content: whyAbellContent
+  },
+  {
+    path: '/getting-started',
+    title: 'Getting Started',
+    content: gettingStartedContent
   }
 ];
 

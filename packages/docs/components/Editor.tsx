@@ -1,7 +1,7 @@
 // React is not bundled on client-side 🤯
 // Thanks to https://github.com/bluwy/vite-plugin-iso-import
 import React from 'react?server';
-import { md } from '../utils/md.js?server';
+import { md } from '../utils/md.js';
 import '../client/editor.scss';
 
 const getLanguageLogo = (
@@ -51,6 +51,7 @@ export type EditorProps = {
   files: Record<string, string>;
   activeFile: string;
   output: Record<`/${string}`, { screen: string }>;
+  lineHighlight?: { start?: number; numberOfLines?: number };
 };
 
 const EditorFileExplorer = (props: EditorProps) => {
@@ -98,8 +99,12 @@ const EditorCodeDisplay = (props: EditorProps): JSX.Element => {
               filename === props.activeFile ? 'show' : ''
             }`}
             dangerouslySetInnerHTML={{
-              // @ts-ignore
-              __html: md([`~~~${language}\n${filecode}\n~~~`])
+              __html: md(
+                // @ts-ignore
+                [`~~~${language}\n${filecode}\n~~~`],
+                props.lineHighlight?.start,
+                props.lineHighlight?.numberOfLines
+              )
             }}
           />
         );
@@ -138,17 +143,18 @@ const EditorCodePreview = (props: EditorProps): JSX.Element => {
   );
 };
 
-const Editor = ({
-  minHeight = '400px',
-  files = {},
-  activeFile = '',
-  output = { '/': { screen: 'yo' } }
-}: EditorProps): JSX.Element => {
+const defaultEditorProps: EditorProps = {
+  minHeight: '400px',
+  files: {},
+  activeFile: '',
+  output: { '/': { screen: 'yo' } },
+  lineHighlight: { start: undefined, numberOfLines: 1 }
+};
+
+const Editor = (editorProps: EditorProps): JSX.Element => {
   const props = {
-    minHeight,
-    files,
-    activeFile,
-    output
+    ...defaultEditorProps,
+    ...editorProps
   };
   return (
     <div className="editor" style={{ minHeight: props.minHeight }}>

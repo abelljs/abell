@@ -1,7 +1,41 @@
 import Editor from '../components/Editor.tsx';
+import { noConfigSetup } from '../utils/examples.ts';
+import { NoteBlock, Highlight } from '../components/mdxUtils.tsx';
 
 # Getting Started
 
-Lesgooooo
+<NoteBlock title="Compatibility Note">
+  Abell v1 requires [Node.js 16+](https://nodejs.org) and for Syntax
+  Highlighting, you can check out [Abell Language Features VSCode
+  Extension](https://marketplace.visualstudio.com/items?itemName=saurabh.abell-language-features)
+</NoteBlock>
 
-<Editor />
+## Scaffold Project with CLI
+
+Use **`npx create-abell`** command to start a project with boilerplate
+
+{/* Add direct syntax highlighting to mdx */}
+
+```shell
+npx create-abell
+# You can choose from the templates from dropdown in CLI or specify custom templates using
+# --template <github-url-of-template>
+```
+
+<div className="or">OR</div>
+
+## Start with Zero Config Setup
+
+1. `npm install --save-dev abell@next`
+2. Create `index.abell` on root
+3. `npx abell dev` and your dev-server will start running 🥳
+
+<Editor {...noConfigSetup} />
+
+<br />
+You can add `abell dev` and `abell generate` scripts in your package.json to simplify
+running commands (check `package.json` file in above example)
+
+## Community
+
+Got stuck somewhere? Feel free to ask for help at [GitHub Discussions](https://github.com/abelljs/abell/discussions) or [Discord Channel](https://discord.gg/ndsVpRG)

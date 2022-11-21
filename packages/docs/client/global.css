@@ -11,7 +11,10 @@
   --blue-10: #E7EBFD;
   --primary: var(--blue-4);
   --primary-hover: var(--blue-5);
-  --semi-bold: bold;
+  --font-text-landing: 1.2rem;
+  --font-text-docs: 1.1rem;
+  --font-text-small: 0.9rem;
+  --font-text-small-spacing: 0.03rem;
 }
 
 html, body {
@@ -22,15 +25,19 @@ html, body {
 body {
   font-family: 'Inter', sans-serif;
   color: #111;
-  font-size: 1.2rem;
+  font-size: var(--font-text-landing);
   line-height: 2rem;
+}
+
+button {
+  font-family: 'Inter', sans-serif;
 }
 
 [class^="button"] {
   text-decoration: none;
   padding: 12px 32px;
   border-radius: 4px;
-  font-size: 1.2rem;
+  font-size: var(--font-text-landing);
 }
 
 .button-primary {
@@ -80,6 +87,16 @@ pre > code {
       0 16px 32px rgba(0,0,0,0.07), 
       0 32px 64px rgba(0,0,0,0.07);
   padding: 24px !important;
+  display: block;
+  background-color: #fff;
+}
+
+.hljs-line-highlighter {
+  position: absolute;
+  background-color: #ff02;
+  height: 24px;
+  left: -24px;
+  width: calc(100% + 48px);
 }
 
 .editor code {
@@ -90,7 +107,7 @@ pre > code {
 
 
 h2 {
-  font-size: 3rem;
+  font-size: 2.8rem;
 }
 
 h3 {
@@ -103,4 +120,12 @@ section {
 
 .display-flex {
   display: flex;
+}
+
+.color-green {
+  color: #22863a;
+}
+.color-blue {
+  color: var(--blue-6);
+  font-weight: bold;
 }

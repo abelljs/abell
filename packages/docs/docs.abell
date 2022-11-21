@@ -35,6 +35,7 @@
         </ul>
       </nav>
     </header>
+    <div class="header-placeholder"></div>
     <main class="content">
       {{ props.content }}
     </main>
@@ -42,6 +43,7 @@
   <script src="./client/main.ts" type="module"></script>
   <script type="module">
   import "/client/docs.css";
+  import '@fontsource/inter/600.css';
   </script>
 </body>
 </html>

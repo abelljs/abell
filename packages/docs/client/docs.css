@@ -2,9 +2,20 @@ html, body, .docs-page-container {
   height: 100%;
 }
 
+body {
+  font-size: 1.1rem;
+}
+
 header {
   border-right: 1px solid #ddd;
   height: 100% !important;
+  width: 300px;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+.header-placeholder {
   width: 300px;
 }
 
@@ -18,7 +29,7 @@ nav li > a {
   padding: 4px 32px;
   display: block;
   text-decoration: none;
-  font-size: 1.1rem;
+  /* font-size: 1.1rem; */
   color: #333;
 }
 
@@ -28,7 +39,7 @@ nav a.active {
 
 .brand-title {
   text-decoration: none;
-  font-weight: var(--semi-bold);
+  font-weight: bold;
   color: #222;
   display: flex;
   align-content: center;
@@ -42,5 +53,39 @@ nav a.active {
 }
 
 main {
-  padding: 100px 80px;
+  padding: 50px 80px;
+  width: 100%;
+  flex: 1;
+  max-width: 900px;
+}
+
+h1, h2, h3 {
+  font-weight: 600;
+}
+
+h1 {
+  font-size: 2.5rem;
+  margin-bottom: 4rem;
+}
+
+h2 {
+  font-size: 2rem;
+  margin: 2rem 0rem 1.5rem 0rem;
+}
+
+h3 {
+  font-size: 1.5rem;
+  margin: 1rem 0rem 0rem 0rem;
+}
+
+.or {
+  text-align: center;
+  padding: 3rem 0px 2rem 0px;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+a {
+  color: var(--blue-6);
+  text-decoration: none;
 }
