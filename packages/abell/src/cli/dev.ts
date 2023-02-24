@@ -31,11 +31,10 @@ async function dev(serverOptions: DevOptions): Promise<void> {
   app.use('*', async (req: Request, res: Response) => {
     const url = req.originalUrl;
     const abellFilePath = getFilePathFromURL(url, ROOT);
-
-    const { makeRoutes } = await vite.ssrLoadModule(SOURCE_ENTRY_BUILD_PATH);
-    const routes: Route[] = await makeRoutes();
-
     try {
+      const { makeRoutes } = await vite.ssrLoadModule(SOURCE_ENTRY_BUILD_PATH);
+      const routes: Route[] = await makeRoutes();
+
       const currentRoute = routes.find((route) => route.path === url);
       if (!currentRoute) {
         return res
@@ -50,23 +49,23 @@ async function dev(serverOptions: DevOptions): Promise<void> {
         renderedContent ?? ''
       );
 
-      res.status(200).set({ 'Content-Type': 'text/html' }).end(html);
+      return res.status(200).set({ 'Content-Type': 'text/html' }).end(html);
       // @ts-ignore
     } catch (e: Error) {
       // If an error is caught, let Vite fix the stracktrace so it maps back to
       // your actual source code.
       vite.ssrFixStacktrace(e);
       console.error(e);
-      const viteScript = await vite.transformIndexHtml('/', ``);
-      res.write(viteScript);
-      res.write(
-        e.message
-          .replace(/\</g, '&lt;')
-          .replace(/\>/g, '&gt;')
-          .replace(/\n/g, '<br/>')
-          .replace(/\t/g, '&nbsp;&nbsp;')
-      );
-      res.status(500).end();
+      const viteScript = await vite.transformIndexHtml(abellFilePath, ``);
+      const errorHTML = e.message
+        .replace(/\</g, '&lt;')
+        .replace(/\>/g, '&gt;')
+        .replace(/\n/g, '<br/>')
+        .replace(/\t/g, '&nbsp;&nbsp;');
+      return res
+        .status(500)
+        .set({ 'Content-Type': 'text/html' })
+        .end(`${viteScript}${errorHTML}`);
     }
   });
 

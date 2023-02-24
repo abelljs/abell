@@ -25,6 +25,7 @@
   "dependencies": {
     "@fontsource/inter": "^4.5.12",
     "@mdx-js/rollup": "^2.1.5",
+    "@webcontainer/api": "^1.0.2",
     "abell": "workspace:*",
     "sass": "^1.56.1",
     "vite-plugin-iso-import": "^0.1.3",
