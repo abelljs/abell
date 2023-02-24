@@ -57,7 +57,16 @@ async function dev(serverOptions: DevOptions): Promise<void> {
       // your actual source code.
       vite.ssrFixStacktrace(e);
       console.error(e);
-      res.status(500).end(e.message);
+      const viteScript = await vite.transformIndexHtml('/', ``);
+      res.write(viteScript);
+      res.write(
+        e.message
+          .replace(/\</g, '&lt;')
+          .replace(/\>/g, '&gt;')
+          .replace(/\n/g, '<br/>')
+          .replace(/\t/g, '&nbsp;&nbsp;')
+      );
+      res.status(500).end();
     }
   });
 
