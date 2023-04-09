@@ -2,6 +2,7 @@ import { Route } from 'abell';
 
 // Layouts
 import index from './index.abell';
+import webcontainer from './webcontainer.abell';
 import docs from './docs.abell';
 
 // Content
@@ -27,6 +28,10 @@ export const makeRoutes = (): Route[] => {
     {
       path: '/',
       render: () => `${index()}`
+    },
+    {
+      path: '/webcontainer',
+      render: () => webcontainer()
     },
     ...docsPaths.map((docPath) => ({
       path: docPath.path,

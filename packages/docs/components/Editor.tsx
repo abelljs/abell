@@ -46,6 +46,14 @@ const getLanguageExtension = (extension: string): string => {
   }
 };
 
+// if (!import.meta.env.SSR) {
+//   const textarea = document.querySelectorAll('.textarea');
+//   console.log({ textarea });
+//   textarea[0].addEventListener('input', () => {
+//     console.log('CHANGEDDD');
+//   });
+// }
+
 export type EditorProps = {
   minHeight: `${string}px`;
   files: Record<string, string>;

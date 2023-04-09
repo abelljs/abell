@@ -1,0 +1,7 @@
+<iframe id="editor-1" src="/webcontainer" style="border: none; height: 500px; width: 100%"></iframe>
+<script>
+const iframeWindow = document.querySelector('#editor-1').contentWindow;
+iframeWindow.addEventListener('load', () => {
+  iframeWindow.postMessage({{ props.files }})
+})
+</script>

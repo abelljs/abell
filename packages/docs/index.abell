@@ -23,14 +23,6 @@
   {{ noConfig }}
   {{ diyRouting }}
   {{ allVite }}
-  <div class="webcontainer">
-    <div class="editor">
-      <textarea>I am a textarea</textarea>
-    </div>
-    <div class="preview">
-      <iframe height="400px" width="800px"></iframe>
-    </div>
-  </div>
   <script src="./client/main.ts" type="module"></script>
   <script type="module">
   import '@fontsource/inter/700.css';

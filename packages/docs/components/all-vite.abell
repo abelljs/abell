@@ -1,43 +1,46 @@
 {{
-  import editor from '../utils/editor.ts';
+  import editor from './editor-new.abell';
 
   const editorBuilder = {
     files: {
-      'About.mdx': `
-      **About Heading**
+      'About.mdx': {
+        file: {
+          contents: `
+            **About Heading**
 
-      <div>Hello from {'mdx'.toUpperCase()}</div>
-      `,
-      'index.abell': `
-        {{
-          import About from './About.mdx';
-        }}
-        <html>
-        <body>
-          <div>{{ About }}</div>
-        </body>
-        </html>
-      `,
-      'vite.config.ts': `
-      import { defineConfig } from "abell";
-      import vitePluginMdxToHTML from "vite-plugin-mdx-to-html";
-
-      export default defineConfig({
-        // Vite Configs
-        plugins: [vitePluginMdxToHTML()]
-      })
-        `,
-      'package.json': `
-        {
-          "scripts": {
-            "dev": "abell dev",
-            "generate": "abell generate"
-          },
-          "devDependencies": {
-            "abell": "^1.0.0"
-          }
+            <div>Hello from {'mdx'.toUpperCase()}</div>
+          `,
         }
-        `
+      },
+      'index.abell': {
+        file: {
+          contents: `
+          <html>
+          <body>
+            <div>{{ 'Hlo'.toUpperCase() }}</div>
+          </body>
+          </html>
+          `
+        },
+      },
+      'package.json': {
+        file: {
+          contents: `
+            {
+              "name": "vite-abell",
+              "type": "module",
+              "scripts": {
+                "start": "abell dev",
+                "build": "abell generate"
+              },
+              "dependencies": {
+                "abell": "1.0.0-alpha.83",
+                "vite-plugin-mdx-to-html": "*"
+              }
+            }
+          `
+        }
+      } 
     },
     activeFile: 'vite.config.ts',
     minHeight: '400px',

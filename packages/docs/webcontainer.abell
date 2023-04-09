@@ -1,0 +1,9 @@
+<html>
+<body>
+  <div class="webcontainer">
+    <textarea></textarea>
+    <iframe></iframe>
+  </div>
+  <script src="./client/webcontainer.ts" type="module"></script>
+</body>
+</html>
