@@ -8,7 +8,7 @@
     sponsorsData.sponsors.map((val) => /* html */`
     <div class="sponsor-container">
       <a target="_blank" rel="noopener noreferer" href="https://github.com/${val.login}" title="${val.login}">
-        <img width="80" src="${val.avatar}" alt="Profile picture of ${val.login}" />
+        <img width="80" src="${val.avatar}" alt="Profile picture of ${val.login}" crossorigin />
       </a>
     </div>
     `)
