@@ -7,7 +7,9 @@
   "private": "true",
   "scripts": {
     "dev": "abell dev",
+    "abell:build": "pnpm --filter abell build",
     "generate": "abell generate",
+    "generate:ci": "pnpm abell:build && pnpm install && pnpm generate",
     "clear-cache": "abell clear-cache",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
