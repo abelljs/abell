@@ -5,8 +5,8 @@ Cross-Origin-Embedder-Policy = "require-corp"
 Cross-Origin-Opener-Policy = "same-origin"
 
 [build]
-command = "npm run docs:generate:ci"
-publish = "./packages/docs/dist"
+command = "npm run generate:ci"
+publish = "dist"
 
 [[redirects]]
 from = "/docs"
