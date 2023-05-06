@@ -2,6 +2,6 @@
 <script>
 const iframeWindow = document.querySelector('#editor-1').contentWindow;
 iframeWindow.addEventListener('load', () => {
-  iframeWindow.postMessage({{ props.files }})
+  iframeWindow.postMessage({{ props }})
 })
 </script>

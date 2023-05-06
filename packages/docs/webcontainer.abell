@@ -1,8 +1,15 @@
 <html>
 <body>
   <div class="webcontainer">
-    <textarea></textarea>
-    <iframe></iframe>
+    <div class="editor">
+      <div class="file-explorer"></div>
+      <div class="code-display">
+        <div class="file-index-abell show" contenteditable></div>
+      </div>
+      <div class="code-preview">
+        <iframe></iframe>
+      </div>
+    </div>
   </div>
   <script src="./client/webcontainer.ts" type="module"></script>
 </body>

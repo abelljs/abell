@@ -65,6 +65,12 @@
     color: #111;
     border-left: 3px solid #f7f7f7;
     font-size: 1rem;
+
+    iframe {
+      height: 100%;
+      width: 100%;
+      border: none;
+    }
   }
   
   .code-preview .url-bar {

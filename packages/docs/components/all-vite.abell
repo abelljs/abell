@@ -3,20 +3,23 @@
 
   const editorBuilder = {
     files: {
-      'About.mdx': {
+      'ab.ts': {
         file: {
           contents: `
-            **About Heading**
-
-            <div>Hello from {'mdx'.toUpperCase()}</div>
+            export const a = 3;
+            export const b = 9;
           `,
         }
       },
       'index.abell': {
         file: {
           contents: `
+          {{
+            import { a, b } from './ab.ts'
+          }}
           <html>
           <body>
+            {{ a + b }}
             <div>{{ 'Hlo'.toUpperCase() }}</div>
           </body>
           </html>
@@ -42,7 +45,7 @@
         }
       } 
     },
-    activeFile: 'vite.config.ts',
+    activeFile: 'index.abell',
     minHeight: '400px',
     output: {
       '/': {
