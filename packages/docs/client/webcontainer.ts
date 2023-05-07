@@ -114,23 +114,26 @@ const initiateWebContainer = async (webcontainerData: Record<string, any>) => {
     contentEditableDiv.className = `file-${filename.replace(/\./g, '-')} ${
       filename === webcontainerData.activeFile ? 'show' : ''
     }`;
-    contentEditableDiv.innerHTML = (
+    contentEditableDiv.innerText = (
       fileCode as { file: { contents: string } }
-    ).file.contents
-      .replace(/>/g, '&gt;')
-      .replace(/</g, '&lt;')
-      .replace(/ /g, '&nbsp;')
-      .replace(/\n/g, '<br />');
+    ).file.contents;
+    // .replace(/>/g, '&gt;')
+    // .replace(/</g, '&lt;')
+    // .replace(/ /g, '&nbsp;')
+    // .replace(/\n/g, '<br />');
     codeDisplay.appendChild(contentEditableDiv);
 
     contentEditableDiv.addEventListener('input', async (e) => {
       const fileValue = (e.currentTarget as { innerText?: string | Uint8Array })
         ?.innerText;
 
+      console.log({ filename, fileValue });
+
       if (!fileValue) {
         return;
       }
-      await webcontainerInstance.fs.writeFile(filename, fileValue);
+
+      await webcontainerInstance.fs.writeFile(`/${filename}`, fileValue);
     });
   }
 

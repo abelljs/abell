@@ -15,7 +15,7 @@
         file: {
           contents: `
           {{
-            import { a, b } from './ab.ts'
+            import { a, b } from './ab';
           }}
           <html>
           <body>
