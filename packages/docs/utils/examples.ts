@@ -1,6 +1,8 @@
 export const noConfigSetup = {
   files: {
-    'index.abell': `
+    'index.abell': {
+      file: {
+        contents: `
         {{
           // declarations
           const a = 'Hello, ';
@@ -8,18 +10,28 @@ export const noConfigSetup = {
         }}
 
         <body>{{ a + b.toUpperCase() }}</body>
-        `,
-    'package.json': `
-        {
-          "scripts": {
-            "dev": "abell dev",
-            "generate": "abell generate"
-          },
-          "devDependencies": {
-            "abell": "^1.0.0"
-          }
-        }
         `
+      }
+    },
+    'package.json': {
+      file: {
+        contents: JSON.stringify(
+          {
+            name: 'vite-abell',
+            type: 'module',
+            scripts: {
+              start: 'abell dev',
+              build: 'abell generate'
+            },
+            dependencies: {
+              abell: '1.0.0-alpha.83'
+            }
+          },
+          null,
+          4
+        )
+      }
+    }
   },
   minHeight: '400px',
   showURLBar: false,

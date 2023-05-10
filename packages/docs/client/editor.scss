@@ -3,6 +3,8 @@
   display: flex;
   color: var(--blue-1);
   font-size: 1rem;
+  --blue-5: #2E3ECC;
+
 
   .flex {
     display: flex;
@@ -22,10 +24,14 @@
     font-size: smaller;
   }
 
+  pre {
+    margin: 0px;
+  }
+
   pre > code {
     line-height: 2rem;
     font-size: 1rem;
-    padding: 24px !important;
+    padding: 24px 48px !important;
     display: block;
     background-color: #fff;
   }
@@ -62,7 +68,6 @@
   .code-display {
     background-color: #fff;
     flex: 1;
-    padding: 0px 24px;
 
     div[contenteditable] {
       height: 100%;

@@ -1,7 +1,7 @@
 import { WebContainer } from '@webcontainer/api';
 import hljs from 'highlight.js/lib/core';
 import typescript from 'highlight.js/lib/languages/typescript';
-// import javascript from 'highlight.js/lib/languages/javascript';
+import json from 'highlight.js/lib/languages/json';
 import xml from 'highlight.js/lib/languages/xml';
 import 'highlight.js/styles/github.css';
 import dedent from 'dedent';
@@ -12,7 +12,7 @@ import './editor.scss';
 hljs.registerLanguage('ts', typescript);
 hljs.registerLanguage('javascript', typescript);
 hljs.registerAliases('js', { languageName: 'javascript' });
-hljs.registerLanguage('json', typescript);
+hljs.registerLanguage('json', json);
 hljs.registerLanguage('xml', xml);
 hljs.registerLanguage('abell', abellHighlighter);
 
@@ -66,12 +66,6 @@ const getLanguageLogo = (
 
   return languageLogo;
 };
-
-window.addEventListener('message', (e) => {
-  if (!e.data.files['index.abell']) return;
-  console.log('HERE 5');
-  initiateWebContainer(e.data);
-});
 
 // CONTAINER RUN CODE
 const iframeEl = document.querySelector<HTMLIFrameElement>(
@@ -231,11 +225,15 @@ async function startDevServer() {
 
   // Wait for `server-ready` event
   webcontainerInstance.on('server-ready', (port, url) => {
-    if (port === 3000 && iframeEl) {
+    if ([2000, 5000, 8000, 3000].includes(port) && iframeEl) {
       iframeEl.src = url;
       iframeEl.removeAttribute('srcdoc');
     }
   });
 }
 
-// Syntax Highlighter
+console.log('location', location.href);
+const searchParams = new URLSearchParams(location.search);
+const webData = JSON.parse(searchParams.get('data') ?? '');
+console.log({ webData });
+initiateWebContainer(webData);

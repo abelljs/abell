@@ -1,5 +1,5 @@
 {{
-  import editor from './editor-new.abell';
+  import editor from './editor.abell';
 
   const editorBuilder = {
     files: {
@@ -33,7 +33,7 @@
               "name": "vite-abell",
               "type": "module",
               "scripts": {
-                "start": "abell dev",
+                "start": "abell dev --port 8000",
                 "build": "abell generate"
               },
               "dependencies": {

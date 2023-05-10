@@ -1,5 +1,6 @@
 import express, { Request, Response } from 'express';
 import { createServer as createViteServer } from 'vite';
+import { match } from 'node-match-path';
 import {
   getConfigPath,
   getBasePaths,
@@ -35,7 +36,9 @@ async function dev(serverOptions: DevOptions): Promise<void> {
       const { makeRoutes } = await vite.ssrLoadModule(SOURCE_ENTRY_BUILD_PATH);
       const routes: Route[] = await makeRoutes();
 
-      const currentRoute = routes.find((route) => route.path === url);
+      const currentRoute = routes.find(
+        (route) => match(route.path, url).matches
+      );
       if (!currentRoute) {
         return res
           .status(404)

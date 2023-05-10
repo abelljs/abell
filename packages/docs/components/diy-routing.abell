@@ -1,45 +1,55 @@
 {{
-  import editor from '../utils/editor.ts';
+  import editor from './editor.abell';
 
   const editorBuilder = {
     files: {
-      'index.abell': `
-        <body>Hello from Index Page!!</body>
-      `,
-      'entry.build.ts': `
-        import { Route } from 'abell';
-        import index from './index.abell';
+      'index.abell': {
+        file: {
+          contents: `<body>Hello from Index Page!!</body>`
+        }
+      },
+      'entry.build.ts': {
+        file: {
+          contents: `
+            import { Route } from 'abell';
+            import index from './index.abell';
 
-        export const makeRoutes =  (): Route[] => {
-          return [
-            {
-              path: '/',
-              // abell components are functions that return HTML string
-              render: () => index()
-            },
-            {
-              path: '/about',
-              render: () => {
-                return '<body>We can return any HTML string here</body>';
-              }
+            export const makeRoutes =  (): Route[] => {
+              return [
+                {
+                  path: '/',
+                  // abell components are functions that return HTML string
+                  render: () => index()
+                },
+                {
+                  path: '/about',
+                  render: () => {
+                    return '<body>We can return any HTML string here</body>';
+                  }
+                }
+              ]
             }
-          ]
+          `
         }
-        `,
-      'package.json': `
-        {
-          "scripts": {
-            "dev": "abell dev",
-            "generate": "abell generate"
-          },
-          "devDependencies": {
-            "abell": "^1.0.0"
-          }
+      },
+      'package.json': {
+        file: {
+          contents: JSON.stringify({
+            "name": "vite-abell",
+            "type": "module",
+            "scripts": {
+              "start": "abell dev --port 5000",
+              "build": "abell generate"
+            },
+            "dependencies": {
+              "abell": "1.0.0-alpha.83",
+            }
+          }, null, 4)
         }
-        `
+      } 
     },
     activeFile: 'entry.build.ts',
-    minHeight: '600px',
+    minHeight: '700px',
     showURLBar: true,
     output: {
       '/': {

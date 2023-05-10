@@ -1,5 +1,5 @@
 {{
-  import editor from '../utils/editor.ts';
+  import editor from './editor.abell';
   import { noConfigSetup } from '../utils/examples.ts';
 }}
 
