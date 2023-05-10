@@ -46,7 +46,7 @@
       } 
     },
     activeFile: 'index.abell',
-    minHeight: '400px',
+    minHeight: '500px',
     output: {
       '/': {
         screen: '<b>About Heading</b><p>Hello from MDX</p>'

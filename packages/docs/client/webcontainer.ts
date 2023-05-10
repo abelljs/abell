@@ -1,5 +1,40 @@
 import { WebContainer } from '@webcontainer/api';
+import hljs from 'highlight.js/lib/core';
+import typescript from 'highlight.js/lib/languages/typescript';
+// import javascript from 'highlight.js/lib/languages/javascript';
+import xml from 'highlight.js/lib/languages/xml';
+import 'highlight.js/styles/github.css';
+import dedent from 'dedent';
+
+import { abellHighlighter } from '../utils/abell-syntax-highlighter';
 import './editor.scss';
+
+hljs.registerLanguage('ts', typescript);
+hljs.registerLanguage('javascript', typescript);
+hljs.registerAliases('js', { languageName: 'javascript' });
+hljs.registerLanguage('json', typescript);
+hljs.registerLanguage('xml', xml);
+hljs.registerLanguage('abell', abellHighlighter);
+
+const makeLoader = ({ loading, text }: { loading: number; text: string }) => {
+  const loadingCount = loading / 10;
+
+  return `
+  <div class="loader-text" style="font-family: Courier New">
+    ${text}
+  </div>
+  <div 
+    class="loader" 
+    style="font-family: Courier New; font-size: 1.2rem; padding: 12px 0px"
+  >
+    ${Array.from({ length: loadingCount })
+      .map(() => '█')
+      .join('')}${Array.from({ length: 10 - loadingCount })
+    .map(() => '▒')
+    .join('')}
+  </div>
+  `;
+};
 
 const getLanguageLogo = (
   filename: string
@@ -43,10 +78,6 @@ const iframeEl = document.querySelector<HTMLIFrameElement>(
   '.webcontainer iframe'
 );
 
-const textareaEl = document.querySelector<HTMLDivElement>(
-  '.webcontainer div[contenteditable]'
-);
-
 const codeDisplay = document.querySelector<HTMLDivElement>(
   '.webcontainer .code-display'
 );
@@ -55,18 +86,31 @@ const fileExplorer = document.querySelector<HTMLDivElement>(
   '.webcontainer .file-explorer'
 );
 
-if (!iframeEl || !textareaEl || !fileExplorer || !codeDisplay) {
+const editor = document.querySelector<HTMLDivElement>('.editor');
+
+if (!iframeEl || !fileExplorer || !codeDisplay) {
   throw new Error('no iframe no fun');
 }
 
 let webcontainerInstance: WebContainer;
 
-const initiateWebContainer = async (webcontainerData: Record<string, any>) => {
+const initiateWebContainer = async (webcontainerData: {
+  files: Record<string, { file: { contents: string } }>;
+  activeFile?: string;
+  minHeight?: string;
+}) => {
   const { files } = webcontainerData;
 
-  if (!textareaEl) return;
-  console.log('Initiating web container');
-  console.log({ files });
+  if (editor) {
+    editor.style.minHeight = webcontainerData.minHeight ?? '';
+  }
+
+  if (iframeEl) {
+    iframeEl.srcdoc = makeLoader({
+      text: 'Initiating Web Container',
+      loading: 10
+    });
+  }
 
   fileExplorer.innerHTML = '';
   for (const filename of Object.keys(files)) {
@@ -114,20 +158,15 @@ const initiateWebContainer = async (webcontainerData: Record<string, any>) => {
     contentEditableDiv.className = `file-${filename.replace(/\./g, '-')} ${
       filename === webcontainerData.activeFile ? 'show' : ''
     }`;
-    contentEditableDiv.innerText = (
-      fileCode as { file: { contents: string } }
-    ).file.contents;
-    // .replace(/>/g, '&gt;')
-    // .replace(/</g, '&lt;')
-    // .replace(/ /g, '&nbsp;')
-    // .replace(/\n/g, '<br />');
+    contentEditableDiv.innerHTML = `<pre><code>${dedent(
+      hljs.highlight(fileCode.file.contents, {
+        language: filename.slice(filename.lastIndexOf('.') + 1)
+      }).value
+    )}</code></pre>`;
     codeDisplay.appendChild(contentEditableDiv);
 
     contentEditableDiv.addEventListener('input', async (e) => {
-      const fileValue = (e.currentTarget as { innerText?: string | Uint8Array })
-        ?.innerText;
-
-      console.log({ filename, fileValue });
+      const fileValue = (e.currentTarget as { innerText?: string })?.innerText;
 
       if (!fileValue) {
         return;
@@ -137,12 +176,9 @@ const initiateWebContainer = async (webcontainerData: Record<string, any>) => {
     });
   }
 
-  console.log('before boot');
   // Call only once
   webcontainerInstance = await WebContainer.boot();
-  console.log('after boot');
   await webcontainerInstance.mount(files);
-  console.log('after instance mount');
 
   const exitCode = await installDependencies();
   if (exitCode !== 0) {
@@ -154,7 +190,13 @@ const initiateWebContainer = async (webcontainerData: Record<string, any>) => {
 
 async function installDependencies() {
   // Install dependencies
-  console.log('Installing dependencies?');
+  if (iframeEl) {
+    iframeEl.srcdoc = iframeEl.srcdoc = makeLoader({
+      text: 'Installing Dependencies',
+      loading: 40
+    });
+  }
+
   const installProcess = await webcontainerInstance.spawn('npm', ['install']);
   installProcess.output.pipeTo(
     new WritableStream({
@@ -168,6 +210,12 @@ async function installDependencies() {
 }
 
 async function startDevServer() {
+  if (iframeEl) {
+    iframeEl.srcdoc = iframeEl.srcdoc = makeLoader({
+      text: 'Starting Dev Server',
+      loading: 90
+    });
+  }
   // Run `npm run start` to start the Express app
   const startProcess = await webcontainerInstance.spawn('npm', [
     'run',
@@ -185,6 +233,7 @@ async function startDevServer() {
   webcontainerInstance.on('server-ready', (port, url) => {
     if (port === 3000 && iframeEl) {
       iframeEl.src = url;
+      iframeEl.removeAttribute('srcdoc');
     }
   });
 }
