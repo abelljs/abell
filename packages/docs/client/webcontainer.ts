@@ -3,6 +3,7 @@ import hljs from 'highlight.js/lib/core';
 import typescript from 'highlight.js/lib/languages/typescript';
 import json from 'highlight.js/lib/languages/json';
 import xml from 'highlight.js/lib/languages/xml';
+import markdown from 'highlight.js/lib/languages/markdown';
 import 'highlight.js/styles/github.css';
 import dedent from 'dedent';
 
@@ -11,6 +12,8 @@ import './editor.scss';
 
 hljs.registerLanguage('ts', typescript);
 hljs.registerLanguage('javascript', typescript);
+hljs.registerLanguage('mdx', markdown);
+hljs.registerLanguage('md', markdown);
 hljs.registerAliases('js', { languageName: 'javascript' });
 hljs.registerLanguage('json', json);
 hljs.registerLanguage('xml', xml);
@@ -152,11 +155,14 @@ const initiateWebContainer = async (webcontainerData: {
     contentEditableDiv.className = `file-${filename.replace(/\./g, '-')} ${
       filename === webcontainerData.activeFile ? 'show' : ''
     }`;
-    contentEditableDiv.innerHTML = `<pre><code>${dedent(
-      hljs.highlight(fileCode.file.contents, {
+    const fileContent = filename.endsWith('.json')
+      ? fileCode.file.contents
+      : dedent(fileCode.file.contents);
+    contentEditableDiv.innerHTML = `<pre><code>${
+      hljs.highlight(fileContent, {
         language: filename.slice(filename.lastIndexOf('.') + 1)
       }).value
-    )}</code></pre>`;
+    }</code></pre>`;
     codeDisplay.appendChild(contentEditableDiv);
 
     contentEditableDiv.addEventListener('input', async (e) => {
@@ -174,7 +180,7 @@ const initiateWebContainer = async (webcontainerData: {
   webcontainerInstance = await WebContainer.boot();
   await webcontainerInstance.mount(files);
 
-  const exitCode = await installDependencies();
+  const exitCode = await installDependencies(webcontainerData.minHeight);
   if (exitCode !== 0) {
     throw new Error('Installation failed');
   }
@@ -182,7 +188,7 @@ const initiateWebContainer = async (webcontainerData: {
   startDevServer();
 };
 
-async function installDependencies() {
+async function installDependencies(minHeight = '') {
   // Install dependencies
   if (iframeEl) {
     iframeEl.srcdoc = iframeEl.srcdoc = makeLoader({
@@ -195,7 +201,7 @@ async function installDependencies() {
   installProcess.output.pipeTo(
     new WritableStream({
       write(data) {
-        console.log(data);
+        console.log(minHeight, data);
       }
     })
   );

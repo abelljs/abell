@@ -3,11 +3,13 @@
 
   const editorBuilder = {
     files: {
-      'ab.ts': {
+      'Docs.mdx': {
         file: {
           contents: `
-            export const a = 3;
-            export const b = 9;
+            # Hello from MDX!!
+
+            With Abell, you can use the existing Vite plugins!! 
+            There is nothing called \`abell.config.ts\`, it's just vite.config.ts 🥳
           `,
         }
       },
@@ -15,38 +17,52 @@
         file: {
           contents: `
           {{
-            import { a, b } from './ab';
+            import Docs from './Docs.mdx';
           }}
           <html>
           <body>
-            {{ a + b }}
-            <div>{{ 'Hlo'.toUpperCase() }}</div>
+            {{ Docs }}
           </body>
           </html>
           `
         },
       },
-      'package.json': {
+      'vite.config.ts': {
         file: {
           contents: `
-            {
-              "name": "vite-abell",
-              "type": "module",
-              "scripts": {
-                "start": "abell dev --port 8000",
-                "build": "abell generate"
-              },
-              "dependencies": {
-                "abell": "1.0.0-alpha.83",
-                "vite-plugin-mdx-to-html": "*"
-              }
-            }
+          import { defineConfig } from 'abell';
+          import mdx from '@mdx-js/rollup';
+          import { vitePluginJSXToHTML } from 'vite-plugin-jsx-to-html';
+
+          export default defineConfig({
+            plugins: [
+              mdx(), // Turns MDX to React Component (JSX)
+              vitePluginJSXToHTML({ extensions: ['.mdx'] }), // Turns JSX to HTML
+            ],
+          });
           `
+        }
+      },
+      'package.json': {
+        file: {
+          contents: JSON.stringify({
+            "name": "vite-abell",
+            "type": "module",
+            "scripts": {
+              "start": "abell dev --port 8000",
+              "build": "abell generate"
+            },
+            "dependencies": {
+              "abell": "1.0.0-alpha.83",
+              "vite-plugin-jsx-to-html": "^0.0.2",
+              "@mdx-js/rollup": "^2.3.0",
+            }
+          }, null, 4)
         }
       } 
     },
     activeFile: 'index.abell',
-    minHeight: '500px',
+    minHeight: '550px',
     output: {
       '/': {
         screen: '<b>About Heading</b><p>Hello from MDX</p>'

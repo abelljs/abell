@@ -67,7 +67,8 @@
   }
   .code-display {
     background-color: #fff;
-    flex: 1;
+    width: 700px;
+    overflow-x: auto;
 
     div[contenteditable] {
       height: 100%;
@@ -81,7 +82,7 @@
   }
   
   .code-preview {
-    width: 250px;
+    width: 300px;
     background-color: #fff;
     color: #111;
     border-left: 3px solid #f7f7f7;
