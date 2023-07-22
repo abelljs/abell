@@ -33,8 +33,13 @@ nav li > a {
   color: #333;
 }
 
-nav a.active {
+nav a.active, nav a:hover {
   color: var(--blue-5);
+  transition: color 0.2s ease;
+}
+
+nav a.active {
+  font-weight: bold;
 }
 
 .brand-title {
