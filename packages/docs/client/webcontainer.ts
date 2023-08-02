@@ -150,30 +150,42 @@ const initiateWebContainer = async (webcontainerData: {
 
   codeDisplay.innerHTML = '';
   for (const [filename, fileCode] of Object.entries(files)) {
-    const contentEditableDiv = document.createElement('div');
-    contentEditableDiv.contentEditable = 'true';
-    contentEditableDiv.className = `file-${filename.replace(/\./g, '-')} ${
+    const codeContainerDiv = document.createElement('div');
+    codeContainerDiv.className = `file-${filename.replace(/\./g, '-')} ${
       filename === webcontainerData.activeFile ? 'show' : ''
     }`;
     const fileContent = filename.endsWith('.json')
       ? fileCode.file.contents
       : dedent(fileCode.file.contents);
-    contentEditableDiv.innerHTML = `<pre><code>${
+    codeContainerDiv.innerHTML = `<pre><code contenteditable="true">${
       hljs.highlight(fileContent, {
         language: filename.slice(filename.lastIndexOf('.') + 1)
       }).value
     }</code></pre>`;
-    codeDisplay.appendChild(contentEditableDiv);
+    codeDisplay.appendChild(codeContainerDiv);
 
-    contentEditableDiv.addEventListener('input', async (e) => {
-      const fileValue = (e.currentTarget as { innerText?: string })?.innerText;
+    const codeElement = codeContainerDiv.querySelector<HTMLElement>('code');
 
-      if (!fileValue) {
-        return;
-      }
+    if (codeElement) {
+      codeElement.addEventListener('input', async (e) => {
+        const fileValue = (e.currentTarget as { innerText?: string })
+          ?.innerText;
 
-      await webcontainerInstance.fs.writeFile(`/${filename}`, fileValue);
-    });
+        if (!fileValue) {
+          return;
+        }
+
+        await webcontainerInstance.fs.writeFile(`/${filename}`, fileValue);
+      });
+
+      codeElement.addEventListener('blur', () => {
+        const codeBlock = codeContainerDiv.querySelector('code');
+
+        if (codeBlock) {
+          hljs.highlightBlock(codeBlock);
+        }
+      });
+    }
   }
 
   // Call only once

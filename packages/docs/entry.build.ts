@@ -45,7 +45,7 @@ export const makeRoutes = (): Route[] => {
   return [
     {
       path: '/',
-      render: () => `${index()}`
+      render: () => index()
     },
     {
       path: '/webcontainer',

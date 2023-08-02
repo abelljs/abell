@@ -30,7 +30,7 @@ async function dev(serverOptions: DevOptions): Promise<void> {
   // use vite's connect instance as middleware
   app.use(vite.middlewares);
   app.use('*', async (req: Request, res: Response) => {
-    const url = req.originalUrl;
+    const url = req.baseUrl;
     const abellFilePath = getFilePathFromURL(url, ROOT);
     try {
       const { makeRoutes } = await vite.ssrLoadModule(SOURCE_ENTRY_BUILD_PATH);
