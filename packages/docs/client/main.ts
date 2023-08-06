@@ -1,9 +1,13 @@
 import '@fontsource/inter/400.css';
-import 'highlight.js/styles/github.css';
 import './global.css';
 // import '../components/Editor.jsx';
 import '../client/mdxUtils.scss';
+import { registerSyntaxHighlighter } from './registerSyntaxHighlighter.js';
 // import { WebContainer } from '@webcontainer/api';
+
+const hljs = registerSyntaxHighlighter();
+
+hljs.initHighlightingOnLoad();
 
 // /** @satisfies {import('@webcontainer/api').FileSystemTree} */
 // export const files = {

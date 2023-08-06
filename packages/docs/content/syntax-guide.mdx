@@ -1,0 +1,84 @@
+import editor from '../components/editor.abell';
+import {
+  loopsAndConditions,
+  immediatelyInvokedFunctions
+} from '../utils/examples.ts';
+
+# Syntax Guide
+
+This page explains the syntax of `.abell` files
+
+## JS-in-HTML Syntax
+
+In `.abell` files you can write JavaScript code inside the double curly braces.
+
+This code gets evaluated during build-time and the output is injected into HTML.
+
+```abell
+<body>{{ 2 + 1 }}</body>
+// Outputs: <body>3</body>
+```
+
+## Imports
+
+Imports are allowed in the first block in the file. You can import anything that Vite allows you to import.
+
+```abell
+{{
+  import { add } from './calculate.ts';
+}}
+
+<body>{{ add(2, 1) }}</body>
+```
+
+You can also extend the type of files you can import using Vite Plugins. E.g. You can use [vite-plugin-md-to-html](https://github.com/saurabhdaware/vite-plugin-md-to-html) to use `.md` imports
+
+## Declarations
+
+In Abell, you can mark a block as declaration block using `// declarations` comment
+
+```abell
+{{
+  // declarations
+  const a = 3;
+  const b = 9;
+}}
+<body>{{ a + b }}</body>
+```
+
+<details>
+<summary>This is required because in JavaScript, assignments return values which abell might try to print unless `// declarations` comment is used</summary>
+
+By default Abell tries to print the output of expression inside Abell block. Which means sometimes the default behaviour might be unexpected. E.g. -
+
+```abell
+{{
+  let a;
+  a = 4;
+}}
+<body>{{ a }}</body>
+
+// Outputs - "4<body>4</body>"
+```
+
+This is because in JavaScript, the assignment operator returns the value as well which Abell will try to print unless `// declarations` comment is used
+
+</details>
+
+## Loops & Conditions
+
+You can use `.map` to loop over array. You can also ternary operators for any conditions.
+
+<div dangerouslySetInnerHTML={{ __html: editor(loopsAndConditions) }} />
+
+But... What if I hate writing `.map`? or using ternary operators in complex conditions?
+
+## Immediately Invoked Function Expressions
+
+In Abell, if you write a function in abell block, It automatically gets invoked with empty params.
+
+Which means if you don't like writing `.map` or using ternary operators, You can write the good old `For` loops or `if-else` conditions inside function and return the value you want to print.
+
+<div
+  dangerouslySetInnerHTML={{ __html: editor(immediatelyInvokedFunctions) }}
+/>

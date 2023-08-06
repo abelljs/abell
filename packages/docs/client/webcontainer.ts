@@ -1,23 +1,10 @@
 import { WebContainer } from '@webcontainer/api';
-import hljs from 'highlight.js/lib/core';
-import typescript from 'highlight.js/lib/languages/typescript';
-import json from 'highlight.js/lib/languages/json';
-import xml from 'highlight.js/lib/languages/xml';
-import markdown from 'highlight.js/lib/languages/markdown';
-import 'highlight.js/styles/github.css';
 import dedent from 'dedent';
 
-import { abellHighlighter } from '../utils/abell-syntax-highlighter';
 import './editor.scss';
+import { registerSyntaxHighlighter } from './registerSyntaxHighlighter.js';
 
-hljs.registerLanguage('ts', typescript);
-hljs.registerLanguage('javascript', typescript);
-hljs.registerLanguage('mdx', markdown);
-hljs.registerLanguage('md', markdown);
-hljs.registerAliases('js', { languageName: 'javascript' });
-hljs.registerLanguage('json', json);
-hljs.registerLanguage('xml', xml);
-hljs.registerLanguage('abell', abellHighlighter);
+const hljs = registerSyntaxHighlighter();
 
 const makeLoader = ({ loading, text }: { loading: number; text: string }) => {
   const loadingCount = loading / 10;
@@ -95,11 +82,16 @@ const initiateWebContainer = async (webcontainerData: {
   files: Record<string, { file: { contents: string } }>;
   activeFile?: string;
   minHeight?: string;
+  showFileExplorer?: boolean;
 }) => {
   const { files } = webcontainerData;
 
+  if (webcontainerData.showFileExplorer === false) {
+    fileExplorer.classList.add('hide');
+  }
+
   if (editor) {
-    editor.style.minHeight = webcontainerData.minHeight ?? '';
+    editor.style.height = webcontainerData.minHeight ?? '';
   }
 
   if (iframeEl) {

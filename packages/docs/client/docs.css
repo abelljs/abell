@@ -70,12 +70,16 @@ h1, h2, h3 {
 
 h1 {
   font-size: 2.5rem;
-  margin-bottom: 4rem;
+  margin-bottom: 2rem;
+}
+
+h1 + p {
+  font-size: 1.3rem;
 }
 
 h2 {
   font-size: 2rem;
-  margin: 2rem 0rem 1.5rem 0rem;
+  margin: 2.5rem 0rem 1rem 0rem;
 }
 
 h3 {
@@ -85,9 +89,10 @@ h3 {
 
 .or {
   text-align: center;
-  padding: 3rem 0px 2rem 0px;
+  padding: 2rem 0px 2rem 0px;
   font-size: 1.5rem;
   font-weight: bold;
+  opacity: .4;
 }
 
 a {

@@ -1,9 +1,14 @@
+* {
+  box-sizing: border-box;
+}
+
 .editor {
   background-color: #f7f7f7;
   display: flex;
   color: var(--blue-1);
   font-size: 1rem;
   --blue-5: #2E3ECC;
+  overflow: hidden;
 
 
   .flex {
@@ -68,11 +73,8 @@
   .code-display {
     background-color: #fff;
     width: 700px;
-    overflow-x: auto;
-
-    code[contenteditable] {
-      height: 100%;
-    }
+    overflow: auto;
+    height: 100%;
   }
   .code-display > div {
     display: none;
@@ -133,5 +135,9 @@
   ul {
     list-style: none;
     padding: 0px;
+  }
+
+  .hide {
+    display: none;
   }
 }
