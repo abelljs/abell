@@ -3,7 +3,7 @@ html, body, .docs-page-container {
 }
 
 body {
-  font-size: 1.1rem;
+  font-size: var(--font-text-docs);
 }
 
 header {
@@ -78,7 +78,7 @@ h1 + p {
 }
 
 h2 {
-  font-size: 2rem;
+  font-size: 1.8rem;
   margin: 2.5rem 0rem 1rem 0rem;
 }
 

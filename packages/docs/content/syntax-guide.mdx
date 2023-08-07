@@ -1,7 +1,8 @@
 import editor from '../components/editor.abell';
 import {
   loopsAndConditions,
-  immediatelyInvokedFunctions
+  immediatelyInvokedFunctions,
+  componentsUsage
 } from '../utils/examples.ts';
 
 # Syntax Guide
@@ -21,7 +22,7 @@ This code gets evaluated during build-time and the output is injected into HTML.
 
 ## Imports
 
-Imports are allowed in the first block in the file. You can import anything that Vite allows you to import.
+Imports are allowed in the first block of the file. You can import anything that Vite allows you to import.
 
 ```abell
 {{
@@ -75,10 +76,43 @@ But... What if I hate writing `.map`? or using ternary operators in complex cond
 
 ## Immediately Invoked Function Expressions
 
-In Abell, if you write a function in abell block, It automatically gets invoked with empty params.
+If you write a function in abell block, It automatically gets invoked with empty params.
 
 Which means if you don't like writing `.map` or using ternary operators, You can write the good old `For` loops or `if-else` conditions inside function and return the value you want to print.
 
 <div
   dangerouslySetInnerHTML={{ __html: editor(immediatelyInvokedFunctions) }}
 />
+
+## Components
+
+Abell has native component support. It allows you to make your HTML, CSS code reusable.
+
+<div dangerouslySetInnerHTML={{ __html: editor(componentsUsage) }} />
+
+### Passing Props
+
+Whenever you import an `.abell` file, it returns a javascript function that can render the HTML.
+
+The first argument you pass to this function can be read from variable `props` in the imported file.
+
+E.g.
+
+```abell
+<!-- index.abell -->
+{{
+  import greet from './greet.abell';
+}}
+<body>
+  {{ greet({ msg: 'Abell is here!!' }) }}
+</body>
+```
+
+Now we can read the `msg` with `props.msg` in `greet.abell` file
+
+```abell
+<!-- greet.abell -->
+
+<h2>{{ props.msg }}</h2>
+<!-- Outputs: <h2>Abell is here!!</h2> -->
+```

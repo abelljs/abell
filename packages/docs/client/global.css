@@ -12,7 +12,7 @@
   --primary: var(--blue-4);
   --primary-hover: var(--blue-5);
   --font-text-landing: 1.2rem;
-  --font-text-docs: 1.1rem;
+  --font-text-docs: 1.08rem;
   --font-text-small: 0.9rem;
   --font-text-small-spacing: 0.03rem;
 }
@@ -116,7 +116,7 @@ h3 {
 }
 
 section {
-  padding: 100px 120px;
+  padding: 80px 120px;
 }
 
 .display-flex {

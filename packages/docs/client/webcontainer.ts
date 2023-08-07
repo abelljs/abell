@@ -52,6 +52,12 @@ const getLanguageLogo = (
       space: '&nbsp;',
       width: 20
     };
+  } else if (filename.endsWith('.css')) {
+    languageLogo = {
+      src: '/icons/css.png',
+      space: '&nbsp;',
+      width: 15
+    };
   }
 
   return languageLogo;

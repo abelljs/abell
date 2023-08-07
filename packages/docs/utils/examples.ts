@@ -151,3 +151,152 @@ export const immediatelyInvokedFunctions = {
     }
   }
 };
+
+export const componentsUsage = {
+  files: {
+    'global.css': {
+      file: {
+        contents: `
+        html, body {
+          margin: 0px;
+          font-family: Helvetica;
+        }
+
+        main {
+          padding: 4px 8px;
+        }
+        `
+      }
+    },
+    '_navbar.abell': {
+      file: {
+        contents: `
+          {{
+            // declarations
+            const links = [
+              {
+                title: 'Home',
+                href: '/',
+              },
+              {
+                title: 'About',
+                href: '/about'
+              }
+            ]
+          }}
+          <nav>
+            <ul>
+              {{
+                links.map((link) => /* html */\`
+                  <li>
+                    <a 
+                      href="\${link.href}" 
+                      class="\${link.href === props.href ? 'active' : ''}"
+                    >
+                      \${link.title}
+                    </a>
+                  </li>
+                \`)
+              }}
+            </ul>
+          </nav>
+          <style>
+          nav {
+            background-color: #eee;
+            color: #222;
+            padding: 4px 8px;
+          }
+
+          ul {
+            list-style: none;
+            display: flex;
+            gap: 12px;
+            padding: 0px;
+            margin: 0px;
+          }
+
+          a {
+            text-decoration: none;
+            color: #000;
+          }
+
+          a.active {
+            color: #2E3ECC;
+            font-weight: bold;
+          }
+          </style>  
+        `
+      }
+    },
+    'index.abell': {
+      file: {
+        contents: `
+        {{
+          import navbar from './_navbar.abell';
+        }}
+        <html>
+        <head>
+          <link rel="stylesheet" href="./global.css" />
+        </head>
+        <body>
+          {{ navbar({ href: '/' }) }}
+          <main>
+            <h2>Index Page</h2>
+            <p>This is coming from index.abell file</p>
+          </main>
+        </body>
+        </html>
+        `
+      }
+    },
+    'about.abell': {
+      file: {
+        contents: `
+        {{
+          import navbar from './_navbar.abell';
+        }}
+        <html>
+        <head>
+          <link rel="stylesheet" href="./global.css" />
+        </head>
+        <body>
+          {{ navbar({ href: '/about' }) }}
+          <main>
+            <h2>About Page</h2>
+            <p>This is coming from about.abell file</p>
+          </main>
+        </body>
+        </html>
+        `
+      }
+    },
+    'package.json': {
+      file: {
+        contents: JSON.stringify(
+          {
+            name: 'vite-abell',
+            type: 'module',
+            scripts: {
+              start: 'abell dev --port 8000',
+              build: 'abell generate'
+            },
+            dependencies: {
+              abell: '1.0.0-alpha.83'
+            }
+          },
+          null,
+          4
+        )
+      }
+    }
+  },
+  minHeight: '500px',
+  showURLBar: true,
+  showFileExplorer: true,
+  activeFile: 'index.abell',
+  output: {
+    '/': {
+      screen: 'Hello, WORLD 🌻'
+    }
+  }
+};
