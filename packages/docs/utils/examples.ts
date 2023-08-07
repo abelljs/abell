@@ -87,7 +87,7 @@ export const loopsAndConditions = {
       }
     }
   },
-  minHeight: '500px',
+  minHeight: '570px',
   showURLBar: false,
   showFileExplorer: false,
   activeFile: 'index.abell',
@@ -141,7 +141,7 @@ export const immediatelyInvokedFunctions = {
       }
     }
   },
-  minHeight: '500px',
+  minHeight: '550px',
   showURLBar: false,
   showFileExplorer: false,
   activeFile: 'index.abell',
@@ -200,6 +200,11 @@ export const componentsUsage = {
               }}
             </ul>
           </nav>
+
+          <!-- 
+            styles are scoped for component by default.
+            You can use scoped="false" attribute to make styles global 
+          -->
           <style>
           nav {
             background-color: #eee;
@@ -290,7 +295,7 @@ export const componentsUsage = {
       }
     }
   },
-  minHeight: '500px',
+  minHeight: '550px',
   showURLBar: true,
   showFileExplorer: true,
   activeFile: 'index.abell',

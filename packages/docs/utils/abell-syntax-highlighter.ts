@@ -15,7 +15,7 @@ export const abellHighlighter = (e: any) => {
         contains: [
           {
             className: 'abell',
-            begin: '/* html */ `',
+            begin: '/* html */`',
             end: '`',
             subLanguage: ['xml']
           }

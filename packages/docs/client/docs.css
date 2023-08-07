@@ -9,14 +9,14 @@ body {
 header {
   border-right: 1px solid #ddd;
   height: 100% !important;
-  width: 300px;
+  width: 280px;
   position: fixed;
   top: 0;
   left: 0;
 }
 
 .header-placeholder {
-  width: 300px;
+  width: 280px;
 }
 
 nav ul {
