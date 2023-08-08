@@ -9,6 +9,8 @@
   --blue-8: #8B95E5; 
   --blue-9: #A2ABEB;
   --blue-10: #E7EBFD;
+  --blue-11: #E7EBFD99;
+
   --primary: var(--blue-4);
   --primary-hover: var(--blue-5);
   --font-text-landing: 1.2rem;

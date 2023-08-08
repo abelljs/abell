@@ -1,8 +1,7 @@
 .mdx-utils {
   &.note-block {
-    padding: 0.5rem 1rem;
-    border: 1px solid var(--blue-9);
-    background-color: var(--blue-10);
+    padding: 1rem 1rem;
+    background-color: var(--blue-11);
     border-radius: 4px;
     font-size: var(--font-text-small);
     margin-bottom: 1.5rem;
@@ -11,9 +10,14 @@
       color: var(--blue-6);
     }
 
-    p {
-      margin: .3rem 0px;
-      color: var(--blue-7);
+    ul {
+      margin: 0px;
+      padding-top: 0px;
+      padding-left: 30px;
+    }
+
+    li {
+      color: var(--blue-6);
     }
 
     a {

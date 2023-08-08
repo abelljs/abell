@@ -10,7 +10,7 @@ export const NoteBlock = ({
 }): JSX.Element => (
   <div className="mdx-utils note-block">
     <strong>{title}</strong>
-    <p>{children}</p>
+    {children}
   </div>
 );
 
