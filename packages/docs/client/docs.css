@@ -1,5 +1,5 @@
 html, body, .docs-page-container {
-  height: 100%;
+  min-height: 100%;
 }
 
 body {
@@ -57,11 +57,14 @@ nav a.active {
   margin-right: 8px;
 }
 
-main {
-  padding: 50px 80px;
+.content {
   width: 100%;
   flex: 1;
-  max-width: 900px;
+}
+
+.content-padding {
+  padding: 50px 80px;
+  max-width: 1000px;
 }
 
 h1, h2, h3 {
@@ -98,4 +101,38 @@ h3 {
 a {
   color: var(--blue-6);
   text-decoration: none;
+}
+
+.next-prev-buttons {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 48px 0px;
+}
+
+.next-prev-buttons a {
+  padding: 8px 24px;
+  flex: 1;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  transition: all .3s ease;
+}
+
+.next-prev-buttons a:hover {
+  border: 1px solid var(--blue-5);
+}
+
+.next-prev-buttons a .uncolored-text {
+  color: #111;
+  font-size: var(--font-text-small);
+}
+
+.next-button {
+  text-align: right;
+}
+
+footer {
+  background-color: #eee;
+  padding: 40px 100px;
 }

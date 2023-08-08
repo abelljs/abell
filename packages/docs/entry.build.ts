@@ -51,12 +51,11 @@ export const makeRoutes = (): Route[] => {
       path: '/webcontainer',
       render: () => webcontainer()
     },
-    ...docsPaths.map((docPath) => ({
+    ...docsPaths.map((docPath, index) => ({
       path: docPath.path,
       render: () =>
         docs({
-          path: docPath.path,
-          content: docPath.content,
+          currentPageIndex: index,
           docsPaths
         })
     }))

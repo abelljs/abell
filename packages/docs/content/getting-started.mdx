@@ -1,4 +1,5 @@
 import { noConfigSetup } from '../utils/examples.ts';
+import editor from '../components/editor.abell';
 import { NoteBlock, Highlight } from '../components/mdxUtils.tsx';
 
 # Getting Started
@@ -21,13 +22,14 @@ npx create-abell
 
 ## Start with Zero Config Setup
 
+Don't like boilerplates? You just need 1 file to run Abell project!
+
 1. `npm install --save-dev abell@next`
 2. Create `index.abell` on root
 3. `npx abell dev` and your dev-server will start running 🥳
 
-{/** <Editor {...noConfigSetup} /> **/}
+<div dangerouslySetInnerHTML={{ __html: editor(noConfigSetup) }} />
 
-<br />
 You can add `abell dev` and `abell generate` scripts in your package.json to simplify
 running commands (check `package.json` file in above example)
 

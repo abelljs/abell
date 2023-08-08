@@ -7,7 +7,7 @@
 <head>
   {{ 
     headMeta({ 
-      title: 'Abell v1 - A Static Site Generator for JavaScript Developers' 
+      title:`${props.docsPaths[props.currentPageIndex].title} | Abell - A Fast, Low-Level, Framework-Agnostic Static-Site-Generator for JavaScript Developers`
     })
   }}
 </head>
@@ -21,11 +21,11 @@
       <nav>
         <ul>
           {{
-            props.docsPaths.map((docsPath) => /* html */`
+            props.docsPaths.map((docsPath, docsIndex) => /* html */`
             <li>
               <a 
                 href="${docsPath.path}" 
-                class="${docsPath.path.includes(props.path) ? 'active' : ''}"
+                class="${docsIndex === props.currentPageIndex ? 'active' : ''}"
               >
                 ${docsPath.title}
               </a>
@@ -36,9 +36,44 @@
       </nav>
     </header>
     <div class="header-placeholder"></div>
-    <main class="content">
-      {{ props.content }}
-    </main>
+    <div class="content">
+      <main class="content-padding">
+        {{ props.docsPaths[props.currentPageIndex].content }}
+        <div class="next-prev-buttons">
+        {{
+          () => {
+            const previousPage = props.docsPaths[props.currentPageIndex - 1];
+            if (previousPage) {
+              return /* html */ `
+                <a class="prev-button" href="${previousPage.path}">
+                  <div class="uncolored-text">Previous</div>
+                  <div>${previousPage.title}</div>
+                </a>
+              `
+            }
+
+            return /* html */`<div style="flex: 1"></div>`
+          }
+        }}
+        {{
+          () => {
+            const nextPage = props.docsPaths[props.currentPageIndex + 1];
+            if (nextPage) {
+              return /* html */ `
+                <a class="next-button" href="${nextPage.path}">
+                  <div class="uncolored-text">Next</div>
+                  <div>${nextPage.title}</div>
+                </a>
+              `
+            }
+
+            return /* html */`<div style="flex: 1"></div>`
+          }
+        }}
+        </div>
+      </main>
+      <footer>footer</footer>
+    </div>
   </div>
   <script src="./client/main.ts" type="module"></script>
   <script type="module">
