@@ -149,16 +149,16 @@ section {
 }
 
 .icon-external-link {
-  -webkit-mask: url('./assets/icons/external-link.svg') no-repeat center;
-  mask: url('./assets/icons/external-link.svg') no-repeat center;
+  -webkit-mask: url('./icons/external-link.svg') no-repeat center;
+  mask: url('./icons/external-link.svg') no-repeat center;
 }
 
 .icon-arrow-right {
-  -webkit-mask: url('./assets/icons/arrow-right.svg') no-repeat center;
-  mask: url('./assets/icons/arrow-right.svg') no-repeat center;
+  -webkit-mask: url('./icons/arrow-right.svg') no-repeat center;
+  mask: url('./icons/arrow-right.svg') no-repeat center;
 }
 
 .icon-arrow-left {
-  -webkit-mask: url('./assets/icons/arrow-left.svg') no-repeat center;
-  mask: url('./assets/icons/arrow-left.svg') no-repeat center;
+  -webkit-mask: url('./icons/arrow-left.svg') no-repeat center;
+  mask: url('./icons/arrow-left.svg') no-repeat center;
 }

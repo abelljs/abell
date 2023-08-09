@@ -1,4 +1,3 @@
-import path from 'path';
 import { AbellViteConfig, defineConfig } from 'abell';
 import vitePluginMdToHTML from 'vite-plugin-md-to-html';
 import mdx from '@mdx-js/rollup';

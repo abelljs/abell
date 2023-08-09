@@ -74,6 +74,16 @@
     text-align: center;
   }
 
+  a {
+    color: var(--blue-6);
+    text-decoration: none;
+  }
+
+  a:hover {
+    color: var(--blue-4);
+  }
+
+
 
   footer {
     background-color: #f9f9f9;
