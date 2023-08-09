@@ -5,7 +5,6 @@ import mdx from '@mdx-js/rollup';
 import { vitePluginMdxToHTML } from 'vite-plugin-mdx-to-html';
 import { abellHighlighter } from './utils/abell-syntax-highlighter';
 import { isoImport } from 'vite-plugin-iso-import';
-import viteSvgToWebfont from 'vite-svg-2-webfont';
 
 export default defineConfig({
   plugins: [
@@ -19,10 +18,6 @@ export default defineConfig({
       }
     }),
     mdx(),
-    vitePluginMdxToHTML(),
-    viteSvgToWebfont({
-      context: path.resolve('assets/icons'),
-      dest: path.resolve('assets')
-    })
+    vitePluginMdxToHTML()
   ]
 }) as AbellViteConfig;
