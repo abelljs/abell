@@ -103,6 +103,10 @@ a {
   text-decoration: none;
 }
 
+a:hover {
+  color: var(--blue-4);
+}
+
 .next-prev-buttons {
   display: flex;
   width: 100%;
@@ -130,9 +134,4 @@ a {
 
 .next-button {
   text-align: right;
-}
-
-footer {
-  background-color: #eee;
-  padding: 40px 100px;
 }

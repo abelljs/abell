@@ -1,5 +1,6 @@
 {{
   import headMeta from './components/meta.abell';
+  import footer from './components/footer.abell';
   import abellLogo from './assets/abell-2022-noshadow.png';
 }}
 <!DOCTYPE html>
@@ -46,7 +47,7 @@
             if (previousPage) {
               return /* html */ `
                 <a class="prev-button" href="${previousPage.path}">
-                  <div class="uncolored-text">Previous</div>
+                  <div class="uncolored-text"><i class="icon icon-arrow-left"></i>&nbsp; Previous</div>
                   <div>${previousPage.title}</div>
                 </a>
               `
@@ -61,7 +62,7 @@
             if (nextPage) {
               return /* html */ `
                 <a class="next-button" href="${nextPage.path}">
-                  <div class="uncolored-text">Next</div>
+                  <div class="uncolored-text">Next&nbsp; <i class="icon icon-arrow-right"></i></div>
                   <div>${nextPage.title}</div>
                 </a>
               `
@@ -72,7 +73,7 @@
         }}
         </div>
       </main>
-      <footer>footer</footer>
+      {{ footer }}
     </div>
   </div>
   <script src="./client/main.ts" type="module"></script>

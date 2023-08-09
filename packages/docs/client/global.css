@@ -129,10 +129,36 @@ section {
   display: flex;
 }
 
+.flex-1 {
+  flex: 1;
+}
+
 .color-green {
   color: #22863a;
 }
 .color-blue {
   color: var(--blue-6);
   font-weight: bold;
+}
+
+.icon {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  background-color: currentColor;
+}
+
+.icon-external-link {
+  -webkit-mask: url('./assets/icons/external-link.svg') no-repeat center;
+  mask: url('./assets/icons/external-link.svg') no-repeat center;
+}
+
+.icon-arrow-right {
+  -webkit-mask: url('./assets/icons/arrow-right.svg') no-repeat center;
+  mask: url('./assets/icons/arrow-right.svg') no-repeat center;
+}
+
+.icon-arrow-left {
+  -webkit-mask: url('./assets/icons/arrow-left.svg') no-repeat center;
+  mask: url('./assets/icons/arrow-left.svg') no-repeat center;
 }
