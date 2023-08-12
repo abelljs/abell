@@ -188,12 +188,16 @@ export const getViteConfig = async ({
   return viteConfigObj?.config ?? {};
 };
 
-let isGetBasePathsFunctionCalled = false;
+let isGetViteBuildInfoFunctionCalled = false;
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export const getBasePaths = async ({ configFile, command }: PathOptions) => {
+export const getViteBuildInfo = async ({
+  configFile,
+  command
+}: PathOptions) => {
   const viteConfig = await getViteConfig({ configFile, command });
   const ROOT = viteConfig.root ?? process.cwd();
+  const serverHeaders = viteConfig.server?.headers ?? {};
 
   const OUTPUT_DIR = path.join(ROOT, 'dist');
   const ASSETS_DIR = path.join(ROOT, 'assets');
@@ -216,8 +220,8 @@ export const getBasePaths = async ({ configFile, command }: PathOptions) => {
     !fs.existsSync(ENTRY_BUILD_PATH_JS) &&
     !fs.existsSync(ENTRY_BUILD_PATH_TS)
   ) {
-    // Run this the first time getBasePaths is called. Ignore after that.
-    if (!isGetBasePathsFunctionCalled) {
+    // Run this the first time getViteBuildInfo is called. Ignore after that.
+    if (!isGetViteBuildInfoFunctionCalled) {
       createPathIfAbsent(path.dirname(DEFAULT_ENTRY_BUILD_PATH));
       fs.copyFileSync(
         path.resolve(
@@ -234,7 +238,7 @@ export const getBasePaths = async ({ configFile, command }: PathOptions) => {
     );
   }
 
-  isGetBasePathsFunctionCalled = true;
+  isGetViteBuildInfoFunctionCalled = true;
 
   return {
     SOURCE_ENTRY_BUILD_PATH,
@@ -243,7 +247,8 @@ export const getBasePaths = async ({ configFile, command }: PathOptions) => {
     ASSETS_DIR,
     DEFAULT_ENTRY_BUILD_PATH,
     ROOT,
-    OUTPUT_DIR
+    OUTPUT_DIR,
+    serverHeaders
   };
 };
 
@@ -253,7 +258,7 @@ export async function clearCache(
   }
 ): Promise<void> {
   const configFile = getConfigPath(process.cwd());
-  const { ROOT } = await getBasePaths({
+  const { ROOT } = await getViteBuildInfo({
     configFile,
     command: 'generate'
   });

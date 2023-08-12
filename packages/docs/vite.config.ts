@@ -6,6 +6,12 @@ import { abellHighlighter } from './utils/abell-syntax-highlighter';
 import { isoImport } from 'vite-plugin-iso-import';
 
 export default defineConfig({
+  server: {
+    headers: {
+      'Cross-Origin-Embedder-Policy': 'require-corp',
+      'Cross-Origin-Opener-Policy': 'same-origin'
+    }
+  },
   plugins: [
     isoImport(),
     vitePluginMdToHTML({

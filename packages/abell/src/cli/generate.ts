@@ -4,7 +4,7 @@ import { build as viteBuild } from 'vite';
 
 import {
   getConfigPath,
-  getBasePaths,
+  getViteBuildInfo,
   createPathIfAbsent
 } from '../utils/internal-utils.js';
 
@@ -20,7 +20,7 @@ async function generate(): Promise<void> {
     OUTPUT_DIR,
     OUT_ENTRY_BUILD_PATH,
     SOURCE_ENTRY_BUILD_PATH
-  } = await getBasePaths({
+  } = await getViteBuildInfo({
     configFile,
     command: 'generate'
   });
