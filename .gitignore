@@ -114,3 +114,5 @@ dist
 oldsrc/
 local/
 mochatests/
+
+.DS_Store
