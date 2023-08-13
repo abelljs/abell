@@ -9,6 +9,8 @@ import 'highlight.js/styles/github.css';
 import { abellHighlighter } from '../utils/abell-syntax-highlighter';
 import type { HLJSApi } from 'highlight.js';
 
+// THIS CAN BE MOVED TO SERVER Since I am not re-highlighting the code again now
+
 const registerSyntaxHighlighter = (): HLJSApi => {
   hljs.registerLanguage('ts', typescript);
   hljs.registerLanguage('javascript', typescript);
