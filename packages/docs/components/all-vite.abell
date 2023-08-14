@@ -1,5 +1,6 @@
 {{
   import editor from './editor.abell';
+  import { EXAMPLES_ABELL_VERSION } from '../config.ts';
 
   const editorBuilder = {
     files: {
@@ -53,7 +54,7 @@
               "build": "abell generate"
             },
             "dependencies": {
-              "abell": "1.0.0-alpha.83",
+              "abell": EXAMPLES_ABELL_VERSION,
               "vite-plugin-jsx-to-html": "^0.0.2",
               "@mdx-js/rollup": "^2.3.0",
             }

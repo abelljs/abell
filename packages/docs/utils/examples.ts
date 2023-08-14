@@ -1,3 +1,5 @@
+import { EXAMPLES_ABELL_VERSION } from '../config';
+
 export const noConfigSetup = {
   files: {
     'index.abell': {
@@ -24,7 +26,7 @@ export const noConfigSetup = {
               build: 'abell generate'
             },
             dependencies: {
-              abell: '1.0.0-alpha.83'
+              abell: EXAMPLES_ABELL_VERSION
             }
           },
           null,
@@ -78,7 +80,7 @@ export const loopsAndConditions = {
               build: 'abell generate'
             },
             dependencies: {
-              abell: '1.0.0-alpha.83'
+              abell: EXAMPLES_ABELL_VERSION
             }
           },
           null,
@@ -132,7 +134,7 @@ export const immediatelyInvokedFunctions = {
               build: 'abell generate'
             },
             dependencies: {
-              abell: '1.0.0-alpha.83'
+              abell: EXAMPLES_ABELL_VERSION
             }
           },
           null,
@@ -286,7 +288,7 @@ export const componentsUsage = {
               build: 'abell generate'
             },
             dependencies: {
-              abell: '1.0.0-alpha.83'
+              abell: EXAMPLES_ABELL_VERSION
             }
           },
           null,
