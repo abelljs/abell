@@ -31,7 +31,8 @@ async function generate(): Promise<void> {
       outDir: TEMP_OUTPUT_DIR,
       ssr: true,
       rollupOptions: {
-        input: SOURCE_ENTRY_BUILD_PATH
+        input: SOURCE_ENTRY_BUILD_PATH,
+        external: ['abell']
       },
       ssrManifest: true
     },
@@ -41,8 +42,18 @@ async function generate(): Promise<void> {
     configFile
   });
 
-  const { makeRoutes } = await import(OUT_ENTRY_BUILD_PATH);
-  const routes: Route[] = await makeRoutes();
+  let routes: Route[] = [];
+  const MJS_OUT_ENTRY_BUILD_PATH = OUT_ENTRY_BUILD_PATH.replace(
+    'entry.build.js',
+    'entry.build.mjs'
+  );
+  try {
+    const { makeRoutes } = await import(OUT_ENTRY_BUILD_PATH);
+    routes = await makeRoutes();
+  } catch (err) {
+    const { makeRoutes } = await import(MJS_OUT_ENTRY_BUILD_PATH);
+    routes = await makeRoutes();
+  }
 
   // Generate index.html
   const createdHTMLFiles = [];

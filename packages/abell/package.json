@@ -1,6 +1,6 @@
 {
   "name": "abell",
-  "version": "1.0.0-alpha.91",
+  "version": "1.0.0-alpha.99",
   "description": "Abell is a static-site-generator for JavaScript developers. Powered by Vite, It tries to stay close to fundamentals while providing a great DX",
   "bin": "./dist/bin.js",
   "main": "./dist/index.js",

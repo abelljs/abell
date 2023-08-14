@@ -4,6 +4,7 @@
 
 import fs from 'fs';
 import path from 'path';
+import { spawn } from 'child_process';
 import {
   loadConfigFromFile,
   EsbuildTransformOptions,
@@ -188,6 +189,65 @@ export const getViteConfig = async ({
   return viteConfigObj?.config ?? {};
 };
 
+const windowsifyCommand = (command: string): string => {
+  const isWindows = /^win/.test(process.platform);
+
+  if (isWindows) {
+    return command.replace('npm', 'npm.cmd').replace('yarn', 'yarn.cmd');
+  }
+
+  return command;
+};
+
+export async function run(
+  command: string,
+  { cwd }: { cwd: string } = { cwd: process.cwd() }
+): Promise<1 | 0> {
+  const commandArgs = windowsifyCommand(command).split(' ');
+  return new Promise((resolve, reject) => {
+    try {
+      const child = spawn(commandArgs[0], [...commandArgs.slice(1)], {
+        cwd,
+        stdio: 'inherit'
+      });
+
+      child.on('close', (code) => {
+        if (code === 0) {
+          resolve(0);
+        } else {
+          console.log(`oops ${command} failed`);
+          // eslint-disable-next-line prefer-promise-reject-errors
+          reject(1);
+        }
+      });
+    } catch (err) {
+      // eslint-disable-next-line prefer-promise-reject-errors
+      reject(1);
+    }
+  });
+}
+
+const installAbellIfNotInstalled = async (ROOT: string): Promise<void> => {
+  const nodeModulesAbellPath = path.join(ROOT, 'node_modules', 'abell');
+  if (!fs.existsSync(nodeModulesAbellPath)) {
+    const didPackageJSONExist = fs.existsSync(path.join(ROOT, 'package.json'));
+    const didPackageLockJSONExist = fs.existsSync(
+      path.join(ROOT, 'package-lock.json')
+    );
+    await run(`npm install abell@${getAbellVersion()} --save-dev`, {
+      cwd: ROOT
+    });
+
+    if (!didPackageJSONExist) {
+      fs.unlinkSync(path.join(ROOT, 'package.json'));
+    }
+
+    if (!didPackageLockJSONExist) {
+      fs.unlinkSync(path.join(ROOT, 'package-lock.json'));
+    }
+  }
+};
+
 let isGetViteBuildInfoFunctionCalled = false;
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
@@ -209,11 +269,15 @@ export const getViteBuildInfo = async ({
   const ENTRY_BUILD_PATH_TS = SOURCE_ENTRY_BUILD_PATH + '.ts';
 
   // Used when the project does not have `entry.build.ts` file in root
-  const DEFAULT_ENTRY_BUILD_PATH = path.join(
+  const ABELL_TEMP_DIRECTORY = path.join(
     ROOT,
     'node_modules',
     '.abell',
-    VERSION,
+    VERSION
+  );
+  await installAbellIfNotInstalled(ROOT);
+  const DEFAULT_ENTRY_BUILD_PATH = path.join(
+    ABELL_TEMP_DIRECTORY,
     'secret.default.entry.build.js'
   );
   if (
@@ -222,7 +286,7 @@ export const getViteBuildInfo = async ({
   ) {
     // Run this the first time getViteBuildInfo is called. Ignore after that.
     if (!isGetViteBuildInfoFunctionCalled) {
-      createPathIfAbsent(path.dirname(DEFAULT_ENTRY_BUILD_PATH));
+      createPathIfAbsent(ABELL_TEMP_DIRECTORY);
       fs.copyFileSync(
         path.resolve(
           `${$dirname}/../../defaults/secret.default.entry.build.js`
