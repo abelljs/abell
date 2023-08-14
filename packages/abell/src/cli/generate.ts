@@ -29,10 +29,15 @@ async function generate(): Promise<void> {
   await viteBuild({
     build: {
       outDir: TEMP_OUTPUT_DIR,
-      ssr: SOURCE_ENTRY_BUILD_PATH,
+      ssr: true,
+      rollupOptions: {
+        input: SOURCE_ENTRY_BUILD_PATH
+      },
       ssrManifest: true
     },
-    logLevel: 'warn',
+    ssr: {
+      external: ['abell']
+    },
     configFile
   });
 

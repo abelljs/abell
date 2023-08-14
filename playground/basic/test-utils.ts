@@ -30,6 +30,8 @@ export async function run(cwd: string): Promise<void> {
         reject();
       }
     });
+
+    child.on('error', console.error);
   });
 }
 
