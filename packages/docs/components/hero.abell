@@ -13,7 +13,8 @@
 
 <style>
 section {
-  padding: 120px 20px 200px 140px;
+  padding-top: 120px;
+  padding-bottom: 200px;
   position: relative;
 }
 

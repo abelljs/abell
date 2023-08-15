@@ -1,6 +1,14 @@
 <section>
 <h2>Scaffold Project with CLI</h2>
-<p>You can run <code>npx create-abell</code> to scaffold project with boilerplate</p>
+<p>
+  <span class="npx-command">
+    <code>npx create-abell</code>
+    <span>
+      <button><i class="icon icon-copy"></i></button>
+    </span>
+  </span> 
+  to scaffold project with boilerplate
+</p>
 <pre><code class="hljs language-sh"><span class="text-large"><b>npx create-abell</b></span>
 <div style="color: #888">
 <span>✔</span> Enter Name of your project › hello-abell
@@ -13,6 +21,34 @@
 <style>
 h2 {
   margin: 12px 0px 42px;
+}
+
+
+.npx-command {
+  background-color: var(--blue-10);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0px 8px;
+  border-radius: 8px;
+}
+
+.npx-command code {
+  padding: 0px;
+}
+
+.npx-command button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  align-self: center;
+  padding: 0px;
+}
+
+.npx-command .icon {
+  height: 14px;
+  width: 14px;
 }
 
 .text-large {

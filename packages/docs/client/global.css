@@ -122,7 +122,9 @@ h3 {
 }
 
 section {
-  padding: 80px 120px;
+  padding: 80px 100px;
+  max-width: 1200px;
+  margin: auto;
 }
 
 .display-flex {
@@ -161,4 +163,9 @@ section {
 .icon-arrow-left {
   -webkit-mask: url('/icons/arrow-left.svg') no-repeat center;
   mask: url('/icons/arrow-left.svg') no-repeat center;
+}
+
+.icon-copy {
+  -webkit-mask: url('/icons/copy.svg') no-repeat center;
+  mask: url('/icons/copy.svg') no-repeat center;
 }
