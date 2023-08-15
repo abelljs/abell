@@ -1,7 +1,7 @@
 <section>
   <div class="abell-heading-container">
     <h1><a href="/">Abell</a></h1>
-    <p>A Static-Site-Generator <br/>for JavaScript Developers</p>
+    <p>A Static-Site-Generator <br class="hide-mobile" />for JavaScript Developers</p>
 
     <div class="buttons-container">
       <a href="/getting-started" class="button-primary">Get Started</a>&nbsp;&nbsp;
@@ -14,16 +14,20 @@
 <style>
 section {
   padding-top: 140px;
-  padding-bottom: 200px;
   position: relative;
+  height: 90vh;
 }
 
 .abs-abell-logo {
   position: absolute;
-  bottom: 0px;
+  top: 140px;
   right: -50px;
   filter: blur(1.4rem) contrast(90%);
   z-index: -1;
+}
+
+h1 {
+  margin: 0px;
 }
 
 h1 a {
@@ -32,7 +36,6 @@ h1 a {
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  margin: 0px;
   font-weight: 800;
 }
 
@@ -46,5 +49,30 @@ p {
 
 .buttons-container {
   padding: 24px 0px;
+}
+
+@media (max-width: 768px) {
+  section {
+    padding: 12px 26px 12px;
+    height: 100vh;
+  }
+
+  h1 a {
+    font-size: 1.5rem;
+  }
+
+  p {
+    font-size: 2.6rem;
+    margin: 50px 0px 60px;
+    line-height: unset;
+  }
+
+  .abs-abell-logo {
+    width: 200px;
+    position: absolute;
+    bottom: 0px;
+    right: -50px;
+    filter: blur(.5rem) contrast(90%);
+  }
 }
 </style>

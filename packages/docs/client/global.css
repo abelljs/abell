@@ -2,7 +2,7 @@
   --blue-1: #0d0d21;
   --blue-2: #12122B;
   --blue-3: #19216D;
-  --blue-4: #24309D;
+  --blue-4: #2734ab;
   --blue-5: #2E3ECC;
   --blue-6: #4654D3;
   --blue-7: #5D6AD9;
@@ -65,7 +65,7 @@ button {
 
 .button-secondary:hover {
   color: var(--primary-hover);
-  background-color: #f9f9f9;
+  background-color: #24309D11;
   border: 1px solid var(--primary-hover);
   transition: background-color .1s ease;
 }
@@ -168,4 +168,33 @@ section {
 .icon-copy {
   -webkit-mask: url('/icons/copy.svg') no-repeat center;
   mask: url('/icons/copy.svg') no-repeat center;
+}
+
+@media (max-width: 768px) {
+  :root {
+    --font-text-landing: 1rem;
+    --font-text-docs: 1.08rem;
+    --font-text-small: 0.9rem;
+    --font-text-small-spacing: 0.03rem;
+  }
+
+  
+  section {
+    padding: 80px 12px;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  body {
+    line-height: unset;
+  }
+
+  .hide-mobile {
+    display: none;
+  }
+
+  [class^="button"] {
+    padding: 12px 24px;
+    border-radius: 4px;
+  }
 }
