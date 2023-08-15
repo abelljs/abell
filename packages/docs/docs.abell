@@ -1,7 +1,6 @@
 {{
   import headMeta from './components/meta.abell';
   import footer from './components/footer.abell';
-  import abellLogo from './assets/abell-logo-shadow.png';
 }}
 <!DOCTYPE html>
 <html lang="en">
@@ -16,7 +15,7 @@
   <div class="docs-page-container display-flex">
     <header>
       <a class="brand-title" href="/">
-        <img width="36" src="{{ abellLogo }}" />
+        <img width="36" src="/logos/abell-logo-shadow.png" />
         <span>Abell <small style="color: #888;">v1</small></span>
       </a>
       <nav>
