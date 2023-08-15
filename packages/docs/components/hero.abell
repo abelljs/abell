@@ -1,6 +1,6 @@
 <section>
   <div class="abell-heading-container">
-    <h1><a href="/">Abell v1</a></h1>
+    <h1><a href="/">Abell</a></h1>
     <p>A Static-Site-Generator <br/>for JavaScript Developers</p>
 
     <div class="buttons-container">
@@ -8,12 +8,12 @@
       <a href="https://github.com/abelljs/abell" class="button-secondary">GitHub</a>
     </div>
   </div>
-  <img class="abs-abell-logo" width="600" src="/logos/abell-logo.png" alt="" />
+  <img class="abs-abell-logo" width="600" src="/logos/abell-logo.svg" alt="" />
 </section>
 
 <style>
 section {
-  padding-top: 120px;
+  padding-top: 140px;
   padding-bottom: 200px;
   position: relative;
 }
@@ -22,13 +22,13 @@ section {
   position: absolute;
   bottom: 0px;
   right: -50px;
-  filter: blur(1.6rem);
+  filter: blur(1.4rem) contrast(90%);
   z-index: -1;
 }
 
-h1 {
-  font-size: 2rem;
-  background: linear-gradient(to top left, #111, var(--primary-hover));
+h1 a {
+  font-size: 2.5rem;
+  background: linear-gradient(to top, #111, var(--primary-hover), var(--primary-hover));
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -41,6 +41,7 @@ p {
   font-weight: 800;
   margin: 64px 0px;
   line-height: 5.2rem;
+  text-shadow: 0 0 3px #fff3, 0 0 8px #fff8;
 }
 
 .buttons-container {
