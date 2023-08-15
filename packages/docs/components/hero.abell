@@ -21,8 +21,8 @@ section {
 .abs-abell-logo {
   position: absolute;
   bottom: 0px;
-  right: 0px;
-  filter: blur(1.4rem);
+  right: -50px;
+  filter: blur(1.6rem);
   z-index: -1;
 }
 
