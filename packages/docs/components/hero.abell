@@ -1,3 +1,6 @@
+{{
+  import abellLogo from '../assets/abell-logo.png';
+}}
 <section>
   <div class="abell-heading-container">
     <h1><a href="/">Abell v1</a></h1>
@@ -8,7 +11,7 @@
       <a href="https://github.com/abelljs/abell" class="button-secondary">GitHub</a>
     </div>
   </div>
-  <img class="abs-abell-logo" width="600" src="./assets/abell-2022-noshadow.png" alt="" />
+  <img class="abs-abell-logo" width="600" src="{{ abellLogo }}" alt="" />
 </section>
 
 <style>
