@@ -1,8 +1,8 @@
 <p align="center">
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/abelljs/abell/assets/30949385/4233eb00-6d17-4070-bc30-69e396fa54c4">
-  <source media="(prefers-color-scheme: light)" srcset="https://github.com/abelljs/abell/assets/30949385/e775d3f4-bacb-4087-8e9f-8337b1c67e85">
-  <img width="500" alt="Abell Logo and Title" src="https://github.com/abelljs/abell/assets/30949385/e5851432-73a4-4a44-bd8a-2da10ebaa741">
+  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/abelljs/abell/assets/30949385/0452e85b-df57-47a3-891c-33068de5c0e2">
+  <source media="(prefers-color-scheme: light)" srcset="https://github.com/abelljs/abell/assets/30949385/e9ea17d6-c248-4ef6-9803-fd058b131b4a">
+  <img height="200" alt="Abell Logo and Title" src="https://github.com/abelljs/abell/assets/30949385/0452e85b-df57-47a3-891c-33068de5c0e2">
 </picture>
 </p>
 
