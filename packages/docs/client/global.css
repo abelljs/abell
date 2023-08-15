@@ -17,6 +17,9 @@
   --font-text-docs: 1.08rem;
   --font-text-small: 0.9rem;
   --font-text-small-spacing: 0.03rem;
+
+  --content-width-landing: 1200px;
+  --content-padding-horizontal: 100px;
 }
 
 * {
@@ -122,8 +125,8 @@ h3 {
 }
 
 section {
-  padding: 80px 100px;
-  max-width: 1200px;
+  padding: 80px var(--content-padding-horizontal);
+  max-width: var(--content-width-landing);
   margin: auto;
 }
 
@@ -176,17 +179,25 @@ section {
     --font-text-docs: 1.08rem;
     --font-text-small: 0.9rem;
     --font-text-small-spacing: 0.03rem;
+    --content-width-landing: 100%;
+    --content-padding-horizontal: 12px;
   }
 
   
   section {
-    padding: 80px 12px;
-    max-width: 100%;
+    padding: 80px var(--content-padding-horizontal);
     overflow-x: hidden;
   }
 
-  body {
-    line-height: unset;
+  p {
+    line-height: 1.5rem;
+  }
+
+  h2 {
+    font-size: 2.2rem;
+  }
+  h2, h3 {
+    line-height: 3.5rem;
   }
 
   .hide-mobile {

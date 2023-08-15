@@ -1,5 +1,6 @@
 {{
   import headMeta from './components/meta.abell';
+  import navbar from './components/navbar.abell';
   import hero from './components/hero.abell';
   import sponsors from './components/sponsors.abell';
   import gettingStarted from './components/getting-started.abell';
@@ -18,6 +19,7 @@
   }}
 </head>
 <body>
+  {{ navbar }}
   {{ hero }}
   {{ gettingStarted }}
   {{ sponsors }}

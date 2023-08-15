@@ -1,0 +1,77 @@
+<header>
+  <a class="brand-title" href="/">
+    <img height="36" src="/logos/abell-logo-shadow.png" />
+    <span>Abell <small style="color: #888;">v1</small></span>
+  </a>
+  <nav>
+    <a href="/getting-started">Documentation</a>         
+    <a target="_blank" href="https://github.com/abelljs/abell">GitHub  <i class="icon icon-external-link"></i></a>        
+  </nav>
+</header>
+
+<style>
+header {
+  display: flex;
+  justify-content: space-between;
+  max-width: var(--content-width-landing);
+  margin: auto;
+  padding: 0px var(--content-padding-horizontal);
+  align-items: stretch;
+  min-height: 80px;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.brand-title {
+  text-decoration: none;
+  font-weight: bold;
+  color: #222;
+  display: flex;
+  align-items: center;
+  font-size: 1.6rem;
+}
+
+.brand-title img {
+  margin-right: 8px;
+}
+
+nav {
+  display: flex;
+  align-items: stretch;
+}
+
+nav a {
+  text-decoration: none;
+  color: #333;
+  font-size: 1.1rem;
+  padding: 0px 12px;
+  display: flex;
+  align-items: center;
+}
+
+nav a .icon {
+  width: 11px;
+  height: 11px;
+  margin-left: 8px;
+}
+
+nav a:hover {
+  color: var(--blue-5);
+}
+
+@media (max-width: 768px) {
+  .brand-title {
+    font-size: 1.3rem;
+  }
+
+  .brand-title img {
+    height: 28px;
+  }
+
+  nav a {
+    font-size: 0.9rem;
+    padding: 0px 8px;
+  }
+}
+
+</style>
