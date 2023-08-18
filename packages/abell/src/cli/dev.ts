@@ -66,10 +66,14 @@ async function dev(serverOptions: DevOptions): Promise<void> {
     } catch (e) {
       // If an error is caught, let Vite fix the stracktrace so it maps back to
       // your actual source code.
-      vite.ssrFixStacktrace(e as Error);
-      console.error(e);
+      const error = e as Error;
+      const stack = error.stack;
+      if (stack) {
+        error.stack = vite.ssrRewriteStacktrace(stack);
+      }
+      console.error(error);
       const viteScript = await vite.transformIndexHtml(abellFilePath, ``);
-      const errorHTML = (e as Error).message
+      const errorHTML = error.message
         .replace(/\</g, '&lt;')
         .replace(/\>/g, '&gt;')
         .replace(/\n/g, '<br/>')
