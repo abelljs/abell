@@ -66,14 +66,14 @@
     minHeight: '550px',
     output: {
       '/': {
-        screen: '<b>About Heading</b><p>Hello from MDX</p>'
+        screen: '<h1>Hello from MDX!!</h1><p>With Abell, you can use the existing Vite plugins!! There is nothing called \`abell.config.ts\`, it\'s just vite.config.ts 🥳</p>'
       },
     }
   }
 }}
 
 <section class="all-vite">
-  <h2>It's all just Vite <img src="/icons/vite.png" width="40" /></h2>
+  <h2>It's all just Vite <img alt="Vite Logo" src="/icons/vite.png" width="40" /></h2>
   <p>Abell is built with a very little abstraction on top of Vite so it supports almost all Vite plugins. There is no <code>abell.config.ts</code>, we just use <code>vite.config.ts</code> 🤗</p>
   {{ editor(editorBuilder) }}
 </section>

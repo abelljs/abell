@@ -90,6 +90,27 @@
     color: #111;
     border-left: 3px solid #f7f7f7;
     font-size: 1rem;
+    position: relative;
+
+    .temporary-preview {
+      margin: 8px;
+    }
+
+    .terminal-output {
+      position: absolute;
+      bottom: 0px;
+      left: 0px;
+      width: 100%;
+      border-top: 3px solid #f7f7f7;
+      padding: 4px;
+      transform: translateY(0%);
+      transition: transform .3s ease;
+    }
+
+    .terminal-output.hide-animated {
+      transform: translateY(100%);
+      transition: transform .2s ease;
+    }
 
     iframe {
       height: 100%;

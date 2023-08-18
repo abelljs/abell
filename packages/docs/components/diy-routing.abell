@@ -50,7 +50,7 @@
       } 
     },
     activeFile: 'entry.build.ts',
-    minHeight: '700px',
+    minHeight: '640px',
     showURLBar: true,
     output: {
       '/': {

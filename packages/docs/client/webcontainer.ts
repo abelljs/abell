@@ -76,6 +76,14 @@ const fileExplorer = document.querySelector<HTMLDivElement>(
   '.webcontainer .file-explorer'
 );
 
+const temporaryPreviewEl = document.querySelector<HTMLDivElement>(
+  '.webcontainer .temporary-preview'
+);
+
+const terminalOutputEl = document.querySelector<HTMLDivElement>(
+  '.webcontainer .terminal-output'
+);
+
 const editor = document.querySelector<HTMLDivElement>('.editor');
 
 if (!iframeEl || !fileExplorer || !codeDisplay) {
@@ -84,11 +92,15 @@ if (!iframeEl || !fileExplorer || !codeDisplay) {
 
 let webcontainerInstance: WebContainer;
 
+let uncommittedChanges: { filename: string; source: string }[] = [];
+let isDevServerLoading = true;
+
 const initiateWebContainer = async (webcontainerData: {
   files: Record<string, { file: { contents: string } }>;
   activeFile?: string;
   minHeight?: string;
   showFileExplorer?: boolean;
+  output: Record<string, { screen: string }>;
 }) => {
   const { files } = webcontainerData;
 
@@ -100,11 +112,8 @@ const initiateWebContainer = async (webcontainerData: {
     editor.style.height = webcontainerData.minHeight ?? '';
   }
 
-  if (iframeEl) {
-    iframeEl.srcdoc = makeLoader({
-      text: 'Initiating Web Container',
-      loading: 10
-    });
+  if (temporaryPreviewEl) {
+    temporaryPreviewEl.innerHTML = webcontainerData.output['/'].screen;
   }
 
   fileExplorer.innerHTML = '';
@@ -173,7 +182,11 @@ const initiateWebContainer = async (webcontainerData: {
           return;
         }
 
-        await webcontainerInstance.fs.writeFile(`/${filename}`, fileValue);
+        if (isDevServerLoading) {
+          uncommittedChanges.push({ filename, source: fileValue });
+        } else {
+          await webcontainerInstance.fs.writeFile(`/${filename}`, fileValue);
+        }
       });
 
       codeElement.addEventListener('blur', () => {
@@ -190,13 +203,21 @@ const initiateWebContainer = async (webcontainerData: {
 
   codeDisplay.addEventListener('click', async () => {
     if (!isWebcontainerInitiated) {
+      if (terminalOutputEl) {
+        terminalOutputEl.classList.remove('hide-animated');
+        terminalOutputEl.innerHTML = makeLoader({
+          text: 'Initiating Web Container',
+          loading: 10
+        });
+      }
+
       // Call only once
       webcontainerInstance = await WebContainer.boot();
       await webcontainerInstance.mount(files);
 
       isWebcontainerInitiated = true;
 
-      const exitCode = await installDependencies(webcontainerData.minHeight);
+      const exitCode = await installDependencies();
       if (exitCode !== 0) {
         throw new Error('Installation failed');
       }
@@ -206,10 +227,10 @@ const initiateWebContainer = async (webcontainerData: {
   });
 };
 
-async function installDependencies(minHeight = '') {
+async function installDependencies() {
   // Install dependencies
-  if (iframeEl) {
-    iframeEl.srcdoc = iframeEl.srcdoc = makeLoader({
+  if (terminalOutputEl) {
+    terminalOutputEl.innerHTML = makeLoader({
       text: 'Installing Dependencies',
       loading: 40
     });
@@ -219,7 +240,7 @@ async function installDependencies(minHeight = '') {
   installProcess.output.pipeTo(
     new WritableStream({
       write(data) {
-        console.log(minHeight, data);
+        console.log(data);
       }
     })
   );
@@ -228,8 +249,8 @@ async function installDependencies(minHeight = '') {
 }
 
 async function startDevServer() {
-  if (iframeEl) {
-    iframeEl.srcdoc = iframeEl.srcdoc = makeLoader({
+  if (terminalOutputEl) {
+    terminalOutputEl.innerHTML = makeLoader({
       text: 'Starting Dev Server',
       loading: 90
     });
@@ -250,14 +271,23 @@ async function startDevServer() {
   // Wait for `server-ready` event
   webcontainerInstance.on('server-ready', (port, url) => {
     if ([2000, 5000, 8000, 3000].includes(port) && iframeEl) {
+      // commit changes that were done before dev-server loaded
+      isDevServerLoading = false;
+      if (uncommittedChanges.length > 0) {
+        for (const { filename, source } of uncommittedChanges) {
+          webcontainerInstance.fs.writeFile(`/${filename}`, source);
+        }
+        uncommittedChanges = [];
+      }
+
+      terminalOutputEl?.classList.add('hide-animated');
+      temporaryPreviewEl?.classList.add('hide');
       iframeEl.src = url;
       iframeEl.removeAttribute('srcdoc');
     }
   });
 }
 
-console.log('location', location.href);
 const searchParams = new URLSearchParams(location.search);
 const webData = JSON.parse(searchParams.get('data') ?? '');
-console.log({ webData });
 initiateWebContainer(webData);
