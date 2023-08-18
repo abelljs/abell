@@ -186,16 +186,24 @@ const initiateWebContainer = async (webcontainerData: {
     }
   }
 
-  // Call only once
-  webcontainerInstance = await WebContainer.boot();
-  await webcontainerInstance.mount(files);
+  let isWebcontainerInitiated = false;
 
-  const exitCode = await installDependencies(webcontainerData.minHeight);
-  if (exitCode !== 0) {
-    throw new Error('Installation failed');
-  }
+  codeDisplay.addEventListener('click', async () => {
+    if (!isWebcontainerInitiated) {
+      // Call only once
+      webcontainerInstance = await WebContainer.boot();
+      await webcontainerInstance.mount(files);
 
-  startDevServer();
+      isWebcontainerInitiated = true;
+
+      const exitCode = await installDependencies(webcontainerData.minHeight);
+      if (exitCode !== 0) {
+        throw new Error('Installation failed');
+      }
+
+      startDevServer();
+    }
+  });
 };
 
 async function installDependencies(minHeight = '') {
