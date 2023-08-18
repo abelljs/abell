@@ -92,7 +92,7 @@ if (!iframeEl || !fileExplorer || !codeDisplay) {
 
 let webcontainerInstance: WebContainer;
 
-let uncommittedChanges: { filename: string; source: string }[] = [];
+let uncommittedChanges: Record<string, string> = {};
 let isDevServerLoading = true;
 
 const initiateWebContainer = async (webcontainerData: {
@@ -183,7 +183,7 @@ const initiateWebContainer = async (webcontainerData: {
         }
 
         if (isDevServerLoading) {
-          uncommittedChanges.push({ filename, source: fileValue });
+          uncommittedChanges[filename] = fileValue;
         } else {
           await webcontainerInstance.fs.writeFile(`/${filename}`, fileValue);
         }
@@ -260,6 +260,7 @@ async function startDevServer() {
     'run',
     'start'
   ]);
+
   startProcess.output.pipeTo(
     new WritableStream({
       write(data) {
@@ -268,16 +269,33 @@ async function startDevServer() {
     })
   );
 
+  startProcess.exit.then((val) => {
+    console.log('PROCESS EXITTED!!', val);
+    if (terminalOutputEl) {
+      terminalOutputEl.classList.remove('hide-animated');
+      terminalOutputEl.innerHTML = `
+        Process Exitted. 
+        <button class="restart-button">restart dev-server</button>
+      `;
+
+      document
+        .querySelector<HTMLButtonElement>('button.restart-button')
+        ?.addEventListener('click', () => {
+          startDevServer();
+        });
+    }
+  });
+
   // Wait for `server-ready` event
   webcontainerInstance.on('server-ready', (port, url) => {
     if ([2000, 5000, 8000, 3000].includes(port) && iframeEl) {
       // commit changes that were done before dev-server loaded
       isDevServerLoading = false;
-      if (uncommittedChanges.length > 0) {
-        for (const { filename, source } of uncommittedChanges) {
+      if (Object.values(uncommittedChanges).length > 0) {
+        for (const [filename, source] of Object.entries(uncommittedChanges)) {
           webcontainerInstance.fs.writeFile(`/${filename}`, source);
         }
-        uncommittedChanges = [];
+        uncommittedChanges = {};
       }
 
       terminalOutputEl?.classList.add('hide-animated');
