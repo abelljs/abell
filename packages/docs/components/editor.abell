@@ -1,4 +1,4 @@
-<iframe id="editor-iframe" src="/webcontainer?data={{ encodeURIComponent(JSON.stringify(props)) }}" style="border: none; min-height: {{ props.minHeight }}; width: 100%"></iframe>
+<iframe loading="lazy" id="editor-iframe" title="Abell Playground" src="/webcontainer?data={{ encodeURIComponent(JSON.stringify(props)) }}" style="border: none; min-height: {{ props.minHeight }}; width: 100%"></iframe>
 <style>
 iframe {
   border-radius: 2px;

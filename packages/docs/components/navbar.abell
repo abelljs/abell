@@ -1,6 +1,6 @@
 <header>
   <a class="brand-title" href="/">
-    <img height="36" src="/logos/abell-logo-shadow.png" />
+    <img alt="Abell Logo" height="36" src="/logos/abell-logo-shadow.png" />
     <span>Abell <small style="color: #888;">v1</small></span>
   </a>
   <nav>

@@ -44,7 +44,7 @@ button {
 
 [class^="button"] {
   text-decoration: none;
-  padding: 12px 32px;
+  padding: 8px 32px;
   border-radius: 4px;
   font-size: var(--font-text-landing);
 }
