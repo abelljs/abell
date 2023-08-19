@@ -124,7 +124,7 @@ const initiateWebContainer = async (webcontainerData: {
     const li = document.createElement('li');
     li.className = 'flex row';
     const button = document.createElement('button');
-    button.className = `flex row ${
+    button.className = `flex row align-center ${
       // eslint-disable-next-line indent
       filename === webcontainerData.activeFile ? 'active' : ''
     }`;

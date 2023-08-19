@@ -96,7 +96,13 @@ export const loopsAndConditions = {
   activeFile: 'index.abell',
   output: {
     '/': {
-      screen: 'Hello, WORLD 🌻'
+      screen: `
+      <style>ul { list-style: unset !important; padding: revert !important; }</style>
+      <ul>
+        <li>apple</li>
+        <li>banana</li>
+      </ul>
+      `
     }
   }
 };
@@ -150,7 +156,7 @@ export const immediatelyInvokedFunctions = {
   activeFile: 'index.abell',
   output: {
     '/': {
-      screen: 'Hello, WORLD 🌻'
+      screen: `Array contains <b>apple</b>!! 🍎`
     }
   }
 };
@@ -304,7 +310,74 @@ export const componentsUsage = {
   activeFile: 'index.abell',
   output: {
     '/': {
-      screen: 'Hello, WORLD 🌻'
+      screen: `
+        <style abell-generated="">nav[data-abell-cbPsbg]{background-color:#eee;color:#222;padding:4px 8px;}ul[data-abell-cbPsbg]{list-style:none;display:flex;gap:12px;padding:0px;margin:0px;}a[data-abell-cbPsbg]{text-decoration:none;color:#000;}a.active[data-abell-cbPsbg]{color:#2E3ECC;font-weight:bold;}</style>
+        <style>
+        .temporary-preview {
+          margin: 0px !important;
+          font-family: Helvetica;
+        }
+    
+        main {
+          padding: 4px 8px;
+        }
+
+        main.index-page {
+          display: block;
+        }
+
+        main.about-page {
+          display: none;
+        }
+
+        a.home {
+          color:#2E3ECC;
+          font-weight:bold;
+        }
+
+        .page-container.show-about a.home {
+          color: #000;
+          font-weight: normal;
+        }
+
+        .page-container.show-about a.about {
+          color:#2E3ECC;
+          font-weight:bold;
+        }
+
+        .page-container.show-about main.about-page {
+          display: block;
+        }
+        .page-container.show-about main.index-page {
+          display: none;
+        }
+        </style>
+        <div class="page-container">
+          <nav data-abell-cbpsbg="">
+            <ul data-abell-cbpsbg="">
+              <li data-abell-cbpsbg="">
+                <a href="javascript:void" onclick="document.querySelector('.page-container').classList.remove('show-about');" class="home" data-abell-cbpsbg="">
+                  Home
+                </a>
+              </li>
+      
+              <li data-abell-cbpsbg="">
+                <a href="javascript:void" class="about" onclick="document.querySelector('.page-container').classList.add('show-about');" data-abell-cbpsbg="">
+                  About
+                </a>
+              </li>
+            </ul>
+          </nav>
+          <main class="index-page">
+            <h2>Index Page</h2>
+            <p>This is coming from index.abell file</p>
+          </main>
+          <main class="about-page">
+            <h2>About Page</h2>
+            <p>This is coming from about.abell file</p>
+          </main>
+        </div>
+      `
     }
   }
 };
