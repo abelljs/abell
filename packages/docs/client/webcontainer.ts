@@ -287,9 +287,27 @@ async function startDevServer() {
           .querySelector<HTMLButtonElement>('button.restart-button')
           ?.addEventListener('click', () => {
             devServerRetriesAttempted = 0; // we're only counting auto-restarts. When manual restart happens we reset the counter
+            terminalOutputEl.innerHTML = '';
             startDevServer();
           });
       }
+    }
+  });
+
+  webcontainerInstance.on('error', (err) => {
+    if (terminalOutputEl && err.message) {
+      let simpleError = err.message;
+      if (err.message.includes('ServiceWorkerRegistration')) {
+        simpleError = `
+            Couldn't connect to Service Worker. 
+            Check if your browser allows service worker connection to use 
+            live dev-server
+          `;
+      }
+      terminalOutputEl.innerHTML = `
+        ${simpleError}
+        <button class="restart-button">Restart Server</button>
+      `;
     }
   });
 
