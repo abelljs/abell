@@ -87,12 +87,37 @@ h1 + p {
 
 h2 {
   font-size: 1.5rem;
-  margin: 2.5rem 0rem 1rem 0rem;
+  margin: 0px;
+  padding: 2.5rem 0rem 1rem 0rem;
+}
+
+h2 + p, h3 + p {
+  margin-top: 0px;
+}
+
+h2, h3 {
+  position: relative;
+}
+
+h2 a, h3 a {
+  position: absolute;
+  left: -15px;
+  opacity: 0;
+  transition: all .1s ease-in;
+  padding: 0px 12px;
+}
+
+h2:hover a, h3:hover a {
+  left: -32px;
+  opacity: 1;
+  transition: all .1s ease-out;
 }
 
 h3 {
   font-size: 1.5rem;
-  margin: 1rem 0rem 0rem 0rem;
+  margin: 0px;
+  padding: 2.5rem 0rem 1rem 0rem;
+
 }
 
 .or {

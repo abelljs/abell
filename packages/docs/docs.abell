@@ -79,9 +79,6 @@
     </div>
   </div>
   <script src="./client/main.ts" type="module"></script>
-  <script type="module">
-  import "/client/docs.css";
-  import '@fontsource/inter/600.css';
-  </script>
+  <script src="./client/docs.ts" type="module"></script>
 </body>
 </html>

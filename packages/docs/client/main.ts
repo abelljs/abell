@@ -23,20 +23,3 @@ document
       }
     });
   });
-
-const hamburgerMenu = document.querySelector<HTMLButtonElement>(
-  '.hamburger-menu'
-);
-const docsNavbar = document.querySelector<HTMLDivElement>('.docs-navbar');
-const navbarOverlay = document.querySelector<HTMLDivElement>(
-  'header + .overlay'
-);
-
-if (hamburgerMenu && docsNavbar && navbarOverlay) {
-  hamburgerMenu.addEventListener('click', () => {
-    docsNavbar.classList.toggle('show');
-  });
-  navbarOverlay.addEventListener('click', () => {
-    docsNavbar.classList.remove('show');
-  });
-}
