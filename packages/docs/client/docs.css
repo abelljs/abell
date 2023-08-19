@@ -108,7 +108,7 @@ a {
   text-decoration: none;
 }
 
-a:hover {
+a:not(.brand-title):hover {
   color: var(--blue-4);
 }
 
@@ -166,6 +166,15 @@ button.hamburger-menu .icon {
 @media (max-width: 768px) {
   .header-placeholder {
     display: none;
+  }
+
+  .brand-title {
+    font-size: 1.4rem;
+    padding: 24px 32px 18px;
+  }
+
+  .brand-title img {
+    width: 28px
   }
 
   header {
