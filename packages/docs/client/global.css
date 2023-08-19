@@ -202,11 +202,6 @@ section {
   }
 
   .hide-mobile {
-    display: none;
-  }
-
-  [class^="button"] {
-    padding: 12px 24px;
-    border-radius: 4px;
+    display: none !important;
   }
 }

@@ -5,7 +5,7 @@
       <p>Abell is low-level, highly flexible, framework-agnostic, Vite-powered Static-Site-Generator for building fast and zero-js by default websites</p>
       <div class="buttons-container">
         <a href="/getting-started" class="button-primary">Get Started</a>
-        <div class="npx-command button-height">
+        <div class="npx-command button-height hide-mobile">
           <code>npx create-abell</code>
           <span>
             <button aria-label="Copy npx create-abell command"><i class="icon icon-copy"></i></button>
@@ -93,8 +93,7 @@ h1 {
 
 @media (max-width: 768px) {
   section {
-    padding: 12px 26px 12px;
-    height: 100vh;
+    padding: 12px 24px 24px;
   }
 
   h1 {

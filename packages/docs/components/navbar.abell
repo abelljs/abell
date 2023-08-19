@@ -66,6 +66,7 @@ nav a:hover {
 
   .brand-title img {
     height: 28px;
+    width: 28px;
   }
 
   nav a {

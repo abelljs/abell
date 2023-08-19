@@ -13,7 +13,10 @@
 <body>
   <div class="webcontainer">
     <div class="editor">
-      <div class="file-explorer"></div>
+      <div>
+        <ul class="file-explorer">
+        </ul>
+      </div>
       <div class="code-display"></div>
       <div class="code-preview">
         <div class="temporary-preview"></div>
