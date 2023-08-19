@@ -8,7 +8,10 @@
         <div class="npx-command button-height hide-mobile">
           <code>npx create-abell</code>
           <span>
-            <button aria-label="Copy npx create-abell command"><i class="icon icon-copy"></i></button>
+            <button aria-label="Copy npx create-abell command" data-copydata="npx create-abell">
+              <i class="icon icon-copy"></i>
+              <i class="icon icon-check"></i>
+            </button>
           </span>
         </div> 
       </div>
@@ -83,6 +86,20 @@ h1 {
   height: 14px;
   width: 14px;
 }
+
+.npx-command button .icon-check {
+  display: none;
+}
+.npx-command button .icon-copy {
+  display: block;
+}
+.npx-command button.copied .icon-check {
+  display: block;
+}
+.npx-command button.copied .icon-copy {
+  display: none;
+}
+
 
 .buttons-container {
   display: flex;
