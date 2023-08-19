@@ -307,6 +307,7 @@ async function startDevServer() {
 
       terminalOutputEl?.classList.add('hide-animated');
       temporaryPreviewEl?.classList.add('hide');
+      iframeEl.classList.remove('loading');
       iframeEl.src = url;
       iframeEl.removeAttribute('srcdoc');
     }

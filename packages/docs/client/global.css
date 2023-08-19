@@ -41,6 +41,7 @@ body {
 
 button {
   font-family: 'Inter', sans-serif;
+  outline-offset: 2px;
 }
 
 [class^="button"] {
@@ -48,6 +49,7 @@ button {
   padding: 8px 32px;
   border-radius: 4px;
   font-size: var(--font-text-landing);
+  outline-offset: 2px;
 }
 
 .button-primary {
@@ -205,7 +207,7 @@ section {
   }
 
   p {
-    line-height: 1.5rem;
+    line-height: 1.7rem;
   }
 
   h2 {

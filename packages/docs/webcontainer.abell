@@ -21,7 +21,7 @@
       <div class="code-preview">
         <div class="temporary-preview"></div>
         <div class="terminal-output hide-animated"></div>
-        <iframe></iframe>
+        <iframe class="loading"></iframe>
       </div>
     </div>
   </div>

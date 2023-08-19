@@ -373,7 +373,7 @@ export const allVite = {
       }
     }
   },
-  activeFile: 'index.abell',
+  activeFile: 'vite.config.ts',
   minHeight: '550px',
   output: {
     '/': {
