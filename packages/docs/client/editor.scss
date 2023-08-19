@@ -102,9 +102,26 @@
       left: 0px;
       width: 100%;
       border-top: 3px solid #f7f7f7;
-      padding: 4px;
+      padding: 8px 6px;
       transform: translateY(0%);
       transition: transform .3s ease;
+      font-family: Courier New;
+      font-size: 1.1rem;
+    }
+
+    .terminal-output button {
+      padding: 4px 12px;
+      background-color: #eee;
+      border-radius: 4px;
+      width: unset;
+      opacity: 1;
+      color: #555;
+      margin: 4px 0px;
+    }
+
+    .terminal-output button:hover {
+      background-color: #e9e9e9;
+      color: #666;
     }
 
     .terminal-output.hide-animated {

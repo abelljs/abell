@@ -15,7 +15,7 @@ const makeLoader = ({ loading, text }: { loading: number; text: string }) => {
   </div>
   <div 
     class="loader" 
-    style="font-family: Courier New; font-size: 1.2rem; padding: 12px 0px"
+    style="padding: 12px 0px"
   >
     ${Array.from({ length: loadingCount })
       .map(() => '█')
@@ -94,6 +94,7 @@ let webcontainerInstance: WebContainer;
 
 let uncommittedChanges: Record<string, string> = {};
 let isDevServerLoading = true;
+let devServerRetriesAttempted = 0;
 
 const initiateWebContainer = async (webcontainerData: {
   files: Record<string, { file: { contents: string } }>;
@@ -269,20 +270,26 @@ async function startDevServer() {
     })
   );
 
-  startProcess.exit.then((val) => {
-    console.log('PROCESS EXITTED!!', val);
-    if (terminalOutputEl) {
-      terminalOutputEl.classList.remove('hide-animated');
-      terminalOutputEl.innerHTML = `
-        Process Exitted. 
-        <button class="restart-button">restart dev-server</button>
-      `;
+  startProcess.exit.then((errorCode) => {
+    console.log('PROCESS EXITTED!!', errorCode);
+    if (terminalOutputEl && errorCode === 1) {
+      if (devServerRetriesAttempted < 4) {
+        devServerRetriesAttempted++;
+        startDevServer();
+      } else {
+        terminalOutputEl.classList.remove('hide-animated');
+        terminalOutputEl.innerHTML = `
+          Process Exitted.
+          <button class="restart-button">Restart Server</button>
+        `;
 
-      document
-        .querySelector<HTMLButtonElement>('button.restart-button')
-        ?.addEventListener('click', () => {
-          startDevServer();
-        });
+        document
+          .querySelector<HTMLButtonElement>('button.restart-button')
+          ?.addEventListener('click', () => {
+            devServerRetriesAttempted = 0; // we're only counting auto-restarts. When manual restart happens we reset the counter
+            startDevServer();
+          });
+      }
     }
   });
 
