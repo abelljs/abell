@@ -1,89 +1,23 @@
 {{
   import editor from './editor.abell';
-  import { EXAMPLES_ABELL_VERSION } from '../config.ts';
-
-  const editorBuilder = {
-    files: {
-      'Docs.mdx': {
-        file: {
-          contents: `
-            # Hello from MDX!!
-
-            With Abell, you can use the existing Vite plugins!! 
-            There is nothing called \`abell.config.ts\`, it's just vite.config.ts 🥳
-          `,
-        }
-      },
-      'index.abell': {
-        file: {
-          contents: `
-          {{
-            import Docs from './Docs.mdx';
-          }}
-          <html>
-          <body>
-            {{ Docs }}
-          </body>
-          </html>
-          `
-        },
-      },
-      'vite.config.ts': {
-        file: {
-          contents: `
-          import { defineConfig } from 'abell';
-          import mdx from '@mdx-js/rollup';
-          import { vitePluginJSXToHTML } from 'vite-plugin-jsx-to-html';
-
-          export default defineConfig({
-            plugins: [
-              mdx(), // Turns MDX to React Component (JSX)
-              vitePluginJSXToHTML({ extensions: ['.mdx'] }), // Turns JSX to HTML
-            ],
-          });
-          `
-        }
-      },
-      'package.json': {
-        file: {
-          contents: JSON.stringify({
-            "name": "vite-abell",
-            "type": "module",
-            "scripts": {
-              "start": "abell dev --port 8000",
-              "build": "abell generate"
-            },
-            "dependencies": {
-              "abell": EXAMPLES_ABELL_VERSION,
-              "vite-plugin-jsx-to-html": "^0.0.2",
-              "@mdx-js/rollup": "^2.3.0",
-            }
-          }, null, 4)
-        }
-      } 
-    },
-    activeFile: 'index.abell',
-    minHeight: '550px',
-    output: {
-      '/': {
-        screen: '<h1>Hello from MDX!!</h1><p>With Abell, you can use the existing Vite plugins!! There is nothing called \`abell.config.ts\`, it\'s just vite.config.ts 🥳</p>'
-      },
-    }
-  }
+  import { allVite } from '../utils/examples';
 }}
 
-<section class="all-vite">
-  <h2>It's all just Vite <img alt="Vite Logo" src="/icons/vite.png" width="40" height="40" loading="lazy" /></h2>
+<section>
+  <h2><span>It's all just Vite</span><img alt="Vite Logo" src="/icons/vite.png" width="40" height="40" loading="lazy" /></h2>
   <p>Abell is built with a very little abstraction on top of Vite so it supports almost all Vite plugins. There is no <code>abell.config.ts</code>, we just use <code>vite.config.ts</code> 🤗</p>
-  {{ editor(editorBuilder) }}
+  {{ editor(allVite) }}
 </section>
 
 <style>
-.all-vite h2 {
+h2 {
+  display: flex;
+  align-items: center;
+  gap: 12px;
   margin: 0px;
 }
 
-.all-vite > p {
+p {
   padding: 24px 0px;
 }
 </style>

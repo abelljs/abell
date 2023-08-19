@@ -27,7 +27,13 @@
     padding: 2px 6px;
     border-radius: 4px;
     font-size: smaller;
-    outline-offset: 100%;
+    outline: none;
+    border: 1px solid transparent;
+    min-height: 100%;
+  }
+
+  code:focus {
+    border: 1px solid var(--blue-5);
   }
 
   pre {

@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import { EXAMPLES_ABELL_VERSION } from '../config';
 
 export const noConfigSetup = {
@@ -304,6 +305,80 @@ export const componentsUsage = {
   output: {
     '/': {
       screen: 'Hello, WORLD 🌻'
+    }
+  }
+};
+
+export const allVite = {
+  files: {
+    'Docs.mdx': {
+      file: {
+        contents: `
+          # Hello from MDX!!
+
+          With Abell, you can use the existing Vite plugins!! 
+          There is nothing called \`abell.config.ts\`, it's just vite.config.ts 🥳
+        `
+      }
+    },
+    'index.abell': {
+      file: {
+        contents: `
+        {{
+          import Docs from './Docs.mdx';
+        }}
+        <html>
+        <body>
+          {{ Docs }}
+        </body>
+        </html>
+        `
+      }
+    },
+    'vite.config.ts': {
+      file: {
+        contents: `
+        import { defineConfig } from 'abell';
+        import mdx from '@mdx-js/rollup';
+        import { vitePluginJSXToHTML } from 'vite-plugin-jsx-to-html';
+
+        export default defineConfig({
+          plugins: [
+            mdx(), // Turns MDX to React Component (JSX)
+            vitePluginJSXToHTML({ extensions: ['.mdx'] }), // Turns JSX to HTML
+          ],
+        });
+        `
+      }
+    },
+    'package.json': {
+      file: {
+        contents: JSON.stringify(
+          {
+            name: 'vite-abell',
+            type: 'module',
+            scripts: {
+              start: 'abell dev --port 8000',
+              build: 'abell generate'
+            },
+            dependencies: {
+              abell: EXAMPLES_ABELL_VERSION,
+              'vite-plugin-jsx-to-html': '^0.0.2',
+              '@mdx-js/rollup': '^2.3.0'
+            }
+          },
+          null,
+          4
+        )
+      }
+    }
+  },
+  activeFile: 'index.abell',
+  minHeight: '550px',
+  output: {
+    '/': {
+      screen:
+        "<h1>Hello from MDX!!</h1><p>With Abell, you can use the existing Vite plugins!! There is nothing called `abell.config.ts`, it's just vite.config.ts 🥳</p>"
     }
   }
 };
