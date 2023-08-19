@@ -1,5 +1,6 @@
 {{
   import headMeta from './components/meta.abell';
+  import navbar from './components/navbar.abell';
   import footer from './components/footer.abell';
 }}
 <!DOCTYPE html>
@@ -13,7 +14,7 @@
 </head>
 <body>
   <div class="docs-page-container display-flex">
-    <header>
+    <header class="docs-navbar">
       <a class="brand-title" href="/">
         <img width="36" src="/logos/abell-logo-shadow.png" />
         <span>Abell <small style="color: #888;">v1</small></span>
@@ -35,8 +36,10 @@
         </ul>
       </nav>
     </header>
+    <div class="overlay"></div>
     <div class="header-placeholder"></div>
     <div class="content">
+      <button class="hamburger-menu hide-desktop"><i class="icon icon-ham"></i></button>
       <main class="content-padding">
         {{ props.docsPaths[props.currentPageIndex].content }}
         <div class="next-prev-buttons">

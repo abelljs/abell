@@ -139,6 +139,10 @@ section {
   flex: 1;
 }
 
+.hide-desktop {
+  display: none;
+}
+
 .color-green {
   color: #22863a;
 }
@@ -179,6 +183,11 @@ section {
   mask: url('/icons/check.svg') no-repeat center;
 }
 
+.icon-ham {
+  -webkit-mask: url('/icons/ham.svg') no-repeat center;
+  mask: url('/icons/ham.svg') no-repeat center;
+}
+
 @media (max-width: 768px) {
   :root {
     --font-text-landing: 1rem;
@@ -208,5 +217,9 @@ section {
 
   .hide-mobile {
     display: none !important;
+  }
+
+  .hide-desktop {
+    display: unset;
   }
 }
