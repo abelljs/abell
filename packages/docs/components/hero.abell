@@ -8,7 +8,7 @@
         <div class="npx-command button-height hide-mobile">
           <code>npx create-abell</code>
           <span>
-            <button aria-label="Copy npx create-abell command" data-copydata="npx create-abell">
+            <button title="Copy Command" aria-label="Copy npx create-abell command" data-copydata="npx create-abell">
               <i class="icon icon-copy"></i>
               <i class="icon icon-check"></i>
             </button>
@@ -98,6 +98,9 @@ h1 {
 }
 .npx-command button.copied .icon-copy {
   display: none;
+}
+.npx-command button:hover .icon {
+  color: var(--blue-5);
 }
 
 
