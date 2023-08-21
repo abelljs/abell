@@ -41,6 +41,7 @@
     "jsdom": "^20.0.1",
     "prettier": "^2.0.5",
     "typescript": "^5.1.6",
-    "vitest": "^0.34.1"
+    "vitest": "^0.34.1",
+    "nodemon": "^2.0.16"
   }
 }

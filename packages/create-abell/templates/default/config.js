@@ -1,5 +1,5 @@
-const data = {
+const config = {
   defaultTitle: 'Abell Default Template'
 };
 
-export default data;
+export default config;

@@ -32,6 +32,9 @@ importers:
       jsdom:
         specifier: ^20.0.1
         version: 20.0.1
+      nodemon:
+        specifier: ^2.0.16
+        version: 2.0.16
       prettier:
         specifier: ^2.0.5
         version: 2.0.5
@@ -69,9 +72,6 @@ importers:
       '@types/stylis':
         specifier: ^4.0.2
         version: 4.0.2
-      nodemon:
-        specifier: ^2.0.16
-        version: 2.0.16
 
   packages/create-abell:
     dependencies:
