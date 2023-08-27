@@ -1,7 +1,15 @@
 /* eslint-disable max-len */
 import path from 'path';
-import { describe, test, expect } from 'vitest';
+import { describe, test, expect, vi, beforeEach, afterEach } from 'vitest';
 import { compile } from './index';
+
+beforeEach(() => {
+  vi.spyOn(process, 'cwd').mockImplementation(() => '/');
+});
+
+afterEach(() => {
+  vi.restoreAllMocks();
+});
 
 describe('compile()', () => {
   test('should successfully compile single expressions', () => {
@@ -10,7 +18,34 @@ describe('compile()', () => {
       outputType: 'syntax-blocks'
     });
     expect(out.out.text).toMatchInlineSnapshot('"<body>${e( 3 + 4 )}</body>"');
-    expect(out.declarationsBlock.text).toMatchInlineSnapshot('""');
+    expect(out.declarationBlocks.text).toMatchInlineSnapshot('""');
+  });
+
+  test('should output the correct JS for single expressions', () => {
+    const abellCode = `
+    <nav>hello</nav>
+    `;
+
+    const js = compile(abellCode, {
+      filepath: path.join(process.cwd(), 'test.abell'),
+      cwd: process.cwd()
+    });
+    expect(js.trim()).toMatchInlineSnapshot(`
+      "import { default as _path } from 'path';
+        import { evaluateAbellBlock as e } from 'abell';
+        
+        const __filename = \\"/test.abell\\";
+        const __dirname = _path.dirname(__filename);
+        const root = _path.relative(__dirname, \\"/\\")
+        export const html = (props = {}) => {
+          const Abell = { props, __filename, __dirname };
+          
+          return \`
+          <nav>hello</nav>
+          \`
+        };
+        export default html;"
+    `);
   });
 
   test('should create first block as declaration block with declarations comment', () => {
@@ -28,13 +63,58 @@ describe('compile()', () => {
     expect(out.out.text.trim()).toMatchInlineSnapshot(
       '"<body>${e( a )}</body>"'
     );
-    expect(out.declarationsBlock.text.trim()).toMatchInlineSnapshot(`
+    expect(out.declarationBlocks.text.trim()).toMatchInlineSnapshot(`
       "// declarations
             const a = 3;"
     `);
   });
 
-  test('should successfully compile with declarations', () => {
+  test('should place declarations and imports at correct places', () => {
+    const abellCode = `
+    {{
+      import x from './x';
+    }}
+
+    <b>{{ 3 + 4 }}</b>
+    {{
+      // declarations
+      const x = 999;
+    }}
+    <nav>{{ x * 2 }}</nav>
+    `;
+
+    const js = compile(abellCode, {
+      filepath: path.join(process.cwd(), 'test.abell'),
+      cwd: process.cwd()
+    });
+    expect(js.trim()).toMatchInlineSnapshot(`
+      "import { default as _path } from 'path';
+        import { evaluateAbellBlock as e } from 'abell';
+        
+            import x from './x';
+          
+        const __filename = \\"/test.abell\\";
+        const __dirname = _path.dirname(__filename);
+        const root = _path.relative(__dirname, \\"/\\")
+        export const html = (props = {}) => {
+          const Abell = { props, __filename, __dirname };
+          
+            // declarations
+            const x = 999;
+          
+          return \`
+          
+
+          <b>\${e( 3 + 4 )}</b>
+          
+          <nav>\${e( x * 2 )}</nav>
+          \`
+        };
+        export default html;"
+    `);
+  });
+
+  test('should successfully compile with imports', () => {
     const abellCode = `
     {{
       import fs from 'fs';
@@ -50,7 +130,7 @@ describe('compile()', () => {
       filepath: __dirname,
       outputType: 'syntax-blocks'
     });
-    expect(out.declarationsBlock.text).toMatchInlineSnapshot(`
+    expect(out.importBlock.text).toMatchInlineSnapshot(`
       "
             import fs from 'fs';
             import path from 'path';

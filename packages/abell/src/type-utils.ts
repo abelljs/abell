@@ -15,7 +15,8 @@ export type CSSBlockType = {
 };
 
 export type AbstractSyntaxArrayType = {
-  declarationsBlock: { text: string };
+  declarationBlocks: { text: string };
+  importBlock: { text: string };
   cssBlocks: CSSBlockType[];
   out: {
     text: string;

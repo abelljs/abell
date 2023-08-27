@@ -33,16 +33,21 @@ export function parseAttributes(
   }, {});
 }
 
-export const isDeclarationBlock = (
+export const isImportBlock = (
   blockCount: number,
   blockContent: string
 ): boolean => {
-  if (
-    blockCount < 2 &&
-    (blockContent.includes('import ') ||
-      blockContent.includes('// declaration'))
-  ) {
+  if (blockCount < 2 && blockContent.includes('import ')) {
     return true;
   }
+
+  return false;
+};
+
+export const isDeclarationBlock = (blockContent: string): boolean => {
+  if (blockContent.includes('// declaration')) {
+    return true;
+  }
+
   return false;
 };

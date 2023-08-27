@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import { StyleTagAttributes } from '../../type-utils.js';
+import { AbstractSyntaxArrayType } from '../../type-utils.js';
 import tokenize from './generic-tokenizer.js';
 import { getScopedHTML } from './scope-css/index.js';
 import { getSyntaxBlocks } from './syntax-blocks.js';
@@ -28,21 +28,12 @@ interface JSOutputCompileOptions extends CompileOptions {
   outputType?: 'js-string';
 }
 
-type HTMLDeclarationObjectType = {
-  declarationsBlock: { text: string };
-  cssBlocks: { text: string; attributes: StyleTagAttributes }[];
-  out: {
-    blocks: { text: string }[];
-    text: string;
-  };
-};
-
-type CompileOutputType = string | HTMLDeclarationObjectType;
+type CompileOutputType = string | AbstractSyntaxArrayType;
 
 export function compile(
   abellTemplate: string,
   options: HTMLOutputCompileOptions
-): HTMLDeclarationObjectType;
+): AbstractSyntaxArrayType;
 export function compile(
   abellTemplate: string,
   options: JSOutputCompileOptions
@@ -61,9 +52,12 @@ export function compile(
     abellTemplate.includes('<html') && abellTemplate.includes('</html>');
   const isAbellComponent = !isHTMLPage;
 
-  const { declarationsBlock, cssBlocks, out } = getSyntaxBlocks(tokens, {
-    isPage: isHTMLPage
-  });
+  const { declarationBlocks, importBlock, cssBlocks, out } = getSyntaxBlocks(
+    tokens,
+    {
+      isPage: isHTMLPage
+    }
+  );
 
   let htmlOut = out.text;
   if (isAbellComponent) {
@@ -72,7 +66,8 @@ export function compile(
 
   if (options.outputType === 'syntax-blocks') {
     return {
-      declarationsBlock,
+      declarationBlocks,
+      importBlock,
       out: {
         blocks: out.blocks,
         text: htmlOut
@@ -84,12 +79,13 @@ export function compile(
   const jsOut = `
   import { default as _path } from 'path';
   import { evaluateAbellBlock as e } from 'abell';
-  ${declarationsBlock.text}
+  ${importBlock.text}
   const __filename = ${JSON.stringify(options.filepath)};
   const __dirname = _path.dirname(__filename);
   const root = _path.relative(__dirname, ${JSON.stringify(options.cwd)})
   export const html = (props = {}) => {
     const Abell = { props, __filename, __dirname };
+    ${declarationBlocks.text}
     return \`${htmlOut}\`
   };
   export default html;

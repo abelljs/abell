@@ -1,4 +1,4 @@
-import { isDeclarationBlock, parseAttributes } from './utils.js';
+import { isDeclarationBlock, isImportBlock, parseAttributes } from './utils.js';
 import { Token } from './generic-tokenizer.js';
 import { AbstractSyntaxArrayType } from '../../type-utils.js';
 import { TokenSchemaType } from './token-schema.js';
@@ -16,6 +16,7 @@ export const getSyntaxBlocks = (
   };
 
   const texts = {
+    importText: '',
     declarationText: '',
     abellText: '',
     cssText: '',
@@ -66,7 +67,9 @@ export const getSyntaxBlocks = (
         continue;
       }
 
-      if (isDeclarationBlock(blockState.blockCount, texts.abellText)) {
+      if (isImportBlock(blockState.blockCount, texts.abellText)) {
+        texts.importText = texts.abellText;
+      } else if (isDeclarationBlock(texts.abellText)) {
         texts.declarationText = texts.abellText;
       } else {
         if (blockState.isInsideCSSBlock) {
@@ -130,8 +133,11 @@ export const getSyntaxBlocks = (
    * - Return htmlText from this as well to avoid looping through syntax again
    */
   return {
-    declarationsBlock: {
+    declarationBlocks: {
       text: texts.declarationText
+    },
+    importBlock: {
+      text: texts.importText
     },
     cssBlocks,
     out: {
