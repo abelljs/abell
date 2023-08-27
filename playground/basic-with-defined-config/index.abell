@@ -1,0 +1,21 @@
+{{
+  import navbar from './_navbar.abell';
+  import footer from './_footer.abell';
+}}
+<html>
+<head>
+<style>
+body {
+  background-color: tomato;
+}
+</style>
+</head>
+<body>
+  {{ navbar }}
+  <ul class="outer-ul">
+    <li>Outer Li</li>
+  </ul>
+  {{ footer }}
+  <script src="./hello.ts" type="module"></script>
+</body>
+</html>
