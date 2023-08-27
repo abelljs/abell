@@ -144,6 +144,12 @@ importers:
         specifier: workspace:*
         version: link:../../packages/abell
 
+  playground/basic-with-defined-config:
+    dependencies:
+      abell:
+        specifier: workspace:*
+        version: link:../../packages/abell
+
   playground/custom-routing:
     dependencies:
       abell:

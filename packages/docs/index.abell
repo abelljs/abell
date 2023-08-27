@@ -3,7 +3,7 @@
   import navbar from './components/navbar.abell';
   import hero from './components/hero.abell';
   import sponsors from './components/sponsors.abell';
-  import gettingStarted from './components/getting-started.abell';
+  import starters from './components/starters.abell';
   import noConfig from './components/no-config.abell';
   import diyRouting from './components/diy-routing.abell';
   import allVite from './components/all-vite.abell';
@@ -21,7 +21,7 @@
 <body>
   {{ navbar }}
   {{ hero }}
-  {{ gettingStarted }}
+  {{ starters }}
   {{ sponsors }}
   {{ noConfig }}
   {{ diyRouting }}

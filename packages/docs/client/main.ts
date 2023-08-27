@@ -6,7 +6,7 @@ import { registerSyntaxHighlighter } from './registerSyntaxHighlighter.js';
 
 const hljs = registerSyntaxHighlighter();
 
-hljs.initHighlightingOnLoad();
+hljs.highlightAll();
 
 document
   .querySelectorAll<HTMLButtonElement>('button[data-copydata]')

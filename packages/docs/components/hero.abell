@@ -23,7 +23,7 @@
 <style>
 section {
   padding-top: 80px;
-  padding-bottom: 60px;
+  padding-bottom: 120px;
   position: relative;
   width: 100%;
   overflow-x: visible;
