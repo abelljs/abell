@@ -30,6 +30,11 @@
               >
                 ${docsPath.title}
               </a>
+              ${ 
+                docsIndex === props.currentPageIndex 
+                ? /* html */ `<ul class="submenu"></ul>` 
+                : '' 
+              }
             </li>
             `)
           }}

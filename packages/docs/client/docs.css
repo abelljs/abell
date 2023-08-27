@@ -34,7 +34,7 @@ nav li > a {
   padding: 4px 32px;
   display: block;
   text-decoration: none;
-  /* font-size: 1.1rem; */
+  font-size: 1.05rem;
   color: #333;
 }
 
@@ -88,7 +88,7 @@ h1 + p {
 h2 {
   font-size: 1.5rem;
   margin: 0px;
-  padding: 2.5rem 0rem 1rem 0rem;
+  padding: 2rem 0rem 0rem 0rem;
 }
 
 h2 + p, h3 + p {
@@ -186,6 +186,42 @@ button.hamburger-menu .icon {
   width: 14px;
   height: 14px;
   color: var(--blue-5);
+}
+
+.submenu {
+  background-color: #f9f9f9;
+}
+
+.submenu a {
+  font-size: 0.9rem;
+  line-height: 1.6rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+
+.submenu a div {
+  min-width: 12px;
+  position: relative;
+}
+
+.submenu a .icon-check {
+  display: none;
+}
+
+.submenu a .dash {
+  display: inline-block;
+}
+
+.submenu a.done .icon-check {
+  display: inline-block;
+  color: var(--blue-5);
+}
+
+.submenu a.done .dash {
+  display: none;
 }
 
 @media (max-width: 768px) {
