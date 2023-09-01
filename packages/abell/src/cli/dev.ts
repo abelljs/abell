@@ -1,12 +1,16 @@
+import path from 'path';
 import express, { Request, Response } from 'express';
 import { createServer as createViteServer } from 'vite';
 import { match } from 'node-match-path';
 import {
   getConfigPath,
   getViteBuildInfo,
-  getFilePathFromURL
+  getFilePathFromURL,
+  getFreePort,
+  listen
 } from '../utils/internal-utils.js';
 import { Route } from '../type-utils';
+import { viteCustomLogger } from '../utils/logger.js';
 
 type DevOptions = {
   port: string;
@@ -16,6 +20,7 @@ async function dev(serverOptions: DevOptions): Promise<void> {
   const app = express();
   const cwd = process.cwd();
   const configFile = getConfigPath(cwd);
+
   const {
     SOURCE_ENTRY_BUILD_PATH,
     ROOT,
@@ -25,10 +30,15 @@ async function dev(serverOptions: DevOptions): Promise<void> {
     command: 'dev'
   });
 
+  const freeHMRPort = await getFreePort();
   const vite = await createViteServer({
-    server: { middlewareMode: true },
+    server: { middlewareMode: true, hmr: { port: freeHMRPort } },
     appType: 'custom',
-    configFile
+    configFile,
+    optimizeDeps: {
+      entries: [path.join(ROOT, 'index.abell')]
+    },
+    customLogger: viteCustomLogger
   });
 
   // use vite's connect instance as middleware
@@ -85,11 +95,7 @@ async function dev(serverOptions: DevOptions): Promise<void> {
     }
   });
 
-  app.listen(Number(serverOptions.port), () => {
-    console.log(
-      `Server listening on port http://localhost:${serverOptions.port}`
-    );
-  });
+  listen(app, Number(serverOptions.port));
 }
 
 export default dev;

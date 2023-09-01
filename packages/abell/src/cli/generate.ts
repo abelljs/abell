@@ -9,6 +9,7 @@ import {
 } from '../utils/internal-utils.js';
 
 import { Route } from '../type-utils';
+import { bold, log, viteCustomLogger } from '../utils/logger.js';
 
 async function generate(): Promise<void> {
   const cwd = process.cwd();
@@ -39,6 +40,8 @@ async function generate(): Promise<void> {
     ssr: {
       external: ['abell']
     },
+    logLevel: 'error',
+    customLogger: viteCustomLogger,
     configFile
   });
 
@@ -84,6 +87,7 @@ async function generate(): Promise<void> {
         input: createdHTMLFiles
       }
     },
+    customLogger: viteCustomLogger,
     configFile
   });
 
@@ -96,7 +100,9 @@ async function generate(): Promise<void> {
     fs.rmdirSync(newDir);
   }
 
-  console.log('`npx serve dist` to run static server');
+  log(
+    `✨ Site Generated ✨ \n\n${bold('npx serve dist')} to run static server`
+  );
 }
 
 export default generate;

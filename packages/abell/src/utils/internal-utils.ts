@@ -3,7 +3,10 @@
  */
 
 import fs from 'fs';
+import http from 'http';
+import net from 'net';
 import path from 'path';
+import { Express } from 'express';
 import { spawn } from 'child_process';
 import {
   loadConfigFromFile,
@@ -11,6 +14,7 @@ import {
   UserConfig as ViteUserConfig
 } from 'vite';
 import * as url from 'url';
+import { boldUnderline, log } from './logger.js';
 
 // @ts-ignore
 const $dirname = url.fileURLToPath(new url.URL('.', import.meta.url));
@@ -118,6 +122,54 @@ export function createPathIfAbsent(pathToCreate: string): string[] {
 
   return createdDirectories;
 }
+
+/**
+ * Find and return any random port that is available
+ */
+export const getFreePort = async (): Promise<number | undefined> => {
+  return new Promise((resolve) => {
+    const srv = net.createServer();
+    srv.listen(0, () => {
+      // @ts-expect-error: port does exist!!
+      const port = srv.address()?.port;
+      srv.close(() => resolve(port));
+    });
+  });
+};
+
+const coolReadablePorts = [5000, 8000, 8888, 8080];
+let retryPortIndex = -1;
+
+/**
+ * Listen to given port if available or look for another port
+ */
+export const listen = (app: Express, port: number): void => {
+  const server = http.createServer();
+  server.listen(port, () => {
+    server.close(() => {
+      app.listen(port, () => {
+        log(
+          `dev-server is running on ${boldUnderline(
+            `http://localhost:${port}/`
+          )} 🚀`
+        );
+      });
+    });
+  });
+
+  server.on('error', (err: NodeJS.ErrnoException) => {
+    if (err.code === 'EADDRINUSE') {
+      retryPortIndex++;
+      log(
+        `Port ${port} is Taken. Retrying with ${coolReadablePorts[retryPortIndex]}`,
+        'p1'
+      );
+      listen(app, coolReadablePorts[retryPortIndex]);
+    } else {
+      console.error(err);
+    }
+  });
+};
 
 /**
  * Get URL string from filepath.

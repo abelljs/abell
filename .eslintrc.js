@@ -46,7 +46,6 @@ module.exports = {
         SwitchCase: 1
       }
     ],
-    'max-len': ['error', { code: 80, ignoreComments: true }],
     '@typescript-eslint/ban-ts-comment': 0
   }
 };
