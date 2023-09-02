@@ -46,14 +46,14 @@ async function generate(): Promise<void> {
   });
 
   let routes: Route[] = [];
-  const MJS_OUT_ENTRY_BUILD_PATH = OUT_ENTRY_BUILD_PATH.replace(
-    'entry.build.js',
-    'entry.build.mjs'
-  );
   try {
     const { makeRoutes } = await import(OUT_ENTRY_BUILD_PATH);
     routes = await makeRoutes();
   } catch (err) {
+    const MJS_OUT_ENTRY_BUILD_PATH = OUT_ENTRY_BUILD_PATH.replace(
+      'entry.build.js',
+      'entry.build.mjs'
+    );
     const { makeRoutes } = await import(MJS_OUT_ENTRY_BUILD_PATH);
     routes = await makeRoutes();
   }
