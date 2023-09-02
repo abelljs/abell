@@ -452,7 +452,7 @@ export const allVite = {
   output: {
     '/': {
       screen:
-        "<h1>Hello from MDX!!</h1><p>With Abell, you can use the existing Vite plugins!! There is nothing called `abell.config.ts`, it's just vite.config.ts 🥳</p>"
+        "<h1>Hello from MDX!!</h1><p>With Abell, you can use the existing Vite plugins!! There is nothing called <code>abell.config.ts</code>, it's just vite.config.ts 🥳</p>"
     }
   }
 };
