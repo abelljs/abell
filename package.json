@@ -25,7 +25,7 @@
     "playground:test:once": "pnpm --filter \"./playground/**\" test:once",
     "test:once": "pnpm abell:build && pnpm playground:test:once && pnpm packages:test:once",
     "// Linting Stuff Starts from Here": "you mostly won't have to care about these",
-    "eslint": "eslint 'packages/**/**/**/*.{ts,js}'",
+    "eslint": "eslint \"packages/**/**/**/*.{ts,js}\"",
     "prettier": "prettier --write \"packages/**/**/**/*.[jt]s\" \"playground/**/**/**/*.[jt]s\"",
     "format": "npm run prettier",
     "prepublishOnly": "echo \"NOT FROM THE ROOT!! sorry for caps hehe\" && fail"

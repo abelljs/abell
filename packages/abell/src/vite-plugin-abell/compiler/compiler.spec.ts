@@ -1,17 +1,17 @@
 /* eslint-disable max-len */
 import path from 'path';
-import { describe, test, expect, vi, beforeEach, afterEach } from 'vitest';
+import { describe, test, expect, vi, beforeAll, afterAll } from 'vitest';
 import { compile } from './index';
 
 const consistentPathJoin = (...args: string[]): string => {
   return path.join(...args);
 };
 
-beforeEach(() => {
+beforeAll(() => {
   vi.spyOn(process, 'cwd').mockImplementation(() => '/');
 });
 
-afterEach(() => {
+afterAll(() => {
   vi.restoreAllMocks();
 });
 
