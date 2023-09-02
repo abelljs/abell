@@ -21,14 +21,11 @@ async function dev(serverOptions: DevOptions): Promise<void> {
   const cwd = process.cwd();
   const configFile = getConfigPath(cwd);
 
-  const {
-    SOURCE_ENTRY_BUILD_PATH,
-    ROOT,
-    serverHeaders
-  } = await getViteBuildInfo({
-    configFile,
-    command: 'dev'
-  });
+  const { SOURCE_ENTRY_BUILD_PATH, ROOT, serverHeaders } =
+    await getViteBuildInfo({
+      configFile,
+      command: 'dev'
+    });
 
   const freeHMRPort = await getFreePort();
   const vite = await createViteServer({

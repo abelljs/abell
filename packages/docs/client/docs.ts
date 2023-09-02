@@ -2,13 +2,11 @@ import './docs.css';
 import '@fontsource/inter/600.css';
 
 // Handle mobile ham menu
-const hamburgerMenu = document.querySelector<HTMLButtonElement>(
-  '.hamburger-menu'
-);
+const hamburgerMenu =
+  document.querySelector<HTMLButtonElement>('.hamburger-menu');
 const docsNavbar = document.querySelector<HTMLDivElement>('.docs-navbar');
-const navbarOverlay = document.querySelector<HTMLDivElement>(
-  'header + .overlay'
-);
+const navbarOverlay =
+  document.querySelector<HTMLDivElement>('header + .overlay');
 
 if (hamburgerMenu && docsNavbar && navbarOverlay) {
   hamburgerMenu.addEventListener('click', () => {

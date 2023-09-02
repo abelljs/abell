@@ -20,8 +20,8 @@ const makeLoader = ({ loading, text }: { loading: number; text: string }) => {
     ${Array.from({ length: loadingCount })
       .map(() => '█')
       .join('')}${Array.from({ length: 10 - loadingCount })
-    .map(() => '▒')
-    .join('')}
+      .map(() => '▒')
+      .join('')}
   </div>
   `;
 };

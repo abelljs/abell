@@ -17,9 +17,8 @@ async function create(
   options: CreateAbellOptions
 ): Promise<void> {
   // 1. Get all the required project information
-  const { projectDisplayName, projectPath } = await getProjectInfo(
-    projectNameArg
-  );
+  const { projectDisplayName, projectPath } =
+    await getProjectInfo(projectNameArg);
   const relProjectPath = relative(projectPath);
   const template = getTemplate(options.template);
   const installCommand = await getInstallCommand(options.installer);
