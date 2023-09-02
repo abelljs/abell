@@ -1,7 +1,10 @@
 /* eslint-disable max-len */
-import path from 'path';
 import { describe, test, expect, vi, beforeEach, afterEach } from 'vitest';
 import { compile } from './index';
+
+const consistentPathJoin = (...args: string[]): string => {
+  return args.join('/');
+};
 
 beforeEach(() => {
   vi.spyOn(process, 'cwd').mockImplementation(() => '.');
@@ -27,14 +30,14 @@ describe('compile()', () => {
     `;
 
     const js = compile(abellCode, {
-      filepath: path.join(process.cwd(), 'test.abell'),
+      filepath: consistentPathJoin(process.cwd(), 'test.abell'),
       cwd: process.cwd()
     });
     expect(js.trim()).toMatchInlineSnapshot(`
       "import { default as _path } from 'path';
         import { evaluateAbellBlock as e } from 'abell';
         
-        const __filename = \\"test.abell\\";
+        const __filename = \\"./test.abell\\";
         const __dirname = _path.dirname(__filename);
         const root = _path.relative(__dirname, \\".\\")
         export const html = (props = {}) => {
@@ -84,7 +87,7 @@ describe('compile()', () => {
     `;
 
     const js = compile(abellCode, {
-      filepath: path.join(process.cwd(), 'test.abell'),
+      filepath: consistentPathJoin(process.cwd(), 'test.abell'),
       cwd: process.cwd()
     });
     expect(js.trim()).toMatchInlineSnapshot(`
@@ -93,7 +96,7 @@ describe('compile()', () => {
         
             import x from './x';
           
-        const __filename = \\"test.abell\\";
+        const __filename = \\"./test.abell\\";
         const __dirname = _path.dirname(__filename);
         const root = _path.relative(__dirname, \\".\\")
         export const html = (props = {}) => {
@@ -196,7 +199,7 @@ describe('scoped css', () => {
     `;
 
     const { out } = compile(abellCode, {
-      filepath: path.join(process.cwd(), 'test.abell'),
+      filepath: consistentPathJoin(process.cwd(), 'test.abell'),
       outputType: 'syntax-blocks'
     });
     expect(out.text.trim()).toMatchInlineSnapshot(`
@@ -221,7 +224,7 @@ describe('scoped css', () => {
     `;
 
     const { out } = compile(abellCode, {
-      filepath: path.join(process.cwd(), 'test.abell'),
+      filepath: consistentPathJoin(process.cwd(), 'test.abell'),
       outputType: 'syntax-blocks'
     });
 
@@ -251,7 +254,7 @@ describe('scoped css', () => {
     `;
 
     const { out } = compile(abellCode, {
-      filepath: path.join(process.cwd(), 'test.abell'),
+      filepath: consistentPathJoin(process.cwd(), 'test.abell'),
       outputType: 'syntax-blocks'
     });
     expect(out.text.trim()).toMatchInlineSnapshot(`
@@ -276,7 +279,7 @@ describe('scoped css', () => {
     `;
 
     const { out } = compile(abellCode, {
-      filepath: path.join(process.cwd(), 'test.abell'),
+      filepath: consistentPathJoin(process.cwd(), 'test.abell'),
       outputType: 'syntax-blocks'
     });
     expect(out.text.trim()).toMatchInlineSnapshot('"<nav>hello</nav>"');
@@ -293,7 +296,7 @@ describe('scoped css', () => {
     `;
 
     const { out } = compile(abellCode, {
-      filepath: path.join(process.cwd(), 'test.abell'),
+      filepath: consistentPathJoin(process.cwd(), 'test.abell'),
       outputType: 'syntax-blocks'
     });
 
@@ -325,7 +328,7 @@ describe('scoped css', () => {
     `;
 
     const { out } = compile(abellCode, {
-      filepath: path.join(process.cwd(), 'test.abell'),
+      filepath: consistentPathJoin(process.cwd(), 'test.abell'),
       outputType: 'syntax-blocks'
     });
     expect(out.text.trim()).toMatchInlineSnapshot(`
