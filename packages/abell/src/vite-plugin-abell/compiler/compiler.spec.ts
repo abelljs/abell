@@ -8,7 +8,7 @@ const consistentPathJoin = (...args: string[]): string => {
 };
 
 beforeEach(() => {
-  vi.spyOn(process, 'cwd').mockImplementation(() => path.sep);
+  vi.spyOn(process, 'cwd').mockImplementation(() => '/');
 });
 
 afterEach(() => {
