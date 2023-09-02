@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import prompts from 'prompts';
-import { colors, copyFolderSync, log, normalizePath, run } from './utils';
+import { copyFolderSync, log, normalizePath, run } from './utils';
 
 /**
  * Prompts user for projectName if not defined, returns the information required related to project
@@ -23,7 +23,8 @@ export const getProjectInfo = async (projectNameArg: string | undefined) => {
   }
 
   if (!projectName) {
-    throw new Error(log.failure('Project name is required', false));
+    log.failure('Project Name is required');
+    process.exit(1);
   }
 
   const projectSlugName = projectName.toLowerCase().replace(/ |_/g, '-');
@@ -31,14 +32,9 @@ export const getProjectInfo = async (projectNameArg: string | undefined) => {
   const projectDisplayName = path.basename(projectPath);
 
   if (fs.existsSync(projectPath)) {
-    // oops. Can be an issue
     if (fs.readdirSync(projectPath).length !== 0) {
       // Not an empty directory so break!
-      console.error(
-        `${colors.red(
-          '>> '
-        )} The directory already exists and is not an empty directory`
-      );
+      log.failure('The directory already exists and is not an empty directory');
       process.exit(0);
     }
   }
@@ -50,8 +46,8 @@ export const getProjectInfo = async (projectNameArg: string | undefined) => {
  * Prompts user to choose package installer if not defined
  */
 export const getInstallCommand = async (
-  installerVal: 'npm' | 'yarn' | undefined
-): Promise<'npm install' | 'yarn'> => {
+  installerVal: 'npm' | 'yarn' | 'pnpm' | undefined
+): Promise<'npm install' | 'pnpm install' | 'yarn'> => {
   if (!installerVal) {
     // if installer flag is undefined, ask user.
     const answers = await prompts({
@@ -61,11 +57,15 @@ export const getInstallCommand = async (
       choices: [
         {
           title: 'npm',
-          value: 'npm install'
+          value: 'npm'
         },
         {
           title: 'yarn',
           value: 'yarn'
+        },
+        {
+          title: 'pnpm',
+          value: 'pnpm'
         }
       ]
     });
@@ -75,6 +75,8 @@ export const getInstallCommand = async (
 
   if (installerVal === 'yarn') {
     return 'yarn';
+  } else if (installerVal === 'pnpm') {
+    return 'pnpm install';
   } else {
     return 'npm install';
   }
@@ -123,7 +125,9 @@ export const scaffoldTemplate = async ({
     try {
       const errorCode = await run(`git clone ${template} ${projectPath}`);
       if (errorCode === 1) {
-        throw new Error(log.failure('Git clone failed', false));
+        throw new Error(
+          log.failure(`git clone failed for template ${template}`, false)
+        );
       }
     } catch (err) {
       throw err;

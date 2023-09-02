@@ -3,30 +3,61 @@ import path from 'path';
 import { spawn } from 'child_process';
 
 const isWindows = /^win/.test(process.platform);
+const reset = '\u001b[0m';
+const terminalSpace = process.env.TERM_PROGRAM === 'vscode' ? '' : ' ';
+const TOTAL_STEPS = 3;
 
 export const relative = (pathString: string): string =>
   path.relative(process.cwd(), pathString);
 
 export const colors = {
+  bold: (message: string): string => `\u001b[1m${message}${reset}`,
   red: (message: string): string =>
     `\u001b[1m\u001b[31m${message}\u001b[39m\u001b[22m`,
-  cyan: (message: string): string => `\u001b[36m${message}\u001b[39m`,
+  blue: (message: string): string => `\u001b[34m${message}${reset}`,
   green: (message: string): string =>
-    `\u001b[1m\u001b[32m${message}\u001b[39m\u001b[22m`
+    `\u001b[1m\u001b[32m${message}\u001b[39m${reset}`
+};
+
+const getPrefix = (status: 'success' | 'failure' | 'info', step?: number) => {
+  let icon = colors.blue('‣');
+  if (status === 'success') {
+    icon = colors.green('✓');
+  }
+
+  if (status === 'failure') {
+    icon = colors.red('✖');
+  }
+
+  let stepText = '';
+  if (step && step >= 0) {
+    stepText = `${reset}\x1b[3m(${step}/${TOTAL_STEPS})${reset} `;
+  }
+
+  return (
+    reset +
+    icon +
+    colors.bold(` 🌀${terminalSpace}create-abell ${stepText}${terminalSpace}‣`)
+  );
 };
 
 export const log = {
-  success: (message: string): void =>
-    console.log(`${colors.green('✓')} ${message}`),
+  success: (message: string, step?: number): void => {
+    console.log('');
+    console.log(getPrefix('success', step), `${message}`);
+  },
   failure: (message: string, shouldLog = true): string => {
-    const coloredMessage = `${colors.red('✗ [create-abell]:')} ${message}`;
+    const coloredMessage = `${getPrefix('failure')} ${message}`;
     if (shouldLog) {
-      console.log(coloredMessage);
+      console.log('');
+      console.error(coloredMessage);
+      console.log('');
     }
     return coloredMessage;
   },
-  info: (message: string): void =>
-    console.log(`${colors.cyan('>>')} ${message}`)
+  info: (message: string, step?: number): void => {
+    console.log(`${getPrefix('info', step)} ${message}`);
+  }
 };
 
 export const normalizePath = (pathString: string): string =>
@@ -34,7 +65,10 @@ export const normalizePath = (pathString: string): string =>
 
 const windowsifyCommand = (command: string): string => {
   if (isWindows) {
-    return command.replace('npm', 'npm.cmd').replace('yarn', 'yarn.cmd');
+    return command
+      .replace('npm', 'npm.cmd')
+      .replace('yarn', 'yarn.cmd')
+      .replace('pnpm', 'pnpm.cmd');
   }
 
   return command;
@@ -123,8 +157,8 @@ export function copyFolderSync(
         try {
           fs.rmdirSync(toElement);
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        } catch (err: any) {
-          if (err.code !== 'ENOTEMPTY') throw err;
+        } catch (err) {
+          if ((err as NodeJS.ErrnoException).code !== 'ENOTEMPTY') throw err;
         }
       }
     }

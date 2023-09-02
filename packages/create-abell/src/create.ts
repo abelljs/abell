@@ -5,10 +5,10 @@ import {
   scaffoldTemplate,
   setNameInPackageJSON
 } from './steps';
-import { deleteDir, log, relative, run } from './utils';
+import { colors, deleteDir, log, relative, run } from './utils';
 
 export type CreateAbellOptions = {
-  installer?: 'npm' | 'yarn';
+  installer?: 'npm' | 'yarn' | 'pnpm';
   template?: string;
 };
 
@@ -23,15 +23,23 @@ async function create(
   const relProjectPath = relative(projectPath);
   const template = getTemplate(options.template);
   const installCommand = await getInstallCommand(options.installer);
-  log.info(`Scaffolding \`${relProjectPath}\` using  \`${template}\` template`);
 
   // 2. Scaffold Project
+  console.log('');
+  log.info(
+    `Scaffolding ${colors.bold(relProjectPath)} using  ${colors.bold(
+      template
+    )} template`,
+    1
+  );
+
   await scaffoldTemplate({
     projectPath,
     template
   });
 
-  log.info(`Running \`${installCommand}\``);
+  console.log('');
+  log.info(`Running ${colors.bold(installCommand)}`, 2);
   // 3. Install Dependencies
   try {
     await run(installCommand, {
@@ -47,11 +55,19 @@ async function create(
   // 5. Delete `.git` (For projects scaffolded from github)
   deleteDir(`${projectPath}/.git`);
 
-  // 6. Log Success @todo
-  log.success(`${projectDisplayName} scaffolded successfully`);
-  const runCommand = installCommand === 'yarn' ? 'yarn dev' : 'npm run dev';
+  // 6. Log Success
+  log.success(`${projectDisplayName} scaffolded successfully 🚀\n`);
+  let runCommand = 'npm run dev';
+  if (installCommand === 'yarn') {
+    runCommand = 'yarn dev';
+  } else if (installCommand === 'pnpm install') {
+    runCommand = 'pnpm run dev';
+  }
+
   log.info(
-    `cd ${relProjectPath} and run \`${runCommand}\` to run the dev-server`
+    `${colors.bold(`cd ${relProjectPath}`)} and run ${colors.bold(
+      runCommand
+    )} to run the dev-server\n`
   );
 }
 
