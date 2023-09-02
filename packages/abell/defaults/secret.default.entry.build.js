@@ -1,5 +1,5 @@
 import { makeRoutesFromGlobImport } from 'abell';
-const abellPages = import.meta.glob('{{ abellPagesDir }}*.abell', {
+const abellPages = import.meta.glob('{{ abellPagesDir }}/*.abell', {
   eager: true
 });
 
