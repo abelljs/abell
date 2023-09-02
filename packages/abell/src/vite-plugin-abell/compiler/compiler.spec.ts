@@ -34,7 +34,7 @@ describe('compile()', () => {
       "import { default as _path } from 'path';
         import { evaluateAbellBlock as e } from 'abell';
         
-        const __filename = \\"/test.abell\\";
+        const __filename = \\"${path.sep}test.abell\\";
         const __dirname = _path.dirname(__filename);
         const root = _path.relative(__dirname, \\"/\\")
         export const html = (props = {}) => {
@@ -93,7 +93,7 @@ describe('compile()', () => {
         
             import x from './x';
           
-        const __filename = \\"/test.abell\\";
+        const __filename = \\"${path.sep}test.abell\\";
         const __dirname = _path.dirname(__filename);
         const root = _path.relative(__dirname, \\"/\\")
         export const html = (props = {}) => {
