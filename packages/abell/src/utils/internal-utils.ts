@@ -241,9 +241,9 @@ export const getViteConfig = async ({
   return viteConfigObj?.config ?? {};
 };
 
-const windowsifyCommand = (command: string): string => {
-  const isWindows = /^win/.test(process.platform);
+const isWindows = /^win/.test(process.platform);
 
+const windowsifyCommand = (command: string): string => {
   if (isWindows) {
     return command.replace('npm', 'npm.cmd').replace('yarn', 'yarn.cmd');
   }
@@ -352,6 +352,11 @@ export const getViteBuildInfo = async ({
       TEMP_OUTPUT_DIR,
       'secret.default.entry.build.js'
     );
+  }
+
+  if (isWindows) {
+    // Windows need file:// appended to absolute paths that are called with `import()` :(
+    OUT_ENTRY_BUILD_PATH = 'file://' + OUT_ENTRY_BUILD_PATH;
   }
 
   isGetViteBuildInfoFunctionCalled = true;

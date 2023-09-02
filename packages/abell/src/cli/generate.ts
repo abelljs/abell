@@ -26,6 +26,8 @@ async function generate(): Promise<void> {
     command: 'generate'
   });
 
+  console.log('before vite server build');
+
   // Generate server build
   await viteBuild({
     build: {
@@ -45,6 +47,8 @@ async function generate(): Promise<void> {
     configFile
   });
 
+  console.log('before entry.build import!!!', OUT_ENTRY_BUILD_PATH);
+
   let routes: Route[] = [];
   try {
     const { makeRoutes } = await import(OUT_ENTRY_BUILD_PATH);
@@ -58,12 +62,15 @@ async function generate(): Promise<void> {
     routes = await makeRoutes();
   }
 
+  console.log('routes ready!!!');
+
   // Generate index.html
   const createdHTMLFiles = [];
   const createdDirectories = [];
 
   for (const route of routes) {
     const appHtml = route.render();
+    console.log('after render', route);
     if (!appHtml) continue;
     let htmlPath = path.join(
       ROOT,
