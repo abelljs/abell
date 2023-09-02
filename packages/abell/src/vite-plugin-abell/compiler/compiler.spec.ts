@@ -4,7 +4,7 @@ import { describe, test, expect, vi, beforeEach, afterEach } from 'vitest';
 import { compile } from './index';
 
 beforeEach(() => {
-  vi.spyOn(process, 'cwd').mockImplementation(() => '/');
+  vi.spyOn(process, 'cwd').mockImplementation(() => '.');
 });
 
 afterEach(() => {
@@ -34,9 +34,9 @@ describe('compile()', () => {
       "import { default as _path } from 'path';
         import { evaluateAbellBlock as e } from 'abell';
         
-        const __filename = \\"${path.sep}test.abell\\";
+        const __filename = \\"test.abell\\";
         const __dirname = _path.dirname(__filename);
-        const root = _path.relative(__dirname, \\"/\\")
+        const root = _path.relative(__dirname, \\".\\")
         export const html = (props = {}) => {
           const Abell = { props, __filename, __dirname };
           
@@ -93,9 +93,9 @@ describe('compile()', () => {
         
             import x from './x';
           
-        const __filename = \\"${path.sep}test.abell\\";
+        const __filename = \\"test.abell\\";
         const __dirname = _path.dirname(__filename);
-        const root = _path.relative(__dirname, \\"/\\")
+        const root = _path.relative(__dirname, \\".\\")
         export const html = (props = {}) => {
           const Abell = { props, __filename, __dirname };
           
@@ -200,12 +200,12 @@ describe('scoped css', () => {
       outputType: 'syntax-blocks'
     });
     expect(out.text.trim()).toMatchInlineSnapshot(`
-      "<style abell-generated>nav[data-abell-duqnjx]{color:yellow;}</style><style abell-generated>nav[data-abell-duqnjx]{color:blue;}</style><style abell-ignored>
+      "<style abell-generated>nav[data-abell-jJNtyF]{color:yellow;}</style><style abell-generated>nav[data-abell-jJNtyF]{color:blue;}</style><style abell-ignored>
           nav {
             color: red;
           }
           </style>
-          <nav data-abell-duqnjx>hello</nav>"
+          <nav data-abell-jJNtyF>hello</nav>"
     `);
   });
 
