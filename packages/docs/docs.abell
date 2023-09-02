@@ -11,6 +11,7 @@
       title:`${props.docsPaths[props.currentPageIndex].title} | Abell - A Fast, Low-Level, Framework-Agnostic Static-Site-Generator for JavaScript Developers`
     })
   }}
+  <link rel="stylesheet" href="./client/docs.css" />
 </head>
 <body>
   <div class="docs-page-container display-flex">

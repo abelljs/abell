@@ -21,4 +21,6 @@
 <meta property="og:description" content="Abell - a Static-Site-Generator for JavaScript Developers. Create fast and scalable static-sites using the syntax of HTML and JavaScript." />
 <meta property="og:site_name" content="abelljs.org"/>
 <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+
+<link rel="stylesheet" href="./client/global.scss" />
 <title>{{ props.title }}</title>

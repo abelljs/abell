@@ -63,6 +63,16 @@ const getLanguageLogo = (
   return languageLogo;
 };
 
+const appendPath = (url: string, pathname: string): string => {
+  if (!pathname) {
+    return url;
+  }
+
+  const newURL = new URL(url);
+  newURL.pathname = pathname;
+  return newURL.toString();
+};
+
 // CONTAINER RUN CODE
 const iframeEl = document.querySelector<HTMLIFrameElement>(
   '.webcontainer iframe'
@@ -84,6 +94,10 @@ const terminalOutputEl = document.querySelector<HTMLDivElement>(
   '.webcontainer .terminal-output'
 );
 
+const urlBarContainer = document.querySelector<HTMLDivElement>('.url-bar');
+const urlSelect =
+  document.querySelector<HTMLSelectElement>('.url-bar > select');
+
 const editor = document.querySelector<HTMLDivElement>('.editor');
 
 if (!iframeEl || !fileExplorer || !codeDisplay) {
@@ -93,6 +107,7 @@ if (!iframeEl || !fileExplorer || !codeDisplay) {
 let webcontainerInstance: WebContainer;
 
 let uncommittedChanges: Record<string, string> = {};
+let uncommittedPath = '';
 let isDevServerLoading = true;
 let devServerRetriesAttempted = 0;
 
@@ -113,8 +128,36 @@ const initiateWebContainer = async (webcontainerData: {
     editor.style.height = webcontainerData.minHeight ?? '';
   }
 
+  const onURLChange = (newURL: string): void => {
+    if (temporaryPreviewEl) {
+      temporaryPreviewEl.innerHTML = webcontainerData.output[newURL].screen;
+    }
+
+    if (isDevServerLoading) {
+      uncommittedPath = newURL;
+    } else {
+      iframeEl.src = appendPath(iframeEl.src, newURL);
+    }
+  };
+
   if (temporaryPreviewEl) {
     temporaryPreviewEl.innerHTML = webcontainerData.output['/'].screen;
+  }
+
+  if (Object.keys(webcontainerData.output).length > 1 && urlSelect) {
+    const optionsHTML = Object.keys(webcontainerData.output)
+      .map(
+        (browserURL) =>
+          `<option value="${browserURL}">http://localhost${browserURL}</option>`
+      )
+      .join('');
+
+    urlSelect.innerHTML = optionsHTML;
+    urlBarContainer?.classList.remove('hide');
+
+    urlSelect?.addEventListener('change', () => {
+      onURLChange(urlSelect.value);
+    });
   }
 
   fileExplorer.innerHTML = '';
@@ -271,7 +314,6 @@ async function startDevServer() {
   );
 
   startProcess.exit.then((errorCode) => {
-    console.log('PROCESS EXITTED!!', errorCode);
     if (terminalOutputEl && errorCode === 1) {
       if (devServerRetriesAttempted < 4) {
         devServerRetriesAttempted++;
@@ -326,7 +368,7 @@ async function startDevServer() {
       terminalOutputEl?.classList.add('hide-animated');
       temporaryPreviewEl?.classList.add('hide');
       iframeEl.classList.remove('loading');
-      iframeEl.src = url;
+      iframeEl.src = appendPath(url, uncommittedPath);
       iframeEl.removeAttribute('srcdoc');
     }
   });

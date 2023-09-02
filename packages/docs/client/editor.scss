@@ -195,22 +195,16 @@
   }
   
   .code-preview .url-bar {
-    padding: 0px 8px;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.009), 
-              0 2px 4px rgba(0,0,0,0.009), 
-              0 4px 8px rgba(0,0,0,0.009), 
-              0 8px 16px rgba(0,0,0,0.009),
-              0 16px 32px rgba(0,0,0,0.009), 
-              0 32px 64px rgba(0,0,0,0.009);
+    border-bottom: 2px solid #f7f7f7;
   }
   
   .code-preview .url-bar > select {
-    padding: 8px 0px;
+    padding: 6px 0px ;
     font-size: 0.9rem;
-    display: block;
+    // display: block;
     width: 100%;
-    border: none;
-    color: #444;
+    border: 4px solid transparent;
+    color: #666;
   }
   
   .code-preview .screen p {

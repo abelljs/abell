@@ -1,4 +1,3 @@
-import './docs.css';
 import '@fontsource/inter/600.css';
 
 // Handle mobile ham menu
@@ -8,14 +7,12 @@ const docsNavbar = document.querySelector<HTMLDivElement>('.docs-navbar');
 const navbarOverlay =
   document.querySelector<HTMLDivElement>('header + .overlay');
 
-if (hamburgerMenu && docsNavbar && navbarOverlay) {
-  hamburgerMenu.addEventListener('click', () => {
-    docsNavbar.classList.toggle('show');
-  });
-  navbarOverlay.addEventListener('click', () => {
-    docsNavbar.classList.remove('show');
-  });
-}
+hamburgerMenu?.addEventListener('click', () => {
+  docsNavbar?.classList.toggle('show');
+});
+navbarOverlay?.addEventListener('click', () => {
+  docsNavbar?.classList.remove('show');
+});
 
 // Make subheadings
 const subheadings = document.querySelectorAll<HTMLHeadingElement>('h2, h3');
@@ -30,7 +27,7 @@ const observer = new IntersectionObserver(() => {
       return;
     }
 
-    if (subheading.getBoundingClientRect().bottom <= 0) {
+    if (subheading.getBoundingClientRect().top < 20) {
       anchor.classList.add('done');
     } else {
       anchor.classList.remove('done');
@@ -62,4 +59,11 @@ subheadings.forEach((subheading) => {
 
 if (subMenuContainer) {
   subMenuContainer.innerHTML = subMenuLists;
+  document
+    ?.querySelectorAll<HTMLAnchorElement>('.submenu li > a')
+    .forEach((submenuAnchor) => {
+      submenuAnchor.addEventListener('click', () => {
+        docsNavbar?.classList.remove('show');
+      });
+    });
 }

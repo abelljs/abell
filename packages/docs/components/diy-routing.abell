@@ -1,72 +1,13 @@
 {{
   import editor from './editor.abell';
   import { EXAMPLES_ABELL_VERSION } from '../config.ts';
-
-  const editorBuilder = {
-    files: {
-      'index.abell': {
-        file: {
-          contents: `<body>Hello from Index Page!!</body>`
-        }
-      },
-      'entry.build.ts': {
-        file: {
-          contents: `
-            import { Route } from 'abell';
-            import index from './index.abell';
-
-            export const makeRoutes =  (): Route[] => {
-              return [
-                {
-                  path: '/',
-                  // abell components are functions that return HTML string
-                  render: () => index()
-                },
-                {
-                  path: '/about',
-                  render: () => {
-                    return '<body>We can return any HTML string here</body>';
-                  }
-                }
-              ]
-            }
-          `
-        }
-      },
-      'package.json': {
-        file: {
-          contents: JSON.stringify({
-            "name": "vite-abell",
-            "type": "module",
-            "scripts": {
-              "start": "abell dev --port 5000",
-              "build": "abell generate"
-            },
-            "dependencies": {
-              "abell": EXAMPLES_ABELL_VERSION,
-            }
-          }, null, 4)
-        }
-      } 
-    },
-    activeFile: 'entry.build.ts',
-    minHeight: '640px',
-    showURLBar: true,
-    output: {
-      '/': {
-        screen: 'Hello from Index Page!!'
-      },
-      '/about': {
-        screen: 'We can return any HTML string here'
-      }
-    }
-  }
+  import { routingExample } from '../utils/examples.ts';
 }}
 
 <section>
   <h2>Override the Router with your own logic</h2>
   <p>Opt out of the default file-system routing with <code>makeRoutes</code> API</p>
-  {{ editor(editorBuilder) }}
+  {{ editor(routingExample) }}
 </section>
 
 <style>

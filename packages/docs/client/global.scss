@@ -203,6 +203,35 @@ hr {
   mask: url('/icons/ham.svg') no-repeat center;
 }
 
+.mdx-utils {
+  &.note-block {
+    padding: 1rem 1rem;
+    background-color: var(--blue-11);
+    border-radius: 4px;
+    font-size: var(--font-text-small);
+    margin-bottom: 1.5rem;
+
+    strong {
+      color: var(--blue-6);
+    }
+
+    ul {
+      margin: 0px;
+      padding-top: 0px;
+      padding-left: 30px;
+    }
+
+    li {
+      color: var(--blue-6);
+    }
+
+    a {
+      color: var(--blue-6);
+      text-decoration: underline;
+    }
+  }
+}
+
 @media (max-width: 768px) {
   :root {
     --font-text-landing: 1rem;

@@ -69,7 +69,8 @@ nav a.active {
 
 .content-padding {
   padding: 50px 80px;
-  max-width: 1000px;
+  max-width: 1100px;
+  margin: auto;
 }
 
 h1, h2, h3 {
@@ -271,5 +272,11 @@ button.hamburger-menu .icon {
 
   header.show + .overlay {
     display: block;
+  }
+}
+
+@media (max-width: 1400px) {
+  .content-padding {
+    max-width: 1400px;
   }
 }

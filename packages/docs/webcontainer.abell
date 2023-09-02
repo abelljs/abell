@@ -19,6 +19,12 @@
       </div>
       <div class="code-display"></div>
       <div class="code-preview">
+        <div class="url-bar hide">
+          <select>
+            <option value="/">http://localhost:5000/</option>
+            <option value="/about">http://localhost:5000/about</option>
+          </select>
+        </div>
         <div class="temporary-preview"></div>
         <div class="terminal-output hide-animated"></div>
         <iframe class="loading"></iframe>

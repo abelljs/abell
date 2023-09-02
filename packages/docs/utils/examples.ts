@@ -455,3 +455,67 @@ export const allVite = {
     }
   }
 };
+
+export const routingExample = {
+  files: {
+    'index.abell': {
+      file: {
+        contents: `<body>Hello from Index Page!!</body>`
+      }
+    },
+    'entry.build.ts': {
+      file: {
+        contents: `
+          import { Route } from 'abell';
+          import index from './index.abell';
+
+          export const makeRoutes =  (): Route[] => {
+            return [
+              {
+                path: '/',
+                // abell components are functions that return HTML string
+                render: () => index()
+              },
+              {
+                path: '/about',
+                render: () => {
+                  return '<body>We can return <b>any HTML</b> string here</body>';
+                }
+              }
+            ]
+          }
+        `
+      }
+    },
+    'package.json': {
+      file: {
+        contents: JSON.stringify(
+          {
+            name: 'vite-abell',
+            type: 'module',
+            scripts: {
+              start: 'abell dev --port 5000',
+              build: 'abell generate'
+            },
+            dependencies: {
+              abell: EXAMPLES_ABELL_VERSION
+            }
+          },
+          null,
+          4
+        )
+      }
+    }
+  },
+  activeFile: 'entry.build.ts',
+  minHeight: '640px',
+  showURLBar: true,
+  output: {
+    '/': {
+      screen: 'Hello from Index Page!!'
+    },
+    '/about': {
+      screen: 'We can return <b>any HTML</b> string here'
+    }
+  }
+};
