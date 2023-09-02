@@ -34,7 +34,7 @@ describe('compile()', () => {
       filepath: consistentPathJoin(process.cwd(), 'test.abell'),
       cwd: process.cwd()
     });
-    expect(js.trim().replace(`${path.sep}test.abell`, '/test.abell'))
+    expect(js.trim().replace(`\\\\test.abell`, '/test.abell'))
       .toMatchInlineSnapshot(`
       "import { default as _path } from 'path';
         import { evaluateAbellBlock as e } from 'abell';
@@ -92,7 +92,7 @@ describe('compile()', () => {
       filepath: consistentPathJoin(process.cwd(), 'test.abell'),
       cwd: process.cwd()
     });
-    expect(js.trim().replace(`${path.sep}test.abell`, '/test.abell'))
+    expect(js.trim().replace(`\\\\test.abell`, '/test.abell'))
       .toMatchInlineSnapshot(`
       "import { default as _path } from 'path';
         import { evaluateAbellBlock as e } from 'abell';
