@@ -1,13 +1,14 @@
 /* eslint-disable max-len */
+import path from 'path';
 import { describe, test, expect, vi, beforeEach, afterEach } from 'vitest';
 import { compile } from './index';
 
 const consistentPathJoin = (...args: string[]): string => {
-  return args.join('/');
+  return path.join(...args);
 };
 
 beforeEach(() => {
-  vi.spyOn(process, 'cwd').mockImplementation(() => '.');
+  vi.spyOn(process, 'cwd').mockImplementation(() => path.sep);
 });
 
 afterEach(() => {
@@ -33,13 +34,14 @@ describe('compile()', () => {
       filepath: consistentPathJoin(process.cwd(), 'test.abell'),
       cwd: process.cwd()
     });
-    expect(js.trim()).toMatchInlineSnapshot(`
+    expect(js.trim().replace(`${path.sep}test.abell`, '/test.abell'))
+      .toMatchInlineSnapshot(`
       "import { default as _path } from 'path';
         import { evaluateAbellBlock as e } from 'abell';
         
-        const __filename = \\"./test.abell\\";
+        const __filename = \\"/test.abell\\";
         const __dirname = _path.dirname(__filename);
-        const root = _path.relative(__dirname, \\".\\")
+        const root = _path.relative(__dirname, \\"/\\")
         export const html = (props = {}) => {
           const Abell = { props, __filename, __dirname };
           
@@ -90,15 +92,16 @@ describe('compile()', () => {
       filepath: consistentPathJoin(process.cwd(), 'test.abell'),
       cwd: process.cwd()
     });
-    expect(js.trim()).toMatchInlineSnapshot(`
+    expect(js.trim().replace(`${path.sep}test.abell`, '/test.abell'))
+      .toMatchInlineSnapshot(`
       "import { default as _path } from 'path';
         import { evaluateAbellBlock as e } from 'abell';
         
             import x from './x';
           
-        const __filename = \\"./test.abell\\";
+        const __filename = \\"/test.abell\\";
         const __dirname = _path.dirname(__filename);
-        const root = _path.relative(__dirname, \\".\\")
+        const root = _path.relative(__dirname, \\"/\\")
         export const html = (props = {}) => {
           const Abell = { props, __filename, __dirname };
           
@@ -203,12 +206,12 @@ describe('scoped css', () => {
       outputType: 'syntax-blocks'
     });
     expect(out.text.trim()).toMatchInlineSnapshot(`
-      "<style abell-generated>nav[data-abell-jJNtyF]{color:yellow;}</style><style abell-generated>nav[data-abell-jJNtyF]{color:blue;}</style><style abell-ignored>
+      "<style abell-generated>nav[data-abell-duqnjx]{color:yellow;}</style><style abell-generated>nav[data-abell-duqnjx]{color:blue;}</style><style abell-ignored>
           nav {
             color: red;
           }
           </style>
-          <nav data-abell-jJNtyF>hello</nav>"
+          <nav data-abell-duqnjx>hello</nav>"
     `);
   });
 
