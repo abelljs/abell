@@ -1,4 +1,5 @@
 /* eslint-disable max-len */
+import dedent from 'dedent';
 import { EXAMPLES_ABELL_VERSION } from '../config';
 
 export const noConfigSetup = {
@@ -516,6 +517,158 @@ export const routingExample = {
     },
     '/about': {
       screen: 'We can return <b>any HTML</b> string here'
+    }
+  }
+};
+
+export const blogRoutingExample = {
+  files: {
+    'entry.build.ts': {
+      file: {
+        contents: `
+        import { Route } from 'abell';
+        import index from './index.abell';
+        import blogLayout from './blog-layout.abell';
+        const mdFiles = import.meta.glob('./*.md', { eager: true }); // Glob imports by Vite
+
+        // looping through Vite's Glob object to create a readable object array
+        const blogs = Object.entries(mdFiles).map(
+          ([mdPath, mdModule]) => {
+            return {
+              path: mdPath.replace('./', '/').replace('.md', ''),
+              title: mdModule.attributes.title,
+              html: mdModule.default,
+            }
+          }
+        );
+
+        // Creating routes 
+        const blogRoutes: Route[] = blogs.map((blog) => {
+          return {
+            path: blog.path,
+            render: () => blogLayout({ content: blog.html })
+          }
+        })
+
+        export const makeRoutes: Route[] = () => {
+          return [
+            {
+              path: '/',
+              // Here we can pass our readable object to create blog listing
+              render: () => index({ blogs })
+            },
+            ...blogRoutes
+          ];
+        };
+        `
+      }
+    },
+    'index.abell': {
+      file: {
+        contents: `
+        <body>
+          <h2>My Blogs!</h2>
+          <ul>
+          {{
+            props.blogs.map((blog) => /* html */ \`
+              <li><a href="\${blog.path}">\${blog.title}</a></li>
+            \`)
+          }}
+          </ul>
+        </body>
+        `
+      }
+    },
+    'blog-layout.abell': {
+      file: {
+        contents: `
+        <body>
+        {{ props.content }}
+        </body>  
+        `
+      }
+    },
+    'hello-world.md': {
+      file: {
+        contents: dedent`
+        ---
+        title: "Hello, World!"
+        ---
+        # Hi from Abell Blog
+
+        I can write **markdown** here!
+        `
+      }
+    },
+    'tunuk-tunuk-tun.md': {
+      file: {
+        contents: dedent`
+        ---
+        title: "Tunuk Tunuk Tun Ta da da"
+        ---
+        ## You've Been Tunuk Tunuk Tund!!
+
+        <img alt="Tunuk Tunuk Tun Screenshot" width="150px" crossOrigin="anonymous" src="https://res.cloudinary.com/saurabhdaware/image/upload//c_thumb,w_200/v1693664138/dcfa3d51-c1a2-4236-86bf-e5c52a1c82ea_kxzk8k.png" />
+        `
+      }
+    },
+    'vite.config.ts': {
+      file: {
+        contents: `
+        import { defineConfig } from 'abell';
+        import { vitePluginMdToHTML } from 'vite-plugin-md-to-html';
+
+        export default defineConfig({
+          plugins: [
+            vitePluginMdToHTML()
+          ],
+        });
+        `
+      }
+    },
+    'package.json': {
+      file: {
+        contents: JSON.stringify(
+          {
+            name: 'vite-abell',
+            type: 'module',
+            scripts: {
+              start: 'abell dev --port 3000',
+              build: 'abell generate'
+            },
+            dependencies: {
+              abell: EXAMPLES_ABELL_VERSION,
+              'vite-plugin-md-to-html': '*'
+            }
+          },
+          null,
+          4
+        )
+      }
+    }
+  },
+  activeFile: 'entry.build.ts',
+  minHeight: '640px',
+  showURLBar: true,
+  output: {
+    '/': {
+      screen: `
+      <h2>My Blogs!</h2>
+      <ul>
+        <li><a href="javascript:void()" onclick="window.onURLChange('/hello-world')">Hello, World!</a></li>
+        <li><a href="javascript:void()" onclick="window.onURLChange('/tunuk-tunuk-tun')">Tunuk Tunuk Tun Ta da da</a></li>
+      </ul>
+      `
+    },
+    '/hello-world': {
+      screen: 'We can return <b>any HTML</b> string here'
+    },
+    '/tunuk-tunuk-tun': {
+      screen: `
+      <h2>You've Been Tunuk Tunuk Tund!!</h2>
+
+      <img alt="Tunuk Tunuk Tun Screenshot" width="150px" crossOrigin="anonymous" src="https://res.cloudinary.com/saurabhdaware/image/upload//c_thumb,w_200/v1693664138/dcfa3d51-c1a2-4236-86bf-e5c52a1c82ea_kxzk8k.png" />
+      `
     }
   }
 };

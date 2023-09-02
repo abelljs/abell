@@ -201,7 +201,6 @@
   .code-preview .url-bar > select {
     padding: 6px 0px ;
     font-size: 0.9rem;
-    // display: block;
     width: 100%;
     border: 4px solid transparent;
     color: #666;
@@ -223,9 +222,8 @@
     display: block;
   }
   
-  ul {
+  ul.file-explorer {
     list-style: none;
-    padding: 0px;
   }
 
   .hide {

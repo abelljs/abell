@@ -58,6 +58,12 @@ const getLanguageLogo = (
       space: '&nbsp;',
       width: 15
     };
+  } else if (filename.endsWith('.md')) {
+    languageLogo = {
+      src: '/icons/md.png',
+      space: '&nbsp;',
+      width: 20
+    };
   }
 
   return languageLogo;
@@ -133,12 +139,19 @@ const initiateWebContainer = async (webcontainerData: {
       temporaryPreviewEl.innerHTML = webcontainerData.output[newURL].screen;
     }
 
+    if (urlSelect && urlSelect.value !== newURL) {
+      urlSelect.value = newURL;
+    }
+
     if (isDevServerLoading) {
       uncommittedPath = newURL;
     } else {
       iframeEl.src = appendPath(iframeEl.src, newURL);
     }
   };
+
+  // @ts-expect-error: exposing it to be used in temporary outputs for routing
+  window.onURLChange = onURLChange;
 
   if (temporaryPreviewEl) {
     temporaryPreviewEl.innerHTML = webcontainerData.output['/'].screen;
