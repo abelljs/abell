@@ -267,7 +267,7 @@ export async function run(
         if (code === 0) {
           resolve(0);
         } else {
-          console.log(`oops ${command} failed`);
+          log(`oops ${command} failed`, 'p1');
           // eslint-disable-next-line prefer-promise-reject-errors
           reject(1);
         }
@@ -368,11 +368,7 @@ export const getViteBuildInfo = async ({
   };
 };
 
-export async function clearCache(
-  { log } = {
-    log: true
-  }
-): Promise<void> {
+export async function clearCache(): Promise<void> {
   const configFile = getConfigPath(process.cwd());
   const { ROOT } = await getViteBuildInfo({
     configFile,
@@ -381,9 +377,7 @@ export async function clearCache(
   const ABELL_CACHE_DIR = path.join(ROOT, 'node_modules', '.abell');
   if (fs.existsSync(ABELL_CACHE_DIR)) {
     rmdirRecursiveSync(ABELL_CACHE_DIR);
-    if (log) {
-      console.log('>> Abell cache go whoooshhhh 🧹');
-    }
+    log('Abell cache go whoooshhhh 🧹');
   }
 }
 
