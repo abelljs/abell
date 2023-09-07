@@ -45,7 +45,10 @@ export const isImportBlock = (
 };
 
 export const isDeclarationBlock = (blockContent: string): boolean => {
-  if (blockContent.includes('// declaration')) {
+  if (
+    blockContent.includes('// declaration') ||
+    blockContent.includes('@declaration')
+  ) {
     return true;
   }
 

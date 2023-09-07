@@ -56,7 +56,7 @@ describe('compile()', () => {
   test('should create first block as declaration block with declarations comment', () => {
     const abellCode = `
     {{
-      // declarations
+      /** @declarations */
       const a = 3;
     }}
     <body>{{ a }}</body>
@@ -69,7 +69,7 @@ describe('compile()', () => {
       '"<body>${e( a )}</body>"'
     );
     expect(out.declarationBlocks.text.trim()).toMatchInlineSnapshot(`
-      "// declarations
+      "/** @declarations */
             const a = 3;"
     `);
   });
@@ -82,7 +82,7 @@ describe('compile()', () => {
 
     <b>{{ 3 + 4 }}</b>
     {{
-      // declarations
+      /** @declarations */
       const x = 999;
     }}
     <nav>{{ x * 2 }}</nav>
@@ -105,7 +105,7 @@ describe('compile()', () => {
         export const html = (props = {}) => {
           const Abell = { props, __filename, __dirname };
           
-            // declarations
+            /** @declarations */
             const x = 999;
           
           return \`

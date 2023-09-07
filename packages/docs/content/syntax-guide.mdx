@@ -36,11 +36,11 @@ You can also extend the type of files you can import using Vite Plugins. E.g. Yo
 
 ## Declarations
 
-In Abell, you can mark a block as declaration block using `// declarations` comment
+In Abell, you can mark a block as declaration block using `/** @declarations */` comment
 
 ```abell
 {{
-  // declarations
+  /** @declarations */
   const a = 3;
   const b = 9;
 }}
@@ -48,7 +48,7 @@ In Abell, you can mark a block as declaration block using `// declarations` comm
 ```
 
 <details>
-<summary>This is required because in JavaScript, assignments return values which abell might try to print unless `// declarations` comment is used</summary>
+<summary>This is required because in JavaScript, assignments return values which abell might try to print unless `/** @declarations */` comment is used</summary>
 
 By default Abell tries to print the output of expression inside Abell block. Which means sometimes the default behaviour might be unexpected. E.g. -
 
@@ -62,7 +62,7 @@ By default Abell tries to print the output of expression inside Abell block. Whi
 // Outputs - "4<body>4</body>"
 ```
 
-This is because in JavaScript, the assignment operator returns the value as well which Abell will try to print unless `// declarations` comment is used
+This is because in JavaScript, the assignment operator returns the value as well which Abell will try to print unless `/** @declarations */` comment is used
 
 </details>
 

@@ -8,7 +8,7 @@ export const noConfigSetup = {
       file: {
         contents: `
         {{
-          // declarations
+          /** @declarations */
           const a = 'Hello, ';
           const b = 'World 🌻';
         }}
@@ -53,7 +53,7 @@ export const loopsAndConditions = {
       file: {
         contents: `
         {{
-          // declarations
+          /** @declarations */
           const fruits = ['apple', 'banana', 'orange'];
         }}
         <body>
@@ -114,7 +114,7 @@ export const immediatelyInvokedFunctions = {
       file: {
         contents: `
         {{
-          // declarations
+          /** @declarations */
           const fruits = ['apple', 'banana', 'orange'];
         }}
         <body>
@@ -182,7 +182,7 @@ export const componentsUsage = {
       file: {
         contents: `
           {{
-            // declarations
+            /** @declarations */
             const links = [
               {
                 title: 'Home',
