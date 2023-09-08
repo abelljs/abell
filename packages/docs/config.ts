@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-export const EXAMPLES_ABELL_VERSION = '1.0.0-alpha.102';
+export const EXAMPLES_ABELL_VERSION = '1.0.0-alpha.103';
 
 export const themes = [
   {
