@@ -20,7 +20,8 @@ async function generate(): Promise<void> {
     ROOT,
     OUTPUT_DIR,
     OUT_ENTRY_BUILD_PATH,
-    SOURCE_ENTRY_BUILD_PATH
+    SOURCE_ENTRY_BUILD_PATH,
+    viteConfigObj
   } = await getViteBuildInfo({
     configFile,
     command: 'generate'
@@ -35,7 +36,8 @@ async function generate(): Promise<void> {
         input: SOURCE_ENTRY_BUILD_PATH,
         external: ['abell']
       },
-      ssrManifest: true
+      ssrManifest: true,
+      ...viteConfigObj.abell?.serverBuild
     },
     ssr: {
       external: ['abell']

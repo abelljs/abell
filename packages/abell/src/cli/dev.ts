@@ -21,7 +21,7 @@ async function dev(serverOptions: DevOptions): Promise<void> {
   const cwd = process.cwd();
   const configFile = getConfigPath(cwd);
 
-  const { SOURCE_ENTRY_BUILD_PATH, ROOT, serverHeaders } =
+  const { SOURCE_ENTRY_BUILD_PATH, ROOT, viteConfigObj } =
     await getViteBuildInfo({
       configFile,
       command: 'dev'
@@ -67,7 +67,7 @@ async function dev(serverOptions: DevOptions): Promise<void> {
         .status(200)
         .set({
           'Content-Type': 'text/html',
-          ...serverHeaders
+          ...viteConfigObj.server?.headers
         })
         .end(html);
     } catch (e) {

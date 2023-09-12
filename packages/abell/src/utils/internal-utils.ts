@@ -8,20 +8,13 @@ import net from 'net';
 import path from 'path';
 import { Express } from 'express';
 import { spawn } from 'child_process';
-import {
-  loadConfigFromFile,
-  EsbuildTransformOptions,
-  UserConfig as ViteUserConfig
-} from 'vite';
+import { loadConfigFromFile } from 'vite';
 import * as url from 'url';
 import { boldUnderline, log } from './logger.js';
+import { AbellViteConfig } from '../type-utils.js';
 
 // @ts-ignore
 const $dirname = url.fileURLToPath(new url.URL('.', import.meta.url));
-
-export type AbellOptions = {
-  esbuild?: EsbuildTransformOptions;
-};
 
 export type AbellPagesGlobImport = Record<
   string,
@@ -229,7 +222,7 @@ type PathOptions = {
 export const getViteConfig = async ({
   configFile,
   command
-}: PathOptions): Promise<ViteUserConfig> => {
+}: PathOptions): Promise<AbellViteConfig> => {
   const viteConfigObj = await loadConfigFromFile(
     {
       command: command === 'generate' ? 'build' : 'serve',
@@ -309,7 +302,6 @@ export const getViteBuildInfo = async ({
 }: PathOptions) => {
   const viteConfig = await getViteConfig({ configFile, command });
   const ROOT = viteConfig.root ?? process.cwd();
-  const serverHeaders = viteConfig.server?.headers ?? {};
 
   const OUTPUT_DIR = path.join(ROOT, 'dist');
   const ASSETS_DIR = path.join(ROOT, 'assets');
@@ -369,7 +361,7 @@ export const getViteBuildInfo = async ({
     DEFAULT_ENTRY_BUILD_PATH,
     ROOT,
     OUTPUT_DIR,
-    serverHeaders
+    viteConfigObj: viteConfig
   };
 };
 
