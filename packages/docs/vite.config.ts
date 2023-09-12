@@ -6,6 +6,12 @@ import { abellHighlighter } from './utils/abell-syntax-highlighter';
 import { isoImport } from 'vite-plugin-iso-import';
 
 export default defineConfig({
+  abell: {
+    serverBuild: {
+      // I am using top-level await in entry.build.ts
+      target: 'es2022'
+    }
+  },
   server: {
     headers: {
       'Cross-Origin-Embedder-Policy': 'require-corp',
