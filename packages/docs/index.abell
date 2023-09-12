@@ -22,7 +22,7 @@
   {{ navbar }}
   {{ hero }}
   {{ starters }}
-  {{ sponsors }}
+  {{ sponsors({ sponsors: props.sponsors }) }}
   {{ noConfig }}
   {{ diyRouting }}
   {{ allVite }}

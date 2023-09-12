@@ -1,14 +1,11 @@
-{{
-  import sponsorsData from '../utils/sponsors.json';
-}}
 <section>
   <h2>Sponsors</h2>
   <div class="sponsor-images-container">
   {{
-    sponsorsData.sponsors.map((val) => /* html */`
+    props.sponsors.map((val) => /* html */`
     <div class="sponsor-container">
-      <a target="_blank" rel="noopener noreferer" href="https://github.com/${val.login}" title="${val.login}">
-        <img height="80" width="80" loading="lazy" src="${val.avatar}" alt="Profile picture of ${val.login}" crossorigin />
+      <a target="_blank" rel="noopener noreferer" href="https://github.com/${val.username}" title="${val.username}">
+        <img height="80" width="80" loading="lazy" src="${val.avatar.replace('?s=60', '?s=120')}" alt="Profile picture of ${val.username}" crossorigin />
       </a>
     </div>
     `)

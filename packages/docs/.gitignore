@@ -5,3 +5,4 @@ dump/
 .env
 oldtheme/
 theme/fonts
+.cache

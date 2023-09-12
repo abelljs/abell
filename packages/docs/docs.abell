@@ -8,7 +8,8 @@
 <head>
   {{ 
     headMeta({ 
-      title:`${props.docsPaths[props.currentPageIndex].title} | Abell - A Fast, Low-Level, Framework-Agnostic Static-Site-Generator for JavaScript Developers`
+      title: props.docsPaths[props.currentPageIndex].title,
+      template: 'docs'
     })
   }}
   <link rel="stylesheet" href="./client/docs.css" />
