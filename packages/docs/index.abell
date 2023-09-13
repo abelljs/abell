@@ -14,7 +14,7 @@
 <head>
   {{ 
     headMeta({ 
-      title: 'Abell v1 - A Static Site Generator for JavaScript Developers' 
+      title: 'Abell - A Low Level, Framework Agnostic, Static Site Generator for JavaScript Developers' 
     })
   }}
 </head>
