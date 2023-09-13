@@ -49,6 +49,8 @@ Output:
 </html>
 ```
 
+Learn More at [Syntax Guide](https://abelljs.org/syntax-guide)
+
 ### 🤗 Contributing
 
 Check out [CONTRIBUTING.md](https://github.com/abelljs/abell/blob/one/CONTRIBUTING.md)
