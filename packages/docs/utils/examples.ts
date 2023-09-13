@@ -2,6 +2,14 @@
 import dedent from 'dedent';
 import { EXAMPLES_ABELL_VERSION } from '../config';
 
+export type EditorConfigObjType = {
+  files: Record<string, { file: { contents: string } }>;
+  activeFile?: string;
+  minHeight?: string;
+  showFileExplorer?: boolean;
+  output: Record<string, { screen: string }>;
+};
+
 export const noConfigSetup = {
   files: {
     'index.abell': {
@@ -517,6 +525,129 @@ export const routingExample = {
     },
     '/about': {
       screen: 'We can return <b>any HTML</b> string here'
+    }
+  }
+};
+
+export const markdownIntegration = {
+  files: {
+    'index.abell': {
+      file: {
+        contents: `
+        {{
+          import content, { attributes } from './content.md';
+        }}
+        <html>
+        <head>
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/github.min.css" />
+        </head>
+        <body>
+          <h1>{{ attributes.title }}</h1>
+          <div>
+            {{ content }}
+          </div>
+        </body>
+        </html>
+        `
+      }
+    },
+    'content.md': {
+      file: {
+        contents: dedent`
+        ---
+        title: "Hi from Markdown!"
+        ---
+
+        You can use any **markdown** features here!
+        
+        ## Syntax Highlighting
+
+        \`vite-plugin-md-to-html\` also allows build-time syntax highlighting using highlightjs.
+        
+        ~~~js
+        const a = 3;
+        const b = 9;
+
+        console.log(a + b);
+        ~~~
+        `
+      }
+    },
+    'vite.config.ts': {
+      file: {
+        contents: `
+        import { defineConfig } from 'abell';
+        import { vitePluginMdToHTML } from 'vite-plugin-md-to-html';
+
+        export default defineConfig({
+          plugins: [
+            vitePluginMdToHTML({
+              syntaxHighlighting: true
+            })
+          ],
+        });
+        `
+      }
+    },
+    'package.json': {
+      file: {
+        contents: JSON.stringify(
+          {
+            name: 'vite-abell',
+            type: 'module',
+            scripts: {
+              start: 'abell dev --port 3000',
+              build: 'abell generate'
+            },
+            dependencies: {
+              abell: EXAMPLES_ABELL_VERSION,
+              'vite-plugin-md-to-html': '*'
+            }
+          },
+          null,
+          4
+        )
+      }
+    }
+  },
+  activeFile: 'index.abell',
+  minHeight: '520px',
+  showURLBar: true,
+  output: {
+    '/': {
+      screen: `
+      <style>
+      #unstyled code {
+        padding: 0px;
+      }
+      #unstyled pre > code, #unstyled pre {
+        line-height: unset;
+        font-size: unset;
+      }
+      #unstyled pre > code {
+        padding: 1rem !important;
+        font-size: 13px;
+      }
+
+      #unstyled p {
+        font-size: unset;
+        line-height: unset;
+      }
+      </style>
+      <div id="unstyled">
+        <h1>Hi from Markdown!</h1>
+        <div>
+          <p>You can use any <strong>markdown</strong> features here!</p>
+          <h2>Syntax Highlighting</h2>
+          <p><code>vite-plugin-md-to-html</code> also allows build-time syntax highlighting using highlightjs.</p>
+<pre><code class="hljs language-js"><span class="hljs-keyword">const</span> a = <span class="hljs-number">3</span>;
+<span class="hljs-keyword">const</span> b = <span class="hljs-number">9</span>;
+
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(a + b);
+          </code></pre>
+        </div>
+      </div>
+      `
     }
   }
 };

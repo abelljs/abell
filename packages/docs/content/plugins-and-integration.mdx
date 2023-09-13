@@ -1,0 +1,48 @@
+import { Editor } from '../components/Editor.tsx';
+import { markdownIntegration } from '../utils/examples.ts';
+
+# Plugins & Integrations
+
+"How do I use Abell with ...?" This page will help you out!
+
+Abell's low-level API and internally using Vite as a bundler, helps it integrate with other super cool tools in the ecosystem.
+
+## With Vite Plugins
+
+One way to use something with Abell is to find a Vite Plugin to do that.
+
+Lets say you want to import markdown files in your abell project. You can use [vite-plugin-md-to-html](https://github.com/saurabhdaware/vite-plugin-md-to-html) or any markdown to html plugin of your choice.
+
+<Editor editorConfig={markdownIntegration} />
+
+## With MDX
+
+Fun fact: This page that you're reading is being rendered from mdx. Similar to above example of markdown, It uses `vite-plugin-jsx-to-html` plugin in combination with rollup's official (vite compatible) `@mdx-js/rollup` plugin.
+
+You can copy-paste this configuration and install plugins to start importing mdx files in your project.
+
+```sh
+npm i --save-dev vite-plugin-jsx-to-html @mdx-js/rollup
+```
+
+```ts
+// vite.config.ts
+import { defineConfig } from 'abell';
+
+export default defineConfig({
+  plugins: [
+    mdx(), // Turns MDX to React Component (JSX)
+    vitePluginJSXToHTML({ extensions: ['.mdx'] }) // Turns JSX to HTML
+  ]
+});
+```
+
+## With Frameworks
+
+You can use combination of vite plugins and curly braces of Abell `{{ }}` to render your favorite framework on build-time.
+
+You will find integration with most frameworks in [saurabhdaware/abell-integrations](https://github.com/saurabhdaware/abell-integrations/tree/main) repository
+
+- [Abell with React](https://github.com/saurabhdaware/abell-integrations/tree/main/with-react)
+- [Abell with Solid](https://github.com/saurabhdaware/abell-integrations/tree/main/with-solidjs)
+- [Abell with Vue](https://github.com/saurabhdaware/abell-integrations/tree/main/with-vue)

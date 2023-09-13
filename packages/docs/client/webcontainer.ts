@@ -3,6 +3,7 @@ import dedent from 'dedent';
 
 import './editor.scss';
 import { registerSyntaxHighlighter } from './registerSyntaxHighlighter.js';
+import type { EditorConfigObjType } from '../utils/examples.js';
 
 const hljs = registerSyntaxHighlighter();
 
@@ -117,13 +118,7 @@ let uncommittedPath = '';
 let isDevServerLoading = true;
 let devServerRetriesAttempted = 0;
 
-const initiateWebContainer = async (webcontainerData: {
-  files: Record<string, { file: { contents: string } }>;
-  activeFile?: string;
-  minHeight?: string;
-  showFileExplorer?: boolean;
-  output: Record<string, { screen: string }>;
-}) => {
+const initiateWebContainer = async (webcontainerData: EditorConfigObjType) => {
   const { files } = webcontainerData;
 
   if (webcontainerData.showFileExplorer === false) {
