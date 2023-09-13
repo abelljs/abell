@@ -2,7 +2,7 @@
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://github.com/abelljs/abell/assets/30949385/0452e85b-df57-47a3-891c-33068de5c0e2">
   <source media="(prefers-color-scheme: light)" srcset="https://github.com/abelljs/abell/assets/30949385/e9ea17d6-c248-4ef6-9803-fd058b131b4a">
-  <img width="512" height="200" alt="Abell Logo and Title" src="https://github.com/abelljs/abell/assets/30949385/0452e85b-df57-47a3-891c-33068de5c0e2">
+  <img width="512" alt="Abell Logo and Title" src="https://github.com/abelljs/abell/assets/30949385/0452e85b-df57-47a3-891c-33068de5c0e2">
 </picture>
 </p>
 
@@ -13,7 +13,7 @@
 <br/>
 
 
-A Low-Level, Framework Agnostic, 
+A Low-Level, Framework Agnostic, Highly Flexible Static-Site-Generator to help you build Static Sites without too much of learning curve.
 
 **Documentation:** https://abelljs.org 
 
