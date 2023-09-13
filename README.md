@@ -2,7 +2,7 @@
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://github.com/abelljs/abell/assets/30949385/0452e85b-df57-47a3-891c-33068de5c0e2">
   <source media="(prefers-color-scheme: light)" srcset="https://github.com/abelljs/abell/assets/30949385/e9ea17d6-c248-4ef6-9803-fd058b131b4a">
-  <img height="200" alt="Abell Logo and Title" src="https://github.com/abelljs/abell/assets/30949385/0452e85b-df57-47a3-891c-33068de5c0e2">
+  <img width="512" height="200" alt="Abell Logo and Title" src="https://github.com/abelljs/abell/assets/30949385/0452e85b-df57-47a3-891c-33068de5c0e2">
 </picture>
 </p>
 
@@ -12,15 +12,11 @@
 
 <br/>
 
-> **Warning**
->
-> This is not the latest abell code. You will find latest abell code in `main` branch. This is abell v1 code that is currently in development.
 
-A JavaScript based static-site-generator to help you create JSON, Markdown, or static-data based websites with minimal setup and using a syntax you almost already know.
+A Low-Level, Framework Agnostic, 
 
-**Documentation:** https://abelljs.org (v0 documentation)
+**Documentation:** https://abelljs.org 
 
-v1 documentation is in progress. Till then you can check out the example code here - https://stackblitz.com/edit/vitejs-vite-riynxn?file=package.json
 
 ## 📖 &nbsp; Create Abell Project
 
