@@ -1,0 +1,14 @@
+<section>
+<h2>Start with Starters</h2>
+</section>
+
+<style>
+section {
+  text-align: center;
+}
+
+h2 {
+  margin: 12px 0px 42px;
+}
+
+</style>

@@ -1,0 +1,110 @@
+{{
+  import { themes } from '../config';
+}}
+<section>
+  <h2>Get Started <br/>with Starters</h2>
+  {{
+    themes.map(theme => /* html */ `
+    <div class="theme-container shadow">
+      <img crossorigin="anonymous" alt="Cover image of ${theme.name}" style="width: 100%;" loading="lazy" src="${theme.cover}" />
+      <div class="theme-info">
+        <h3 class="theme-name">${theme.name}</h3>
+        <div>by ${theme.author}</div>
+        <div class="theme-links">
+          <a rel="noopener noreferrer" target="_blank" rel="noopener" href="${theme.preview}">Preview</a>
+          <a rel="noopener noreferrer" target="_blank" rel="noopener" href="${theme.github}">GitHub</a>
+          <hr style="margin: 10px 0px;"/>
+        </div>
+        <div class="theme-use">
+          <h4 style="margin: 0px 0px 4px 0px;">Use this Starter</h4>
+          <div class="theme-deploy">
+            <a rel="noopener noreferrer" target="_blank" href="https://app.netlify.com/start/deploy?repository=${theme.github}">Deploy with Netlify</a>
+            <a rel="noopener noreferrer" target="_blank" href="${theme.github}/generate">Generate on GitHub</a>
+          </div>
+          <div style="padding: 0px 0px;text-align: center">or</div> 
+          <div style="padding: 5px 0px;">Create new project locally with:</div>
+          <code style="display: block;word-spacing: 3px;font-size: unset">npx create-abell my-app --template ${theme.github.replace('https://github.com/', '')}</code>
+        </div>
+      </div>
+    </div>
+    `)
+  }}
+</section>
+
+<style>
+  section {
+    text-align: center;
+    display: flex;
+    gap: 42px;
+    align-items: center;
+    justify-content: space-around;
+    max-width: 1200px;
+  }
+
+  .theme-container {
+    text-align: left;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  a {
+    color: var(--blue-6);
+    text-decoration: none;
+  }
+
+  a:hover {
+    color: var(--blue-4);
+  }
+
+  .theme-container {
+    display: inline-block;
+    max-width: 350px;
+  }
+
+  .theme-container img {
+    border-bottom: 1px solid #eee;
+  }
+
+  .theme-info {
+    padding: 10px 10px 20px 10px;
+    background-color: #fff;
+    width: 100%;
+  }
+
+  .theme-info > .theme-name {
+    font-weight: bold;
+    padding: 5px 0px;
+    margin: 0px 0px;
+  }
+
+  .theme-links {
+    padding-top: 10px;
+  }
+
+  .theme-links > a {
+    margin-right: 10px;
+  }
+
+  .theme-deploy a {
+    display: inline-block;
+    padding: 1px;
+    margin: 0px 5px 0px 0px;
+  }
+
+  .theme-use {
+    font-size: var(--font-text-small);
+    padding: 4px 0px;
+  }
+
+  .theme-use code {
+    overflow-x: scroll;
+    white-space: nowrap;
+  }
+
+
+  @media (max-width: 768px) {
+    section {
+      flex-direction: column;
+    }
+  }
+</style>

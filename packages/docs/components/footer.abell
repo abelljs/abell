@@ -1,0 +1,117 @@
+<footer>
+  <div class="links display-flex">
+    <div class="flex-1">
+      <div class="footer-heading">Social</div>
+      <div class="link-container">
+        <a href="https://github.com/abelljs">GitHub</a>
+        <a href="https://twitter.com/AbellLand">Twitter @AbellLand</a>
+      </div>
+      <div class="footer-heading">Contributing</div>
+      <div class="link-container">
+        <a href="https://github.com/abelljs/abell/blob/main/CODE_OF_CONDUCT.md">Code of Conduct</a>
+        <a href="https://github.com/abelljs/abell/blob/one/CONTRIBUTING.md">Contributing Guide</a>
+      </div>
+    </div>
+    <div class="flex-1">
+      <div class="footer-heading">Channels</div>
+      <div class="link-container">
+        <a href="https://github.com/abelljs/abell/discussions">GitHub Discussions <i class="icon icon-external-link"></i></a>
+        <a href="https://discord.gg/ndsVpRG">
+          Discord Server <i class="icon icon-external-link"></i>
+        </a>
+        <a href="https://github.com/abelljs/abell/issues">GitHub Issues <i class="icon icon-external-link"></i></a>
+      </div>
+    </div>
+  </div>
+  <div class="icon-credits">
+    <div>
+      Icons from <a href="https://fontawesome.com/license" title="FontAwesome">FontAwesome</a>
+    </div>
+    <div>
+      Site Built with <a href="https://abelljs.org">Abell</a> by <a href="https://github.com/abelljs/abell-website/graphs/contributors">GitHub Contributors</a>
+    </div>
+  </div>
+  <div class="copyright-container">
+    Copyright © <span id="footer-year"></span> <a href="https://saurabhdaware.in">Saurabh Daware</a>.
+  </div>
+</footer>
+
+
+<style>
+  .copyright-container {
+    text-align: center;
+    font-size: .9rem;
+    padding: 20px;
+  }
+  .links {
+    padding: 40px 50px;
+    max-width: 900px;
+    margin: auto;
+  }
+  .links > .flex-1 a {
+    display: block;
+    padding: 2px 0px;
+    font-size: 1rem;
+  }
+
+  .links .link-container i.i {
+    font-size: .7rem;
+    position: relative;
+    top: -5px;
+  }
+
+  .footer-heading {
+    padding: 13px 0px 5px 0px;
+    font-size: .8rem;
+    color: #111;
+  }
+  .links .flex-1 {
+    padding: 20px;
+  }
+
+  .icon-credits {
+    font-size: .9rem;
+    text-align: center;
+  }
+
+  a {
+    color: var(--blue-6);
+    text-decoration: none;
+  }
+
+  a:hover {
+    color: var(--blue-4);
+  }
+
+
+
+  footer {
+    background-color: #f9f9f9;
+    margin-top: 100px;
+  }
+
+  @media (max-width: 768px) {
+    .links {
+      padding: 20px 10px;
+    }
+    .links > .flex-1 a {
+      padding: 5px 0px;
+      font-size: 0.9rem;
+    }
+
+    .icon-credits {
+      font-size: .8rem;
+      padding-left: 0px;
+      padding-right: 0px;
+    }
+
+    .copyright-container {
+      padding: 20px 20px;
+      font-size: 0.9rem;
+    }
+  }
+</style>
+
+<script>
+  document.querySelector('#footer-year').innerHTML = new Date().getFullYear();
+</script>

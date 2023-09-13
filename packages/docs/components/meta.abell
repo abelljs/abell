@@ -1,0 +1,48 @@
+{{
+  /** @declarations */
+  const color = "111111";
+  const font = "roboto";
+
+  const ogImage = 
+    props.template === 'docs'
+    ? `https://res.cloudinary.com/saurabhdaware/image/upload/c_scale,w_600/g_center,c_fit,e_colorize:50,co_rgb:${color},l_text:${font}_33_bold:${ encodeURIComponent(props.title.replace(/\,/g, "%2C").replace(/\//g, "%2F")) },r_0,w_300,y_0,x_90/v1694536800/abell/docs-og-2023.png` 
+    : `https://res.cloudinary.com/saurabhdaware/image/upload/v1694536721/abell/abell2023-og-landing-page.png`
+
+  const SITE_TITLE = `${props.title}${props.template === 'docs' ? ' | Abell - A Fast, Low-Level, Framework-Agnostic Static-Site-Generator for JavaScript Developers' : ''}`
+}}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<meta name="description" content="Abell - A Low-Level, Framework Agnostic, Vite Powered Static Site Generator for JavaScript Developers"/>
+<link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />
+
+<!-- OPEN GRAPH -->
+<meta property="og:type" content="website" />
+<meta property="og:title" content="{{ SITE_TITLE }}" />
+<meta name="og:description" content="Abell - A Low-Level, Framework Agnostic, Vite Powered Static Site Generator for JavaScript Developers"/>
+<meta property="og:url" content="https://abelljs.org" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:creator" content="@AbellLand"/>
+
+<meta property="og:image:secure_url" itemprop="image" content="{{ ogImage }}"/>
+<meta property="og:image" itemprop="image" content="{{ ogImage }}"/>
+<meta property="og:image:width" content="600" />
+<meta property="og:image:height" content="300" />
+<meta property="og:image:alt" content="OG image of Abell Docs that shows the title of the page Abell" />
+<meta property="og:description" content="Abell - A Low-Level, Framework Agnostic, Vite Powered Static Site Generator for JavaScript Developers" />
+<meta property="og:site_name" content="abelljs.org"/>
+<meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-125454191-5"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-125454191-5');
+</script>
+
+<link rel="stylesheet" href="./client/global.scss" />
+<title>{{ SITE_TITLE }}</title>

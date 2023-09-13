@@ -1,0 +1,17 @@
+{
+  "name": "ts-example",
+  "version": "0.0.1",
+  "description": "",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "abell dev",
+    "generate": "abell generate"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "abell": "^1.0.0-alpha.102"
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "name": "docs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "private": "true",
+  "scripts": {
+    "dev": "abell dev",
+    "abell:build": "pnpm --filter abell build",
+    "generate": "abell generate",
+    "generate:ci": "pnpm abell:build && pnpm install && pnpm generate",
+    "clear-cache": "abell clear-cache",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abelljs/abell-website.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/abelljs/abell-website/issues"
+  },
+  "homepage": "https://github.com/abelljs/abell-website#readme",
+  "dependencies": {
+    "@fontsource/inter": "^4.5.12",
+    "@mdx-js/rollup": "^2.1.5",
+    "@webcontainer/api": "^1.0.2",
+    "abell": "workspace:*",
+    "dedent": "^0.7.0",
+    "highlight.js": "^11.6.0",
+    "sass": "^1.56.1",
+    "vite-plugin-iso-import": "^0.1.3",
+    "vite-plugin-md-to-html": "^0.0.18",
+    "vite-plugin-mdx-to-html": "0.0.15-rollup-base.1"
+  },
+  "devDependencies": {
+    "@types/dedent": "^0.7.0",
+    "@types/node-fetch-cache": "^3.0.0",
+    "@types/react": "^18.0.24",
+    "@types/react-dom": "^18.0.8",
+    "node-fetch": "^3.2.10",
+    "node-fetch-cache": "^3.1.3",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  }
+}

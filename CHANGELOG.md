@@ -1,5 +1,12 @@
 # Changelog
 
+## v1.0.0-alpha.x `abell@next`
+
+### Breaking Changes
+
+- Component Tree structure changed
+- `{{}}` now prints empty string (earlier it used to print brackets)
+
 ## v0.10.3 `abell@latest`
 
 Exports `serve` function from main.

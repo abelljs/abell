@@ -1,66 +1,47 @@
 {
-  "name": "abell",
-  "version": "0.10.4",
+  "name": "abell-monorepo",
+  "version": "0.0.2-0",
   "description": "Abell is a static blog generator that generates blog in Vanilla JavaScript",
+  "private": "true",
   "funding": {
     "type": "patreon",
     "url": "https://patreon.com/saurabhdaware"
   },
-  "main": "src/index.js",
-  "bin": {
-    "abell": "bin/abell.js"
-  },
-  "scripts": {
-    "test:unit": "jest ./tests/",
-    "test:e2e": "jest ./examples/",
-    "test": "jest --silent",
-    "start": "cd examples/main && node ../../bin/abell.js build && serve dist",
-    "dev": "echo \"1. Execute 'npm link' \n2. 'cd examples/main'\n3. 'abell serve' \"",
-    "eslint": "eslint .",
-    "prettier": "prettier --write \"src/**/*.js\"",
-    "format": "npm run prettier",
-    "prepublishOnly": "npm run eslint && npm test"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/abelljs/abell.git"
-  },
-  "keywords": [
-    "blog",
-    "ssg",
-    "gatsby",
-    "jekyll",
-    "static",
-    "website",
-    "generator"
+  "workspaces": [
+    "packages/*"
   ],
-  "author": "saurabhdaware",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/abelljs/abell/issues"
-  },
-  "homepage": "https://abelljs.org",
-  "dependencies": {
-    "abell-renderer": "^0.4.2",
-    "chokidar": "^3.4.0",
-    "commander": "^5.0.0",
-    "remarkable": "^2.0.0",
-    "ws": "^7.3.0"
+  "scripts": {
+    "// Package Specific Commands": "dev servers, tests, etc",
+    "abell": "pnpm --filter abell dev",
+    "abell:build": "pnpm --filter abell build",
+    "abell:test": "cd packages/abell && pnpm test",
+    "abell:test:once": "pnpm --filter abell test:once",
+    "create-abell": "pnpm --filter create-abell scaffold",
+    "docs:dev": "pnpm abell:build && pnpm --filter docs dev",
+    "docs:generate": "pnpm --filter docs generate",
+    "docs:generate:ci": "pnpm abell:build && pnpm install && pnpm docs:generate",
+    "packages:test:once": "pnpm --filter \"./packages/**\" test:once",
+    "playground:test": "cd playground && vitest",
+    "playground:test:once": "pnpm --filter \"./playground/**\" test:once",
+    "test:once": "pnpm abell:build && pnpm playground:test:once && pnpm packages:test:once",
+    "// Linting Stuff Starts from Here": "you mostly won't have to care about these",
+    "eslint": "eslint \"packages/**/**/**/*.{ts,js}\"",
+    "prettier": "prettier --write \"packages/**/**/**/*.[jt]s\" \"playground/**/**/**/*.[jt]s\"",
+    "format": "npm run prettier",
+    "prepublishOnly": "echo \"NOT FROM THE ROOT!! sorry for caps hehe\" && fail"
   },
   "devDependencies": {
-    "cheerio": "^1.0.0-rc.3",
-    "eslint": "^7.0.0",
+    "@types/jsdom": "^20.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.5.0",
+    "@typescript-eslint/parser": "^6.5.0",
+    "eslint": "^8.48.0",
     "eslint-config-google": "^0.14.0",
-    "eslint-config-prettier": "^6.11.0",
-    "eslint-plugin-prettier": "^3.1.3",
-    "husky": "^4.2.5",
-    "jest": "^26.6.1",
-    "node-fetch": "^2.6.0",
-    "prettier": "^2.0.5"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run prettier && eslint . --fix && npm run eslint"
-    }
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.0",
+    "jsdom": "^20.0.1",
+    "nodemon": "^2.0.16",
+    "prettier": "^3.0.3",
+    "typescript": "^5.1.6",
+    "vitest": "^0.34.1"
   }
 }

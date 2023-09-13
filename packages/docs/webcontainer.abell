@@ -1,0 +1,34 @@
+<html>
+<head>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    html, 
+    body {
+      margin: 0px;
+    }
+  </style>
+</head>
+<body>
+  <div class="webcontainer">
+    <div class="editor">
+      <div>
+        <ul class="file-explorer">
+        </ul>
+      </div>
+      <div class="code-display"></div>
+      <div class="code-preview">
+        <div class="url-bar hide">
+          <select>
+          </select>
+        </div>
+        <div class="temporary-preview"></div>
+        <div class="terminal-output hide-animated"></div>
+        <iframe class="loading"></iframe>
+      </div>
+    </div>
+  </div>
+  <script src="./client/webcontainer.ts" type="module"></script>
+</body>
+</html>

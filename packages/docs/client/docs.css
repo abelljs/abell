@@ -1,0 +1,282 @@
+html, body, .docs-page-container {
+  min-height: 100%;
+}
+
+body {
+  font-size: var(--font-text-docs);
+}
+
+header {
+  border-right: 1px solid #ddd;
+  height: 100% !important;
+  width: 250px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #fff;
+}
+
+.overlay {
+  display: none;
+}
+
+.header-placeholder {
+  width: 250px;
+}
+
+nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0px;
+}
+
+nav li > a {
+  padding: 4px 32px;
+  display: block;
+  text-decoration: none;
+  font-size: 1.05rem;
+  color: #333;
+}
+
+nav a.active, nav a:hover {
+  color: var(--blue-5);
+  transition: color 0.2s ease;
+}
+
+nav a.active {
+  font-weight: bold;
+}
+
+.brand-title {
+  text-decoration: none;
+  font-weight: bold;
+  color: #222;
+  display: flex;
+  align-content: center;
+  align-items: center;
+  padding: 24px 32px;
+  font-size: 1.6rem;
+}
+
+.brand-title img {
+  margin-right: 8px;
+}
+
+.content {
+  width: 100%;
+  flex: 1;
+}
+
+.content-padding {
+  padding: 50px 80px;
+  max-width: 1100px;
+  margin: auto;
+}
+
+h1, h2, h3 {
+  font-weight: 600;
+}
+
+h1 {
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+}
+
+h1 + p {
+  font-size: 1.2rem;
+}
+
+h2 {
+  font-size: 1.5rem;
+  margin: 0px;
+  padding: 2rem 0rem 0rem 0rem;
+}
+
+h2 + p, h3 + p {
+  margin-top: 0px;
+}
+
+h2, h3 {
+  position: relative;
+}
+
+h2 a, h3 a {
+  position: absolute;
+  left: -15px;
+  opacity: 0;
+  transition: all .1s ease-in;
+  padding: 0px 12px;
+}
+
+h2:hover a, h3:hover a {
+  left: -32px;
+  opacity: 1;
+  transition: all .1s ease-out;
+}
+
+h3 {
+  font-size: 1.5rem;
+  margin: 0px;
+  padding: 2.5rem 0rem 1rem 0rem;
+
+}
+
+.or {
+  text-align: center;
+  padding: 2rem 0px 2rem 0px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  opacity: .4;
+}
+
+a {
+  color: var(--blue-6);
+  text-decoration: none;
+}
+
+a:not(.brand-title):hover {
+  color: var(--blue-4);
+}
+
+.next-prev-buttons {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 48px 0px;
+}
+
+.next-prev-buttons a {
+  padding: 8px 24px;
+  flex: 1;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  transition: all .3s ease;
+}
+
+.next-prev-buttons a:hover {
+  border: 1px solid var(--blue-5);
+}
+
+.next-prev-buttons a .uncolored-text {
+  color: #111;
+  font-size: var(--font-text-small);
+}
+
+.next-button {
+  text-align: right;
+}
+
+button.hamburger-menu {
+  position: fixed;
+  z-index: 9999;
+  top: 12px;
+  right: 12px;
+  border: 1px solid var(--blue-9);
+  padding: 12px;
+  filter: blur(400%);
+  border-radius: 4px;
+  background-color: rgba(255, 255, 255, .15);  
+  backdrop-filter: blur(3px);
+  box-shadow: 
+    0 1px 2px rgba(0,0,0,0.07), 
+    0 2px 4px rgba(0,0,0,0.07);
+}
+
+button.hamburger-menu .icon {
+  width: 14px;
+  height: 14px;
+  color: var(--blue-5);
+}
+
+.submenu {
+  background-color: #f9f9f9;
+}
+
+.submenu a {
+  font-size: 0.9rem;
+  line-height: 1.6rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+
+.submenu a div {
+  min-width: 12px;
+  position: relative;
+}
+
+.submenu a .icon-check {
+  display: none;
+}
+
+.submenu a .dash {
+  display: inline-block;
+}
+
+.submenu a.done .icon-check {
+  display: inline-block;
+  color: var(--blue-5);
+}
+
+.submenu a.done .dash {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .header-placeholder {
+    display: none;
+  }
+
+  .brand-title {
+    font-size: 1.4rem;
+    padding: 24px 32px 18px;
+  }
+
+  .brand-title img {
+    width: 28px
+  }
+
+  header {
+    left: -100%;
+    transition: left .3s ease-in;
+    z-index: 9999;
+    border-right: none;
+    box-shadow: 
+      0 1px 2px rgba(0,0,0,0.1), 
+      0 4px 8px rgba(0,0,0,0.1);
+  }
+
+  .content-padding {
+    padding: 50px 24px;
+  }
+
+  header.show {
+    left: 0%;
+    transition: left .2s ease-out;
+  }
+
+  header + .overlay {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    background-color: #fff5;
+    display: none;
+    z-index: 999;
+    backdrop-filter: blur(1px);
+  }
+
+  header.show + .overlay {
+    display: block;
+  }
+}
+
+@media (max-width: 1400px) {
+  .content-padding {
+    max-width: 1400px;
+  }
+}

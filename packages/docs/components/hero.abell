@@ -1,0 +1,133 @@
+<section>
+  <div class="abell-heading-container">
+    <div class="heading-content">
+      <h1>A Static-Site-Generator for JavaScript Developers</h1>
+      <p>Abell is low-level, highly flexible, framework-agnostic, Vite-powered Static-Site-Generator for building fast and zero-js by default websites</p>
+      <div class="buttons-container">
+        <a href="/getting-started" class="button-primary">Get Started</a>
+        <div class="npx-command button-height hide-mobile">
+          <code>npx create-abell</code>
+          <span>
+            <button title="Copy Command" aria-label="Copy npx create-abell command" data-copydata="npx create-abell">
+              <i class="icon icon-copy"></i>
+              <i class="icon icon-check"></i>
+            </button>
+          </span>
+        </div> 
+      </div>
+    </div>
+  </div>
+  <img class="abs-abell-logo" width="600" src="/logos/abell-logo.svg" alt="" />
+</section>
+
+<style>
+section {
+  padding-top: 80px;
+  padding-bottom: 120px;
+  position: relative;
+  width: 100%;
+  overflow-x: visible;
+}
+
+.heading-content {
+  max-width: 830px;
+}
+
+.heading-content p {
+  text-shadow: 0 0 6px #fff3, 0 0 8px #fff8;
+}
+
+.abs-abell-logo {
+  position: absolute;
+  top: 80px;
+  right: -50px;
+  filter: blur(1.4rem) contrast(90%);
+  z-index: -1;
+}
+
+h1 {
+  font-size: 4rem;
+  font-weight: 800;
+  margin: 64px 0px 0px;
+  line-height: 5.2rem;
+  text-shadow: 0 0 3px #fff3, 0 0 8px #fff8;
+}
+
+.buttons-container {
+  padding: 24px 0px;
+}
+
+
+.npx-command {
+  background-color: white;
+  border: 1px solid var(--primary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 0px 20px;
+  border-radius: 4px;
+}
+
+.npx-command code {
+  padding: 0px;
+  background-color: inherit;
+}
+
+.npx-command button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  align-self: center;
+  padding: 0px;
+}
+
+.npx-command .icon {
+  height: 14px;
+  width: 14px;
+}
+
+.npx-command button .icon-check {
+  display: none;
+}
+.npx-command button .icon-copy {
+  display: block;
+}
+.npx-command button.copied .icon-check {
+  display: block;
+}
+.npx-command button.copied .icon-copy {
+  display: none;
+}
+.npx-command button:hover .icon {
+  color: var(--blue-5);
+}
+
+
+.buttons-container {
+  display: flex;
+  align-items: stretch;
+  gap: 14px;
+}
+
+
+@media (max-width: 768px) {
+  section {
+    padding: 12px 24px 24px;
+  }
+
+  h1 {
+    font-size: 2.6rem;
+    margin: 50px 0px 0px;
+    line-height: 3.2rem;
+  }
+
+  .abs-abell-logo {
+    width: 200px;
+    position: absolute;
+    bottom: 0px;
+    right: -50px;
+    filter: blur(.5rem) contrast(90%);
+  }
+}
+</style>

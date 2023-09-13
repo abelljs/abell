@@ -1,0 +1,22 @@
+{{
+  import navbar from './_components/navbar.abell';
+  import globalMeta from './_components/global.meta.abell';
+}}
+<html>
+<head>
+  {{ globalMeta }}
+</head>
+<body>
+  {{ navbar({ activeRoute: '/' }) }}
+  <main>
+    <div class="container">
+      <img class="brand" src="/abell-logo.svg" alt="abell logo" width="200" height="200" />
+      <h1>Abell Default Template</h1>
+      <p class="subtext">Welcome to Abell's Default Template 🚀</p>
+      <a class="button primary" href="https://abelljs.org/" target="_blank">View Documentation</a>
+      &nbsp;<button class="button secondary" id="counter-button">Counter <span id="count">0</span></button>
+    </div>
+  </main>
+  <script src="./client-assets/index-client.js" type="module"></script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+{{
+  import headMeta from './components/meta.abell';
+  import navbar from './components/navbar.abell';
+  import hero from './components/hero.abell';
+  import sponsors from './components/sponsors.abell';
+  import starters from './components/starters.abell';
+  import noConfig from './components/no-config.abell';
+  import diyRouting from './components/diy-routing.abell';
+  import allVite from './components/all-vite.abell';
+  import footer from './components/footer.abell';
+}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {{ 
+    headMeta({ 
+      title: 'Abell - A Low Level, Framework Agnostic, Static Site Generator for JavaScript Developers' 
+    })
+  }}
+</head>
+<body>
+  {{ navbar }}
+  {{ hero }}
+  {{ starters }}
+  {{ sponsors({ sponsors: props.sponsors }) }}
+  {{ noConfig }}
+  {{ diyRouting }}
+  {{ allVite }}
+  {{ footer }}
+  <script src="./client/main.ts" type="module"></script>
+  <script type="module">
+  import '@fontsource/inter/700.css';
+  </script>
+</body>
+</html>

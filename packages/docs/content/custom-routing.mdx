@@ -1,0 +1,51 @@
+import { routingExample, blogRoutingExample } from '../utils/examples.ts';
+import editor from '../components/editor.abell';
+
+# Custom Routing
+
+Want to build custom blog pages? or just hate file-system routing? this page is for you!
+
+## Why Custom Routing?
+
+Abell by default enables a file-system routing to get you started quickly. However there are multiple cases where your routing logic might be far too complex (e.g. building blog pages from a route configuration object), or maybe you just don't like the filesystem routing.
+
+Abell gives you an option to opt-out of this file-system-based routing behaviour and go wild with your routing needs 🫡
+
+## The `makeRoutes` API to the Rescue
+
+With Abell, you can define a `entry.build.ts` file that exports a function called `makeRoutes`. In this you define a path and HTML string that it should return.
+
+Fun part?? This lets you return ANY html string HOWEVER you want. Which means, I can also opt-out of `.abell` files themselves and use Abell just as a router 🤯
+
+Checkout the `/about` route below which renders page by returning raw HTML
+
+<div dangerouslySetInnerHTML={{ __html: editor(routingExample) }} />
+
+Giving Routing as a JavaScript logic also enables you to do fun dynamic things before creating routes such as creating new routes for your blog
+
+<div dangerouslySetInnerHTML={{ __html: editor(blogRoutingExample) }} />
+
+## API Props Definitions
+
+```ts
+type Route = {
+  /** path on which you want your page to render */
+  path: string;
+
+  /** render function that expects raw HTML string in return */
+  render: () => string;
+
+  /** Configuration Options for Route  */
+  routeOptions?: {
+    /**
+     * option to create a `<path>.html` file
+     * or create directory with index.html inside it
+     *
+     * @default '[route].html'
+     */
+    outputPathPattern?: '[route].html' | '[route]/index.html';
+  };
+};
+
+export const makeRoutes = () => Route[];
+```

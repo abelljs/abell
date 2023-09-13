@@ -1,0 +1,13 @@
+<footer>
+  <ul>
+    <li><a href="/">Footer Home</a></li>
+    <li><a href="/about">Footer About</a></li>
+  </ul>
+</footer>
+
+<style>
+ul {
+  background-color: red;
+  color: white;
+}
+</style>

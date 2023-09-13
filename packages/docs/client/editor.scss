@@ -1,0 +1,232 @@
+* {
+  box-sizing: border-box;
+}
+
+.editor {
+  background-color: #f7f7f7;
+  display: flex;
+  color: var(--blue-1);
+  font-size: 1rem;
+  --blue-5: #2E3ECC;
+  overflow: hidden;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+
+
+  .flex {
+    display: flex;
+  }
+  .flex.row {
+    flex-direction: row;
+  }
+  .flex.align-center {
+    align-items: center;
+  }
+
+ 
+  code {
+    font-family: 'Menlo', monospace, Courier;
+    background-color: var(--blue-10);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: smaller;
+    outline: none;
+    border: 1px solid transparent;
+    min-height: 100%;
+  }
+
+  code:focus {
+    border: 1px solid var(--blue-5);
+  }
+
+  pre {
+    margin: 0px;
+  }
+
+  pre > code {
+    line-height: 2rem;
+    font-size: 1rem;
+    padding: 24px 24px !important;
+    display: block;
+    background-color: #fff;
+  }
+  
+
+  
+  button {
+    background-color: transparent;
+    color: inherit;
+    border: none;
+    font-size: 1rem;
+    padding: 8px 12px;
+    cursor: pointer;
+    display: block;
+    width: 100%;
+    opacity: 0.5;
+
+    @media (max-width: 768px) {
+      border-left: none;
+      border-top: 2px solid transparent;
+    }
+  }
+  
+  button:hover {
+    background-color: #fff;
+    opacity: 0.6;
+  }
+  
+  button.active {
+    background-color: #fff;
+    border-left: 2px solid var(--blue-5);
+    opacity: 1;
+
+    @media (max-width: 768px) {
+      border-left: none;
+      border-top: 2px solid var(--blue-5);
+    }
+  }
+  
+  .file-explorer {
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+    padding: 12px 0px;
+    margin: 0px;
+
+    @media (max-width: 768px) {
+      padding: 0px;
+      flex-direction: row;
+      overflow-x: auto;
+      flex-wrap: nowrap;
+      width: 100%
+    }
+  }
+
+
+  .code-display {
+    background-color: #fff;
+    width: 700px;
+    overflow: auto;
+    height: 100%;
+
+    @media (max-width: 768px) {
+      width: 100%;
+      min-height: 300px;
+    }
+  }
+  .code-display > div {
+    display: none;
+  }
+  .code-display > div.show {
+    display: block;
+  }
+  
+  .code-preview {
+    width: 300px;
+    background-color: #fff;
+    color: #111;
+    border-left: 3px solid #f7f7f7;
+    font-size: 1rem;
+    position: relative;
+
+    @media (max-width: 768px) {
+      border-top: 3px solid #f7f7f7;
+      border-left: none;
+      width: 100%;
+      height: 300px;
+    }
+
+    .temporary-preview {
+      margin: 8px;
+    }
+
+    .terminal-output {
+      position: absolute;
+      bottom: 0px;
+      left: 0px;
+      width: 100%;
+      border-top: 3px solid #f7f7f7;
+      background-color: #fff;
+      z-index: 99;
+      padding: 8px 6px;
+      transform: translateY(0%);
+      transition: transform .3s ease;
+      font-family: Courier New;
+      font-size: 1.1rem;
+    }
+
+    .terminal-output button {
+      padding: 4px 12px;
+      background-color: #eee;
+      border-radius: 4px;
+      width: unset;
+      opacity: 1;
+      color: #555;
+      margin: 4px 0px;
+    }
+
+    .terminal-output button:hover {
+      background-color: #e9e9e9;
+      color: #666;
+    }
+
+    .terminal-output.hide-animated {
+      transform: translateY(100%);
+      transition: transform .2s ease;
+    }
+
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+
+      &.loading {
+        display: none;
+      }
+
+      @media (max-width: 768px) {
+        iframe {
+          height: 200px;
+        }
+      }
+    }
+  }
+  
+  .code-preview .url-bar {
+    border-bottom: 2px solid #f7f7f7;
+  }
+  
+  .code-preview .url-bar > select {
+    padding: 6px 0px ;
+    font-size: 0.9rem;
+    width: 100%;
+    border: 4px solid transparent;
+    color: #666;
+  }
+  
+  .code-preview .screen p {
+    padding-bottom: 0px 0px;
+    margin: 0px;
+  }
+  
+  .code-preview .screen {
+    padding: 24px 24px;
+  }
+  
+  .code-preview .screen > div {
+    display: none;
+  }
+  .code-preview .screen > div.show {
+    display: block;
+  }
+  
+  ul.file-explorer {
+    list-style: none;
+  }
+
+  .hide {
+    display: none;
+  }
+}

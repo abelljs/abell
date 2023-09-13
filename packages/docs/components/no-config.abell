@@ -1,0 +1,34 @@
+{{
+  import editor from './editor.abell';
+  import { noConfigSetup } from '../utils/examples.ts';
+}}
+
+<section>
+  <h2>Start Projects with Zero Configurations</h2>
+  <p>Don't like a lot of boilerplate and configurations? Start with just 1 file with Abell 🎉</p>
+  <div class="start-project-steps">
+    <ol>
+      <li><code>npm install --save-dev abell@next</code></li>
+      <li>Create <code>index.abell</code> on root</li>
+      <li><code>npx abell dev</code> and your dev-server will start running 🥳</li>
+    </ol>
+  </div>
+  {{ editor(noConfigSetup) }}
+</section>
+
+<style>
+h2 {
+  margin: 0px;
+}
+
+p {
+  padding: 24px 0px 12px;
+}
+.start-project-steps {
+  padding: 0px 0px 24px 0px;
+}
+
+ol {
+  line-height: 2.2rem;
+}
+</style>

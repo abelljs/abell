@@ -1,0 +1,37 @@
+import { noConfigSetup } from '../utils/examples.ts';
+import editor from '../components/editor.abell';
+import { NoteBlock, Highlight } from '../components/mdxUtils.tsx';
+
+# Getting Started
+
+<NoteBlock title="Compatibility Note">
+
+- Abell v1 requires [Node.js 16+](https://nodejs.org)
+- Syntax Highlighting: you can check out [Abell Language Features VSCode Extension](https://marketplace.visualstudio.com/items?itemName=saurabh.abell-language-features)
+
+</NoteBlock>
+
+## Scaffold Project with CLI
+
+Use **`create-abell`** package to start a project with boilerplate
+
+```shell
+npx create-abell my-abell-site
+```
+
+## Start with Zero Config Setup
+
+Don't like boilerplates? You just need 1 file to run Abell project!
+
+1. `npm install --save-dev abell@next`
+2. Create `index.abell` on root
+3. `npx abell dev` and your dev-server will start running 🥳
+
+<div dangerouslySetInnerHTML={{ __html: editor(noConfigSetup) }} />
+
+You can add `abell dev` and `abell generate` scripts in your package.json to simplify
+running commands (check `package.json` file in above example)
+
+## Community
+
+Got stuck somewhere? Feel free to ask for help at [GitHub Discussions](https://github.com/abelljs/abell/discussions) or [Discord Channel](https://discord.gg/ndsVpRG)

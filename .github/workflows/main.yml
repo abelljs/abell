@@ -3,11 +3,7 @@
 
 name: Tests and ESLint
 
-on:
-  push:
-    branches: [main, 'tests-refactor']
-  pull_request:
-    branches: [main]
+on: push
 
 jobs:
   test:
@@ -15,26 +11,35 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [10.x, 12.x]
-        os: ['windows-latest', 'ubuntu-latest', 'macos-latest']
+        node-version: [18.x]
+        os: ['macos-latest', 'windows-latest']
 
     steps:
-      - uses: actions/checkout@v2
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node-version }}
-      - run: npm ci
-      - run: npm test
+      - name: Checkout
+        uses: actions/checkout@v3
 
-  lint:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v2
-      - name: ESLint
-        uses: actions/setup-node@v1
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2.2.4
         with:
-          node-version: 10
-      - run: npm ci
-      - run: npm run eslint
+          version: 7.14.0
+
+      - name: Set node version to ${{ matrix.node_version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node_version }}
+          cache: 'pnpm'
+
+      - name: Install deps
+        run: pnpm install
+
+      - name: Build Abell
+        run: pnpm --filter abell build
+
+      - name: Link abell deps
+        run: pnpm install
+
+      - name: Run All Tests
+        run: pnpm run test:once
+
+      - name: Run ESLint
+        run: pnpm run eslint

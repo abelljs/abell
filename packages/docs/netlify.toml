@@ -1,0 +1,21 @@
+[[headers]]
+for = "/*"
+[headers.values]
+Cross-Origin-Embedder-Policy = "require-corp"
+Cross-Origin-Opener-Policy = "same-origin"
+
+[build]
+command = "npm run generate:ci"
+publish = "dist"
+
+[[redirects]]
+from = "/docs"
+to = "/getting-started"
+
+[[redirects]]
+from = "/new"
+to = "https://codesandbox.io/s/abell-playground-wcdq2"
+
+[[redirects]]
+from = "/tutorial/create-portfolio"
+to = "/tutorial/"

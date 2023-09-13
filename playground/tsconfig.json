@@ -1,0 +1,13 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    /* Basic Options */
+    "outDir": "dist",
+    "rootDir": ".",
+    "module": "es2020",
+    "types": ["abell/types"],
+    "declaration": false
+  },
+  "include": ["."],
+  "exclude": ["node_modules", "dist"]
+}

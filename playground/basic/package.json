@@ -1,0 +1,19 @@
+{
+  "name": "basic",
+  "version": "1.0.0",
+  "private": "true",
+  "description": "",
+  "type": "module",
+  "scripts": {
+    "dev": "abell --version && abell dev",
+    "test": "vitest",
+    "test:once": "vitest run",
+    "generate": "abell generate"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "abell": "workspace:*"
+  }
+}
