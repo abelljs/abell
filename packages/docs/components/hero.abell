@@ -5,7 +5,7 @@
       <p>Abell is low-level, highly flexible, framework-agnostic, Vite-powered Static-Site-Generator for building fast
         and zero-js by default websites</p>
       <div class="buttons-container">
-        <a href="/getting-started" class="button-primary">Get Started</a>
+        <a href="/docs/getting-started" class="button-primary">Get Started</a>
         <div class="npx-command button-height hide-mobile">
           <code>npx create-abell</code>
           <span>

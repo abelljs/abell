@@ -15,22 +15,22 @@ import pluginsAndIntegration from './content/plugins-and-integration.mdx';
 // Docs Routes
 const docsPaths = [
   {
-    path: '/getting-started',
+    path: '/docs/getting-started',
     title: 'Getting Started',
     content: gettingStartedContent
   },
   {
-    path: '/syntax-guide',
+    path: '/docs/syntax-guide',
     title: 'Syntax Guide',
     content: syntaxGuide
   },
   {
-    path: '/custom-routing',
+    path: '/docs/custom-routing',
     title: 'Custom Routing',
     content: customRouting
   },
   {
-    path: '/plugins-and-integrations',
+    path: '/docs/plugins-and-integrations',
     title: 'Plugins & Integrations',
     content: pluginsAndIntegration
   }

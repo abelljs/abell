@@ -13,7 +13,7 @@
       template: 'docs'
     })
   }}
-  <link rel="stylesheet" href="./client/docs.css" />
+  <link rel="stylesheet" href="/client/docs.css" />
 </head>
 
 <body>
@@ -87,8 +87,8 @@
       {{ footer }}
     </div>
   </div>
-  <script src="./client/main.ts" type="module"></script>
-  <script src="./client/docs.ts" type="module"></script>
+  <script src="/client/main.ts" type="module"></script>
+  <script src="/client/docs.ts" type="module"></script>
 </body>
 
 </html>

@@ -4,7 +4,7 @@
     <span>Abell <!-- <small style="color: #777;">v1</small> --></span>
   </a>
   <nav>
-    <a href="/getting-started">Documentation</a>
+    <a href="/docs/getting-started">Documentation</a>
     <a target="_blank" href="https://github.com/abelljs/abell">GitHub <i class="icon icon-external-link"></i></a>
   </nav>
 </header>

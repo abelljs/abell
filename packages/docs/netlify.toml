@@ -9,13 +9,33 @@ command = "npm run generate:ci"
 publish = "dist"
 
 [[redirects]]
+from = "/getting-started"
+to = "/docs/getting-started"
+
+[[redirects]]
+from = "/syntax-guide"
+to = "/docs/syntax-guide"
+
+[[redirects]]
+from = "/custom-routing"
+to = "/docs/custom-routing"
+
+[[redirects]]
+from = "/plugins-and-integrations"
+to = "/docs/plugins-and-integrations"
+
+[[redirects]]
 from = "/docs"
-to = "/getting-started"
+to = "/docs/getting-started"
 
 [[redirects]]
 from = "/new"
-to = "https://codesandbox.io/s/abell-playground-wcdq2"
+to = "https://pr.new/github.com/saurabhdaware/abell-starter"
 
 [[redirects]]
 from = "/tutorial/create-portfolio"
-to = "/tutorial/"
+to = "/docs/getting-started"
+
+[[redirects]]
+from = "/tutorial"
+to = "/docs/getting-started"

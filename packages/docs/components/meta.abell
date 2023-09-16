@@ -47,5 +47,5 @@
   gtag('config', 'UA-125454191-5');
 </script>
 
-<link rel="stylesheet" href="./client/global.scss" />
+<link rel="stylesheet" href="/client/global.scss" />
 <title>{{ SITE_TITLE }}</title>

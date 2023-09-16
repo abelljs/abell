@@ -8,8 +8,8 @@
       </div>
       <div class="footer-heading">Contributing</div>
       <div class="link-container">
-        <a href="https://github.com/abelljs/abell/blob/main/CODE_OF_CONDUCT.md">Code of Conduct</a>
-        <a href="https://github.com/abelljs/abell/blob/one/CONTRIBUTING.md">Contributing Guide</a>
+        <a href="https://github.com/abelljs/abell/tree/main/CODE_OF_CONDUCT.md">Code of Conduct</a>
+        <a href="https://github.com/abelljs/abell/tree/main/CONTRIBUTING.md">Contributing Guide</a>
       </div>
     </div>
     <div class="flex-1">
