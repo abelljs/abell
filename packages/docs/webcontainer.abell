@@ -32,7 +32,7 @@
       </div>
     </div>
   </div>
-  <script src="./client/webcontainer.ts" type="module"></script>
+  <script src="/client/webcontainer.ts" type="module"></script>
 </body>
 
 </html>

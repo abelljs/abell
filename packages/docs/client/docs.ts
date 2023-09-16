@@ -1,5 +1,8 @@
 import 'highlight.js/styles/github.css';
 
+// @ts-expect-error: defined in main.ts
+window.hljs.highlightAll();
+
 // Handle mobile ham menu
 const hamburgerMenu =
   document.querySelector<HTMLButtonElement>('.hamburger-menu');

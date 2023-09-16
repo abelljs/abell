@@ -1,9 +1,6 @@
 /* eslint-disable max-len */
 import dedent from 'dedent';
 import { EXAMPLES_ABELL_VERSION } from '../config';
-import { registerSyntaxHighlighter } from '../client/registerSyntaxHighlighter.js';
-
-const hljs = registerSyntaxHighlighter();
 
 export type EditorConfigObjType = {
   files: Record<string, { file: { contents: string } }>;
@@ -13,37 +10,7 @@ export type EditorConfigObjType = {
   output: Record<string, { screen: string }>;
 };
 
-const withHighlighting = (config: EditorConfigObjType): EditorConfigObjType => {
-  const files: EditorConfigObjType['files'] = Object.fromEntries(
-    Object.entries(config.files).map(([filename, fileObj]) => {
-      let highlightedCode = fileObj.file.contents;
-      try {
-        highlightedCode = hljs.highlight(fileObj.file.contents, {
-          language: filename.slice(filename.lastIndexOf('.') + 1)
-        }).value;
-      } catch (err) {
-        console.log(err);
-        highlightedCode = fileObj.file.contents;
-      }
-
-      return [
-        filename,
-        {
-          file: {
-            contents: highlightedCode
-          }
-        }
-      ];
-    })
-  );
-
-  return {
-    ...config,
-    files
-  };
-};
-
-export const noConfigSetup = withHighlighting({
+export const noConfigSetup = {
   files: {
     'index.abell': {
       file: {
@@ -79,15 +46,16 @@ export const noConfigSetup = withHighlighting({
     }
   },
   minHeight: '400px',
+  showURLBar: false,
   activeFile: 'index.abell',
   output: {
     '/': {
       screen: 'Hello, WORLD 🌻'
     }
   }
-});
+};
 
-export const loopsAndConditions = withHighlighting({
+export const loopsAndConditions = {
   files: {
     'index.abell': {
       file: {
@@ -132,6 +100,7 @@ export const loopsAndConditions = withHighlighting({
     }
   },
   minHeight: '570px',
+  showURLBar: false,
   showFileExplorer: false,
   activeFile: 'index.abell',
   output: {
@@ -145,9 +114,9 @@ export const loopsAndConditions = withHighlighting({
       `
     }
   }
-});
+};
 
-export const immediatelyInvokedFunctions = withHighlighting({
+export const immediatelyInvokedFunctions = {
   files: {
     'index.abell': {
       file: {
@@ -191,6 +160,7 @@ export const immediatelyInvokedFunctions = withHighlighting({
     }
   },
   minHeight: '550px',
+  showURLBar: false,
   showFileExplorer: false,
   activeFile: 'index.abell',
   output: {
@@ -198,9 +168,9 @@ export const immediatelyInvokedFunctions = withHighlighting({
       screen: `Array contains <b>apple</b>!! 🍎`
     }
   }
-});
+};
 
-export const componentsUsage = withHighlighting({
+export const componentsUsage = {
   files: {
     'global.css': {
       file: {
@@ -344,6 +314,7 @@ export const componentsUsage = withHighlighting({
     }
   },
   minHeight: '550px',
+  showURLBar: true,
   showFileExplorer: true,
   activeFile: 'index.abell',
   output: {
@@ -418,9 +389,9 @@ export const componentsUsage = withHighlighting({
       `
     }
   }
-});
+};
 
-export const allVite = withHighlighting({
+export const allVite = {
   files: {
     'Docs.mdx': {
       file: {
@@ -492,9 +463,9 @@ export const allVite = withHighlighting({
         "<h1>Hello from MDX!!</h1><p>With Abell, you can use the existing Vite plugins!! There is nothing called <code>abell.config.ts</code>, it's just vite.config.ts 🥳</p>"
     }
   }
-});
+};
 
-export const routingExample = withHighlighting({
+export const routingExample = {
   files: {
     'index.abell': {
       file: {
@@ -547,6 +518,7 @@ export const routingExample = withHighlighting({
   },
   activeFile: 'entry.build.ts',
   minHeight: '640px',
+  showURLBar: true,
   output: {
     '/': {
       screen: 'Hello from Index Page!!'
@@ -555,9 +527,9 @@ export const routingExample = withHighlighting({
       screen: 'We can return <b>any HTML</b> string here'
     }
   }
-});
+};
 
-export const markdownIntegration = withHighlighting({
+export const markdownIntegration = {
   files: {
     'index.abell': {
       file: {
@@ -640,6 +612,7 @@ export const markdownIntegration = withHighlighting({
   },
   activeFile: 'index.abell',
   minHeight: '520px',
+  showURLBar: true,
   output: {
     '/': {
       screen: `
@@ -677,9 +650,9 @@ export const markdownIntegration = withHighlighting({
       `
     }
   }
-});
+};
 
-export const blogRoutingExample = withHighlighting({
+export const blogRoutingExample = {
   files: {
     'entry.build.ts': {
       file: {
@@ -807,6 +780,7 @@ export const blogRoutingExample = withHighlighting({
   },
   activeFile: 'entry.build.ts',
   minHeight: '640px',
+  showURLBar: true,
   output: {
     '/': {
       screen: `
@@ -828,4 +802,4 @@ export const blogRoutingExample = withHighlighting({
       `
     }
   }
-});
+};

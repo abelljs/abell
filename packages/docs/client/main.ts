@@ -1,8 +1,7 @@
-// import { registerSyntaxHighlighter } from './registerSyntaxHighlighter.js';
+import { registerSyntaxHighlighter } from './registerSyntaxHighlighter.js';
 
-// const hljs = registerSyntaxHighlighter();
-
-// hljs.highlightAll();
+// @ts-expect-error: defining it on parent so we don't have to redownload it in ever iframe
+window.hljs = registerSyntaxHighlighter();
 
 document
   .querySelectorAll<HTMLButtonElement>('button[data-copydata]')

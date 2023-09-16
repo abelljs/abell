@@ -1,5 +1,8 @@
-<iframe loading="lazy" id="editor-iframe" title="Abell Playground"
-        src="/webcontainer?data={{ encodeURIComponent(JSON.stringify(props)) }}"
+{{
+  /** @declarations */
+  const encodedProps = encodeURIComponent(JSON.stringify(props));
+}}
+<iframe loading="lazy" id="editor-iframe" title="Abell Playground" src="/webcontainer?data={{ encodedProps }}"
         style="border: none; min-height: {{ props.minHeight }}; width: 100%"></iframe>
 <style>
   iframe {
