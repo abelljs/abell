@@ -1,7 +1,7 @@
 <header>
   <a class="brand-title" href="/">
     <img alt="Abell Logo" height="36" width="36" src="/logos/abell-logo-shadow.png" />
-    <span>Abell <small style="color: #777;">v1</small></span>
+    <span>Abell <!-- <small style="color: #777;">v1</small> --></span>
   </a>
   <nav>
     <a href="/getting-started">Documentation</a>         
