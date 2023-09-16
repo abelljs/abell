@@ -1,4 +1,4 @@
-import '@fontsource/inter/600.css';
+import 'highlight.js/styles/github.css';
 
 // Handle mobile ham menu
 const hamburgerMenu =

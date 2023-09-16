@@ -2,6 +2,7 @@ import { WebContainer } from '@webcontainer/api';
 import dedent from 'dedent';
 
 import './editor.scss';
+import 'highlight.js/styles/github.css';
 import { registerSyntaxHighlighter } from './registerSyntaxHighlighter.js';
 import type { EditorConfigObjType } from '../utils/examples.js';
 

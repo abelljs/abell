@@ -1,7 +1,3 @@
-import '@fontsource/inter/400.css';
-import '@fontsource/inter/700.css';
-import 'highlight.js/styles/github.css';
-
 import { registerSyntaxHighlighter } from './registerSyntaxHighlighter.js';
 
 const hljs = registerSyntaxHighlighter();

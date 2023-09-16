@@ -44,12 +44,12 @@ nav a.active, nav a:hover {
 }
 
 nav a.active {
-  font-weight: bold;
+  font-weight: 600;
 }
 
 .brand-title {
   text-decoration: none;
-  font-weight: bold;
+  font-weight: 600;
   color: #222;
   display: flex;
   align-content: center;
@@ -126,7 +126,7 @@ h3 {
   text-align: center;
   padding: 2rem 0px 2rem 0px;
   font-size: 1.5rem;
-  font-weight: bold;
+  font-weight: 600;
   opacity: .4;
 }
 
