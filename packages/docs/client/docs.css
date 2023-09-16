@@ -60,6 +60,7 @@ nav a.active {
 
 .brand-title img {
   margin-right: 8px;
+  filter: drop-shadow(.5px .5px 1px #002bf688);
 }
 
 .content {

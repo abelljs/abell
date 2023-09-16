@@ -7,8 +7,8 @@ export const themes = [
     author: 'Abell Team',
     github: 'https://github.com/abelljs/abell-starter-minima',
     cover:
-      'https://res.cloudinary.com/saurabhdaware/image/upload/c_scale,w_500/v1588342001/abell/og.png',
-    preview: 'https://abell-starter-minima.netlify.app'
+      'https://res.cloudinary.com/saurabhdaware/image/upload/v1694883015/abell/abell-starter-minima.webp',
+    preview: 'https://abell-starter-minima.abelljs.org'
   }
   // {
   //   name: 'Portfolio Starter',

@@ -1,6 +1,6 @@
 <header>
   <a class="brand-title" href="/">
-    <img alt="Abell Logo" height="36" width="36" src="/logos/abell-logo-shadow.png" />
+    <img alt="Abell Logo" height="36" width="36" src="/logos/abell-logo.svg" />
     <span>Abell <!-- <small style="color: #777;">v1</small> --></span>
   </a>
   <nav>
@@ -33,6 +33,7 @@
 
   .brand-title img {
     margin-right: 8px;
+    filter: drop-shadow(.5px .5px 1px #002bf688);
   }
 
   nav {

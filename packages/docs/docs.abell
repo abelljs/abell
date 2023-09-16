@@ -20,7 +20,7 @@
   <div class="docs-page-container display-flex">
     <header class="docs-navbar">
       <a class="brand-title" href="/">
-        <img width="36" src="/logos/abell-logo-shadow.png" />
+        <img width="34" src="/logos/abell-logo.svg" />
         <span>Abell <!-- <small style="color: #888;">v1</small> --></span>
       </a>
       <nav>
