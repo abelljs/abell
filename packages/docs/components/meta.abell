@@ -45,13 +45,3 @@
 <link rel="preload" onload="this.rel = 'stylesheet'" as="style"
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;{{ boldFontWeight }}&display=swap">
 <link rel="stylesheet" href="/client/global.scss" />
-
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-125454191-5"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag() { dataLayer.push(arguments); }
-  gtag('js', new Date());
-
-  gtag('config', 'UA-125454191-5');
-</script>
