@@ -9,6 +9,8 @@
     : `https://res.cloudinary.com/saurabhdaware/image/upload/v1694536721/abell/abell2023-og-landing-page.png`
 
   const SITE_TITLE = `${props.title}${props.template === 'docs' ? ' | Abell - A Fast, Low-Level, Framework-Agnostic Static-Site-Generator for JavaScript Developers' : ''}`
+
+  const boldFontWeight = props.template === 'docs' ? '600' : '700';
 }}
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -16,6 +18,8 @@
 <meta name="description"
       content="Abell - A Low-Level, Framework Agnostic, Vite Powered Static Site Generator for JavaScript Developers" />
 <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
 <!-- OPEN GRAPH -->
 <meta property="og:type" content="website" />
@@ -36,6 +40,11 @@
       content="Abell - A Low-Level, Framework Agnostic, Vite Powered Static Site Generator for JavaScript Developers" />
 <meta property="og:site_name" content="abelljs.org" />
 <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+<title>{{ SITE_TITLE }}</title>
+
+<link rel="preload" onload="this.rel = 'stylesheet'" as="style"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;{{ boldFontWeight }}&display=swap">
+<link rel="stylesheet" href="/client/global.scss" />
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-125454191-5"></script>
@@ -46,6 +55,3 @@
 
   gtag('config', 'UA-125454191-5');
 </script>
-
-<link rel="stylesheet" href="/client/global.scss" />
-<title>{{ SITE_TITLE }}</title>
