@@ -25,7 +25,10 @@
   </div>
   <div class="icon-credits">
     <div>
-      Icons from <a href="https://fontawesome.com/license" title="FontAwesome">FontAwesome</a>
+      Icons from <a href="https://fontawesome.com/license">FontAwesome</a>
+    </div>
+    <div>
+      Code Editor built using <a href="https://webcontainers.io/">WebContainer API</a>
     </div>
     <div>
       Site Built with <a href="https://abelljs.org">Abell</a> by <a href="https://github.com/abelljs/abell-website/graphs/contributors">GitHub Contributors</a>

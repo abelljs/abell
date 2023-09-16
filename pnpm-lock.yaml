@@ -143,6 +143,9 @@ importers:
       react-dom:
         specifier: ^18.2.0
         version: 18.2.0(react@18.2.0)
+      vite-plugin-sitemap:
+        specifier: ^0.4.2
+        version: 0.4.2
 
   playground/basic:
     dependencies:
@@ -4675,6 +4678,10 @@ packages:
       - rollup
       - supports-color
     dev: false
+
+  /vite-plugin-sitemap@0.4.2:
+    resolution: {integrity: sha512-xNTYPcNW+XthOJqI459DYyCZ6nPDKpnFFnvMHVlshtDn+UUp1y37HgmvmWEsCdLp0LZILnzHfrjVrH44V2krAg==}
+    dev: true
 
   /vite@3.0.3:
     resolution: {integrity: sha512-sDIpIcl3mv1NUaSzZwiXGEy1ZoWwwC2vkxUHY6yiDacR6zf//ZFuBJrozO62gedpE43pmxnLATNR5IYUdAEkMQ==}
