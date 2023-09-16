@@ -1,15 +1,18 @@
 <html>
+
 <head>
   <style>
     * {
       box-sizing: border-box;
     }
-    html, 
+
+    html,
     body {
       margin: 0px;
     }
   </style>
 </head>
+
 <body>
   <div class="webcontainer">
     <div class="editor">
@@ -31,4 +34,5 @@
   </div>
   <script src="./client/webcontainer.ts" type="module"></script>
 </body>
+
 </html>

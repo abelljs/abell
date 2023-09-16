@@ -11,11 +11,11 @@
 </section>
 
 <style>
-h2 {
-  margin: 0px;
-}
+  h2 {
+    margin: 0px;
+  }
 
-p {
-  padding: 24px 0px;
-}
+  p {
+    padding: 24px 0px;
+  }
 </style>

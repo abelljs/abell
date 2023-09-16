@@ -5,8 +5,9 @@
 }}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  {{ 
+  {{
     headMeta({ 
       title: props.docsPaths[props.currentPageIndex].title,
       template: 'docs'
@@ -14,6 +15,7 @@
   }}
   <link rel="stylesheet" href="./client/docs.css" />
 </head>
+
 <body>
   <div class="docs-page-container display-flex">
     <header class="docs-navbar">
@@ -50,36 +52,36 @@
       <main class="content-padding">
         {{ props.docsPaths[props.currentPageIndex].content }}
         <div class="next-prev-buttons">
-        {{
-          () => {
-            const previousPage = props.docsPaths[props.currentPageIndex - 1];
-            if (previousPage) {
-              return /* html */ `
-                <a class="prev-button" href="${previousPage.path}">
-                  <div class="uncolored-text"><i class="icon icon-arrow-left"></i>&nbsp; Previous</div>
-                  <div>${previousPage.title}</div>
-                </a>
-              `
-            }
+          {{
+            () => {
+              const previousPage = props.docsPaths[props.currentPageIndex - 1];
+              if (previousPage) {
+                return /* html */ `
+                  <a class="prev-button" href="${previousPage.path}">
+                    <div class="uncolored-text"><i class="icon icon-arrow-left"></i>&nbsp; Previous</div>
+                    <div>${previousPage.title}</div>
+                  </a>
+                `
+              }
 
-            return /* html */`<div style="flex: 1"></div>`
-          }
-        }}
-        {{
-          () => {
-            const nextPage = props.docsPaths[props.currentPageIndex + 1];
-            if (nextPage) {
-              return /* html */ `
-                <a class="next-button" href="${nextPage.path}">
-                  <div class="uncolored-text">Next&nbsp; <i class="icon icon-arrow-right"></i></div>
-                  <div>${nextPage.title}</div>
-                </a>
-              `
+              return /* html */`<div style="flex: 1"></div>`
             }
+          }}
+          {{
+            () => {
+              const nextPage = props.docsPaths[props.currentPageIndex + 1];
+              if (nextPage) {
+                return /* html */ `
+                  <a class="next-button" href="${nextPage.path}">
+                    <div class="uncolored-text">Next&nbsp; <i class="icon icon-arrow-right"></i></div>
+                    <div>${nextPage.title}</div>
+                  </a>
+                `
+              }
 
-            return /* html */`<div style="flex: 1"></div>`
-          }
-        }}
+              return /* html */`<div style="flex: 1"></div>`
+            }
+          }}
         </div>
       </main>
       {{ footer }}
@@ -88,4 +90,5 @@
   <script src="./client/main.ts" type="module"></script>
   <script src="./client/docs.ts" type="module"></script>
 </body>
+
 </html>

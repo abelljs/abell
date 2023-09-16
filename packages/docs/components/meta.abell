@@ -13,32 +13,35 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<meta name="description" content="Abell - A Low-Level, Framework Agnostic, Vite Powered Static Site Generator for JavaScript Developers"/>
+<meta name="description"
+      content="Abell - A Low-Level, Framework Agnostic, Vite Powered Static Site Generator for JavaScript Developers" />
 <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />
 
 <!-- OPEN GRAPH -->
 <meta property="og:type" content="website" />
 <meta property="og:title" content="{{ SITE_TITLE }}" />
-<meta name="og:description" content="Abell - A Low-Level, Framework Agnostic, Vite Powered Static Site Generator for JavaScript Developers"/>
+<meta name="og:description"
+      content="Abell - A Low-Level, Framework Agnostic, Vite Powered Static Site Generator for JavaScript Developers" />
 <meta property="og:url" content="https://abelljs.org" />
 
-<meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:creator" content="@AbellLand"/>
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:creator" content="@AbellLand" />
 
-<meta property="og:image:secure_url" itemprop="image" content="{{ ogImage }}"/>
-<meta property="og:image" itemprop="image" content="{{ ogImage }}"/>
+<meta property="og:image:secure_url" itemprop="image" content="{{ ogImage }}" />
+<meta property="og:image" itemprop="image" content="{{ ogImage }}" />
 <meta property="og:image:width" content="600" />
 <meta property="og:image:height" content="300" />
 <meta property="og:image:alt" content="OG image of Abell Docs that shows the title of the page Abell" />
-<meta property="og:description" content="Abell - A Low-Level, Framework Agnostic, Vite Powered Static Site Generator for JavaScript Developers" />
-<meta property="og:site_name" content="abelljs.org"/>
-<meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+<meta property="og:description"
+      content="Abell - A Low-Level, Framework Agnostic, Vite Powered Static Site Generator for JavaScript Developers" />
+<meta property="og:site_name" content="abelljs.org" />
+<meta http-equiv="X-UA-Compatible" content="ie=edge" />
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-125454191-5"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
+  function gtag() { dataLayer.push(arguments); }
   gtag('js', new Date());
 
   gtag('config', 'UA-125454191-5');

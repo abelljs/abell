@@ -17,18 +17,19 @@
 </section>
 
 <style>
-h2 {
-  margin: 0px;
-}
+  h2 {
+    margin: 0px;
+  }
 
-p {
-  padding: 24px 0px 12px;
-}
-.start-project-steps {
-  padding: 0px 0px 24px 0px;
-}
+  p {
+    padding: 24px 0px 12px;
+  }
 
-ol {
-  line-height: 2.2rem;
-}
+  .start-project-steps {
+    padding: 0px 0px 24px 0px;
+  }
+
+  ol {
+    line-height: 2.2rem;
+  }
 </style>

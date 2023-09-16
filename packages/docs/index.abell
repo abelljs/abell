@@ -11,13 +11,15 @@
 }}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  {{ 
+  {{
     headMeta({ 
       title: 'Abell - A Low Level, Framework Agnostic, Static Site Generator for JavaScript Developers' 
     })
   }}
 </head>
+
 <body>
   {{ navbar }}
   {{ hero }}
@@ -29,7 +31,8 @@
   {{ footer }}
   <script src="./client/main.ts" type="module"></script>
   <script type="module">
-  import '@fontsource/inter/700.css';
+    import '@fontsource/inter/700.css';
   </script>
 </body>
+
 </html>

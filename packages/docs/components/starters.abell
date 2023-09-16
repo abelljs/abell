@@ -2,11 +2,11 @@
   import { themes } from '../config';
 }}
 <section>
-  <h2>Get Started <br/>with Starters</h2>
+  <h2>Get Started <br />with Starters</h2>
   {{
     themes.map(theme => /* html */ `
     <div class="theme-container shadow">
-      <img crossorigin="anonymous" alt="Cover image of ${theme.name}" style="width: 100%;" loading="lazy" src="${theme.cover}" />
+      <img crossorigin="anonymous" alt="Cover image of ${theme.name}" width="100%" style="width: 100%;" loading="lazy" src="${theme.cover}" />
       <div class="theme-info">
         <h3 class="theme-name">${theme.name}</h3>
         <div>by ${theme.author}</div>
@@ -71,7 +71,7 @@
     width: 100%;
   }
 
-  .theme-info > .theme-name {
+  .theme-info>.theme-name {
     font-weight: bold;
     padding: 5px 0px;
     margin: 0px 0px;
@@ -81,7 +81,7 @@
     padding-top: 10px;
   }
 
-  .theme-links > a {
+  .theme-links>a {
     margin-right: 10px;
   }
 

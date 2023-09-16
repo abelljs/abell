@@ -15,7 +15,8 @@
     <div class="flex-1">
       <div class="footer-heading">Channels</div>
       <div class="link-container">
-        <a href="https://github.com/abelljs/abell/discussions">GitHub Discussions <i class="icon icon-external-link"></i></a>
+        <a href="https://github.com/abelljs/abell/discussions">GitHub Discussions <i
+             class="icon icon-external-link"></i></a>
         <a href="https://discord.gg/ndsVpRG">
           Discord Server <i class="icon icon-external-link"></i>
         </a>
@@ -31,7 +32,8 @@
       Code Editor built using <a href="https://webcontainers.io/">WebContainer API</a>
     </div>
     <div>
-      Site Built with <a href="https://abelljs.org">Abell</a> by <a href="https://github.com/abelljs/abell-website/graphs/contributors">GitHub Contributors</a>
+      Site Built with <a href="https://abelljs.org">Abell</a> by <a
+         href="https://github.com/abelljs/abell-website/graphs/contributors">GitHub Contributors</a>
     </div>
   </div>
   <div class="copyright-container">
@@ -46,12 +48,14 @@
     font-size: .9rem;
     padding: 20px;
   }
+
   .links {
     padding: 40px 50px;
     max-width: 900px;
     margin: auto;
   }
-  .links > .flex-1 a {
+
+  .links>.flex-1 a {
     display: block;
     padding: 2px 0px;
     font-size: 1rem;
@@ -68,6 +72,7 @@
     font-size: .8rem;
     color: #111;
   }
+
   .links .flex-1 {
     padding: 20px;
   }
@@ -97,7 +102,8 @@
     .links {
       padding: 20px 10px;
     }
-    .links > .flex-1 a {
+
+    .links>.flex-1 a {
       padding: 5px 0px;
       font-size: 0.9rem;
     }
