@@ -15,7 +15,7 @@
 
 <meta name="description"
       content="Abell - A Low-Level, Framework Agnostic, Vite Powered Static Site Generator for JavaScript Developers" />
-<link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
 
 <!-- OPEN GRAPH -->
 <meta property="og:type" content="website" />
