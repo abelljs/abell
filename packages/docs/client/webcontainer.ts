@@ -3,10 +3,7 @@ import dedent from 'dedent';
 
 import './editor.scss';
 import 'highlight.js/styles/github.css';
-import { registerSyntaxHighlighter } from './registerSyntaxHighlighter.js';
 import type { EditorConfigObjType } from '../utils/examples.js';
-
-const hljs = registerSyntaxHighlighter();
 
 const makeLoader = ({ loading, text }: { loading: number; text: string }) => {
   const loadingCount = loading / 10;
@@ -217,11 +214,7 @@ const initiateWebContainer = async (webcontainerData: EditorConfigObjType) => {
     const fileContent = filename.endsWith('.json')
       ? fileCode.file.contents
       : dedent(fileCode.file.contents);
-    codeContainerDiv.innerHTML = `<pre><code contenteditable="true">${
-      hljs.highlight(fileContent, {
-        language: filename.slice(filename.lastIndexOf('.') + 1)
-      }).value
-    }</code></pre>`;
+    codeContainerDiv.innerHTML = `<pre><code contenteditable="true">${fileContent}</code></pre>`;
     codeDisplay.appendChild(codeContainerDiv);
 
     const codeElement = codeContainerDiv.querySelector<HTMLElement>('code');
@@ -239,14 +232,6 @@ const initiateWebContainer = async (webcontainerData: EditorConfigObjType) => {
           uncommittedChanges[filename] = fileValue;
         } else {
           await webcontainerInstance.fs.writeFile(`/${filename}`, fileValue);
-        }
-      });
-
-      codeElement.addEventListener('blur', () => {
-        const codeBlock = codeContainerDiv.querySelector('code');
-
-        if (codeBlock) {
-          hljs.highlightBlock(codeBlock);
         }
       });
     }

@@ -1,8 +1,8 @@
-import { registerSyntaxHighlighter } from './registerSyntaxHighlighter.js';
+// import { registerSyntaxHighlighter } from './registerSyntaxHighlighter.js';
 
-const hljs = registerSyntaxHighlighter();
+// const hljs = registerSyntaxHighlighter();
 
-hljs.highlightAll();
+// hljs.highlightAll();
 
 document
   .querySelectorAll<HTMLButtonElement>('button[data-copydata]')

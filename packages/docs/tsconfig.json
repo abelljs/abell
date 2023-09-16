@@ -5,7 +5,7 @@
     "module": "ESNext",
     "target": "ES2017",
     "types": ["abell/types", "../abell/node_modules/vite/client", "./global.d.ts"],
-    "lib": ["DOM"],
+    "lib": ["DOM", "ES2019"],
     "plugins": [{ "name": "vite-plugin-iso-import" }],
   },
   "include": ["."],
