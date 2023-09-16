@@ -6,7 +6,7 @@
   {{
     themes.map(theme => /* html */ `
     <div class="theme-container shadow">
-      <img crossorigin="anonymous" alt="Cover image of ${theme.name}" width="100%" style="width: 100%;" loading="lazy" src="${theme.cover}" />
+      <img crossorigin="anonymous" alt="Cover image of ${theme.name}" width="350px" height="175px" style="width: 100%;" loading="lazy" src="${theme.cover}" />
       <div class="theme-info">
         <h3 class="theme-name">${theme.name}</h3>
         <div>by ${theme.author}</div>
