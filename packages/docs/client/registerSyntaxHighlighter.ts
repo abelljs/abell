@@ -4,7 +4,6 @@ import json from 'highlight.js/lib/languages/json';
 import xml from 'highlight.js/lib/languages/xml';
 import markdown from 'highlight.js/lib/languages/markdown';
 import css from 'highlight.js/lib/languages/css';
-import 'highlight.js/styles/github.css';
 
 import { abellHighlighter } from '../utils/abell-syntax-highlighter';
 import type { HLJSApi } from 'highlight.js';

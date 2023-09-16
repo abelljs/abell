@@ -30,9 +30,6 @@
   {{ allVite }}
   {{ footer }}
   <script src="./client/main.ts" type="module"></script>
-  <script type="module">
-    import '@fontsource/inter/700.css';
-  </script>
 </body>
 
 </html>
