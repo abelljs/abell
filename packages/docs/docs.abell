@@ -23,6 +23,7 @@
         <img width="34" src="/logos/abell-logo.svg" />
         <span>Abell <!-- <small style="color: #888;">v1</small> --></span>
       </a>
+      <div id="search"></div>
       <nav>
         <ul>
           {{
@@ -89,6 +90,17 @@
   </div>
   <script src="/client/main.ts" type="module"></script>
   <script src="/client/docs.ts" type="module"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@algolia/algoliasearch-netlify-frontend@1/dist/algoliasearchNetlify.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@algolia/algoliasearch-netlify-frontend@1/dist/algoliasearchNetlify.js"></script>
+  <script>
+    algoliasearchNetlify({
+      appId: 'T3LTVUTUTK',
+      apiKey: '9aff9eb3ca2e16e82a88644e8c27efbd',
+      siteId: '53805643-16a2-4a61-9772-ab8bc2d51390',
+      branch: 'main',
+      selector: 'div#search',
+    });
+  </script>
 </body>
 
 </html>
