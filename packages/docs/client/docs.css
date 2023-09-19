@@ -227,43 +227,45 @@ button.hamburger-menu .icon {
 }
 
 #search {
-  padding: 4px 20px 16px;
+  padding: 4px 20px 14px;
+  min-height: 60px;
 }
 .DocSearch-Button {
-  width: 100%;
-  box-sizing: border-box;
-  border-radius: 4px;
-  background: unset;
-  background-color: #f9f9f9;
-  margin: 0px;
-  border: 1px solid #eee;
-  color: #999;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  border-radius: 4px !important;
+  background: unset !important;
+  background-color: #f9f9f9 !important;
+  margin: 0px !important;
+  border: 1px solid #eee !important;
+  color: #555 !important;
 }
 .DocSearch-Button:hover {
-  background-color: #fdfdfd;
-  box-shadow: unset;
-  color: #999;
+  background-color: #fdfdfd !important;
+  box-shadow: unset !important;
 }
 
 .DocSearch-Input {
-  font-size: inherit;
+  font-size: inherit !important;
 }
-.DocSearch-Search-Icon {
-  width: 14px;
+.DocSearch-Button-Container .DocSearch-Search-Icon {
+  width: 14px !important;
+  color: inherit !important;
 }
 .DocSearch-Button-Placeholder {
-  font-size: inherit;
-  color: inherit;
+  font-size: inherit !important;
+  color: inherit !important;
 }
 .DocSearch-Button-Key, .DocSearch-Commands-Key {
-  box-shadow: unset;
-  background: unset;
-  border: 1px solid #ddd;
-  padding: unset;
-  top: unset;
+  box-shadow: unset !important;
+  background: unset !important;
+  border: 1px solid #ddd !important;
+  padding: unset !important;
+  top: unset !important;
+  color: #555 !important;
 }
 .DocSearch-Container {
-  backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px) !important;
 }
 
 @media (max-width: 768px) {
@@ -272,7 +274,7 @@ button.hamburger-menu .icon {
   }
 
   .DocSearch-Button-Placeholder {
-    display: unset;
+    display: unset !important;
   }
 
   .brand-title {
@@ -320,7 +322,7 @@ button.hamburger-menu .icon {
   }
 
   .DocSearch-Container {
-    z-index: 99999999;
+    z-index: 99999999 !important;
   }
 }
 

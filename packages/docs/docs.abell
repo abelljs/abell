@@ -13,7 +13,6 @@
       template: 'docs'
     })
   }}
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3"/>
   <link rel="stylesheet" href="/client/docs.css" />
 </head>
 
@@ -91,20 +90,6 @@
   </div>
   <script src="/client/main.ts" type="module"></script>
   <script src="/client/docs.ts" type="module"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@docsearch/js@3"></script>
-  <script type="text/javascript">
-
-
-  docsearch({
-    appId: '8Z2OZNU824',
-    apiKey: '3d0290c2f6bd6d6684565e74e4176303',
-    indexName: 'abelljs',
-    insights: true, // Optional, automatically send insights when user interacts with search results
-    container: 'div#search',
-    debug: false // Set debug to true if you want to inspect the modal
-  });
-</script>
-
 </body>
 
 </html>

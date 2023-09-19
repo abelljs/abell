@@ -1,4 +1,15 @@
+import docsearch from '@docsearch/js';
+
+import '@docsearch/css';
 import 'highlight.js/styles/github.css';
+
+docsearch({
+  appId: '8Z2OZNU824',
+  apiKey: '3d0290c2f6bd6d6684565e74e4176303',
+  indexName: 'abelljs',
+  insights: true,
+  container: 'div#search'
+});
 
 // @ts-expect-error: defined in main.ts
 window.hljs.highlightAll();
