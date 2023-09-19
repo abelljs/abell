@@ -1,8 +1,6 @@
 import { AbellViteConfig, defineConfig } from 'abell';
-import vitePluginMdToHTML from 'vite-plugin-md-to-html';
 import mdx from '@mdx-js/rollup';
 import { vitePluginMdxToHTML } from 'vite-plugin-mdx-to-html';
-import { abellHighlighter } from './utils/abell-syntax-highlighter';
 import { isoImport } from 'vite-plugin-iso-import';
 import vitePluginSitemap from 'vite-plugin-sitemap';
 import rehypeSlug from 'rehype-slug';
@@ -23,14 +21,6 @@ export default defineConfig({
   },
   plugins: [
     isoImport(),
-    vitePluginMdToHTML({
-      syntaxHighlighting: true,
-      highlightJs: {
-        register: {
-          abell: abellHighlighter
-        }
-      }
-    }),
     mdx({
       rehypePlugins: [rehypeSlug]
     }),

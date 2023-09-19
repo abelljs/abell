@@ -1,5 +1,4 @@
 import React from 'react?server';
-import { md } from '../utils/md.js';
 
 export const NoteBlock = ({
   title = 'Note',
@@ -13,15 +12,3 @@ export const NoteBlock = ({
     {children}
   </div>
 );
-
-export const Highlight = ({
-  children,
-  language = 'js'
-}: {
-  children: string;
-  language: 'js';
-}): string => {
-  const mdString = '```' + language + '\n' + children + '\n```';
-  // @ts-ignore
-  return md([mdString]);
-};
