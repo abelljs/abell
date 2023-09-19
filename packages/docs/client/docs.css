@@ -6,7 +6,7 @@ body {
   font-size: var(--font-text-docs);
 }
 
-header {
+header.docs-navbar {
   border-right: 1px solid #ddd;
   height: 100% !important;
   width: 250px;
@@ -226,6 +226,46 @@ button.hamburger-menu .icon {
   display: none;
 }
 
+#search {
+  padding: 4px 20px 16px;
+}
+.DocSearch-Button {
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 4px;
+  background: unset;
+  background-color: #f9f9f9;
+  margin: 0px;
+  border: 1px solid #eee;
+  color: #999;
+}
+.DocSearch-Button:hover {
+  background-color: #fdfdfd;
+  box-shadow: unset;
+  color: #999;
+}
+
+.DocSearch-Input {
+  font-size: inherit;
+}
+.DocSearch-Search-Icon {
+  width: 14px;
+}
+.DocSearch-Button-Placeholder {
+  font-size: inherit;
+  color: inherit;
+}
+.DocSearch-Button-Key, .DocSearch-Commands-Key {
+  box-shadow: unset;
+  background: unset;
+  border: 1px solid #ddd;
+  padding: unset;
+  top: unset;
+}
+.DocSearch-Container {
+  backdrop-filter: blur(3px);
+}
+
 @media (max-width: 768px) {
   .header-placeholder {
     display: none;
@@ -240,7 +280,7 @@ button.hamburger-menu .icon {
     width: 28px
   }
 
-  header {
+  header.docs-navbar {
     left: -100%;
     transition: left .3s ease-in;
     z-index: 9999;
@@ -259,7 +299,7 @@ button.hamburger-menu .icon {
     transition: left .2s ease-out;
   }
 
-  header + .overlay {
+  header.docs-navbar + .overlay {
     position: fixed;
     top: 0px;
     left: 0px;

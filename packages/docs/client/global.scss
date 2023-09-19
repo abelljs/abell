@@ -20,6 +20,8 @@
 
   --content-width-landing: 1200px;
   --content-padding-horizontal: 100px;
+
+  --docsearch-primary-color: var(--blue-5) !important;
 }
 
 * {
@@ -37,6 +39,10 @@ body {
   color: #111;
   font-size: var(--font-text-landing);
   line-height: 2rem;
+}
+
+input, button {
+  font-family: inherit;
 }
 
 button {
