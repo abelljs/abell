@@ -271,6 +271,10 @@ button.hamburger-menu .icon {
     display: none;
   }
 
+  .DocSearch-Button-Placeholder {
+    display: unset;
+  }
+
   .brand-title {
     font-size: 1.4rem;
     padding: 24px 32px 18px;
@@ -294,7 +298,7 @@ button.hamburger-menu .icon {
     padding: 50px 24px;
   }
 
-  header.show {
+  header.docs-navbar.show {
     left: 0%;
     transition: left .2s ease-out;
   }
@@ -311,8 +315,12 @@ button.hamburger-menu .icon {
     backdrop-filter: blur(1px);
   }
 
-  header.show + .overlay {
+  header.docs-navbar.show + .overlay {
     display: block;
+  }
+
+  .DocSearch-Container {
+    z-index: 99999999;
   }
 }
 
