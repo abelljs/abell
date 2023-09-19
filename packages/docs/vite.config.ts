@@ -1,6 +1,6 @@
 import { AbellViteConfig, defineConfig } from 'abell';
 import mdx from '@mdx-js/rollup';
-import { vitePluginMdxToHTML } from 'vite-plugin-mdx-to-html';
+import { vitePluginJSXToHTML } from 'vite-plugin-jsx-to-html';
 import { isoImport } from 'vite-plugin-iso-import';
 import vitePluginSitemap from 'vite-plugin-sitemap';
 import rehypeSlug from 'rehype-slug';
@@ -24,7 +24,7 @@ export default defineConfig({
     mdx({
       rehypePlugins: [rehypeSlug]
     }),
-    vitePluginMdxToHTML(),
+    vitePluginJSXToHTML({ extensions: ['.mdx'] }),
     vitePluginSitemap({
       hostname: 'https://abelljs.org/',
       exclude: ['/webcontainer'],
