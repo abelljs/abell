@@ -5,6 +5,7 @@ import { vitePluginMdxToHTML } from 'vite-plugin-mdx-to-html';
 import { abellHighlighter } from './utils/abell-syntax-highlighter';
 import { isoImport } from 'vite-plugin-iso-import';
 import vitePluginSitemap from 'vite-plugin-sitemap';
+import rehypeSlug from 'rehype-slug';
 
 export default defineConfig({
   abell: {
@@ -30,7 +31,9 @@ export default defineConfig({
         }
       }
     }),
-    mdx(),
+    mdx({
+      rehypePlugins: [rehypeSlug]
+    }),
     vitePluginMdxToHTML(),
     vitePluginSitemap({
       hostname: 'https://abelljs.org/',

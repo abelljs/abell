@@ -54,8 +54,8 @@ let subMenuLists = '';
 subheadings.forEach((subheading) => {
   const text = subheading.innerText;
 
-  const id = text.toLowerCase().replace(/ /g, '-');
-  subheading.id = id;
+  const id = text.toLowerCase().replace(/ /g, '-').replace(/[?!]/g, '');
+  // subheading.id = id;
   subheading.innerHTML = subheading.innerHTML + `<a href="#${id}">#</a>`;
   subMenuLists += `
     <li>
