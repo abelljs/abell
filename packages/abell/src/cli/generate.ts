@@ -34,7 +34,13 @@ async function generate(): Promise<void> {
       ssr: true,
       rollupOptions: {
         input: SOURCE_ENTRY_BUILD_PATH,
-        external: ['abell']
+        external: ['abell'],
+        onLog: (level, logObj) => {
+          // Ignoring unused abell block warning
+          if (level === 'warn' && logObj.code !== 'UNUSED_EXTERNAL_IMPORT') {
+            log(logObj.message, 'p1');
+          }
+        }
       },
       ssrManifest: true,
       ...viteConfigObj.abell?.serverBuild
