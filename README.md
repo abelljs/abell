@@ -21,8 +21,8 @@ A Low-Level, Framework Agnostic, Highly Flexible Static-Site-Generator to help y
 ## 📖 &nbsp; Create Abell Project
 
 ```sh
-npx create-abell my-blog
-cd my-blog
+npx create-abell my-abell-site
+cd my-abell-site
 npm run dev
 ```
 
