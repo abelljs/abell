@@ -1,0 +1,47 @@
+<section>
+  <h2>GitHub Contributors</h2>
+  <div class="contributor-images-container">
+    {{
+      props.contributors.map((val) => /* html */`
+      <div class="contributor-container">
+        <a target="_blank" rel="noopener noreferer" href="https://github.com/${val.login}" title="${val.login}">
+          <img height="60" width="60" loading="lazy" src="${val.avatar + '&s=120'}" alt="Profile picture of ${val.login}" crossorigin />
+        </a>
+      </div>
+      `)
+    }}
+  </div>
+  <div>
+    <p>
+      <small>... And many more who contributed with Issues, Ideas, Feedback, and Support 🫶🏼</small>
+    </p>
+  </div>
+</section>
+
+
+<style>
+  section {
+    text-align: center;
+  }
+
+  h2 {
+    margin: 0px;
+  }
+
+  .contributor-images-container {
+    padding: 42px 0px 24px;
+  }
+
+  img {
+    border-radius: 100%;
+  }
+
+  .contributor-container {
+    display: inline-block;
+    padding: 12px;
+  }
+
+  p {
+    margin: 0px;
+  }
+</style>

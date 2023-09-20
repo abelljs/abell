@@ -7,6 +7,7 @@
   import noConfig from './components/no-config.abell';
   import diyRouting from './components/diy-routing.abell';
   import allVite from './components/all-vite.abell';
+  import contributors from './components/contributors.abell';
   import footer from './components/footer.abell';
 }}
 <!DOCTYPE html>
@@ -28,6 +29,7 @@
   {{ noConfig }}
   {{ diyRouting }}
   {{ allVite }}
+  {{ contributors({ contributors: props.contributors }) }}
   {{ footer }}
   <script src="./client/main.ts" type="module"></script>
 </body>

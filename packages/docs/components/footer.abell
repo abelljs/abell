@@ -3,7 +3,7 @@
     <div class="flex-1">
       <div class="footer-heading">Social</div>
       <div class="link-container">
-        <a href="https://github.com/abelljs">GitHub</a>
+        <a href="https://github.com/abelljs/abell">GitHub</a>
         <a href="https://twitter.com/AbellLand">Twitter @AbellLand</a>
       </div>
       <div class="footer-heading">Contributing</div>
@@ -33,7 +33,7 @@
     </div>
     <div>
       Site Built with <a href="https://abelljs.org">Abell</a> by <a
-         href="https://github.com/abelljs/abell-website/graphs/contributors">GitHub Contributors</a>
+         href="https://github.com/abelljs/abell/graphs/contributors">GitHub Contributors</a>
     </div>
   </div>
   <div class="copyright-container">
