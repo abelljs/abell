@@ -6,7 +6,7 @@
 </picture>
 </p>
 
-<p align="center"><a href="https://npmjs.org/package/abell"><img alt="Abell Latest Version" src="https://img.shields.io/github/package-json/v/abelljs/abell/main?style=for-the-badge&labelColor=322&logo=npm&label=abell&color=darkred"></a> &nbsp;<a href="https://abelljs.org/"><img alt="Documentation abelljs.org" src="https://img.shields.io/badge/Documentation-abelljs.org-0a30e0?style=for-the-badge&labelColor=19216D&logo=readthedocs&logoColor=eee"/></a> &nbsp;<a href="https://discord.gg/ndsVpRG"><img alt="Discord Join Chat" src="https://img.shields.io/badge/discord-join%20chat-738ADB?style=for-the-badge&logo=discord&logoColor=738ADB&labelColor=225"/></a></p>
+<p align="center"><a href="https://npmjs.org/package/abell"><img alt="Abell Latest Version" src="https://img.shields.io/github/package-json/v/abelljs/abell/main?filename=packages%2Fabell%2Fpackage.json&style=for-the-badge&labelColor=322&logo=npm&label=abell&color=darkred"></a> &nbsp;<a href="https://abelljs.org/"><img alt="Documentation abelljs.org" src="https://img.shields.io/badge/Documentation-abelljs.org-0a30e0?style=for-the-badge&labelColor=19216D&logo=readthedocs&logoColor=eee"/></a> &nbsp;<a href="https://discord.gg/ndsVpRG"><img alt="Discord Join Chat" src="https://img.shields.io/badge/discord-join%20chat-738ADB?style=for-the-badge&logo=discord&logoColor=738ADB&labelColor=225"/></a></p>
 
 <h1 aria-hidden="true"></h1>
 
