@@ -6,6 +6,8 @@
 
 <body>
   Hello from About Page
+  <script src="./entry.ts" type="module"></script>
 </body>
+
 
 </html>

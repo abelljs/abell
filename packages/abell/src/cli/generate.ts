@@ -15,7 +15,48 @@ import { bold, log, viteCustomLogger } from '../utils/logger.js';
 import { generateHashFromPath } from '../vite-plugin-abell/compiler/scope-css/generate-hash.js';
 
 const CSS_FETCH_REGEX = /<link.*?href="(.*?)".*?\/?>/g;
-const JS_FETCH_REGEX = /<script src="(.*?)">/g;
+const JS_FETCH_REGEX = /<script.*?src="(.*?)".*?>[ \n]*?<\/script>/g;
+
+const getCSSLinks = (templatePage: string): string => {
+  return Array.from(templatePage.matchAll(CSS_FETCH_REGEX))
+    .map((linkMatch) => linkMatch[0])
+    .join('\n');
+};
+
+const getJSLinks = (templatePage: string): string => {
+  return Array.from(templatePage.matchAll(JS_FETCH_REGEX))
+    .map((linkMatch) => linkMatch[0])
+    .join('\n');
+};
+
+const importTemplatesOutContentMemo: Record<string, string> = {};
+
+const getImportTemplatePage = ({
+  ROOT,
+  OUTPUT_DIR,
+  importTemplatesMemo,
+  importsHash
+}: {
+  ROOT: string;
+  OUTPUT_DIR: string;
+  importTemplatesMemo: Record<string, { htmlPath: string }>;
+  importsHash: string;
+}) => {
+  const relativeToRootHTMLPath = path.relative(
+    ROOT,
+    importTemplatesMemo[importsHash].htmlPath
+  );
+  const distHTMLPath = path.join(OUTPUT_DIR, relativeToRootHTMLPath);
+  if (importTemplatesOutContentMemo[distHTMLPath]) {
+    return importTemplatesOutContentMemo[distHTMLPath];
+  }
+
+  const templatePage = fs.readFileSync(distHTMLPath, 'utf-8');
+  if (Object.keys(importTemplatesOutContentMemo).length < 100) {
+    importTemplatesOutContentMemo[distHTMLPath] = templatePage;
+  }
+  return templatePage;
+};
 
 const getImportsHash = (
   appHtml: string
@@ -23,18 +64,12 @@ const getImportsHash = (
   importsStringDump: string;
   importsHash: string;
 } => {
-  const importsStringDump = [
-    ...Array.from(appHtml?.matchAll(CSS_FETCH_REGEX)),
-    ...Array.from(appHtml.matchAll(JS_FETCH_REGEX))
-  ]
-    .map((linkMatch) => linkMatch[0])
-    .join('\n');
-
-  const newTemplateEntryHash = generateHashFromPath(importsStringDump);
+  const importsStringDump = getCSSLinks(appHtml) + getJSLinks(appHtml);
+  const importsHash = generateHashFromPath(importsStringDump);
 
   return {
-    importsStringDump: importsStringDump,
-    importsHash: newTemplateEntryHash
+    importsStringDump,
+    importsHash
   };
 };
 
@@ -97,7 +132,7 @@ async function generate(): Promise<void> {
   const createdHTMLFiles: string[] = [];
   const transformationSkippedHTMLFiles = [];
   const createdDirectories: string[] = [];
-  const memoizedTemplates: Record<string, { htmlPath: string }> = {};
+  const importTemplatesMemo: Record<string, { htmlPath: string }> = {};
 
   try {
     for (const route of routes) {
@@ -114,16 +149,14 @@ async function generate(): Promise<void> {
 
       const { importsStringDump, importsHash } = getImportsHash(appHtml);
 
-      if (importsStringDump && memoizedTemplates[importsHash]) {
-        log('Skip transform', 'p1');
+      if (importsStringDump && importTemplatesMemo[importsHash]) {
         transformationSkippedHTMLFiles.push({
           importsHash,
           htmlPath,
           appHtml
         });
       } else {
-        log('Do transform', 'p1');
-        memoizedTemplates[importsHash] = { htmlPath };
+        importTemplatesMemo[importsHash] = { htmlPath };
         const newDirs = createPathIfAbsent(path.dirname(htmlPath));
         createdDirectories.push(...newDirs);
         fs.writeFileSync(htmlPath, appHtml);
@@ -145,18 +178,14 @@ async function generate(): Promise<void> {
     });
 
     for (const unTransformed of transformationSkippedHTMLFiles) {
-      const relativeToRootHTMLPath = path.relative(
+      const templatePage = getImportTemplatePage({
         ROOT,
-        memoizedTemplates[unTransformed.importsHash].htmlPath
-      );
-      const distHTMLPath = path.join(OUTPUT_DIR, relativeToRootHTMLPath);
-      const templatePage = fs.readFileSync(distHTMLPath, 'utf-8');
-      const cssLinks = Array.from(templatePage.matchAll(CSS_FETCH_REGEX))
-        .map((linkMatch) => linkMatch[0])
-        .join('\n');
-      const jsLinks = Array.from(templatePage.matchAll(JS_FETCH_REGEX))
-        .map((linkMatch) => linkMatch[0])
-        .join('\n');
+        OUTPUT_DIR,
+        importTemplatesMemo,
+        importsHash: unTransformed.importsHash
+      });
+      const cssLinks = getCSSLinks(templatePage);
+      const jsLinks = getJSLinks(templatePage);
       const htmlWithCSS = addCSSToHead(
         unTransformed.appHtml.replace(CSS_FETCH_REGEX, ''),
         cssLinks
@@ -169,14 +198,11 @@ async function generate(): Promise<void> {
         path.join(OUTPUT_DIR, path.relative(ROOT, unTransformed.htmlPath)),
         htmlWithCSSAndJS
       );
-      log(
-        `Created ${path.relative(
-          ROOT,
-          unTransformed.htmlPath
-        )} without transformations`,
-        'p1'
-      );
     }
+    log(
+      `Crated ${transformationSkippedHTMLFiles.length} files without transformation 🚀`,
+      'p1'
+    );
     // We can then loop over untransformed files, match them with their transformed URLs using memoHash
     // Then remove the existing Link and script URLs from them and add new URLs fetched from template
   } finally {
