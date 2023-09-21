@@ -1,5 +1,11 @@
 <html>
+
+<head>
+  <link rel="stylesheet" href="./css/global.css" />
+</head>
+
 <body>
   Hello from About Page
 </body>
+
 </html>

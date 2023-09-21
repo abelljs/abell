@@ -18,6 +18,10 @@ export const makeRoutes = (): Route[] => {
     {
       path: '/about-2',
       render: () => about({ date })
+    },
+    {
+      path: '/about-3',
+      render: () => about({ date })
     }
   ];
 };

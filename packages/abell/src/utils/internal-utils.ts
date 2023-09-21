@@ -378,6 +378,24 @@ export async function clearCache(): Promise<void> {
   }
 }
 
+export const addCSSToHead = (htmlContent: string, cssLinks: string): string => {
+  if (htmlContent.includes('</head>')) {
+    return htmlContent.replace('</head>', cssLinks + '</head>');
+  }
+  return cssLinks + htmlContent;
+};
+
+export const addJStoBodyEnd = (
+  htmlContent: string,
+  jsLinks: string
+): string => {
+  if (htmlContent.includes('</body>')) {
+    return htmlContent.replace('</body>', jsLinks + '</body>');
+  }
+
+  return htmlContent + jsLinks;
+};
+
 /**
  * Evaluates the abell block.
  *
