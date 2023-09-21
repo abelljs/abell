@@ -17,24 +17,24 @@ import { generateHashFromPath } from '../vite-plugin-abell/compiler/scope-css/ge
 const CSS_FETCH_REGEX = /<link.*?href="(.*?)".*?\/?>/g;
 const JS_FETCH_REGEX = /<script src="(.*?)">/g;
 
-const getTemplateEntryInfo = (
+const getImportsHash = (
   appHtml: string
 ): {
-  templateEntry: string;
-  templateEntryHash: string;
+  importsStringDump: string;
+  importsHash: string;
 } => {
-  const newTemplateEntry = [
+  const importsStringDump = [
     ...Array.from(appHtml?.matchAll(CSS_FETCH_REGEX)),
     ...Array.from(appHtml.matchAll(JS_FETCH_REGEX))
   ]
     .map((linkMatch) => linkMatch[0])
     .join('\n');
 
-  const newTemplateEntryHash = generateHashFromPath(newTemplateEntry);
+  const newTemplateEntryHash = generateHashFromPath(importsStringDump);
 
   return {
-    templateEntry: newTemplateEntry,
-    templateEntryHash: newTemplateEntryHash
+    importsStringDump: importsStringDump,
+    importsHash: newTemplateEntryHash
   };
 };
 
@@ -98,17 +98,6 @@ async function generate(): Promise<void> {
   const transformationSkippedHTMLFiles = [];
   const createdDirectories: string[] = [];
   const memoizedTemplates: Record<string, { htmlPath: string }> = {};
-  // let hasTransformedTwice = false;
-
-  const createHTMLForTransformation = (
-    htmlPath: string,
-    appHtml: string
-  ): void => {
-    const newDirs = createPathIfAbsent(path.dirname(htmlPath));
-    createdDirectories.push(...newDirs);
-    fs.writeFileSync(htmlPath, appHtml);
-    createdHTMLFiles.push(htmlPath);
-  };
 
   try {
     for (const route of routes) {
@@ -123,29 +112,22 @@ async function generate(): Promise<void> {
         htmlPath = path.join(ROOT, route.path, 'index.html');
       }
 
-      const { templateEntry, templateEntryHash } =
-        getTemplateEntryInfo(appHtml);
+      const { importsStringDump, importsHash } = getImportsHash(appHtml);
 
-      if (templateEntry && memoizedTemplates[templateEntryHash]) {
-        // if (hasTransformedTwice) {
-        console.log('Skip transforms');
+      if (importsStringDump && memoizedTemplates[importsHash]) {
+        log('Skip transform', 'p1');
         transformationSkippedHTMLFiles.push({
-          templateEntryHash,
+          importsHash,
           htmlPath,
           appHtml
         });
-        // } else {
-        //   // We run 1 extra transformation on same template even if its memoized earlier
-        //   // Rollup by default renames file to HTML's name when its only used once.
-        //   // Running transformation over 2 templates keeps the css name consistent for us to eventually map
-        //   console.log('We transform');
-        //   hasTransformedTwice = true;
-        //   createHTMLForTransformation(htmlPath, appHtml);
-        // }
       } else {
-        console.log('We transform');
-        memoizedTemplates[templateEntryHash] = { htmlPath };
-        createHTMLForTransformation(htmlPath, appHtml);
+        log('Do transform', 'p1');
+        memoizedTemplates[importsHash] = { htmlPath };
+        const newDirs = createPathIfAbsent(path.dirname(htmlPath));
+        createdDirectories.push(...newDirs);
+        fs.writeFileSync(htmlPath, appHtml);
+        createdHTMLFiles.push(htmlPath);
       }
     }
 
@@ -165,7 +147,7 @@ async function generate(): Promise<void> {
     for (const unTransformed of transformationSkippedHTMLFiles) {
       const relativeToRootHTMLPath = path.relative(
         ROOT,
-        memoizedTemplates[unTransformed.templateEntryHash].htmlPath
+        memoizedTemplates[unTransformed.importsHash].htmlPath
       );
       const distHTMLPath = path.join(OUTPUT_DIR, relativeToRootHTMLPath);
       const templatePage = fs.readFileSync(distHTMLPath, 'utf-8');
