@@ -82,7 +82,6 @@ async function generate(): Promise<void> {
   const transformationSkippedHTMLFiles = [];
   const createdDirectories: string[] = [];
   let importTemplatesMemo: Record<string, { htmlPath: string }> = {};
-  // @TODO: create a flag in abell config to set this to false in case some bug shows up
   const shouldOptimizeTransformations =
     viteConfigObj.abell?.optimizedTransformations ?? true;
 
