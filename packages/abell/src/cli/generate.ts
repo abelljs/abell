@@ -9,71 +9,20 @@ import {
   addCSSToHead,
   addJStoBodyEnd
 } from '../utils/internal-utils.js';
+import {
+  CSS_FETCH_REGEX,
+  JS_FETCH_REGEX,
+  getCSSLinks,
+  getImportTemplatePage,
+  getImportsHash,
+  getJSLinks
+} from '../utils/import-hashing.js';
 
 import { Route } from '../type-utils';
-import { bold, log, viteCustomLogger } from '../utils/logger.js';
-import { generateHashFromPath } from '../vite-plugin-abell/compiler/scope-css/generate-hash.js';
-
-const CSS_FETCH_REGEX = /<link.*?href="(.*?)".*?\/?>/g;
-const JS_FETCH_REGEX = /<script.*?src="(.*?)".*?>[ \n]*?<\/script>/g;
-
-const getCSSLinks = (templatePage: string): string => {
-  return Array.from(templatePage.matchAll(CSS_FETCH_REGEX))
-    .map((linkMatch) => linkMatch[0])
-    .join('\n');
-};
-
-const getJSLinks = (templatePage: string): string => {
-  return Array.from(templatePage.matchAll(JS_FETCH_REGEX))
-    .map((linkMatch) => linkMatch[0])
-    .join('\n');
-};
-
-const importTemplatesOutContentMemo: Record<string, string> = {};
-
-const getImportTemplatePage = ({
-  ROOT,
-  OUTPUT_DIR,
-  importTemplatesMemo,
-  importsHash
-}: {
-  ROOT: string;
-  OUTPUT_DIR: string;
-  importTemplatesMemo: Record<string, { htmlPath: string }>;
-  importsHash: string;
-}) => {
-  const relativeToRootHTMLPath = path.relative(
-    ROOT,
-    importTemplatesMemo[importsHash].htmlPath
-  );
-  const distHTMLPath = path.join(OUTPUT_DIR, relativeToRootHTMLPath);
-  if (importTemplatesOutContentMemo[distHTMLPath]) {
-    return importTemplatesOutContentMemo[distHTMLPath];
-  }
-
-  const templatePage = fs.readFileSync(distHTMLPath, 'utf-8');
-  if (Object.keys(importTemplatesOutContentMemo).length < 100) {
-    importTemplatesOutContentMemo[distHTMLPath] = templatePage;
-  }
-  return templatePage;
-};
-
-const getImportsHash = (
-  appHtml: string
-): {
-  importsStringDump: string;
-  importsHash: string;
-} => {
-  const importsStringDump = getCSSLinks(appHtml) + getJSLinks(appHtml);
-  const importsHash = generateHashFromPath(importsStringDump);
-
-  return {
-    importsStringDump,
-    importsHash
-  };
-};
+import { bold, dim, log, viteCustomLogger, blue } from '../utils/logger.js';
 
 async function generate(): Promise<void> {
+  const startTime = performance.now();
   const cwd = process.cwd();
   const configFile = getConfigPath(cwd);
 
@@ -100,7 +49,7 @@ async function generate(): Promise<void> {
         onLog: (level, logObj) => {
           // Ignoring unused abell block warning
           if (level === 'warn' && logObj.code !== 'UNUSED_EXTERNAL_IMPORT') {
-            log(logObj.message, 'p1');
+            log(logObj.message, 'p1', { logLevel: viteConfigObj.logLevel });
           }
         }
       },
@@ -132,7 +81,10 @@ async function generate(): Promise<void> {
   const createdHTMLFiles: string[] = [];
   const transformationSkippedHTMLFiles = [];
   const createdDirectories: string[] = [];
-  const importTemplatesMemo: Record<string, { htmlPath: string }> = {};
+  let importTemplatesMemo: Record<string, { htmlPath: string }> = {};
+  // @TODO: create a flag in abell config to set this to false in case some bug shows up
+  const shouldOptimizeTransformations =
+    viteConfigObj.abell?.optimizedTransformations ?? true;
 
   try {
     for (const route of routes) {
@@ -149,14 +101,20 @@ async function generate(): Promise<void> {
 
       const { importsStringDump, importsHash } = getImportsHash(appHtml);
 
-      if (importsStringDump && importTemplatesMemo[importsHash]) {
+      if (
+        importsStringDump &&
+        importTemplatesMemo[importsHash] &&
+        shouldOptimizeTransformations
+      ) {
         transformationSkippedHTMLFiles.push({
           importsHash,
           htmlPath,
           appHtml
         });
       } else {
-        importTemplatesMemo[importsHash] = { htmlPath };
+        if (shouldOptimizeTransformations) {
+          importTemplatesMemo[importsHash] = { htmlPath };
+        }
         const newDirs = createPathIfAbsent(path.dirname(htmlPath));
         createdDirectories.push(...newDirs);
         fs.writeFileSync(htmlPath, appHtml);
@@ -177,34 +135,59 @@ async function generate(): Promise<void> {
       configFile
     });
 
-    for (const unTransformed of transformationSkippedHTMLFiles) {
-      const templatePage = getImportTemplatePage({
-        ROOT,
-        OUTPUT_DIR,
-        importTemplatesMemo,
-        importsHash: unTransformed.importsHash
-      });
-      const cssLinks = getCSSLinks(templatePage);
-      const jsLinks = getJSLinks(templatePage);
-      const htmlWithCSS = addCSSToHead(
-        unTransformed.appHtml.replace(CSS_FETCH_REGEX, ''),
-        cssLinks
-      );
-      const htmlWithCSSAndJS = addJStoBodyEnd(
-        htmlWithCSS.replace(JS_FETCH_REGEX, ''),
-        jsLinks
-      );
-      fs.writeFileSync(
-        path.join(OUTPUT_DIR, path.relative(ROOT, unTransformed.htmlPath)),
-        htmlWithCSSAndJS
+    if (
+      shouldOptimizeTransformations &&
+      transformationSkippedHTMLFiles.length > 0
+    ) {
+      const writePromises: Promise<void>[] = [];
+      for (const unTransformed of transformationSkippedHTMLFiles) {
+        const templatePage = getImportTemplatePage({
+          ROOT,
+          OUTPUT_DIR,
+          importTemplatesMemo,
+          importsHash: unTransformed.importsHash
+        });
+        const cssLinks = getCSSLinks(templatePage);
+        const jsLinks = getJSLinks(templatePage);
+        const htmlWithCSS = addCSSToHead(
+          unTransformed.appHtml.replace(CSS_FETCH_REGEX, ''),
+          cssLinks
+        );
+        const htmlWithCSSAndJS = addJStoBodyEnd(
+          htmlWithCSS.replace(JS_FETCH_REGEX, ''),
+          jsLinks
+        );
+
+        const htmlOutPath = path.join(
+          OUTPUT_DIR,
+          path.relative(ROOT, unTransformed.htmlPath)
+        );
+
+        const writePromise = fs.promises
+          .writeFile(htmlOutPath, htmlWithCSSAndJS)
+          .then(() => {
+            log(
+              `${dim(
+                path.dirname(path.relative(ROOT, htmlOutPath)) + '/'
+              )}${blue(path.basename(htmlOutPath))}`,
+              'p1',
+              {
+                icon: '⚡️',
+                logLevel: viteConfigObj.logLevel
+              }
+            );
+          });
+        writePromises.push(writePromise);
+      }
+
+      await Promise.all(writePromises);
+
+      log(
+        `Created ${transformationSkippedHTMLFiles.length} files with optimized transformations 🚀`,
+        'p1',
+        { logLevel: viteConfigObj.logLevel }
       );
     }
-    log(
-      `Crated ${transformationSkippedHTMLFiles.length} files without transformation 🚀`,
-      'p1'
-    );
-    // We can then loop over untransformed files, match them with their transformed URLs using memoHash
-    // Then remove the existing Link and script URLs from them and add new URLs fetched from template
   } finally {
     // CLEANUP
     for (const HTML_FILE of createdHTMLFiles) {
@@ -216,10 +199,20 @@ async function generate(): Promise<void> {
       fs.rmdirSync(newDir);
     }
 
-    log(
-      `✨ Site Generated ✨ \n\n${bold('npx serve dist')} to run static server`
-    );
+    importTemplatesMemo = {};
   }
+
+  const buildTime = parseFloat(
+    String((performance.now() - startTime) / 1000)
+  ).toFixed(2);
+
+  log(
+    `✨ Site Generated in ${blue(`${buildTime}s`)} ✨ \n\n${bold(
+      'npx serve dist'
+    )} to run static server`,
+    'p0',
+    { logLevel: viteConfigObj.logLevel }
+  );
 }
 
 export default generate;

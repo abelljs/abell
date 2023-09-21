@@ -1,10 +1,13 @@
 import { createLogger } from 'vite';
+import { AbellViteConfig } from '../type-utils.js';
 
 const reset = '\u001b[0m';
 const blueColorCode = '\u001b[34m';
 export const bold = (message: string): string => `\u001b[1m${message}${reset}`;
-const blue = (message: string) => `${blueColorCode}${message}${reset}`;
-const grey = (message: string) => `\u001b[90m${message}${reset}`;
+export const blue = (message: string) => `${blueColorCode}${message}${reset}`;
+export const grey = (message: string) => `\u001b[90m${message}${reset}`;
+export const dim = (message: string) => `\u001b[2m${message}${reset}`;
+export const secret = (message: string) => `\u001b[22m${message}${reset}`;
 const underline = (message: string) => `\u001b[4m${message}${reset}`;
 
 export const boldUnderline = (message: string): string =>
@@ -20,20 +23,31 @@ export const viteCustomLogger = createLogger('info', {
 const loggerInfo = viteCustomLogger.info;
 viteCustomLogger.info = (msg, options) => {
   if (msg.includes('building SSR bundle')) return;
+  if (msg.includes('built in')) return;
 
   // Replacing colors in terminal with blue color for Abell theme
   loggerInfo(
-    msg.replace(/\u001b\[3[0-6]m/g, blueColorCode).replaceAll('vite', 'Vite'),
+    reset +
+      msg.replace(/\u001b\[3[0-6]m/g, blueColorCode).replaceAll('vite', 'Vite'),
     options
   );
 };
 
-export const log = (message: string, importance: 'p0' | 'p1' = 'p0'): void => {
-  if (importance === 'p1') {
-    console.log(blue('‣'), grey(message));
-  } else {
-    console.log('');
-    console.log(PREFIX, message);
-    console.log('');
+export const log = (
+  message: string,
+  importance: 'p0' | 'p1' = 'p0',
+  {
+    icon = '‣',
+    logLevel = 'info'
+  }: { icon?: string; logLevel?: AbellViteConfig['logLevel'] | 'debug' } = {}
+): void => {
+  if (logLevel === 'info' || logLevel === 'debug') {
+    if (importance === 'p1') {
+      console.log(reset, blue(icon), grey(message));
+    } else {
+      console.log('');
+      console.log(PREFIX, message);
+      console.log('');
+    }
   }
 };

@@ -43,6 +43,20 @@ export type AbellOptions = {
    * ```
    */
   esbuild?: EsbuildTransformOptions;
+
+  /**
+   * Abell uses import hashing to avoid transforming repeated layouts through vite.
+   * It instead copy pastes the import URLs from earlier transformed page.
+   *
+   * Checkout description of this issue to know more https://github.com/abelljs/abell/pull/161#issue-1906511077
+   *
+   * This is set to true by default and in most cases it should work.
+   * This flag is for scenarios where you face some bug due to transformation skips
+   * or when you know what you're doing and want to transform every HTML route through Vite
+   *
+   * @default true
+   */
+  optimizedTransformations?: boolean;
   /**
    * Just like "build" option in Vite. Except this only applies on intermediate server build that is created.
    *
