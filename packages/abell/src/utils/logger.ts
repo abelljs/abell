@@ -1,7 +1,7 @@
 import { createLogger } from 'vite';
 import { AbellViteConfig } from '../type-utils.js';
 
-const reset = '\u001b[0m';
+export const reset = '\u001b[0m';
 const blueColorCode = '\u001b[34m';
 export const bold = (message: string): string => `\u001b[1m${message}${reset}`;
 export const blue = (message: string) => `${blueColorCode}${message}${reset}`;

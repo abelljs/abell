@@ -19,7 +19,14 @@ import {
 } from '../utils/import-hashing.js';
 
 import { Route } from '../type-utils';
-import { bold, dim, log, viteCustomLogger, blue } from '../utils/logger.js';
+import {
+  bold,
+  dim,
+  log,
+  viteCustomLogger,
+  blue,
+  reset
+} from '../utils/logger.js';
 
 async function generate(): Promise<void> {
   const startTime = performance.now();
@@ -170,7 +177,7 @@ async function generate(): Promise<void> {
           .writeFile(htmlOutPath, htmlWithCSSAndJS)
           .then(() => {
             log(
-              `${dim(
+              `${reset}${dim(
                 path.dirname(path.relative(ROOT, htmlOutPath)) + '/'
               )}${blue(path.basename(htmlOutPath))}`,
               'p1',
