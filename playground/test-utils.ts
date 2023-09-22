@@ -14,17 +14,25 @@ const windowsifyCommand = (command: string): string => {
 };
 
 let dir: string = __dirname;
-export async function run(cwd: string): Promise<void> {
+export async function run(
+  cwd: string,
+  stdio: 'pipe' | 'inherit' = 'pipe'
+): Promise<string> {
   dir = cwd;
   return new Promise((resolve, reject) => {
     const child = spawn(windowsifyCommand('pnpm'), ['generate'], {
       cwd,
-      stdio: 'inherit'
+      stdio
+    });
+    let terminalOutput = '';
+
+    child.stdout?.on('data', (data) => {
+      terminalOutput += data;
     });
 
     child.on('close', (code: number) => {
       if (code === 0) {
-        resolve();
+        resolve(terminalOutput);
       } else {
         // eslint-disable-next-line prefer-promise-reject-errors
         reject();

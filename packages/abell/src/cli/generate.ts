@@ -5,13 +5,24 @@ import { build as viteBuild } from 'vite';
 import {
   getConfigPath,
   getViteBuildInfo,
-  createPathIfAbsent
+  createPathIfAbsent,
+  addCSSToHead,
+  addJStoBodyEnd
 } from '../utils/internal-utils.js';
+import {
+  CSS_FETCH_REGEX,
+  JS_FETCH_REGEX,
+  getCSSLinks,
+  getImportTemplatePage,
+  getImportsHash,
+  getJSLinks
+} from '../utils/import-hashing.js';
 
 import { Route } from '../type-utils';
-import { bold, log, viteCustomLogger } from '../utils/logger.js';
+import { bold, dim, log, viteCustomLogger, blue } from '../utils/logger.js';
 
 async function generate(): Promise<void> {
+  const startTime = performance.now();
   const cwd = process.cwd();
   const configFile = getConfigPath(cwd);
 
@@ -34,7 +45,13 @@ async function generate(): Promise<void> {
       ssr: true,
       rollupOptions: {
         input: SOURCE_ENTRY_BUILD_PATH,
-        external: ['abell']
+        external: ['abell'],
+        onLog: (level, logObj) => {
+          // Ignoring unused abell block warning
+          if (level === 'warn' && logObj.code !== 'UNUSED_EXTERNAL_IMPORT') {
+            log(logObj.message, 'p1', { logLevel: viteConfigObj.logLevel });
+          }
+        }
       },
       ssrManifest: true,
       ...viteConfigObj.abell?.serverBuild
@@ -61,49 +78,139 @@ async function generate(): Promise<void> {
   }
 
   // Generate index.html
-  const createdHTMLFiles = [];
-  const createdDirectories = [];
+  const createdHTMLFiles: string[] = [];
+  const transformationSkippedHTMLFiles = [];
+  const createdDirectories: string[] = [];
+  let importTemplatesMemo: Record<string, { htmlPath: string }> = {};
+  const shouldOptimizeTransformations =
+    viteConfigObj.abell?.optimizedTransformations ?? true;
 
-  for (const route of routes) {
-    const appHtml = route.render();
-    if (!appHtml) continue;
-    let htmlPath = path.join(
-      ROOT,
-      `${route.path === '/' ? 'index' : route.path}.html`
-    );
-    if (route.routeOptions?.outputPathPattern === '[route]/index.html') {
-      htmlPath = path.join(ROOT, route.path, 'index.html');
-    }
-    const newDirs = createPathIfAbsent(path.dirname(htmlPath));
-    createdDirectories.push(...newDirs);
-    fs.writeFileSync(htmlPath, appHtml);
-    createdHTMLFiles.push(htmlPath);
-  }
+  try {
+    for (const route of routes) {
+      const appHtml = route.render();
+      if (!appHtml) continue;
 
-  // Static build
-  await viteBuild({
-    build: {
-      outDir: OUTPUT_DIR,
-      emptyOutDir: true,
-      rollupOptions: {
-        input: createdHTMLFiles
+      let htmlPath = path.join(
+        ROOT,
+        `${route.path === '/' ? 'index' : route.path}.html`
+      );
+      if (route.routeOptions?.outputPathPattern === '[route]/index.html') {
+        htmlPath = path.join(ROOT, route.path, 'index.html');
       }
-    },
-    customLogger: viteCustomLogger,
-    configFile
-  });
 
-  for (const HTML_FILE of createdHTMLFiles) {
-    fs.unlinkSync(HTML_FILE);
+      const { importsStringDump, importsHash } = getImportsHash(appHtml);
+
+      if (
+        importsStringDump &&
+        importTemplatesMemo[importsHash] &&
+        shouldOptimizeTransformations
+      ) {
+        transformationSkippedHTMLFiles.push({
+          importsHash,
+          htmlPath,
+          appHtml
+        });
+      } else {
+        if (shouldOptimizeTransformations) {
+          importTemplatesMemo[importsHash] = { htmlPath };
+        }
+        const newDirs = createPathIfAbsent(path.dirname(htmlPath));
+        createdDirectories.push(...newDirs);
+        fs.writeFileSync(htmlPath, appHtml);
+        createdHTMLFiles.push(htmlPath);
+      }
+    }
+
+    // Static build
+    await viteBuild({
+      build: {
+        outDir: OUTPUT_DIR,
+        emptyOutDir: true,
+        rollupOptions: {
+          input: createdHTMLFiles
+        }
+      },
+      customLogger: viteCustomLogger,
+      configFile
+    });
+
+    if (
+      shouldOptimizeTransformations &&
+      transformationSkippedHTMLFiles.length > 0
+    ) {
+      const writePromises: Promise<void>[] = [];
+      for (const unTransformed of transformationSkippedHTMLFiles) {
+        const templatePage = getImportTemplatePage({
+          ROOT,
+          OUTPUT_DIR,
+          importTemplatesMemo,
+          importsHash: unTransformed.importsHash
+        });
+        const cssLinks = getCSSLinks(templatePage);
+        const jsLinks = getJSLinks(templatePage);
+        const htmlWithCSS = addCSSToHead(
+          unTransformed.appHtml.replace(CSS_FETCH_REGEX, ''),
+          cssLinks
+        );
+        const htmlWithCSSAndJS = addJStoBodyEnd(
+          htmlWithCSS.replace(JS_FETCH_REGEX, ''),
+          jsLinks
+        );
+
+        const htmlOutPath = path.join(
+          OUTPUT_DIR,
+          path.relative(ROOT, unTransformed.htmlPath)
+        );
+
+        const writePromise = fs.promises
+          .writeFile(htmlOutPath, htmlWithCSSAndJS)
+          .then(() => {
+            log(
+              `${dim(
+                path.dirname(path.relative(ROOT, htmlOutPath)) + '/'
+              )}${blue(path.basename(htmlOutPath))}`,
+              'p1',
+              {
+                icon: '⚡️',
+                logLevel: viteConfigObj.logLevel
+              }
+            );
+          });
+        writePromises.push(writePromise);
+      }
+
+      await Promise.all(writePromises);
+
+      log(
+        `Created ${transformationSkippedHTMLFiles.length} files with optimized transformations 🚀`,
+        'p1',
+        { logLevel: viteConfigObj.logLevel }
+      );
+    }
+  } finally {
+    // CLEANUP
+    for (const HTML_FILE of createdHTMLFiles) {
+      fs.unlinkSync(HTML_FILE);
+    }
+
+    // remove directories
+    for (const newDir of createdDirectories) {
+      fs.rmdirSync(newDir);
+    }
+
+    importTemplatesMemo = {};
   }
 
-  // remove directories
-  for (const newDir of createdDirectories) {
-    fs.rmdirSync(newDir);
-  }
+  const buildTime = parseFloat(
+    String((performance.now() - startTime) / 1000)
+  ).toFixed(2);
 
   log(
-    `✨ Site Generated ✨ \n\n${bold('npx serve dist')} to run static server`
+    `✨ Site Generated in ${blue(`${buildTime}s`)} ✨ \n\n${bold(
+      'npx serve dist'
+    )} to run static server`,
+    'p0',
+    { logLevel: viteConfigObj.logLevel }
   );
 }
 

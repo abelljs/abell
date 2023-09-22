@@ -1,0 +1,19 @@
+{
+  "name": "custom-routing",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "private": "true",
+  "scripts": {
+    "dev": "abell --version && abell dev",
+    "generate": "abell generate",
+    "test": "vitest",
+    "test:once": "vitest run"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "abell": "workspace:*"
+  }
+}
