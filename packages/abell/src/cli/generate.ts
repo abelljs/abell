@@ -98,7 +98,11 @@ async function generate(): Promise<void> {
         htmlPath = path.join(ROOT, route.path, 'index.html');
       }
 
-      const { importsStringDump, importsHash } = getImportsHash(appHtml);
+      const { importsStringDump, importsHash } = getImportsHash({
+        ROOT,
+        appHtml,
+        htmlPath
+      });
 
       if (
         importsStringDump &&

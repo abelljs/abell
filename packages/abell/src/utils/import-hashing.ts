@@ -8,6 +8,7 @@
 import fs from 'fs';
 import path from 'path';
 import { generateHashFromPath } from '../vite-plugin-abell/compiler/scope-css/generate-hash.js';
+import { urlifyPath } from './internal-utils.js';
 
 export const CSS_FETCH_REGEX = /<link.*?href="(.*?)".*?\/?>/g;
 export const JS_FETCH_REGEX = /<script.*?src="(.*?)".*?>[ \n]*?<\/script>/g;
@@ -58,14 +59,26 @@ export const getImportTemplatePage = ({
   return templatePage;
 };
 
-export const getImportsHash = (
-  appHtml: string
-): {
+export const getImportsHash = ({
+  ROOT,
+  appHtml,
+  htmlPath
+}: {
+  ROOT: string;
+  appHtml: string;
+  htmlPath: string;
+}): {
   importsStringDump: string;
   importsHash: string;
 } => {
+  const relativeToRootHTMLPath = path.relative(ROOT, path.dirname(htmlPath));
+
   // This is dump of all JS and CSS links from page. This (after hashing to smaller string) becomes our unique identifier for import patterns
-  const importsStringDump = getCSSLinks(appHtml) + getJSLinks(appHtml);
+  const importsStringDump =
+    getCSSLinks(appHtml) +
+    getJSLinks(appHtml) +
+    // we also add directory of file in this dump to generate different hash for files in different directory even if they have same imports
+    urlifyPath(relativeToRootHTMLPath);
   const importsHash = generateHashFromPath(importsStringDump);
 
   return {
