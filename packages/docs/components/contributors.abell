@@ -44,4 +44,11 @@
   p {
     margin: 0px;
   }
+
+  @media (max-width: 768px) {
+    .contributor-images-container {
+      white-space: nowrap;
+      overflow: auto;
+    }
+  }
 </style>

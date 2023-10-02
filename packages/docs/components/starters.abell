@@ -151,5 +151,10 @@
     section {
       flex-direction: column;
     }
+
+    .theme-container {
+      max-width: unset;
+      width: 100%;
+    }
   }
 </style>
