@@ -130,7 +130,12 @@ export const getFreePort = async (): Promise<number | undefined> => {
   });
 };
 
-const coolReadablePorts = [5000, 8000, 8888, 8080];
+const coolReadablePorts = [
+  // Shoutout to Abell 2029 Galaxy Cluster - https://en.wikipedia.org/wiki/Abell_2029
+  2029,
+  // Random readable port numbers
+  5000, 8000, 8888, 8080
+];
 let retryPortIndex = -1;
 
 /**

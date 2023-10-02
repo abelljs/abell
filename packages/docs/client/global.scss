@@ -81,6 +81,22 @@ button {
   transition: background-color .1s ease;
 }
 
+.learn-more {
+  text-align: center;
+
+  a {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .icon-arrow-right {
+    height: 14px;
+    width: 14px;
+    align-self: center;
+  }
+}
+
 code {
   font-family: 'Menlo', monospace, Courier;
   background-color: var(--blue-10);
@@ -235,6 +251,11 @@ hr {
       text-decoration: underline;
     }
   }
+}
+
+a {
+  color: var(--blue-6);
+  text-decoration: none;
 }
 
 @media (max-width: 768px) {

@@ -23,7 +23,15 @@
           </div>
           <div style="padding: 0px 0px;text-align: center">or</div> 
           <div style="padding: 5px 0px;">Create new project locally with:</div>
-          <code style="display: block;word-spacing: 3px;font-size: unset">npx create-abell my-app --template ${theme.github.replace('https://github.com/', '')}</code>
+          <div class="display-flex npx-command">
+            <code class="copy-code-container" style="display: block;word-spacing: 3px;font-size: unset; padding-right: 32px">
+              npx create-abell my-app --template ${theme.github.replace('https://github.com/', '')}
+            </code>
+            <button title="Copy Command" aria-label="Copy command" data-copydata="npx create-abell my-app --template ${theme.github.replace('https://github.com/', '')}">
+              <i class="icon icon-copy"></i>
+              <i class="icon icon-check"></i>
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -45,6 +53,43 @@
     text-align: left;
     border-radius: 4px;
     overflow: hidden;
+  }
+
+  .npx-command {
+    position: relative;
+  }
+
+  .npx-command .icon {
+    height: 14px;
+    width: 14px;
+  }
+
+  .npx-command button {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    bottom: 0px;
+    margin: auto;
+    border: none;
+    background-color: var(--blue-10);
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .npx-command button .icon-check {
+    display: none;
+  }
+
+  .npx-command button .icon-copy {
+    display: block;
+  }
+
+  .npx-command button.copied .icon-check {
+    display: block;
+  }
+
+  .npx-command button.copied .icon-copy {
+    display: none;
   }
 
   a {

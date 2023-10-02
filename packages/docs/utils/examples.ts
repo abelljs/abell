@@ -5,6 +5,7 @@ import { EXAMPLES_ABELL_VERSION } from '../config';
 export type EditorConfigObjType = {
   files: Record<string, { file: { contents: string } }>;
   activeFile?: string;
+  repoName?: `saurabhdaware/${string}`;
   minHeight?: string;
   showFileExplorer?: boolean;
   output: Record<string, { screen: string }>;
@@ -45,6 +46,7 @@ export const noConfigSetup = {
       }
     }
   },
+  repoName: 'saurabhdaware/abell-single-file-example',
   minHeight: '400px',
   showURLBar: false,
   activeFile: 'index.abell',
@@ -456,6 +458,7 @@ export const allVite = {
     }
   },
   activeFile: 'vite.config.ts',
+  repoName: 'saurabhdaware/abell-mdx-example',
   minHeight: '550px',
   output: {
     '/': {
@@ -517,6 +520,7 @@ export const routingExample = {
     }
   },
   activeFile: 'entry.build.ts',
+  repoName: 'saurabhdaware/abell-custom-routing-example',
   minHeight: '640px',
   showURLBar: true,
   output: {

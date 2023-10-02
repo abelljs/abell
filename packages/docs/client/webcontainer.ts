@@ -106,6 +106,10 @@ const terminalOutputEl = document.querySelector<HTMLDivElement>(
   '.webcontainer .terminal-output'
 );
 
+const openInStackblitzAnchorEl = document.querySelector<HTMLButtonElement>(
+  '.webcontainer a.open-in-stackblitz-button'
+);
+
 const urlBarContainer = document.querySelector<HTMLDivElement>('.url-bar');
 const urlSelect =
   document.querySelector<HTMLSelectElement>('.url-bar > select');
@@ -128,6 +132,14 @@ const initiateWebContainer = async (webcontainerData: EditorConfigObjType) => {
 
   if (webcontainerData.showFileExplorer === false) {
     fileExplorer.classList.add('hide');
+  }
+
+  if (webcontainerData.repoName) {
+    openInStackblitzAnchorEl?.classList.remove('hide');
+    openInStackblitzAnchorEl?.setAttribute(
+      'href',
+      `https://stackblitz.com/github/${webcontainerData.repoName}`
+    );
   }
 
   if (editor) {

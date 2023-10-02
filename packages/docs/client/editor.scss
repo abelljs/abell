@@ -87,6 +87,39 @@
       border-top: 2px solid var(--blue-5);
     }
   }
+
+  .file-explorer-container {
+    position: relative;
+
+    .open-in-stackblitz-button-container {
+      font-family: Arial, Helvetica, sans-serif;
+      position: absolute;
+      bottom: 0px;
+      width: 100%;
+
+      @media (max-width: 768px) {
+        display: none;
+      }
+    }
+
+    .open-in-stackblitz-button {
+      display: flex;
+      align-items: center;
+      justify-content: left;
+      padding: 12px;
+      background-color: transparent;
+      color: #000;
+      opacity: 1;
+      font-size: smaller;
+      text-decoration: none;
+      font-weight: bold;
+      gap: 6px;
+
+      &:hover {
+        opacity: .7;
+      }
+    }    
+  }
   
   .file-explorer {
     display: flex;
@@ -225,8 +258,8 @@
   ul.file-explorer {
     list-style: none;
   }
+}
 
-  .hide {
-    display: none;
-  }
+.hide {
+  display: none !important;
 }

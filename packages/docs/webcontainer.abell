@@ -16,9 +16,15 @@
 <body>
   <div class="webcontainer">
     <div class="editor">
-      <div>
+      <div class="file-explorer-container">
         <ul class="file-explorer">
         </ul>
+        <div class="open-in-stackblitz-button-container">
+          <a class="open-in-stackblitz-button hide" href="#">
+            <img alt="StackBlitz Logo" height="16px" width="16px" src="/logos/stackblitz-logo.png" /> 
+            <span>Open In StackBlitz</span>
+          </a>
+        </div>
       </div>
       <div class="code-display"></div>
       <div class="code-preview">

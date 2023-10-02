@@ -11,6 +11,7 @@
     <code>abell.config.ts</code>, we just use <code>vite.config.ts</code> 🤗
   </p>
   {{ editor(allVite) }}
+  <p class="learn-more">Learn More about Vite Plugins at <a href="/docs/plugins-and-integrations"><span>Plugins & Integrations Guide</span> <i class="icon icon-arrow-right"></i></a></p>
 </section>
 
 <style>

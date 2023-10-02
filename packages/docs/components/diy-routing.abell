@@ -8,6 +8,7 @@
   <h2>Override the Router with your own logic</h2>
   <p>Opt out of the default file-system routing with <code>makeRoutes</code> API</p>
   {{ editor(routingExample) }}
+  <p class="learn-more">Learn More about <code>makeRoutes</code> API at <a href="/docs/custom-routing"><span>Custom Routing Guide</span> <i class="icon icon-arrow-right"></i></a></p>
 </section>
 
 <style>

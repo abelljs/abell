@@ -14,6 +14,7 @@
     </ol>
   </div>
   {{ editor(noConfigSetup) }}
+  <p class="learn-more">Learn More about Single File Setup at <a href="/docs/getting-started"><span>Getting Started</span> <i class="icon icon-arrow-right"></i></a></p>
 </section>
 
 <style>
