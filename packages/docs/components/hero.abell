@@ -2,7 +2,7 @@
   <div class="abell-heading-container">
     <div class="heading-content">
       <h1>A Static-Site-Generator for JavaScript Developers</h1>
-      <p>Abell is low-level, highly flexible, framework-agnostic, Vite-powered Static-Site-Generator for building fast
+      <p>Abell is a low-level, highly flexible, framework-agnostic, Vite-powered Static-Site-Generator for building fast
         and zero-js by default websites</p>
       <div class="buttons-container">
         <a href="/docs/getting-started" class="button-primary">Get Started</a>
@@ -31,7 +31,7 @@
   }
 
   .heading-content {
-    max-width: 830px;
+    max-width: 840px;
   }
 
   .heading-content p {
@@ -118,7 +118,7 @@
 
   @media (max-width: 768px) {
     section {
-      padding: 12px 24px 24px;
+      padding: 12px var(--content-padding-horizontal) 24px;
     }
 
     h1 {

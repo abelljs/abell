@@ -270,7 +270,7 @@ a {
     --font-text-small: 0.9rem;
     --font-text-small-spacing: 0.03rem;
     --content-width-landing: 100%;
-    --content-padding-horizontal: 24px;
+    --content-padding-horizontal: 64px;
   }
 
   
@@ -296,5 +296,11 @@ a {
 
   .hide-desktop {
     display: unset;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --content-padding-horizontal: 24px;
   }
 }

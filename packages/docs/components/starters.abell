@@ -151,7 +151,9 @@
     section {
       flex-direction: column;
     }
+  }
 
+  @media (max-width: 420px) {
     .theme-container {
       max-width: unset;
       width: 100%;
