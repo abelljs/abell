@@ -81,6 +81,7 @@ h1, h2, h3 {
 h1 {
   font-size: 2.5rem;
   margin-bottom: 2rem;
+  line-height: 3.6rem;
 }
 
 h1 + p {
@@ -90,7 +91,9 @@ h1 + p {
 h2 {
   font-size: 1.5rem;
   margin: 0px;
+  margin-bottom: 12px;
   padding: 2rem 0rem 0rem 0rem;
+  line-height: 2.8rem;
 }
 
 h2 + p, h3 + p {
@@ -323,6 +326,10 @@ button.hamburger-menu .icon {
 
   .DocSearch-Container {
     z-index: 99999999 !important;
+  }
+
+  p {
+    line-height: 1.9rem;
   }
 }
 
