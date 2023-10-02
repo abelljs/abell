@@ -88,7 +88,7 @@
   }
 
   a:hover {
-    color: var(--blue-4);
+    color: var(--blue-7);
   }
 
 

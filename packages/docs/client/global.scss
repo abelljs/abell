@@ -88,6 +88,11 @@ button {
     display: inline-flex;
     align-items: center;
     gap: 6px;
+    color: var(--blue-6);
+
+    &:hover {
+      color: var(--blue-7);
+    }
   }
 
   .icon-arrow-right {
