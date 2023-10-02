@@ -13,6 +13,7 @@
       template: 'docs'
     })
   }}
+  <link rel="preload" onload="this.rel = 'stylesheet'" as="style" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3" />
   <link rel="stylesheet" href="/client/docs.css" />
 </head>
 

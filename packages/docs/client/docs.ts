@@ -1,6 +1,5 @@
 import docsearch from '@docsearch/js';
 
-import '@docsearch/css';
 import 'highlight.js/styles/github.css';
 
 docsearch({
