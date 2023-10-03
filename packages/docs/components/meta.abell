@@ -23,7 +23,7 @@
 
 <!-- OPEN GRAPH -->
 <meta property="og:type" content="website" />
-<meta property="og:title" content="{{ SITE_TITLE }}" />
+<meta property="og:title" content="Abell" />
 <meta name="og:description"
       content="Abell - A Low-Level, Framework Agnostic, Vite Powered Static Site Generator for JavaScript Developers" />
 <meta property="og:url" content="https://abelljs.org" />
