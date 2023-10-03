@@ -135,11 +135,14 @@ const initiateWebContainer = async (webcontainerData: EditorConfigObjType) => {
   }
 
   if (webcontainerData.repoName) {
+    const stackblitzURL = `https://stackblitz.com/~/github.com/${webcontainerData.repoName}`;
+
     openInStackblitzAnchorEl?.classList.remove('hide');
-    openInStackblitzAnchorEl?.setAttribute(
-      'href',
-      `https://stackblitz.com/github/${webcontainerData.repoName}`
-    );
+    openInStackblitzAnchorEl?.addEventListener('click', (e) => {
+      e.preventDefault();
+      window.top?.open(stackblitzURL, '_blank');
+    });
+    openInStackblitzAnchorEl?.setAttribute('href', stackblitzURL);
   }
 
   if (editor) {
