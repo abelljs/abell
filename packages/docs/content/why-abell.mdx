@@ -1,13 +1,58 @@
-import editor from '../components/editor.abell';
-import { noConfigSetup } from '../utils/examples.ts';
-
 # Why Abell
 
-## Overview
+We know there are lots of static-site-generators and you might be wondering how is Abell different from them. This page might help you get that answer.
 
-<div dangerouslySetInnerHTML={{ __html: editor(noConfigSetup) }} />
+## What is Abell?
 
-Abell is a Static-Site-Generator for **building fast websites** while giving **maximum
-flexibility to developers**
+Well... apart from being [a galaxy cluster whose name happened to be available on NPM](https://en.wikipedia.org/wiki/Abell_2029), it is a Static-Site Generator built by [Saurabh](https://saurabhdaware.in) and GitHub Contributors 🫶🏼.
 
-{/* <Editor /> */}
+Abell takes inspirations from several tools in the ecosystem.
+
+To elaborate, Abell is -
+
+- **Low-Level** like Jekyll, Hugo, Hexo and tries to stay closer to HTML for smaller learning curve 🤓
+- **Framework Agnostic** and easily integrates with modern tools like MDX, TypeScript, and client-side frameworks like Astro does 🤗
+- **Vite Powered** which allows it to integrate with these modern tools by just using Vite plugins 🫡
+- **Static-Site-Generator** to help you build blogs, documentation sites, portfolios, landing pages, and pretty much anything static.
+
+## Backstory
+
+"Low-Level" is subjective. Its easier to understand API decisions of Abell by understanding it's backstory and few messups 🙈
+
+### Abell Zero
+
+Abell was started in April 2020 by [Saurabh](https://twitter.com/saurabhdawaree). It was primarily inspired from Jekyll, Hugo, and Hexo but with a template engine that new JavaScript developers would find simpler (Jekyll and Hugo were using Ruby and GO and Hexo was using ejs but ejs had its own learing curve).
+
+Few people like [pantharshit00](https://github.com/pantharshit00), and [prafulla-codes](https://github.com/prafulla-codes), and multiple other GitHub contributors helped along the way to help build abell-renderer (A lot of these contributions continue to work in Abell v1).
+
+So far it sounds great right? Except it didn't go as plan.
+
+Saurabh wrote a detailed blog on <a target="_blank" href="https://blog.saurabhdaware.in/things-that-went-wrong-with-abell-v0">What Went Wrong with Abell v0</a>. The TLDR from that blog is-
+
+So New Features === New Syntax === Higher Learning Curve (bummer 😢)
+
+Every feature like component, JSX, framework integrations, Plugins, etc required us to create new syntax which added to learning curve and eventually Abell v0 became the thing that it tried to fix. A template engine of high learning curve.
+
+<br />
+
+### Abell One
+
+Alright, last thing didn't go well. Attempt 2 of fixing the same issues.
+
+So how do you add features but not add learning curve?
+
+Hint: You make things integratable and let people come with their own comfort tools!!
+
+There is fundamental problem with traditional template engines though. They compile to HTML which bundlers strugle to understand. Bundlers love JavaScript so a lot of integrations like TypeScript, MDX, Framework Components happen over JavaScript part.
+
+This has also been an issue in existing traditional template-engine-based static-site-generators where a lot of them either struggled to integrate with modern tools or could not integrate at all.
+
+There was 1 template engine (kinda?) that integrated really well with ecosystem! That was Vue's SFC.
+
+Vue (and other client-side frameworks) for years used a webpack plugin to compile `.vue` files to JavaScript which integrated well with ecosystem. What if we go with that approach but make it focus on build-time? That's when we started exploring bundlers.
+
+Around this time, Astro was released and it used Vite as a bundler which validated the idea that something like this can be built using Vite and became the reason why Saurabh chose Vite over other bundlers.
+
+Abell became a low-level tool like Jekyll, Hugo which stays closer to Vanilla HTML while integrating into the modern JS ecosystem like Astro, and other client-side frameworks.
+
+Eventually Abell also expanded the definition of "low-level" by making decisions like `makeRoutes` API which gives you a low-level access to the routing and final HTML itself.

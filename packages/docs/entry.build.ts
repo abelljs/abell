@@ -7,6 +7,7 @@ import webcontainer from './webcontainer.abell';
 import docs from './docs.abell';
 
 // Content
+import whyAbell from './content/why-abell.mdx';
 import gettingStartedContent from './content/getting-started.mdx';
 import syntaxGuide from './content/syntax-guide.mdx';
 import customRouting from './content/custom-routing.mdx';
@@ -15,6 +16,11 @@ import { getContributors } from './utils/getContributors.js';
 
 // Docs Routes
 const docsPaths = [
+  {
+    path: '/docs/why-abell',
+    title: 'Why Abell',
+    content: whyAbell
+  },
   {
     path: '/docs/getting-started',
     title: 'Getting Started',
