@@ -119,10 +119,9 @@ h2:hover a, h3:hover a {
 }
 
 h3 {
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   margin: 0px;
-  padding: 2.5rem 0rem 1rem 0rem;
-
+  margin-bottom: 1rem;
 }
 
 .or {

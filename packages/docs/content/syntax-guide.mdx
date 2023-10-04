@@ -91,10 +91,11 @@ Abell has native component support. It allows you to make your HTML, CSS code re
 You can define component starting with `_` to tell abell to not create a page of it in final output. You can also opt-out of this `_` rule (and file-system routing) by using [Custom Routing](/custom-routing).
 
 <div dangerouslySetInnerHTML={{ __html: editor(componentsUsage) }} />
+<br />
 
 ### Passing Props
 
-Whenever you import an `.abell` file, it returns a javascript function that can render the HTML.
+Whenever you import a `.abell` file, it returns a javascript function that can render the HTML.
 
 The first argument you pass to this function can be read from variable `props` in the imported file.
 
