@@ -1,5 +1,6 @@
 declare module '*.mdx' {
   const value: string;
+  export const attributes: Record<string, string>;
   export default value;
 }
 

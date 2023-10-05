@@ -1,0 +1,40 @@
+{{
+  import headMeta from './components/meta.abell';
+  import navbar from './components/navbar.abell';
+  import footer from './components/footer.abell';
+}}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  {{
+    headMeta({ 
+      title: props.title,
+      template: 'docs'
+    })
+  }}
+  <link rel="preload" onload="this.rel = 'stylesheet'" as="style" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3" />
+  <link rel="stylesheet" href="/client/posts.scss" />
+</head>
+
+<body>
+  {{ navbar }}
+  <div class="docs-page-container display-flex">
+    <div class="content">
+      <main class="content-padding">
+        <h1>{{ props.title }}</h1>
+        <div class="author-info">
+          <p class="by">By</p>
+          <img class="author-avatar" src="{{ props.authorInfo.avatar }}" width="120px" />
+          <p class="author-username">{{ props.authorInfo.login }}</p>
+        </div>
+        {{ props.content }}
+      </main>
+      {{ footer }}
+    </div>
+  </div>
+  <script src="/client/main.ts" type="module"></script>
+  <script src="/client/docs.ts" type="module"></script>
+</body>
+
+</html>

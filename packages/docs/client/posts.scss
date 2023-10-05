@@ -1,0 +1,65 @@
+.content {
+  width: 100%;
+}
+
+main.content-padding {
+  padding: 50px 80px;
+  max-width: 1100px;
+  margin: auto;
+}
+
+
+h1, h2, h3 {
+  font-weight: 700;
+}
+
+h1 {
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  line-height: 3.6rem;
+}
+
+h1 + p {
+  font-size: 1.2rem;
+}
+
+h2 {
+  font-size: 1.5rem;
+  margin: 0px;
+  margin-bottom: 12px;
+  padding: 2rem 0rem 0rem 0rem;
+  line-height: 2.8rem;
+}
+
+h2 + p, h3 + p {
+  margin-top: 0px;
+}
+
+h2, h3 {
+  position: relative;
+}
+
+h2 a, h3 a {
+  position: absolute;
+  left: -15px;
+  opacity: 0;
+  transition: all .1s ease-in;
+  padding: 0px 12px;
+}
+
+h2:hover a, h3:hover a {
+  left: -32px;
+  opacity: 1;
+  transition: all .1s ease-out;
+}
+
+h3 {
+  font-size: 1.3rem;
+  margin: 0px;
+  margin-bottom: 1rem;
+}
+
+.author-info {
+  display: flex;
+  
+}
