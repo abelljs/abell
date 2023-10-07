@@ -1,0 +1,20 @@
+{{
+  import config from './config';
+  import counter from './_components/counter.abell'
+  import h from './_components/h.abell'
+  import navbar from './_components/navbar.abell'
+  import globalMeta from './_components/global.meta.abell'
+}}
+<html>
+<head>
+  {{ globalMeta }}
+</head>
+<body>
+  {{ navbar({ activeRoute: '/' }) }}
+  <main>
+    {{ h({ level: 1, text: config.title }) }}
+    {{ counter() }}
+  </main>
+  <script src="./client-assets/index-client.js" type="module"></script>
+</body>
+</html>
