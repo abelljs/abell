@@ -14,8 +14,8 @@
   <main class="container">
     {{ navbar({ activeRoute: '/' }) }}
       {{ logo() }}
-      {{ h({ level: 1, text: config.title, classes: "font-bold m-8 text-3xl" }) }}
-      <p class="subtext">Welcome to Abell's Default TailwindCss Template 🚀</p>
+      {{ h({ level: 2, text: config.title, classes: "font-bold m-8 text-3xl" }) }}
+      <p class="subtext">Welcome to Abell's Default TailwindCSS Template 🚀</p>
       <a class="button primary" href="https://abelljs.org/" target="_blank">View Documentation</a>
     {{ counter() }}
   </main>
