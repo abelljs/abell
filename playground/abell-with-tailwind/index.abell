@@ -2,6 +2,7 @@
   import config from './config';
   import counter from './_components/counter.abell'
   import h from './_components/h.abell'
+  import logo from './_components/logo.abell'
   import navbar from './_components/navbar.abell'
   import globalMeta from './_components/global.meta.abell'
 }}
@@ -10,9 +11,12 @@
   {{ globalMeta }}
 </head>
 <body>
-  {{ navbar({ activeRoute: '/' }) }}
-  <main>
-    {{ h({ level: 1, text: config.title }) }}
+  <main class="container">
+    {{ navbar({ activeRoute: '/' }) }}
+      {{ logo() }}
+      {{ h({ level: 1, text: config.title }) }}
+      <p class="subtext">Welcome to Abell's Default TailwindCss Template 🚀</p>
+      <a class="button primary" href="https://abelljs.org/" target="_blank">View Documentation</a>
     {{ counter() }}
   </main>
   <script src="./client-assets/index-client.js" type="module"></script>

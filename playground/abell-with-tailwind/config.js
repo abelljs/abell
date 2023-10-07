@@ -1,5 +1,5 @@
 const config = {
-  title: "Tim's Abell Template",
+  title: 'Abell Template with TailwindCss',
   description: 'An Abell template with Tailwind CSS',
   keywords: ['abell', 'tailwind', 'tailwindcss'],
   author: 'Tim Smith',

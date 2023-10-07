@@ -1,3 +1,3 @@
-<h{{ props.level }} class="text-3xl font-bold underline">
+<h{{ props.level }} class="font-bold m-8 text-3xl">
   {{ props.text }}
 </h{{ props.level }}>
