@@ -72,10 +72,10 @@ async function generate(): Promise<void> {
   });
 
   let routes: Route[] = [];
-  try {
+  if (fs.existsSync(OUT_ENTRY_BUILD_PATH)) {
     const { makeRoutes } = await import(OUT_ENTRY_BUILD_PATH);
     routes = await makeRoutes();
-  } catch (err) {
+  } else {
     const MJS_OUT_ENTRY_BUILD_PATH = OUT_ENTRY_BUILD_PATH.replace(
       'entry.build.js',
       'entry.build.mjs'
