@@ -10,10 +10,9 @@
   {{
     headMeta({ 
       title: props.title,
-      template: 'docs'
+      template: 'posts'
     })
   }}
-  <link rel="preload" onload="this.rel = 'stylesheet'" as="style" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3" />
   <link rel="stylesheet" href="/client/posts.scss" />
 </head>
 
@@ -24,7 +23,7 @@
       <main class="content-padding">
         <h1>{{ props.title }}</h1>
         <a href="https://github.com/{{ props.authorInfo.login }}" class="author-info">
-          <div><img class="author-avatar" src="{{ props.authorInfo.avatar }}" height="50px" width="50px" /></div>
+          <img class="author-avatar" src="{{ props.authorInfo.avatar }}" height="42px" width="42px" />
           <div><p class="author-username">{{ props.authorInfo.login }}</p></div>
         </a>
         {{ props.content }}
@@ -33,7 +32,6 @@
     </div>
   </div>
   <script src="/client/main.ts" type="module"></script>
-  <script src="/client/docs.ts" type="module"></script>
 </body>
 
 </html>

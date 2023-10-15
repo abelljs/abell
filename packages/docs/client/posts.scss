@@ -4,7 +4,7 @@
 
 main.content-padding {
   padding: 50px 80px;
-  max-width: 1100px;
+  max-width: var(--content-width-posts);
   margin: auto;
 }
 
@@ -15,8 +15,9 @@ h1, h2, h3 {
 
 h1 {
   font-size: 2.5rem;
-  margin-bottom: 1rem;
+  margin-bottom: 1.4rem;
   line-height: 3.6rem;
+  font-weight: 700;
 }
 
 h1 + p {
@@ -62,7 +63,7 @@ h3 {
 .author-info {
   display: inline-flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   color: var(--font-text-docs);
 
   .author-avatar {
