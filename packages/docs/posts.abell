@@ -26,12 +26,16 @@
           <img class="author-avatar" src="{{ props.authorInfo.avatar }}" height="42px" width="42px" />
           <div><p class="author-username">{{ props.authorInfo.login }}</p></div>
         </a>
-        {{ props.content }}
+
+        <div class="content-text">
+          {{ props.content }}
+        </div>
       </main>
       {{ footer }}
     </div>
   </div>
   <script src="/client/main.ts" type="module"></script>
+  <script src="/client/posts.ts" type="module"></script>
 </body>
 
 </html>

@@ -21,7 +21,7 @@ export const getRepoContributions = async (
     `https://api.github.com/repos/abelljs/${repoName}/contributors`
   ).then((res) => res.json());
 
-  if (contributorsData.message.includes('API rate limit exceeded')) {
+  if (contributorsData.message?.includes('API rate limit exceeded')) {
     return [];
   }
 

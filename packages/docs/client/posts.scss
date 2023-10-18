@@ -25,11 +25,11 @@ h1 + p {
 }
 
 h2 {
-  font-size: 1.5rem;
+  font-size: 1.8rem;
   margin: 0px;
-  margin-bottom: 12px;
+  margin-bottom: 16px;
   padding: 2rem 0rem 0rem 0rem;
-  line-height: 2.8rem;
+  line-height: 3rem;
 }
 
 h2 + p, h3 + p {
@@ -68,11 +68,31 @@ h3 {
 
   .author-avatar {
     border-radius: 100%;
-    width: 50px;
-    height: 50px;
+    width: 42px;
+    height: 42px;
   }
 
   .author-username {
     margin: 0px;
+  }
+}
+
+.content-text {
+  margin-top: 20px;
+    
+  a{
+    text-decoration: none;
+    color: var(--blue-6);
+    border-bottom: 2px solid transparent;
+    transition: border .2s ease;
+  }
+
+  a:hover {
+    border-bottom: 2px solid var(--blue-6);
+    transition: border .1s ease;
+  }
+
+  .highlight {
+    color: var(--blue-5);
   }
 }

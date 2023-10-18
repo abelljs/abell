@@ -22,7 +22,9 @@ export const noConfigSetup = {
           const b = 'World 🌻';
         }}
 
+        <html>
         <body>{{ a + b.toUpperCase() }}</body>
+        </html>
         `
       }
     },
@@ -53,6 +55,61 @@ export const noConfigSetup = {
   output: {
     '/': {
       screen: 'Hello, WORLD 🌻'
+    }
+  }
+};
+
+export const importExample = {
+  files: {
+    'greet.js': {
+      file: {
+        contents: `
+        export const message = 'Hiii Human ^_^';
+        `
+      }
+    },
+    'index.abell': {
+      file: {
+        contents: `
+        {{
+          import { message } from './greet';
+        }}
+
+        <html>
+        <body>
+          <h1>{{ message }}</h1>
+        </body>
+        </html>
+        `
+      }
+    },
+    'package.json': {
+      file: {
+        contents: JSON.stringify(
+          {
+            name: 'vite-abell',
+            type: 'module',
+            scripts: {
+              start: 'abell dev',
+              build: 'abell generate'
+            },
+            dependencies: {
+              abell: EXAMPLES_ABELL_VERSION
+            }
+          },
+          null,
+          4
+        )
+      }
+    }
+  },
+  repoName: 'saurabhdaware/abell-single-file-example',
+  minHeight: '400px',
+  showURLBar: false,
+  activeFile: 'index.abell',
+  output: {
+    '/': {
+      screen: '<h1>Hiii Human ^_^</h1>'
     }
   }
 };

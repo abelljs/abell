@@ -70,6 +70,12 @@ const getLanguageLogo = (
       space: '&nbsp;',
       width: 20
     };
+  } else if (filename.endsWith('.js')) {
+    languageLogo = {
+      src: '/icons/js.svg',
+      space: '&nbsp;',
+      width: 18
+    };
   }
 
   return languageLogo;
