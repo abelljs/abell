@@ -7,7 +7,7 @@ html, body {
 }
 
 main.content-padding {
-  padding: 50px 80px;
+  padding: 50px var(--posts-padding-horizontal);
   max-width: var(--content-width-posts);
   margin: auto;
 }
