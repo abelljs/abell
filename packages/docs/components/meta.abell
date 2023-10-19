@@ -4,13 +4,13 @@
   const font = "roboto";
 
   const ogImage = 
-    props.template === 'docs'
+    props.template === 'docs' || props.template === 'posts'
     ? `https://res.cloudinary.com/saurabhdaware/image/upload/c_scale,w_600/g_center,c_fit,e_colorize:50,co_rgb:${color},l_text:${font}_33_bold:${ encodeURIComponent(props.title.replace(/\,/g, "%2C").replace(/\//g, "%2F")) },r_0,w_300,y_0,x_90/v1694536800/abell/docs-og-2023.png` 
-    : `https://res.cloudinary.com/saurabhdaware/image/upload/v1694970066/abell/abell2023-og-landing-page_xcytde.png`
+    : `https://res.cloudinary.com/saurabhdaware/image/upload/v1697738060/abell/abell2023-og-landing-page-2.png`
 
   const SITE_TITLE = `${props.title}${props.template === 'docs' ? ' | Abell - A Fast, Low-Level, Framework-Agnostic Static-Site-Generator for JavaScript Developers' : ''}`
 
-  const boldFontWeight = props.template === 'docs' ? '600' : '700';
+  const boldFontWeight = props.template === 'docs' || props.template === 'posts' ? '600' : '700';
 }}
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -23,7 +23,7 @@
 
 <!-- OPEN GRAPH -->
 <meta property="og:type" content="website" />
-<meta property="og:title" content="Abell" />
+<meta property="og:title" content="{{ props.ogTitle ?? 'Abell' }}" />
 <meta name="og:description"
       content="Abell - A Low-Level, Framework Agnostic, Vite Powered Static Site Generator for JavaScript Developers" />
 <meta property="og:url" content="https://abelljs.org" />
@@ -31,8 +31,8 @@
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:creator" content="@AbellLand" />
 
-<meta property="og:image:secure_url" itemprop="image" content="{{ ogImage }}" />
-<meta property="og:image" itemprop="image" content="{{ ogImage }}" />
+<meta property="og:image:secure_url" itemprop="image" content="{{ props.ogImage ?? ogImage }}" />
+<meta property="og:image" itemprop="image" content="{{ props.ogImage ?? ogImage }}" />
 <meta property="og:image:width" content="600" />
 <meta property="og:image:height" content="300" />
 <meta property="og:image:alt" content="OG image of Abell Docs that shows the title of the page Abell" />

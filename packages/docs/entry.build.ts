@@ -5,6 +5,7 @@ import { getSponsors } from './utils/getSponsors';
 import index from './index.abell';
 import webcontainer from './webcontainer.abell';
 import docs from './docs.abell';
+import posts from './posts.abell';
 
 // Content
 import whyAbell from './content/why-abell.mdx';
@@ -12,6 +13,13 @@ import gettingStartedContent from './content/getting-started.mdx';
 import syntaxGuide from './content/syntax-guide.mdx';
 import customRouting from './content/custom-routing.mdx';
 import pluginsAndIntegration from './content/plugins-and-integration.mdx';
+
+// Posts content
+// @TODO: we can probably look over the glob and generate the posts without separate imports.
+import oneContent, {
+  attributes as onePostAttributes
+} from './content/posts/one.mdx';
+
 import { getContributors } from './utils/getContributors.js';
 
 // Docs Routes
@@ -75,6 +83,14 @@ export const makeRoutes = (): Route[] => {
           currentPageIndex: index,
           docsPaths
         })
-    }))
+    })),
+    {
+      path: '/posts/one',
+      render: () =>
+        posts({
+          ...onePostAttributes,
+          content: oneContent
+        })
+    }
   ];
 };

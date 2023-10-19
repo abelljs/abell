@@ -16,6 +16,7 @@ const registerSyntaxHighlighter = (): HLJSApi => {
   hljs.registerLanguage('mdx', markdown);
   hljs.registerLanguage('md', markdown);
   hljs.registerAliases('js', { languageName: 'javascript' });
+  hljs.registerAliases('jsx', { languageName: 'javascript' });
   hljs.registerLanguage('json', json);
   hljs.registerLanguage('xml', xml);
   hljs.registerLanguage('abell', abellHighlighter);

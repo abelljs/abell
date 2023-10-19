@@ -8,6 +8,7 @@
   --blue-7: #5D6AD9;
   --blue-8: #8B95E5; 
   --blue-9: #A2ABEB;
+  --blue-9a: #A2ABEB66;
   --blue-10: #E7EBFD;
   --blue-11: #E7EBFD99;
 
@@ -19,6 +20,7 @@
   --font-text-small-spacing: 0.03rem;
 
   --content-width-landing: 1200px;
+  --content-width-posts: 1100px;
   --content-padding-horizontal: 100px;
 
   --docsearch-primary-color: var(--blue-5) !important;
@@ -87,11 +89,16 @@ button {
   a {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: 4px;
     color: var(--blue-6);
 
     &:hover {
       color: var(--blue-7);
+
+      .icon-arrow-right {
+        transform: translateX(4px);
+        transition: transform .2s ease;
+      }
     }
   }
 

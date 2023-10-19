@@ -46,7 +46,7 @@ const getLanguageLogo = (
       space: '&nbsp;&nbsp;',
       width: 15
     };
-  } else if (filename === 'vite.config.ts') {
+  } else if (filename === 'vite.config.ts' || filename === 'vite.config.js') {
     languageLogo = {
       src: '/icons/vite.png',
       space: '&nbsp;',
@@ -69,6 +69,12 @@ const getLanguageLogo = (
       src: '/icons/md.png',
       space: '&nbsp;',
       width: 20
+    };
+  } else if (filename.endsWith('.js') || filename.endsWith('.jsx')) {
+    languageLogo = {
+      src: '/icons/js.svg',
+      space: '&nbsp;',
+      width: 18
     };
   }
 
@@ -134,8 +140,10 @@ const initiateWebContainer = async (webcontainerData: EditorConfigObjType) => {
     fileExplorer.classList.add('hide');
   }
 
-  if (webcontainerData.repoName) {
-    const stackblitzURL = `https://stackblitz.com/~/github.com/${webcontainerData.repoName}`;
+  if (webcontainerData.repoName || webcontainerData.stackblitzURL) {
+    const stackblitzURL =
+      webcontainerData.stackblitzURL ??
+      `https://stackblitz.com/~/github.com/${webcontainerData.repoName}`;
 
     openInStackblitzAnchorEl?.classList.remove('hide');
     openInStackblitzAnchorEl?.addEventListener('click', (e) => {
@@ -277,7 +285,7 @@ const initiateWebContainer = async (webcontainerData: EditorConfigObjType) => {
 
   let isWebcontainerInitiated = false;
 
-  codeDisplay.addEventListener('click', async () => {
+  const bootWebContainer = async () => {
     if (!isWebcontainerInitiated) {
       if (terminalOutputEl) {
         terminalOutputEl.classList.remove('hide-animated');
@@ -300,7 +308,13 @@ const initiateWebContainer = async (webcontainerData: EditorConfigObjType) => {
 
       startDevServer();
     }
-  });
+  };
+
+  if (webcontainerData.booted) {
+    bootWebContainer();
+  }
+
+  codeDisplay.addEventListener('click', bootWebContainer);
 };
 
 async function installDependencies() {

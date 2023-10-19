@@ -9,6 +9,8 @@ export type EditorConfigObjType = {
   minHeight?: string;
   showFileExplorer?: boolean;
   output: Record<string, { screen: string }>;
+  booted?: boolean;
+  stackblitzURL?: string;
 };
 
 export const noConfigSetup = {
@@ -22,7 +24,9 @@ export const noConfigSetup = {
           const b = 'World 🌻';
         }}
 
+        <html>
         <body>{{ a + b.toUpperCase() }}</body>
+        </html>
         `
       }
     },
@@ -53,6 +57,61 @@ export const noConfigSetup = {
   output: {
     '/': {
       screen: 'Hello, WORLD 🌻'
+    }
+  }
+};
+
+export const importExample = {
+  files: {
+    'greet.js': {
+      file: {
+        contents: `
+        export const message = 'Hiii Human ^_^';
+        `
+      }
+    },
+    'index.abell': {
+      file: {
+        contents: `
+        {{
+          import { message } from './greet';
+        }}
+
+        <html>
+        <body>
+          <h1>{{ message }}</h1>
+        </body>
+        </html>
+        `
+      }
+    },
+    'package.json': {
+      file: {
+        contents: JSON.stringify(
+          {
+            name: 'vite-abell',
+            type: 'module',
+            scripts: {
+              start: 'abell dev',
+              build: 'abell generate'
+            },
+            dependencies: {
+              abell: EXAMPLES_ABELL_VERSION
+            }
+          },
+          null,
+          4
+        )
+      }
+    }
+  },
+  repoName: 'saurabhdaware/abell-single-file-example',
+  minHeight: '400px',
+  showURLBar: false,
+  activeFile: 'index.abell',
+  output: {
+    '/': {
+      screen: '<h1>Hiii Human ^_^</h1>'
     }
   }
 };
@@ -804,6 +863,328 @@ export const blogRoutingExample = {
 
       <img alt="Tunuk Tunuk Tun Screenshot" width="150px" crossOrigin="anonymous" src="https://res.cloudinary.com/saurabhdaware/image/upload//c_thumb,w_200/v1693664138/dcfa3d51-c1a2-4236-86bf-e5c52a1c82ea_kxzk8k.png" />
       `
+    }
+  }
+};
+
+export const reactRouterExample = {
+  files: {
+    'index.abell': {
+      file: {
+        contents: `
+        {{
+          import React from 'react';
+          import ReactDOMServer from 'react-dom/server';
+          import { StaticRouter } from 'react-router-dom/server';
+          import { ServerStyleSheet } from "styled-components";
+          import App from './App';
+        }}
+        
+        {{
+          /** 
+           * @declarations
+           */ 
+        
+          const sheet = new ServerStyleSheet();
+          const htmlContent = ReactDOMServer.renderToString(
+            sheet.collectStyles(
+              <StaticRouter location={props.path}>
+                <App />
+              </StaticRouter>
+            )
+          );
+          const styleTags = sheet.getStyleTags();
+        }}
+        <!doctype html>
+        <html lang="en">
+          <head>
+            <meta charset="UTF-8" />
+            <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+            <title>Vite + React</title>
+            {{ styleTags }}
+          </head>
+          <body>
+            <div id="root">{{ 
+                ReactDOMServer.renderToString(
+                  <StaticRouter location={props.path}>
+                    <App />
+                  </StaticRouter>
+                ) 
+            }}</div>
+            <script type="module" src="/client.jsx"></script>
+          </body>
+        </html>        
+        `
+      }
+    },
+    'Index.jsx': {
+      file: {
+        contents: `
+        import React from "react";
+        import { styled } from 'styled-components';
+
+        const StyledButton = styled.button\`
+          background-color: var(--primary);
+          color: #fff;
+          cursor: pointer;
+          border: none;
+          padding: 10px 14px;
+          border-radius: 4px;
+        \`
+
+        function Counter() {
+          const [count, setCount] = React.useState(0);
+
+          return (
+            <StyledButton onClick={() => setCount(count + 1)}>Counter: {count}</StyledButton>
+          )
+        }
+
+        function Index() {
+          return (
+            <main>
+              <h1>Index</h1>
+              <Counter />
+            </main>
+          )
+        }
+
+        export default Index;
+        `
+      }
+    },
+    'About.jsx': {
+      file: {
+        contents: `
+        function About() {
+          return (
+            <main>
+              <h1>About</h1>
+            </main>
+          )
+        }
+        
+        export default About;
+        `
+      }
+    },
+    'App.jsx': {
+      file: {
+        contents: `
+        import { createGlobalStyle } from 'styled-components';
+        import { Routes, Route } from 'react-router-dom';
+        import { routes } from './routes';
+        import Navbar from './Navbar';
+
+        const GlobalStyles = createGlobalStyle\`
+        :root {
+          --primary: #2734ab;
+        }
+
+        html, body {
+          margin: 0px;
+          font-family: Arial, Helvetica, sans-serif;
+        }
+
+        * {
+          box-sizing: border-box;
+        }
+
+        main {
+          padding: 12px 42px;
+        }
+        \`
+
+        function App() {
+          return (
+            <>
+              <GlobalStyles />
+              <Navbar />
+              <Routes>
+                {routes.map((props) => <Route key={props.path} {...props} />)}
+              </Routes>
+            </>
+          )
+        }
+
+        export default App
+        `
+      }
+    },
+    'client.jsx': {
+      file: {
+        contents: `
+        import React from 'react'
+        import ReactDOM from 'react-dom/client'
+        import { BrowserRouter } from 'react-router-dom';
+        import App from './App.jsx'
+
+        ReactDOM.hydrateRoot(
+          document.getElementById('root'),
+          <BrowserRouter future={{ v7_startTransition: true }}>
+            <App />
+          </BrowserRouter>
+        )
+        `
+      }
+    },
+    'Navbar.jsx': {
+      file: {
+        contents: `
+        import { NavLink } from 'react-router-dom';
+        import { styled } from 'styled-components';
+
+        const StyledNavbar = styled.nav\`
+          background-color: var(--primary);
+          padding: 12px 24px;
+        \`
+
+        const StyledLink = styled(NavLink)\`
+          color: #aaa;
+          text-decoration: none;
+          padding: 12px;
+
+          &.active {
+            color: #fff;
+          }
+        \`
+
+        export default function Navbar() {
+          return (
+            <StyledNavbar>
+              <StyledLink className={({isActive}) => isActive ? 'active' : ''} to="/">Index</StyledLink>
+              <StyledLink className={({isActive}) => isActive ? 'active' : ''} to="/about">
+                About
+              </StyledLink>
+            </StyledNavbar>
+          )
+        }
+        `
+      }
+    },
+    'routes.jsx': {
+      file: {
+        contents: `
+        import React from "react"
+
+        // Loads module eagerly in server render and code-splits on client (similar to lodable)
+        const crossEnvCodeSplit = async (importFn) => {
+          if (import.meta.env.SSR) {
+            return importFn().then(mod => mod.default)
+          } else {
+            return React.lazy(importFn)
+          }
+        }
+
+        const Index = await crossEnvCodeSplit(() => import('./Index'));
+        const About = await crossEnvCodeSplit(() => import('./About'));
+
+        export const routes = [
+          {
+            path: '/',
+            element: <Index />
+          },
+          {
+            path: '/about',
+            element: <About />
+          }
+        ]
+        `
+      }
+    },
+    'entry.build.js': {
+      file: {
+        contents: `
+        import index from './index.abell';
+        import { routes } from './routes';
+        
+        export const makeRoutes = () => {
+          return routes.map((route) => {
+            return {
+              path: route.path,
+              render: () => index({ path: route.path })
+            }
+          });
+        };
+        `
+      }
+    },
+    'vite.config.js': {
+      file: {
+        contents: `
+        import { defineConfig } from 'abell';
+        import react from '@vitejs/plugin-react'
+
+        // https://vitejs.dev/config/
+        export default defineConfig({
+          abell: {
+            esbuild: {
+              loader: 'jsx',
+            }
+          },
+          plugins: [react()],
+          build: {
+            // Using top-level await for code-splitting for now. We can probably figure out some other way
+            target: 'esnext',
+            rollupOptions: {
+              output: {
+                interop: 'compat'
+              }
+            }
+          },
+        })
+        `
+      }
+    },
+    'package.json': {
+      file: {
+        contents: JSON.stringify(
+          {
+            name: 'vite-abell',
+            type: 'module',
+            scripts: {
+              start: 'abell dev',
+              build: 'abell generate'
+            },
+            dependencies: {
+              react: '^18.2.0',
+              'react-dom': '^18.2.0',
+              'react-router-dom': '^6.16.0',
+              'styled-components': '^6.0.8'
+            },
+            devDependencies: {
+              '@types/react': '^18.2.15',
+              '@types/react-dom': '^18.2.7',
+              '@vitejs/plugin-react': '^4.0.3',
+              abell: EXAMPLES_ABELL_VERSION,
+              eslint: '^8.45.0',
+              'eslint-plugin-react': '^7.32.2',
+              'eslint-plugin-react-hooks': '^4.6.0',
+              'eslint-plugin-react-refresh': '^0.4.3',
+              vite: '^4.4.5',
+              'vite-plugin-iso-import': '^1.0.0'
+            }
+          },
+          null,
+          4
+        )
+      }
+    }
+  },
+  activeFile: 'Index.jsx',
+  repoName: 'abelljs/integrations',
+  stackblitzURL:
+    'https://stackblitz.com/~/github.com/abelljs/integrations/tree/main/with-react-router?file=with-react-router%2Findex.abell',
+  minHeight: '640px',
+  showURLBar: true,
+  booted: true,
+  output: {
+    '/': {
+      screen: ''
+    },
+    '/about': {
+      screen: ''
     }
   }
 };
