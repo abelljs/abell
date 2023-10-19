@@ -10,7 +10,9 @@
   {{
     headMeta({ 
       title: props.title,
-      template: 'posts'
+      template: 'posts',
+      ogTitle: props.ogTitle,
+      ogImage: props.ogImage,
     })
   }}
   <link rel="stylesheet" href="/client/posts.scss" />
@@ -22,7 +24,7 @@
     <div class="content">
       <main class="content-padding">
         <h1>{{ props.title }}</h1>
-        <a href="https://github.com/{{ props.authorInfo.login }}" class="author-info">
+        <a href="https://x.com/{{ props.authorInfo.twitter }}" class="author-info">
           <img class="author-avatar" src="{{ props.authorInfo.avatar }}" height="42px" width="42px" />
           <div><p class="author-username">{{ props.authorInfo.login }}</p></div>
         </a>

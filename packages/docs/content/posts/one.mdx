@@ -2,15 +2,19 @@ import { Editor } from '../../components/Editor.tsx';
 import {
   noConfigSetup,
   importExample,
-  routingExample
+  routingExample,
+  reactRouterExample
 } from '../../utils/examples.ts';
 export const attributes = {
   title:
     'Introducing Abell v1 Beta 🚀 A new Low-Level Static-Site-Generator powered by Vite',
   ogTitle: 'Abell v1 Beta Release',
+  ogImage:
+    'https://res.cloudinary.com/saurabhdaware/image/upload/v1697737376/abell/abell-v1-post-og.png',
   authorInfo: {
     avatar: 'https://avatars.githubusercontent.com/u/30949385?v=4&s=80',
-    login: 'saurabhdaware'
+    login: 'saurabhdaware',
+    twitter: 'saurabhdawaree'
   }
 };
 
@@ -44,8 +48,8 @@ However these tools are often built on a higher abstraction and loose that close
 
 What if we pick nice things from both types of solutions and build something that is-
 
-- Low-Level like Jekyll is
-- Framework Agnostic and Integrates into modern ecosystem like Astro does
+- [Low-Level](#abell-is-a-low-level-static-site-generator) like Jekyll is
+- [Framework Agnostic](#abell-is-a-framework-agnostic-static-site-generator) and [Integrates into modern ecosystem](#abell-is-a-vite-powered-static-site-generator) like Astro does
 - has Smaller Learning Curve like Vanilla HTML
 
 And this what Abell v1 tries to be.
@@ -78,7 +82,23 @@ You can checkout Abell's integration examples at [github.com/abelljs/integration
 
 You can in fact use Abell to turn your existing CSR apps to SSG apps in just 4 to 5 steps.
 
-[DEMO Video]
+Checkout my Demo of pre-rendering a SolidJS App @ViteConf
+
+<iframe
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/iguaElqKLf0?si=JGEd20Hxf3oPzsbI&amp;start=1469"
+  title="YouTube video player"
+  frameBorder={0}
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+  allowFullScreen
+></iframe>
+
+Or a similar demo of doing this with React at [React India 2023](https://youtu.be/brbOW--PEKM?si=zpFGUHxMbczqmKgC&t=301)
+
+You can also take it step forward and integrate it with other libraries of that framework. Take this example where we are using **Abell with React + React Router (with Code-Spliting) + Styled Components**
+
+<Editor editorConfig={reactRouterExample} />
 
 ## Abell is a <span className="highlight">Vite Powered</span> Static-Site-Generator
 
@@ -121,6 +141,14 @@ export const makeRoutes = () => {
 
 We can definitely create more higher-level abstractions on top of this like a `getWordpressContent` utility. But not a requirement.
 
+## When NOT to use Abell?
+
+All of these things we talked about make Abell a really good tool for building static websites or kinda-interactive websites like portfolios, marketing sites, documentation sites, blogs, etc. I personally would recommend a [SSR solution like Next.js](https://nextjs.org/) for things like E-Commerce Websites or Dashboards. but... if you're going with CSR, you might as well want to pre-render few things on build-time with Abell.
+
+Abell usually shines when you need high-flexibility or want something closer-to-HTML. Compared to tools like Astro, it lacks some high level abstractions or simple adaptors to abstract out some verbose code. It tradeoffs flexibility for abstraction layer. So if you have an existing Astro site that works perfectly for you, don't worry you don't have to migrate it to Abell (Unless you just want to give it a try :D).
+
+We think [Astro](https://astro.build/) is a great tool as well and in few cases, the comparison might just come down to syntax-opinion or abstraction-level-opinion.
+
 ## What's Next?
 
 For next few days, we're primarily working on things around the SSG itself. E.g. -
@@ -135,8 +163,8 @@ Interested in helping with any of these? Let us know on [GitHub Discussions](htt
 ## Like Abell So Far?
 
 - You can star the GitHub Repository at [github.com/abelljs/abell](https://github.com/abelljs/abell).
-- Share Abell with your Twitter Friends [@TODO: Link]
+- [Share Abell with your Twitter Friends](https://twitter.com/intent/tweet?text=Hey!%20Checkout%20this%20new%20static-site-generator%20called%20Abell.%0A%0Ahttps%3A//abelljs.org/posts/one)
 - Follow [@AbellLand](https://x.com/AbellLand) on Twitter
 - Follow [@saurabhdawaree](https://x.com/saurabhdawaree) on Twitter
 
-Thanks!! See ya ^\_^ 🌀
+Thanks!! See you all in a conference or meetup someday ^\_^ 🌀
