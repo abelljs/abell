@@ -34,15 +34,15 @@ There are 2 types of solutions for building static websites today,
 
 ### 1. Traditional template-engine-based Static-Site-Generators like Jekyll, Hugo, Hexo.
 
-Static-Site-Generators like Jekyll, Hugo, Hexo, Eleventy, get their abstraction level really well. They are closer to HTML which gives a nice flexibility and can lower the learning curve. This is also how Abell v0 was built.
+Static-Site-Generators like Jekyll, Hugo, Hexo, and Eleventy, get their abstraction level really well. They are closer to HTML which gives a nice flexibility and can lower the learning curve. This is also how Abell v0 was built.
 
-However a lot of these solutions (including Abell v0) either strugle to integrate with modern tools like MDX, JSX, TypeScript, etc, Cannot integrate at all, or have their own plugin system built around to extend their capabilities.
+However, a lot of these solutions (including Abell v0) either struggle to integrate with modern tools like MDX, JSX, TypeScript, etc, Cannot integrate at all, or have their own plugin system built around to extend their capabilities.
 
-### 2. JavaScript-based solutions like Next.js, Astro.
+### 2. JavaScript-based solutions like Next.js, and Astro.
 
-On the other hand we have JavaScript-based or Bundler-based approach. Since you're primarily dealing with JavaScript here, and bundlers understand JavaScript really well, these tools have absolutely no problem integrating into modern JS ecosystem using plugins of the bundlers.
+On the other hand, we have a JavaScript-based or Bundler-based approach. Since you're primarily dealing with JavaScript here, and the bundlers understand JavaScript well, these tools have absolutely no problem integrating into modern JS ecosystem using the plugins of the bundlers.
 
-However these tools are often built on a higher abstraction and loose that closer-to-HTML feel that solutions like Jekyll and Hugo had.
+However, these tools are often built on a higher abstraction and lose that closer-to-HTML feel that solutions like Jekyll and Hugo had.
 
 ### 3. ???
 
@@ -50,55 +50,57 @@ What if we pick nice things from both types of solutions and build something tha
 
 - [Low-Level](#abell-is-a-low-level-static-site-generator) like Jekyll is
 - [Framework Agnostic](#abell-is-a-framework-agnostic-static-site-generator) and [Integrates into modern ecosystem](#abell-is-a-vite-powered-static-site-generator) like Astro does
-- has Smaller Learning Curve like Vanilla HTML
+- has a Smaller Learning Curve like Vanilla HTML
 
-And this what Abell v1 tries to be.
+And this is where Abell v1 tries to be.
 
 ## Abell is a <span className="highlight">Low-Level</span> Static-Site-Generator
 
-Abell extends on top of vanilla HTML setup. You know CSS-in-JS, time of Node.JS/Bun-in-HTML!!
+Abell extends on top of the vanilla HTML setup. You know CSS-in-JS, time of Node.JS/Bun-in-HTML!!
 
-Its a code that might feel familiar even if you've never seen any Abell code before.
+It's a code that might feel familiar even if you've never seen any Abell code before.
 
 <Editor editorConfig={importExample} />
 
 Fun Fact: Everything you know about Vanilla HTML still applies in this. How you add CSS, How you add meta tags, How you link client-JS, everything continues to work with some nice additional power of double curly braces.
 
-### Low-Level on Routing!! Introducing `makeRoutes` API.
+### Low-Level on Routing with all new `makeRoutes` API.
 
-Abell takes a step-forward on low-level and allows you to opt-out of filesystem routing.
+Abell takes a step forward on a low-level API and allows you to opt out of filesystem routing.
 
-By default if you create `about.abell` file, it creates `/about` route. But you can use `makeRoutes` API in `entry.build.js` to opt-out of it and define route as a code.
+By default, if you create `about.abell` file, it creates `/about` route. But you can use `makeRoutes` API in `entry.build.js` to opt out of it and define the route as a code.
 
 <Editor editorConfig={routingExample} />
 
 This combined with Vite's glob imports (`const allMarkdownContent = import.meta.glob('./*.md')`) lets you do some fun dynamic routing things like generating paths from markdown files.
 
-Checkout how [Abell's Blog Template generates routes from markdown](https://github.com/abelljs/abell-starter-minima/blob/b5936e61f6d802181cd67cb7c58cbf18f43d2e29/entry.build.js#L6).
+Check out how [Abell's Blog Template generates routes from markdown](https://github.com/abelljs/abell-starter-minima/blob/b5936e61f6d802181cd67cb7c58cbf18f43d2e29/entry.build.js#L6).
 
 ## Abell is a <span className="highlight">Framework Agnostic</span> Static-Site-Generator
 
-You can checkout Abell's integration examples at [github.com/abelljs/integrations](https://github.com/abelljs/integrations).
+You can check out Abell's integration examples at [github.com/abelljs/integrations](https://github.com/abelljs/integrations).
 
-You can in fact use Abell to turn your existing CSR apps to SSG apps in just 4 to 5 steps.
+You can in fact use Abell to turn your existing CSR apps into SSG apps in just 4 to 5 steps.
 
 Checkout my [demo of pre-rendering a SolidJS App with Abell @ViteConf 2023](https://youtu.be/iguaElqKLf0?si=b8v-V3MAuBxf0cJh&t=1448)
 
 Or a similar [demo of doing this with React @React India 2023](https://youtu.be/brbOW--PEKM?si=zpFGUHxMbczqmKgC&t=301)
 
-You can also take it step forward and integrate it with other libraries of that framework. Take this example where we are using **Abell with React + React Router (with Code-Spliting) + Styled Components**
+You can also take it a step forward and integrate it with other libraries of that framework. Take this example where we are using **Abell with React + React Router (with Code-Spliting) + Styled Components**
 
 <Editor editorConfig={reactRouterExample} />
 
 ## Abell is a <span className="highlight">Vite Powered</span> Static-Site-Generator
 
-Abell is built with a very little abstraction on top of vite. In fact, Abell (except its router) is majorly just a Vite plugin.
+Abell is built with very little abstraction on top of vite. In fact, Abell (except its router) is majorly just a Vite plugin.
 
-This allows Abell to integrate with rest of the ecosystem using existing Vite (and Vite-compatible Rollup) plugins.
+This allows Abell to integrate with the rest of the ecosystem using existing Vite (and Vite-compatible Rollup) plugins.
 
 ### Abell Plugins?
 
-What about Abell Plugins?? Well... Abell does not have a plugin system of its own at all!! It 100% relies on Vite plugins.
+What about Abell Plugins?? Well... Abell does not have a plugin system of its own at all!! It 100% relies on Vite plugins for integrations.
+
+Want to know how to do some common things with Abell? there's probably a Vite plugin for that-
 
 - How to use Sitemap? Ans: [vite-plugin-sitemap](https://github.com/jbaubree/vite-plugin-sitemap)
 - How to use Markdown? Ans: [vite-plugin-md-to-html](https://github.com/saurabhdaware/vite-plugin-md-to-html)
@@ -106,7 +108,7 @@ What about Abell Plugins?? Well... Abell does not have a plugin system of its ow
 
 ### Source Plugins?
 
-`makeRoutes` API on the other hand removes the need of source-plugins because you can just make an API call and generate page content on the go (Having a file is not a requirement for Abell :D)
+`makeRoutes` API on the other hand removes the need for source-plugins since you can just make an API call and generate page content on the go (Having a file is not a requirement for Abell :D)
 
 ```ts
 import index from './index.abell';
@@ -129,19 +131,17 @@ export const makeRoutes = () => {
 }
 ```
 
-We can definitely create more higher-level abstractions on top of this like a `getWordpressContent` utility. But not a requirement.
-
 ## When NOT to use Abell?
 
-All of these things we talked about make Abell a really good tool for building static websites or kinda-interactive websites like portfolios, marketing sites, documentation sites, blogs, etc. I personally would recommend a [SSR solution like Next.js](https://nextjs.org/) for things like E-Commerce Websites or Dashboards. but... if you're going with CSR, you might as well want to pre-render few things on build-time with Abell.
+All of these things we talked about make Abell a really good tool for building static websites or kind of interactive websites like portfolios, marketing sites, documentation sites, blogs, etc. For sites like E-Commerce Websites or Dashboards, I would recommend a [SSR solution like Next.js](https://nextjs.org/). but... if you're going with CSR, I would recommend using Abell to pre-render a few things on build-time for nice perf benefits.
 
-Abell usually shines when you need high-flexibility or want something closer-to-HTML. Compared to tools like Astro, it lacks some high level abstractions or simple adaptors to abstract out some verbose code. It tradeoffs flexibility for abstraction layer. So if you have an existing Astro site that works perfectly for you, don't worry you don't have to migrate it to Abell (Unless you just want to give it a try :D).
+Abell usually shines when you need high flexibility or want something closer to HTML. Compared to tools like Astro, it lacks some high-level abstractions or simple adaptors to abstract out some verbose code. It tradeoffs flexibility for a lower abstraction layer. So if you have an existing Astro site that works perfectly fine for you, don't worry you don't have to migrate it to Abell (Unless you just want to give it a try :D).
 
 We think [Astro](https://astro.build/) is a great tool as well and in few cases, the comparison might just come down to syntax-opinion or abstraction-level-opinion.
 
 ## What's Next?
 
-For next few days, we're primarily working on things around the SSG itself. E.g. -
+For the next few weeks, we'll primarily be working on things around the SSG tooling. E.g. -
 
 - Better Editor Tooling possibly using [Volar](https://volarjs.dev/) (There is Basic Syntax Highlighting and AutoComplete at [VSCode Abell Language Features](https://marketplace.visualstudio.com/items?itemName=saurabh.abell-language-features) but it requires some more work)
 - More Starter Templates
@@ -152,9 +152,9 @@ Interested in helping with any of these? Let us know on [GitHub Discussions](htt
 
 ## Learn More about Abell
 
-You checkout documentation of abell at [abelljs.org](https://abelljs.org/)
+You can check the documentation of abell at [abelljs.org](https://abelljs.org/)
 
-You can alsso checkout my Talks on Abell here-
+You can also check my talks on Abell here-
 
 - ["Introducing Abell, a New Vite-Powered Static-Site-Generator" at ViteConf 2023](https://youtu.be/iguaElqKLf0?si=j3OgE-mjlU1k5QF2)
 - ["In The World of JS Frameworks, It's an HTML Framework" at React India 2023](https://youtu.be/brbOW--PEKM?si=WJM7lFvsJjPN6Xo7)
