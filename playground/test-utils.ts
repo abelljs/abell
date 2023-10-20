@@ -27,27 +27,24 @@ export async function run(
     let terminalOutput = '';
 
     child.stdout?.on('data', (data) => {
-      console.log('stdout==', data.toString());
       terminalOutput += data;
     });
 
     child.stderr?.on('data', (data) => {
-      console.log('stderr==', data.toString());
+      terminalOutput += data;
     });
 
     child.on('close', (code: number) => {
       if (code === 0) {
         resolve(terminalOutput);
       } else {
-        console.log('close==', code);
+        console.error('process closed with code', code);
         // eslint-disable-next-line prefer-promise-reject-errors
         reject();
       }
     });
 
-    child.on('error', (err) => {
-      console.log('err==', err);
-    });
+    child.on('error', console.error);
   });
 }
 
