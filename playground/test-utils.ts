@@ -27,6 +27,7 @@ export async function run(
     let terminalOutput = '';
 
     child.stdout?.on('data', (data) => {
+      console.log('test==', data);
       terminalOutput += data;
     });
 
@@ -34,12 +35,15 @@ export async function run(
       if (code === 0) {
         resolve(terminalOutput);
       } else {
+        console.log('close==', code);
         // eslint-disable-next-line prefer-promise-reject-errors
         reject();
       }
     });
 
-    child.on('error', console.error);
+    child.on('error', (err) => {
+      console.log('err==', err);
+    });
   });
 }
 
