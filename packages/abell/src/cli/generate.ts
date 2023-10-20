@@ -72,6 +72,8 @@ async function generate(): Promise<void> {
   });
 
   let routes: Route[] = [];
+  console.log('exists===', fs.existsSync(OUT_ENTRY_BUILD_PATH));
+  console.log('OUT_ENTRY_BUILD_PATH===', OUT_ENTRY_BUILD_PATH);
   if (fs.existsSync(OUT_ENTRY_BUILD_PATH)) {
     const { makeRoutes } = await import(OUT_ENTRY_BUILD_PATH);
     routes = await makeRoutes();
