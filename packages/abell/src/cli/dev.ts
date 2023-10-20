@@ -14,6 +14,7 @@ import { viteCustomLogger } from '../utils/logger.js';
 
 type DevOptions = {
   port: string;
+  open: boolean;
 };
 
 async function dev(serverOptions: DevOptions): Promise<void> {
@@ -92,7 +93,7 @@ async function dev(serverOptions: DevOptions): Promise<void> {
     }
   });
 
-  listen(app, Number(serverOptions.port));
+  listen(app, Number(serverOptions.port), { open: serverOptions.open });
 }
 
 export default dev;

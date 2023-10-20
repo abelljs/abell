@@ -7,7 +7,7 @@ import http from 'http';
 import net from 'net';
 import path from 'path';
 import { Express } from 'express';
-import { spawn } from 'child_process';
+import { spawn, exec } from 'child_process';
 import { loadConfigFromFile } from 'vite';
 import * as url from 'url';
 import { boldUnderline, log } from './logger.js';
@@ -47,6 +47,11 @@ export const findIndexPath = (abellPages: AbellPagesGlobImport): string => {
   return likelyRootIndexPath;
 };
 
+export const existsSync = (filePath: string): boolean => {
+  // Removes file:// from windows (otherwise windows always gives out false 🤦🏻‍♂️)
+  return fs.existsSync(filePath.replace('file://', ''));
+};
+
 export const getPackageJSON = (): Record<string, string> => {
   const packageJson = JSON.parse(
     fs.readFileSync(new url.URL('../../package.json', import.meta.url), 'utf-8')
@@ -80,7 +85,7 @@ export const urlifyPath = (pathString: string): string =>
  * @param {String} pathToRemove path to the directory which you want to remove
  */
 export function rmdirRecursiveSync(pathToRemove: string): void {
-  if (fs.existsSync(pathToRemove)) {
+  if (existsSync(pathToRemove)) {
     fs.readdirSync(pathToRemove).forEach((file) => {
       const curPath = path.join(pathToRemove, file);
       if (fs.lstatSync(curPath).isDirectory()) {
@@ -106,7 +111,7 @@ export function createPathIfAbsent(pathToCreate: string): string[] {
     .split(path.sep)
     .reduce((prevPath, folder) => {
       const currentPath = path.join(prevPath, folder, path.sep);
-      if (!fs.existsSync(currentPath)) {
+      if (!existsSync(currentPath)) {
         fs.mkdirSync(currentPath);
         createdDirectories.push(currentPath);
       }
@@ -141,16 +146,22 @@ let retryPortIndex = -1;
 /**
  * Listen to given port if available or look for another port
  */
-export const listen = (app: Express, port: number): void => {
+export const listen = (
+  app: Express,
+  port: number,
+  { open }: { open?: boolean }
+): void => {
   const server = http.createServer();
   server.listen(port, () => {
     server.close(() => {
       app.listen(port, () => {
-        log(
-          `dev-server is running on ${boldUnderline(
-            `http://localhost:${port}/`
-          )} 🚀`
-        );
+        const url = `http://localhost:${port}/`;
+
+        log(`dev-server is running on ${boldUnderline(url)} 🚀`);
+
+        if (open) {
+          exec(`open ${url}`);
+        }
       });
     });
   });
@@ -162,7 +173,7 @@ export const listen = (app: Express, port: number): void => {
         `Port ${port} is Taken. Retrying with ${coolReadablePorts[retryPortIndex]}`,
         'p1'
       );
-      listen(app, coolReadablePorts[retryPortIndex]);
+      listen(app, coolReadablePorts[retryPortIndex], { open });
     } else {
       console.error(err);
     }
@@ -196,7 +207,7 @@ export const getFilePathFromURL = (url: string, basePath: string): string => {
   const indexPath = path.join(basePath, url, 'index.abell');
   const directPath = path.join(basePath, `${url}.abell`);
 
-  if (fs.existsSync(directPath)) {
+  if (existsSync(directPath)) {
     return directPath;
   }
 
@@ -211,7 +222,7 @@ export const getConfigPath = (cwd: string): string => {
     'abell.config.js'
   ].map((configFileName) => path.join(cwd, configFileName));
   for (const configFile of possibleConfigFiles) {
-    if (fs.existsSync(configFile)) {
+    if (existsSync(configFile)) {
       return configFile;
     }
   }
@@ -279,9 +290,9 @@ export async function run(
 
 const installAbellIfNotInstalled = async (ROOT: string): Promise<void> => {
   const nodeModulesAbellPath = path.join(ROOT, 'node_modules', 'abell');
-  if (!fs.existsSync(nodeModulesAbellPath)) {
-    const didPackageJSONExist = fs.existsSync(path.join(ROOT, 'package.json'));
-    const didPackageLockJSONExist = fs.existsSync(
+  if (!existsSync(nodeModulesAbellPath)) {
+    const didPackageJSONExist = existsSync(path.join(ROOT, 'package.json'));
+    const didPackageLockJSONExist = existsSync(
       path.join(ROOT, 'package-lock.json')
     );
     await run(`npm install abell@${getAbellVersion()} --save-dev`, {
@@ -329,10 +340,7 @@ export const getViteBuildInfo = async ({
     ABELL_TEMP_DIRECTORY,
     'secret.default.entry.build.js'
   );
-  if (
-    !fs.existsSync(ENTRY_BUILD_PATH_JS) &&
-    !fs.existsSync(ENTRY_BUILD_PATH_TS)
-  ) {
+  if (!existsSync(ENTRY_BUILD_PATH_JS) && !existsSync(ENTRY_BUILD_PATH_TS)) {
     // Run this the first time getViteBuildInfo is called. Ignore after that.
     if (!isGetViteBuildInfoFunctionCalled) {
       createPathIfAbsent(ABELL_TEMP_DIRECTORY);
@@ -377,7 +385,7 @@ export async function clearCache(): Promise<void> {
     command: 'generate'
   });
   const ABELL_CACHE_DIR = path.join(ROOT, 'node_modules', '.abell');
-  if (fs.existsSync(ABELL_CACHE_DIR)) {
+  if (existsSync(ABELL_CACHE_DIR)) {
     rmdirRecursiveSync(ABELL_CACHE_DIR);
     log('Abell cache go whoooshhhh 🧹');
   }

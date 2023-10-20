@@ -7,7 +7,8 @@ import {
   getViteBuildInfo,
   createPathIfAbsent,
   addCSSToHead,
-  addJStoBodyEnd
+  addJStoBodyEnd,
+  existsSync
 } from '../utils/internal-utils.js';
 import {
   CSS_FETCH_REGEX,
@@ -72,7 +73,7 @@ async function generate(): Promise<void> {
   });
 
   let routes: Route[] = [];
-  if (fs.existsSync(OUT_ENTRY_BUILD_PATH)) {
+  if (existsSync(OUT_ENTRY_BUILD_PATH)) {
     const { makeRoutes } = await import(OUT_ENTRY_BUILD_PATH);
     routes = await makeRoutes();
   } else {

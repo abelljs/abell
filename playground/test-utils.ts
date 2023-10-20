@@ -30,10 +30,15 @@ export async function run(
       terminalOutput += data;
     });
 
+    child.stderr?.on('data', (data) => {
+      terminalOutput += data;
+    });
+
     child.on('close', (code: number) => {
       if (code === 0) {
         resolve(terminalOutput);
       } else {
+        console.error('process closed with code', code);
         // eslint-disable-next-line prefer-promise-reject-errors
         reject();
       }
