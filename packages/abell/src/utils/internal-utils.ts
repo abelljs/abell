@@ -7,7 +7,7 @@ import http from 'http';
 import net from 'net';
 import path from 'path';
 import { Express } from 'express';
-import { spawn } from 'child_process';
+import { spawn, exec } from 'child_process';
 import { loadConfigFromFile } from 'vite';
 import * as url from 'url';
 import { boldUnderline, log } from './logger.js';
@@ -141,16 +141,22 @@ let retryPortIndex = -1;
 /**
  * Listen to given port if available or look for another port
  */
-export const listen = (app: Express, port: number): void => {
+export const listen = (
+  app: Express,
+  port: number,
+  { open }: { open?: boolean }
+): void => {
   const server = http.createServer();
   server.listen(port, () => {
     server.close(() => {
       app.listen(port, () => {
-        log(
-          `dev-server is running on ${boldUnderline(
-            `http://localhost:${port}/`
-          )} 🚀`
-        );
+        const url = `http://localhost:${port}/`;
+
+        log(`dev-server is running on ${boldUnderline(url)} 🚀`);
+
+        if (open) {
+          exec(`open ${url}`);
+        }
       });
     });
   });
@@ -162,7 +168,7 @@ export const listen = (app: Express, port: number): void => {
         `Port ${port} is Taken. Retrying with ${coolReadablePorts[retryPortIndex]}`,
         'p1'
       );
-      listen(app, coolReadablePorts[retryPortIndex]);
+      listen(app, coolReadablePorts[retryPortIndex], { open });
     } else {
       console.error(err);
     }
