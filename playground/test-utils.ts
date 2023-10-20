@@ -27,8 +27,12 @@ export async function run(
     let terminalOutput = '';
 
     child.stdout?.on('data', (data) => {
-      console.log('test==', data);
+      console.log('stdout==', data.toString());
       terminalOutput += data;
+    });
+
+    child.stderr?.on('data', (data) => {
+      console.log('stderr==', data.toString());
     });
 
     child.on('close', (code: number) => {
