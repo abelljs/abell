@@ -71,8 +71,14 @@ async function generate(): Promise<void> {
     configFile
   });
 
+  console.log('readdirsync===', fs.readdirSync(OUTPUT_DIR));
+
   let routes: Route[] = [];
   console.log('exists===', fs.existsSync(OUT_ENTRY_BUILD_PATH));
+  console.log(
+    'exists without file===',
+    fs.existsSync(OUT_ENTRY_BUILD_PATH.replace('file://', ''))
+  );
   console.log('OUT_ENTRY_BUILD_PATH===', OUT_ENTRY_BUILD_PATH);
   if (fs.existsSync(OUT_ENTRY_BUILD_PATH)) {
     const { makeRoutes } = await import(OUT_ENTRY_BUILD_PATH);
