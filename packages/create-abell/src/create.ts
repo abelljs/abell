@@ -15,7 +15,7 @@ import {
 } from './utils';
 
 export type CreateAbellOptions = {
-  installer?: 'npm' | 'yarn' | 'pnpm';
+  installer?: 'npm' | 'yarn' | 'pnpm' | 'bun';
   template?: string;
 };
 

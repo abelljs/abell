@@ -269,6 +269,9 @@ button.hamburger-menu .icon {
 .DocSearch-Container {
   backdrop-filter: blur(3px) !important;
 }
+.DocSearch-Hits{
+  padding: 0;
+}
 
 @media (max-width: 768px) {
   .header-placeholder {

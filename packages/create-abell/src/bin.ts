@@ -10,7 +10,7 @@ program
   .option('-t|--template <template>', 'Specify template for abell app')
   .option(
     '-i|--installer <installer>',
-    'Specify package installer. npm, pnpm, bun, or yarn.'
+    'Specify package installer. npm, pnpm, yarn, or bun.'
   )
   .arguments('[projectName]')
   .action((projectName: string | undefined, options: CreateAbellOptions) =>
