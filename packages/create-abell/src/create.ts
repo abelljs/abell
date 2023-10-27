@@ -62,7 +62,7 @@ async function create(
   } else if (installCommand === 'pnpm install') {
     runCommand = 'pnpm run dev';
   } else if (installCommand === 'bun install') {
-    runCommand = 'bun run dev'
+    runCommand = 'bun run dev';
   }
 
   log.info(
