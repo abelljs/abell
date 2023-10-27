@@ -6,27 +6,27 @@ labels: bug
 assignees: ''
 ---
 
-**Describe the bug**
+**Description of Bug**
 
 <!-- A clear and concise description of what the bug is. -->
 
-**To Reproduce**
+
+**Steps To Reproduce**
 
 <!-- Steps to reproduce the behavior -->
 
-**Expected behavior**
 
-<!-- What do you expect -->
-
-**Screenshots**
+**Screenshots / Logs**
 
 <!-- If applicable, add screenshots to help explain your problem. -->
 
-**Specs:**
+
+**Specs**
 
 - Abell Version:
 - Node Version:
 - Operating System:
+
 
 **Additional context**
 
