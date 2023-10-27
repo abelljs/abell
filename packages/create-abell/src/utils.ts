@@ -63,12 +63,13 @@ export const log = {
 export const normalizePath = (pathString: string): string =>
   pathString.split('/').join(path.sep);
 
-const windowsifyCommand = (command: string): string => {
+export const windowsifyCommand = (command: string): string => {
   if (isWindows) {
     return command
       .replace('npm', 'npm.cmd')
       .replace('yarn', 'yarn.cmd')
-      .replace('pnpm', 'pnpm.cmd');
+      .replace('pnpm', 'pnpm.cmd')
+      .replace('bun', 'bun.cmd');
   }
 
   return command;
@@ -85,6 +86,11 @@ export async function run(
         cwd,
         stdio: 'inherit'
       });
+
+      // In test we want to return from here since we don't want to wait for on('close') to be called
+      if (process.env.NODE_ENV === 'test') {
+        return resolve(0);
+      }
 
       child.on('close', (code) => {
         if (code === 0) {
