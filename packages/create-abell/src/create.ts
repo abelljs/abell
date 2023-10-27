@@ -8,7 +8,7 @@ import {
 import { colors, deleteDir, log, relative, run } from './utils';
 
 export type CreateAbellOptions = {
-  installer?: 'npm' | 'yarn' | 'pnpm';
+  installer?: 'npm' | 'yarn' | 'pnpm' | 'bun';
   template?: string;
 };
 
@@ -61,6 +61,8 @@ async function create(
     runCommand = 'yarn dev';
   } else if (installCommand === 'pnpm install') {
     runCommand = 'pnpm run dev';
+  } else if (installCommand === 'bun install') {
+    runCommand = 'bun run dev'
   }
 
   log.info(
