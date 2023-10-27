@@ -46,8 +46,8 @@ export const getProjectInfo = async (projectNameArg: string | undefined) => {
  * Prompts user to choose package installer if not defined
  */
 export const getInstallCommand = async (
-  installerVal: 'npm' | 'yarn' | 'pnpm' | undefined
-): Promise<'npm install' | 'pnpm install' | 'yarn'> => {
+  installerVal: 'npm' | 'yarn' | 'pnpm' | 'bun' | undefined
+): Promise<'npm install' | 'pnpm install' | 'yarn' | 'bun install'> => {
   if (!installerVal) {
     // if installer flag is undefined, ask user.
     const answers = await prompts({
@@ -66,6 +66,10 @@ export const getInstallCommand = async (
         {
           title: 'pnpm',
           value: 'pnpm'
+        },
+        {
+          title: 'bun',
+          value: 'bun'
         }
       ]
     });
@@ -77,6 +81,8 @@ export const getInstallCommand = async (
     return 'yarn';
   } else if (installerVal === 'pnpm') {
     return 'pnpm install';
+  } else if (installerVal === 'bun') {
+    return 'bun install';
   } else {
     return 'npm install';
   }
