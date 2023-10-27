@@ -21,7 +21,10 @@ vi.mock('child_process');
 
 // Shoutout to chatgpt for this function
 const makeTree = (directoryPath: string, indent = 0) => {
-  const files = fs.readdirSync(directoryPath);
+  const files = fs
+    .readdirSync(directoryPath)
+    // sorting to make directory read sequence same
+    .sort((a, b) => (a.length > b.length ? 1 : -1));
 
   let tree = '';
 
@@ -78,20 +81,20 @@ describe('create', () => {
     expect(fs.existsSync(path.join(testUtilsDir, 'hello-abell'))).toBe(true);
     expect(makeTree(path.join(testUtilsDir, 'hello-abell')))
       .toMatchInlineSnapshot(`
-      "├── _components
-        └── global.meta.abell
-        └── navbar.abell
-      └── about.abell
-      ├── client-assets
-        └── global.css
-        └── index-client.js
-      └── config.js
-      └── index.abell
-      └── package.json
-      ├── public
-        └── abell-logo.svg
-      "
-    `);
+        "├── public
+          └── abell-logo.svg
+        └── config.js
+        └── index.abell
+        └── about.abell
+        ├── _components
+          └── navbar.abell
+          └── global.meta.abell
+        └── package.json
+        ├── client-assets
+          └── global.css
+          └── index-client.js
+        "
+      `);
   });
 
   test('should create project with default template and bun installer', async () => {
