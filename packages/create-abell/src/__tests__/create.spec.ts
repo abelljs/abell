@@ -24,7 +24,7 @@ const makeTree = (directoryPath: string, indent = 0) => {
   const files = fs
     .readdirSync(directoryPath)
     // sorting to make directory read sequence same
-    .sort((a, b) => (a.length > b.length ? 1 : -1));
+    .sort();
 
   let tree = '';
 
@@ -81,18 +81,18 @@ describe('create', () => {
     expect(fs.existsSync(path.join(testUtilsDir, 'hello-abell'))).toBe(true);
     expect(makeTree(path.join(testUtilsDir, 'hello-abell')))
       .toMatchInlineSnapshot(`
-        "├── public
-          └── abell-logo.svg
-        └── config.js
-        └── index.abell
-        └── about.abell
-        ├── _components
-          └── navbar.abell
+        "├── _components
           └── global.meta.abell
-        └── package.json
+          └── navbar.abell
+        └── about.abell
         ├── client-assets
           └── global.css
           └── index-client.js
+        └── config.js
+        └── index.abell
+        └── package.json
+        ├── public
+          └── abell-logo.svg
         "
       `);
   });
