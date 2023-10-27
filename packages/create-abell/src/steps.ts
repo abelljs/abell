@@ -143,14 +143,27 @@ export const scaffoldTemplate = async ({
   }
 };
 
-export const setNameInPackageJSON = (
+export const setPackageJSONValues = (
   packagePath: string,
-  appName: string
+  {
+    name,
+    scripts
+  }: {
+    name: string;
+    scripts?: {
+      dev?: string;
+      generate?: string;
+    };
+  }
 ): void => {
   try {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const packageJSON = require(normalizePath(packagePath));
-    packageJSON.name = appName;
+    packageJSON.name = name;
+    if (scripts?.dev && scripts.generate) {
+      packageJSON.scripts.dev = scripts.dev;
+      packageJSON.scripts.generate = scripts.generate;
+    }
     fs.writeFileSync(packagePath, JSON.stringify(packageJSON, null, 2));
   } catch (err) {
     // Do nothing. Skip the step if error.

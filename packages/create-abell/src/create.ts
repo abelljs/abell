@@ -3,7 +3,7 @@ import {
   getProjectInfo,
   getTemplate,
   scaffoldTemplate,
-  setNameInPackageJSON
+  setPackageJSONValues
 } from './steps';
 import {
   colors,
@@ -63,7 +63,17 @@ async function create(
   }
 
   // 4. Set name in project's package.json
-  setNameInPackageJSON(`${projectPath}/package.json`, projectDisplayName);
+  setPackageJSONValues(`${projectPath}/package.json`, {
+    name: projectDisplayName,
+    scripts: {
+      dev:
+        installCommand === 'bun install' ? 'bunx --bun abell dev' : 'abell dev',
+      generate:
+        installCommand === 'bun install'
+          ? 'bunx --bun abell generate'
+          : 'abell generate'
+    }
+  });
 
   // 5. Delete `.git` (For projects scaffolded from github)
   deleteDir(`${projectPath}/.git`);

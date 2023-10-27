@@ -1,5 +1,9 @@
 {
   "name": "unset",
   "version": "0.0.15",
-  "description": "test-description"
+  "description": "test-description",
+  "scripts": {
+    "dev": "abell dev",
+    "generate": "abell generate"
+  }
 }
