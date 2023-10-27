@@ -1,0 +1,6 @@
+{{
+  import config from '../config';
+}}
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ props.title || config.defaultTitle }}</title>
+<link rel="stylesheet" href="./client-assets/global.css" />

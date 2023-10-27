@@ -181,3 +181,10 @@ export function deleteDir(unNormalizedPathToRemove: string): void {
     fs.rmdirSync(pathToRemove);
   }
 }
+
+export const packageManagerRunMap = {
+  'yarn install': 'yarn dev',
+  'npm install': 'npm run dev',
+  'bun install': 'bun dev',
+  'pnpm install': 'pnpm dev'
+} as const;

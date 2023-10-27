@@ -5,7 +5,14 @@ import {
   scaffoldTemplate,
   setNameInPackageJSON
 } from './steps';
-import { colors, deleteDir, log, relative, run } from './utils';
+import {
+  colors,
+  deleteDir,
+  log,
+  packageManagerRunMap,
+  relative,
+  run
+} from './utils';
 
 export type CreateAbellOptions = {
   installer?: 'npm' | 'yarn' | 'pnpm';
@@ -37,15 +44,22 @@ async function create(
     template
   });
 
+  let runCommand: string | undefined;
+
   console.log('');
-  log.info(`Running ${colors.bold(installCommand)}`, 2);
-  // 3. Install Dependencies
-  try {
-    await run(installCommand, {
-      cwd: projectPath
-    });
-  } catch (err) {
-    log.failure(`Could not install dependencies. Skipping ${installCommand}`);
+
+  if (installCommand) {
+    // 3. Install Dependencies
+    log.info(`Running ${colors.bold(installCommand)}`, 2);
+    try {
+      await run(installCommand, {
+        cwd: projectPath
+      });
+    } catch (err) {
+      log.failure(`Could not install dependencies. Skipping ${installCommand}`);
+    }
+
+    runCommand = packageManagerRunMap[installCommand];
   }
 
   // 4. Set name in project's package.json
@@ -56,18 +70,14 @@ async function create(
 
   // 6. Log Success
   log.success(`${projectDisplayName} scaffolded successfully 🚀\n`);
-  let runCommand = 'npm run dev';
-  if (installCommand === 'yarn') {
-    runCommand = 'yarn dev';
-  } else if (installCommand === 'pnpm install') {
-    runCommand = 'pnpm run dev';
-  }
 
-  log.info(
-    `${colors.bold(`cd ${relProjectPath}`)} and run ${colors.bold(
-      runCommand
-    )} to run the dev-server\n`
-  );
+  if (runCommand) {
+    log.info(
+      `${colors.bold(`cd ${relProjectPath}`)} and run ${colors.bold(
+        runCommand
+      )} to run the dev-server\n`
+    );
+  }
 }
 
 export default create;

@@ -4,8 +4,8 @@
   "description": "Default starter generated using create-abell",
   "type": "module",
   "scripts": {
-    "dev": "abell dev",
-    "generate": "abell generate"
+    "dev": "bunx --bun abell dev",
+    "generate": "bunx --bun abell generate"
   },
   "keywords": [],
   "author": "",

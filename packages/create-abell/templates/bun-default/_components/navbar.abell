@@ -1,0 +1,41 @@
+<nav>
+  <ul>
+    <li>
+      <a class="{{ props.activeRoute === '/' ? 'active' : '' }}" href="/">
+        Home
+      </a>
+    </li>
+    <li>
+      <a class="{{ props.activeRoute === '/about' ? 'active' : '' }}" href="/about">
+        About
+      </a>
+    </li>
+  </ul>
+</nav>
+
+<style>
+  nav {
+    padding: 24px 0px 48px;
+  }
+
+  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  li {
+    display: inline-block;
+    margin: 0px 12px;
+  }
+
+  a {
+    color: var(--text);
+    text-decoration: none;
+    font-size: 1.1rem;
+  }
+  a.active {
+    color: var(--primary-hover);
+    font-weight: bold;
+  }
+</style>
