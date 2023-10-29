@@ -67,11 +67,11 @@ async function create(
     name: projectDisplayName,
     scripts: {
       dev:
-        installCommand === 'bun install' ? 'bunx --bun abell dev' : 'abell dev',
+        installCommand === 'bun install' ? 'bunx --bun abell dev' : undefined,
       generate:
         installCommand === 'bun install'
           ? 'bunx --bun abell generate'
-          : 'abell generate'
+          : undefined
     }
   });
 
