@@ -223,7 +223,7 @@ Along with v0.4.0, we also released v0.2.0 of Abell Renderer. The changes are me
 - We now support plugins 🎉 Example: [https://github.com/saurabhdaware/abell-sitemap-plugin](https://github.com/saurabhdaware/abell-sitemap-plugin) (Issue [#15](https://github.com/abelljs/abell/issues/15))
 - Nested folders in `content` now maintain structure (Resolved Issue [#19](https://github.com/abelljs/abell/issues/19))
 - **BREAKING CHANGE** All assets should be inside `content/<slug>/assets/` folder ([#22](https://github.com/abelljs/abell/issues/22))
-- Keeping dev-server alive when not defined errors occur (Patially fixes [#16](https://github.com/abelljs/abell/issues/16))
+- Keeping dev-server alive when not defined errors occur (Partially fixes [#16](https://github.com/abelljs/abell/issues/16))
 - Keeping dev-server alive when new blog added/deleted (Fixed [#23](https://github.com/abelljs/abell/issues/23))
 - Refresh cache in dev-server to avoid display of old data ([#26](https://github.com/abelljs/abell/issues/26))
 - Crash on `content/index.md` change fix (Issue [#21](https://github.com/abelljs/abell/issues/21))
@@ -251,7 +251,7 @@ Along with v0.4.0, we also released v0.2.0 of Abell Renderer. The changes are me
 
 ## 0.2.17
 
-- Having `content` directory is no more neccessary. Ability to build a static site which is not dependent on markdown content.
+- Having `content` directory is no more necessary. Ability to build a static site which is not dependent on markdown content.
 
 ## 0.2.16
 
@@ -259,7 +259,7 @@ Along with v0.4.0, we also released v0.2.0 of Abell Renderer. The changes are me
 
 ## 0.2.15
 
-- Having `[$slug]/index.abell` is no more neccessary.
+- Having `[$slug]/index.abell` is no more necessary.
 
 ## 0.2.14
 

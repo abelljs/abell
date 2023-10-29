@@ -2,7 +2,7 @@
 
 ## Added unit tests?
 
-<!-- Its preferred to have unit tests although its understable if you don't want to spend additional time -->
+<!-- Its preferred to have unit tests although its understandable if you don't want to spend additional time -->
 
 - [ ] No
 - [ ] Yes

@@ -26,7 +26,7 @@ You can use this or the plain logo depending on whichever looks nice
 > 
 > Generally its better to avoid using this since it completely changes the brand colors. 
 
-There might be places where backgrounds are greyish blue which makes the other logos disappear and adding a background comprimises the aesthetics.
+There might be places where backgrounds are greyish blue which makes the other logos disappear and adding a background compromises the aesthetics.
 
 E.g. This is used as an emoji in our discord channel because discord has gray theme.
 
