@@ -51,7 +51,7 @@ Output:
 
 Learn More at [Syntax Guide](https://abelljs.org/syntax-guide)
 
-### 📄License
+### 📄 License
 
 This project is licensed under the [MIT License](./LICENSE)
 
