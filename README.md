@@ -53,7 +53,7 @@ Learn More at [Syntax Guide](https://abelljs.org/syntax-guide)
 
 ### 📄License
 
-This project is licensed under the MIT license [LICENSE](./LICENSE)
+This project is licensed under the [MIT License](./LICENSE)
 
 ### 🤗 Contributing
 
