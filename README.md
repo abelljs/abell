@@ -51,6 +51,10 @@ Output:
 
 Learn More at [Syntax Guide](https://abelljs.org/syntax-guide)
 
+### 📄 License
+
+This project is licensed under the [MIT License](./LICENSE)
+
 ### 🤗 Contributing
 
 Check out [CONTRIBUTING.md](https://github.com/abelljs/abell/tree/main/CONTRIBUTING.md)
