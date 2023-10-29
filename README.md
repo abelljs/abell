@@ -51,6 +51,13 @@ Output:
 
 Learn More at [Syntax Guide](https://abelljs.org/syntax-guide)
 
+### 📄License
+This project is licensed under the MIT license. For more information on the license and its terms, please refer to the [LICENSE](./LICENSE) file.
+
+**Copyright (c) 2020 abelljs**
+
+If you have any questions or need further information about the license, please contact the project maintainers.
+
 ### 🤗 Contributing
 
 Check out [CONTRIBUTING.md](https://github.com/abelljs/abell/tree/main/CONTRIBUTING.md)
