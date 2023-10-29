@@ -3,12 +3,19 @@ import {
   getProjectInfo,
   getTemplate,
   scaffoldTemplate,
-  setNameInPackageJSON
+  setPackageJSONValues
 } from './steps';
-import { colors, deleteDir, log, relative, run } from './utils';
+import {
+  colors,
+  deleteDir,
+  log,
+  packageManagerRunMap,
+  relative,
+  run
+} from './utils';
 
 export type CreateAbellOptions = {
-  installer?: 'npm' | 'yarn' | 'pnpm' | 'bun';
+  installer?: 'npm' | 'yarn' | 'pnpm' | 'bun' | 'skip';
   template?: string;
 };
 
@@ -37,39 +44,50 @@ async function create(
     template
   });
 
+  let runCommand: string | undefined;
+
   console.log('');
-  log.info(`Running ${colors.bold(installCommand)}`, 2);
-  // 3. Install Dependencies
-  try {
-    await run(installCommand, {
-      cwd: projectPath
-    });
-  } catch (err) {
-    log.failure(`Could not install dependencies. Skipping ${installCommand}`);
+
+  if (installCommand) {
+    // 3. Install Dependencies
+    log.info(`Running ${colors.bold(installCommand)}`, 2);
+    try {
+      await run(installCommand, {
+        cwd: projectPath
+      });
+    } catch (err) {
+      log.failure(`Could not install dependencies. Skipping ${installCommand}`);
+    }
+
+    runCommand = packageManagerRunMap[installCommand];
   }
 
   // 4. Set name in project's package.json
-  setNameInPackageJSON(`${projectPath}/package.json`, projectDisplayName);
+  setPackageJSONValues(`${projectPath}/package.json`, {
+    name: projectDisplayName,
+    scripts: {
+      dev:
+        installCommand === 'bun install' ? 'bunx --bun abell dev' : 'abell dev',
+      generate:
+        installCommand === 'bun install'
+          ? 'bunx --bun abell generate'
+          : 'abell generate'
+    }
+  });
 
   // 5. Delete `.git` (For projects scaffolded from github)
   deleteDir(`${projectPath}/.git`);
 
   // 6. Log Success
   log.success(`${projectDisplayName} scaffolded successfully 🚀\n`);
-  let runCommand = 'npm run dev';
-  if (installCommand === 'yarn') {
-    runCommand = 'yarn dev';
-  } else if (installCommand === 'pnpm install') {
-    runCommand = 'pnpm run dev';
-  } else if (installCommand === 'bun install') {
-    runCommand = 'bun run dev';
-  }
 
-  log.info(
-    `${colors.bold(`cd ${relProjectPath}`)} and run ${colors.bold(
-      runCommand
-    )} to run the dev-server\n`
-  );
+  if (runCommand) {
+    log.info(
+      `${colors.bold(`cd ${relProjectPath}`)} and run ${colors.bold(
+        runCommand
+      )} to run the dev-server\n`
+    );
+  }
 }
 
 export default create;

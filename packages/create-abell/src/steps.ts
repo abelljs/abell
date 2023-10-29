@@ -42,12 +42,14 @@ export const getProjectInfo = async (projectNameArg: string | undefined) => {
   return { projectDisplayName, projectPath };
 };
 
+type InstallerTypes = 'npm' | 'yarn' | 'pnpm' | 'bun';
+
 /**
  * Prompts user to choose package installer if not defined
  */
 export const getInstallCommand = async (
-  installerVal: 'npm' | 'yarn' | 'pnpm' | 'bun' | undefined
-): Promise<'npm install' | 'pnpm install' | 'yarn' | 'bun install'> => {
+  installerVal: InstallerTypes | 'skip' | undefined
+): Promise<`${InstallerTypes} install` | undefined> => {
   if (!installerVal) {
     // if installer flag is undefined, ask user.
     const answers = await prompts({
@@ -70,6 +72,10 @@ export const getInstallCommand = async (
         {
           title: 'bun',
           value: 'bun'
+        },
+        {
+          title: 'skip installation',
+          value: 'skip'
         }
       ]
     });
@@ -77,15 +83,11 @@ export const getInstallCommand = async (
     installerVal = answers.installer;
   }
 
-  if (installerVal === 'yarn') {
-    return 'yarn';
-  } else if (installerVal === 'pnpm') {
-    return 'pnpm install';
-  } else if (installerVal === 'bun') {
-    return 'bun install';
-  } else {
-    return 'npm install';
+  if (!installerVal || installerVal === 'skip') {
+    return undefined;
   }
+
+  return `${installerVal} install`;
 };
 
 /**
@@ -95,7 +97,7 @@ export const getTemplate = (templateVal: string | undefined): string => {
   // return default when value is not defined
   if (!templateVal) return 'default';
 
-  if (templateVal === 'default' || templateVal === 'minimal') {
+  if (templateVal === 'default' || templateVal === 'bun-default') {
     // 'default' and 'minimal' are valid templates. Return them as it is
     return templateVal;
   }
@@ -117,7 +119,7 @@ export const scaffoldTemplate = async ({
   projectPath: string;
   template: string;
 }): Promise<void> => {
-  if (template === 'default' || template === 'minimal') {
+  if (template === 'default' || template === 'bun-default') {
     // copy default template from templates directory
     const templatesDir = path.join(__dirname, '..', 'templates');
     const templatePath = path.join(templatesDir, template);
@@ -141,14 +143,27 @@ export const scaffoldTemplate = async ({
   }
 };
 
-export const setNameInPackageJSON = (
+export const setPackageJSONValues = (
   packagePath: string,
-  appName: string
+  {
+    name,
+    scripts
+  }: {
+    name: string;
+    scripts?: {
+      dev?: string;
+      generate?: string;
+    };
+  }
 ): void => {
   try {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const packageJSON = require(normalizePath(packagePath));
-    packageJSON.name = appName;
+    packageJSON.name = name;
+    if (scripts?.dev && scripts.generate) {
+      packageJSON.scripts.dev = scripts.dev;
+      packageJSON.scripts.generate = scripts.generate;
+    }
     fs.writeFileSync(packagePath, JSON.stringify(packageJSON, null, 2));
   } catch (err) {
     // Do nothing. Skip the step if error.
