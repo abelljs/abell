@@ -89,6 +89,6 @@ pnpm test:once # Runs all tests
 
 ---
 
-Stuck somewhere? you can reach out to me on [Twitter @saurabhdawaree](https://twitter.com/saurabhdawaree) or ask for help in [our discord chat](https://discord.gg/ndsVpRG)
+Stuck somewhere? you can reach out to me on [X @saurabhdawaree](https://x.com/saurabhdawaree) or ask for help in [our discord chat](https://discord.gg/ndsVpRG)
 
 <a href="https://discord.gg/ndsVpRG"><img alt="Discord Join Chat" src="https://img.shields.io/badge/discord-join%20chat-738ADB?style=for-the-badge&logo=discord&logoColor=738ADB&labelColor=225"/></a>
