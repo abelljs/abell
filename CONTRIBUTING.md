@@ -7,14 +7,19 @@
 
 ## 🏡 Setup Repository
 
-- ### Step 1: Clone Repo
+- ### Step 1: Fork the Repository
+  To contribute to this project, you'll need to fork the repository to your own GitHub account. Here's how:
+  1. Click the "Fork" button in the top right corner of this GitHub repository page.
+  2. A copy of this repository will be created in your own GitHub account.
+     
+- ### Step 2: Clone the Repository
 
   ```sh
-  git clone git@github.com:<username>/abell.git
+  git clone git@github.com:<your-username>/abell.git
   cd abell
   ```
 
-- ### Step 2: Install Dependencies
+- ### Step 3: Install Dependencies
 
   ```sh
   pnpm install
@@ -41,7 +46,7 @@ The monorepo includes 3 packages and a playground directory where every example 
 
   #### Dev Server
 
-  This will run `nodemon` command watch over the changes in abell and rebuild the abell package for any change.
+  This will run `nodemon` command, watch over the changes in abell and rebuild the abell package for any change.
 
   ```sh
   pnpm abell
