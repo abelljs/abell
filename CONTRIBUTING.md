@@ -8,9 +8,8 @@
 ## 🏡 Setup Repository
 
 - ### Step 1: Fork the Repository
-  To contribute to this project, you'll need to fork the repository to your own GitHub account. Here's how:
-  1. Click the "Fork" button in the top right corner of this GitHub repository page.
-  2. A copy of this repository will be created in your own GitHub account.
+
+You can click "fork" button in top right corner to create a copy of this repo in your account where changes can be made.
      
 - ### Step 2: Clone the Repository
 
