@@ -23,6 +23,12 @@ export const getSyntaxBlocks = (
     outText: ''
   };
 
+  // const maps = {
+  //   importTextMap: [],
+  //   declarationTextMap: [],
+  //   abellTextMap: []
+  // };
+
   const cssBlocks = [];
   const outBlocks: { text: string }[] = [];
 

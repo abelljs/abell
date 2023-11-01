@@ -32,6 +32,7 @@ export function vitePluginAbell(abellOptions?: AbellOptions): PluginOption {
           cwd: process.cwd()
         });
         let outCode = jsCode;
+        // let outMap = undefined;
         // If loader is not defined, skip the esbuild transform
         if (abellOptions?.esbuild?.loader) {
           const esbuildOut = await transformWithEsbuild(
@@ -40,9 +41,11 @@ export function vitePluginAbell(abellOptions?: AbellOptions): PluginOption {
             abellOptions.esbuild
           );
           outCode = esbuildOut.code;
+          // outMap = esbuildOut.map;
         }
         return {
           code: outCode
+          // map: outMap
         };
       }
     }

@@ -2,13 +2,16 @@
  * Copied from https://gist.github.com/borgar/451393/7698c95178898c9466214867b46acb2ab2f56d68
  * Made by borgar (https://github.com/borgar)
  *
- * Saurabh has absolutely no idea how this works.
+ * Saurabh made some tiny modifications to support TS, and add position and line information
  */
 
 export type Token<T> = {
   text: string;
   type: keyof T | 'default';
   matches?: string[];
+  line?: number;
+  pos?: number;
+  col?: number;
 };
 
 /*
@@ -29,6 +32,8 @@ function tokenize<T extends Record<string, RegExp>>(
   let m;
   let r;
   let t;
+  let skippedCodeLength = 0;
+  const fullCodeString = s;
   const tokens = [];
   while (s) {
     t = null;
@@ -38,10 +43,15 @@ function tokenize<T extends Record<string, RegExp>>(
       // try to choose the best match if there are several
       // where "best" is the closest to the current starting point
       if (r && r.index < m) {
+        const pos = skippedCodeLength + r.index;
+        const codeTillHere = fullCodeString.slice(0, pos);
         t = {
           text: r[0],
           type: key,
-          matches: r.slice(1)
+          matches: r.slice(1),
+          pos,
+          line: codeTillHere.split('\n').length,
+          col: codeTillHere.slice(codeTillHere.lastIndexOf('\n')).length
         };
         m = r.index;
       }
@@ -58,7 +68,9 @@ function tokenize<T extends Record<string, RegExp>>(
       // push current token onto sequence
       tokens.push(t);
     }
-    s = s.substr(m + (t ? t.text.length : 0));
+    const currentSkippedLength = m + (t ? t.text.length : 0);
+    skippedCodeLength += currentSkippedLength;
+    s = s.substr(currentSkippedLength);
   }
   return tokens;
 }
