@@ -53,6 +53,9 @@ importers:
       commander:
         specifier: ^7.2.0
         version: 7.2.0
+      dedent:
+        specifier: ^0.7.0
+        version: 0.7.0
       express:
         specifier: ^4.17.2
         version: 4.17.2
@@ -72,6 +75,9 @@ importers:
         specifier: 4.4.9
         version: 4.4.9
     devDependencies:
+      '@types/dedent':
+        specifier: ^0.7.0
+        version: 0.7.0
       '@types/express':
         specifier: ^4.17.13
         version: 4.17.13

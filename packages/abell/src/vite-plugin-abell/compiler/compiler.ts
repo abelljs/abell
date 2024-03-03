@@ -1,5 +1,7 @@
 /* eslint-disable max-len */
-import { AbstractSyntaxArrayType } from '../../type-utils.js';
+import path from 'path';
+import dedent from 'dedent';
+import { SourceMapGenerator } from 'source-map';
 import tokenize from './generic-tokenizer.js';
 import { getScopedHTML } from './scope-css/index.js';
 import { getSyntaxBlocks } from './syntax-blocks.js';
@@ -20,28 +22,22 @@ interface CompileOptions {
   outputType?: 'js-string' | 'syntax-blocks';
 }
 
-interface HTMLOutputCompileOptions extends CompileOptions {
-  outputType: 'syntax-blocks';
-}
+type CompileOutputType = {
+  code: string;
+  map: SourceMapGenerator;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  meta: any;
+};
 
-interface JSOutputCompileOptions extends CompileOptions {
-  outputType?: 'js-string';
-}
-
-type CompileOutputType = string | AbstractSyntaxArrayType;
-
-export function compile(
-  abellTemplate: string,
-  options: HTMLOutputCompileOptions
-): AbstractSyntaxArrayType;
-export function compile(
-  abellTemplate: string,
-  options: JSOutputCompileOptions
-): string;
 export function compile(
   abellTemplate: string,
   options: CompileOptions
 ): CompileOutputType {
+  const sourceMap = new SourceMapGenerator({
+    file: 'generated.ts',
+    sourceRoot: path.join(__dirname, '../../utils/__tests__/test-files')
+  });
+
   const tokens = tokenize<TokenSchemaType>(
     abellTemplate,
     tokenSchema,
@@ -52,31 +48,96 @@ export function compile(
     abellTemplate.includes('<html') && abellTemplate.includes('</html>');
   const isAbellComponent = !isHTMLPage;
 
-  const { declarationBlocks, importBlock, cssBlocks, out } = getSyntaxBlocks(
-    tokens,
-    {
+  const { declarationBlocks, importBlock, cssBlocks, out, maps } =
+    getSyntaxBlocks(tokens, {
       isPage: isHTMLPage
-    }
-  );
+    });
 
   let htmlOut = out.text;
   if (isAbellComponent) {
     htmlOut = getScopedHTML(htmlOut, cssBlocks, options.filepath);
   }
 
-  if (options.outputType === 'syntax-blocks') {
-    return {
-      declarationBlocks,
-      importBlock,
-      out: {
-        blocks: out.blocks,
-        text: htmlOut
-      },
-      cssBlocks
-    };
+  const IMPORTS_OFFSET = 3;
+  // const DECLARATIONS_OFFSET = {
+  //   line: 9 +
+  // }
+
+  // const mapss = [];
+  const importLinesDiff =
+    maps.importTextMap[maps.importTextMap.length - 1].line! -
+    maps.importTextMap[0].line!;
+
+  const DECLARATIONS_OFFSET = {
+    line: 9 + importLinesDiff,
+    col: 2
+  };
+
+  for (const importTextMapIndex in maps.importTextMap) {
+    const importTextMapObj = maps.importTextMap[importTextMapIndex];
+    const idx = Number(importTextMapIndex);
+
+    if (importTextMapObj.col && importTextMapObj.line) {
+      sourceMap.addMapping({
+        generated: {
+          line:
+            idx <= 0
+              ? IMPORTS_OFFSET
+              : IMPORTS_OFFSET +
+                (maps.importTextMap[idx]?.line ?? 0) -
+                (maps.importTextMap[idx - 1]?.line ?? 0),
+          column: importTextMapObj.col
+        },
+        source: 'original.abell',
+        original: {
+          line: importTextMapObj.line,
+          column: importTextMapObj.col
+        }
+      });
+    }
   }
 
-  const jsOut = `
+  for (const declarationTextMapIndex in maps.declarationTextMap) {
+    const declarationTextMapObj =
+      maps.declarationTextMap[declarationTextMapIndex];
+    const idx = Number(declarationTextMapIndex);
+
+    if (declarationTextMapObj.col && declarationTextMapObj.line) {
+      sourceMap.addMapping({
+        generated: {
+          line:
+            idx <= 0
+              ? DECLARATIONS_OFFSET.line
+              : DECLARATIONS_OFFSET.line +
+                (maps.declarationTextMap[idx]?.line ?? 0) -
+                (maps.declarationTextMap[idx - 1]?.line ?? 0),
+          column: DECLARATIONS_OFFSET.col + declarationTextMapObj.col
+        },
+        source: 'original.abell',
+        original: {
+          line: declarationTextMapObj.line,
+          column: declarationTextMapObj.col
+        }
+      });
+    }
+  }
+
+  // console.log(mapss);
+
+  const meta = {
+    declarationBlocks,
+    importBlock,
+    out: {
+      blocks: out.blocks,
+      text: htmlOut
+    },
+    cssBlocks,
+    maps
+  };
+
+  sourceMap.setSourceContent('original.abell', abellTemplate);
+
+  const jsOut = dedent`
   import { default as _path } from 'path';
   import { evaluateAbellBlock as e } from 'abell';
   ${importBlock.text}
@@ -89,9 +150,13 @@ export function compile(
     return \`${htmlOut}\`
   };
   export default html;
-  `.trim();
+  `;
 
-  return jsOut;
+  return {
+    code: jsOut,
+    map: sourceMap,
+    meta
+  };
 }
 
 export default compile;

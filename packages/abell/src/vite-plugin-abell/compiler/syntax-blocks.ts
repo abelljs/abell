@@ -1,6 +1,6 @@
 import { isDeclarationBlock, isImportBlock, parseAttributes } from './utils.js';
 import { Token } from './generic-tokenizer.js';
-import { AbstractSyntaxArrayType } from '../../type-utils.js';
+import { AbstractSyntaxArrayType, MapsObject } from '../../type-utils.js';
 import { TokenSchemaType } from './token-schema.js';
 
 export const getSyntaxBlocks = (
@@ -23,11 +23,11 @@ export const getSyntaxBlocks = (
     outText: ''
   };
 
-  // const maps = {
-  //   importTextMap: [],
-  //   declarationTextMap: [],
-  //   abellTextMap: []
-  // };
+  const maps: MapsObject = {
+    importTextMap: [],
+    declarationTextMap: [],
+    abellTextMap: []
+  };
 
   const cssBlocks = [];
   const outBlocks: { text: string }[] = [];
@@ -55,6 +55,9 @@ export const getSyntaxBlocks = (
       }
       blockState.isInsideAbellBlock = true;
       blockState.blockCount++;
+      maps.abellTextMap = [
+        { pos: token.pos, col: token.col, line: token.line }
+      ];
     } else if (token.type === 'BLOCK_END') {
       /**
        * Abell Block End
@@ -75,8 +78,18 @@ export const getSyntaxBlocks = (
 
       if (isImportBlock(blockState.blockCount, texts.abellText)) {
         texts.importText = texts.abellText;
+        maps.importTextMap = [
+          ...maps.abellTextMap,
+          { pos: token.pos, col: token.col, line: token.line }
+        ];
+        maps.abellTextMap = [];
       } else if (isDeclarationBlock(texts.abellText)) {
         texts.declarationText = texts.abellText;
+        maps.declarationTextMap = [
+          ...maps.abellTextMap,
+          { pos: token.pos, col: token.col, line: token.line }
+        ];
+        maps.abellTextMap = [];
       } else {
         if (blockState.isInsideCSSBlock) {
           texts.cssText += `\${e(${texts.abellText})}`;
@@ -149,6 +162,7 @@ export const getSyntaxBlocks = (
     out: {
       text: texts.outText,
       blocks: outBlocks
-    }
+    },
+    maps
   };
 };

@@ -27,25 +27,27 @@ export function vitePluginAbell(abellOptions?: AbellOptions): PluginOption {
 
       // transpile abell files into js code
       if (id.endsWith('.abell')) {
-        const jsCode = compile(src, {
+        const { code: jsCode, map } = compile(src, {
           filepath: id,
           cwd: process.cwd()
         });
         let outCode = jsCode;
-        // let outMap = undefined;
+        let outMap = undefined;
         // If loader is not defined, skip the esbuild transform
         if (abellOptions?.esbuild?.loader) {
           const esbuildOut = await transformWithEsbuild(
-            jsCode,
+            jsCode +
+              `//# sourceMappingURL=` +
+              Buffer.from(map.toString()).toString('base64'),
             id,
             abellOptions.esbuild
           );
           outCode = esbuildOut.code;
-          // outMap = esbuildOut.map;
+          outMap = esbuildOut.map;
         }
         return {
-          code: outCode
-          // map: outMap
+          code: outCode,
+          map: outMap ?? map.toString()
         };
       }
     }

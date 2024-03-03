@@ -13,6 +13,13 @@ export type Route = {
   };
 };
 
+export type SourceMapObject = { pos?: number; col?: number; line?: number };
+export type MapsObject = {
+  importTextMap: SourceMapObject[];
+  declarationTextMap: SourceMapObject[];
+  abellTextMap: SourceMapObject[];
+};
+
 export type StyleTagAttributes = Record<string, string | boolean>;
 export type CSSBlockType = {
   text: string;
@@ -27,6 +34,7 @@ export type AbstractSyntaxArrayType = {
     text: string;
     blocks: { text: string }[];
   };
+  maps: MapsObject;
 };
 
 export type AbellOptions = {

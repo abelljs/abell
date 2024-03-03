@@ -1,0 +1,12 @@
+
+    {{
+      import x from './x';
+    }}
+
+    <b>{{ 3 + 4 }}</b>
+    {{
+      /** @declarations */
+      const x = 999;
+    }}
+    <nav>{{ x * 2 }}</nav>
+    

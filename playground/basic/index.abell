@@ -3,13 +3,15 @@
   import footer from './_footer.abell';
 }}
 <html>
+
 <head>
-<style>
-body {
-  background-color: tomato;
-}
-</style>
+  <style>
+    body {
+      background-color: tomato;
+    }
+  </style>
 </head>
+
 <body>
   {{ navbar }}
   <ul class="outer-ul">
@@ -18,4 +20,5 @@ body {
   {{ footer }}
   <script src="./hello.ts" type="module"></script>
 </body>
+
 </html>

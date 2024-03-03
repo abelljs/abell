@@ -1,4 +1,5 @@
 /* eslint-disable max-len */
+import fs from 'fs';
 import path from 'path';
 import { describe, test, expect, vi, beforeAll, afterAll } from 'vitest';
 import { compile } from './index';
@@ -74,7 +75,7 @@ describe('compile()', () => {
     `);
   });
 
-  test('should place declarations and imports at correct places', () => {
+  test.only('should place declarations and imports at correct places', () => {
     const abellCode = `
     {{
       import x from './x';
@@ -92,11 +93,27 @@ describe('compile()', () => {
       filepath: consistentPathJoin(process.cwd(), 'test.abell'),
       cwd: process.cwd()
     });
-    expect(js.trim().replace(`\\\\test.abell`, '/test.abell'))
+
+    fs.writeFileSync(
+      path.resolve(
+        __dirname,
+        '../../utils/__tests__/test-files/original.abell'
+      ),
+      abellCode
+    );
+
+    fs.writeFileSync(
+      path.resolve(__dirname, '../../utils/__tests__/test-files/generated.ts'),
+      js.code +
+        `\n//# sourceMappingURL=data:application/json;base64,` +
+        Buffer.from(js.map.toString()).toString('base64')
+    );
+
+    expect(js.code.replace(`\\\\test.abell`, '/test.abell'))
       .toMatchInlineSnapshot(`
-      "import { default as _path } from 'path';
+        "import { default as _path } from 'path';
         import { evaluateAbellBlock as e } from 'abell';
-        
+
             import x from './x';
           
         const __filename = \\"/test.abell\\";
@@ -117,7 +134,7 @@ describe('compile()', () => {
           \`
         };
         export default html;"
-    `);
+      `);
   });
 
   test('should successfully compile with imports', () => {

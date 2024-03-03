@@ -44,6 +44,7 @@
   "dependencies": {
     "@jridgewell/sourcemap-codec": "^1.4.15",
     "commander": "^7.2.0",
+    "dedent": "^0.7.0",
     "express": "^4.17.2",
     "node-match-path": "^0.6.3",
     "postcss-selector-parser": "^6.0.10",
@@ -52,6 +53,7 @@
     "vite": "4.4.9"
   },
   "devDependencies": {
+    "@types/dedent": "^0.7.0",
     "@types/express": "^4.17.13",
     "@types/stylis": "^4.0.2"
   }
