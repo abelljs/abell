@@ -58,69 +58,102 @@ export function compile(
     htmlOut = getScopedHTML(htmlOut, cssBlocks, options.filepath);
   }
 
-  const IMPORTS_OFFSET = 3;
+  const IMPORTS_OFFSET = 2;
   // const DECLARATIONS_OFFSET = {
   //   line: 9 +
   // }
 
-  // const mapss = [];
-  const importLinesDiff =
-    maps.importTextMap[maps.importTextMap.length - 1].line! -
-    maps.importTextMap[0].line!;
+  // // const mapss = [];
+  // const importLinesDiff =
+  //   maps.importTextMap[maps.importTextMap.length - 1].line! -
+  //   maps.importTextMap[0].line!;
 
-  const DECLARATIONS_OFFSET = {
-    line: 9 + importLinesDiff,
-    col: 2
-  };
+  // const DECLARATIONS_OFFSET = {
+  //   line: 9 + importLinesDiff,
+  //   col: 2
+  // };
 
-  for (const importTextMapIndex in maps.importTextMap) {
-    const importTextMapObj = maps.importTextMap[importTextMapIndex];
-    const idx = Number(importTextMapIndex);
+  // console.dir(maps, { depth: Infinity });
 
-    if (importTextMapObj.col && importTextMapObj.line) {
+  for (const blockMap of maps.filter((map) => map.type === 'import')) {
+    const { start, end } = blockMap;
+    if (typeof start?.col !== undefined && typeof start?.line !== undefined) {
       sourceMap.addMapping({
         generated: {
-          line:
-            idx <= 0
-              ? IMPORTS_OFFSET
-              : IMPORTS_OFFSET +
-                (maps.importTextMap[idx]?.line ?? 0) -
-                (maps.importTextMap[idx - 1]?.line ?? 0),
-          column: importTextMapObj.col
+          line: IMPORTS_OFFSET + start.line,
+          column: start?.col
         },
         source: 'original.abell',
         original: {
-          line: importTextMapObj.line,
-          column: importTextMapObj.col
+          line: start.line,
+          column: start.col
+        }
+      });
+    }
+
+    if (typeof end?.col !== undefined && typeof end?.line !== undefined) {
+      sourceMap.addMapping({
+        generated: {
+          line: IMPORTS_OFFSET + end.line,
+          column: end?.col
+        },
+        source: 'original.abell',
+        original: {
+          line: end.line,
+          column: end.col
         }
       });
     }
   }
 
-  for (const declarationTextMapIndex in maps.declarationTextMap) {
-    const declarationTextMapObj =
-      maps.declarationTextMap[declarationTextMapIndex];
-    const idx = Number(declarationTextMapIndex);
+  // for (const importTextMapIndex in maps.importTextMap) {
+  //   const importTextMapObj = maps.importTextMap[importTextMapIndex];
+  //   const idx = Number(importTextMapIndex);
 
-    if (declarationTextMapObj.col && declarationTextMapObj.line) {
-      sourceMap.addMapping({
-        generated: {
-          line:
-            idx <= 0
-              ? DECLARATIONS_OFFSET.line
-              : DECLARATIONS_OFFSET.line +
-                (maps.declarationTextMap[idx]?.line ?? 0) -
-                (maps.declarationTextMap[idx - 1]?.line ?? 0),
-          column: DECLARATIONS_OFFSET.col + declarationTextMapObj.col
-        },
-        source: 'original.abell',
-        original: {
-          line: declarationTextMapObj.line,
-          column: declarationTextMapObj.col
-        }
-      });
-    }
-  }
+  //   if (importTextMapObj.col && importTextMapObj.line) {
+  //     sourceMap.addMapping({
+  //       generated: {
+  //         line:
+  //           idx <= 0
+  //             ? IMPORTS_OFFSET
+  //             : IMPORTS_OFFSET +
+  //               (maps.importTextMap[idx]?.line ?? 0) -
+  //               (maps.importTextMap[idx - 1]?.line ?? 0),
+  //         column: importTextMapObj.col
+  //       },
+  //       source: 'original.abell',
+  //       original: {
+  //         line: importTextMapObj.line,
+  //         column: importTextMapObj.col
+  //       }
+  //     });
+  //   }
+  // }
+
+  // for (const declarationTextMapIndex in maps.declarationTextMap) {
+  //   const declarationTextMapObj =
+  //     maps.declarationTextMap[declarationTextMapIndex];
+  //   const idx = Number(declarationTextMapIndex);
+
+  //   if (declarationTextMapObj.col && declarationTextMapObj.line) {
+  //     sourceMap.addMapping({
+  //       generated: {
+  //         line:
+  //           idx <= 0
+  //             ? DECLARATIONS_OFFSET.line
+  //             : DECLARATIONS_OFFSET.line +
+  //               (maps.declarationTextMap[idx]?.line ?? 0) -
+  //               (maps.declarationTextMap[idx - 1]?.line ?? 0),
+  //         column: DECLARATIONS_OFFSET.col + declarationTextMapObj.col
+  //       },
+  //       source: 'original.abell',
+  //       original: {
+  //         line: declarationTextMapObj.line,
+  //         column: declarationTextMapObj.col
+  //       }
+  //     });
+  //   }
+  // }
 
   // console.log(mapss);
 

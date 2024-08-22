@@ -86,6 +86,12 @@ describe('compile()', () => {
       /** @declarations */
       const x = 999;
     }}
+
+    <style abell-generated>
+    nav {
+      background: {{ 2 + 3 }}
+    }
+    </style>
     <nav>{{ x * 2 }}</nav>
     `;
 

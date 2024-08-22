@@ -14,6 +14,11 @@ export type Route = {
 };
 
 export type SourceMapObject = { pos?: number; col?: number; line?: number };
+export type BlockMapType = {
+  start?: SourceMapObject;
+  end?: SourceMapObject;
+  type?: 'default' | 'import' | 'declaration';
+};
 export type MapsObject = {
   importTextMap: SourceMapObject[];
   declarationTextMap: SourceMapObject[];
@@ -34,7 +39,7 @@ export type AbstractSyntaxArrayType = {
     text: string;
     blocks: { text: string }[];
   };
-  maps: MapsObject;
+  maps: BlockMapType[];
 };
 
 export type AbellOptions = {
