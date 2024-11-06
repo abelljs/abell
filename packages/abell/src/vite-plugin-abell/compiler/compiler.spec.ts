@@ -36,11 +36,12 @@ describe('compile()', () => {
     });
     expect(js.trim().replace(`\\\\test.abell`, '/test.abell'))
       .toMatchInlineSnapshot(`
-        "import { evaluateAbellBlock as e } from 'abell/dist/utils/evaluateAbellBlock';
+        "import { default as _path } from 'path';
+          import { evaluateAbellBlock as e } from 'abell/dist/utils/evaluateAbellBlock';
           
           const __filename = \\"/test.abell\\";
-          const __dirname = \\"/\\";
-          const root = \\"\\"
+          const __dirname = _path.dirname(__filename);
+          const root = _path.relative(__dirname, \\"/\\");
           export const html = (props = {}) => {
             const Abell = { props, __filename, __dirname };
             
@@ -93,13 +94,14 @@ describe('compile()', () => {
     });
     expect(js.trim().replace(`\\\\test.abell`, '/test.abell'))
       .toMatchInlineSnapshot(`
-        "import { evaluateAbellBlock as e } from 'abell/dist/utils/evaluateAbellBlock';
+        "import { default as _path } from 'path';
+          import { evaluateAbellBlock as e } from 'abell/dist/utils/evaluateAbellBlock';
           
               import x from './x';
             
           const __filename = \\"/test.abell\\";
-          const __dirname = \\"/\\";
-          const root = \\"\\"
+          const __dirname = _path.dirname(__filename);
+          const root = _path.relative(__dirname, \\"/\\");
           export const html = (props = {}) => {
             const Abell = { props, __filename, __dirname };
             
