@@ -1,5 +1,4 @@
 /* eslint-disable max-len */
-import path from 'path';
 import { AbstractSyntaxArrayType } from '../../type-utils.js';
 import tokenize from './generic-tokenizer.js';
 import { getScopedHTML } from './scope-css/index.js';
