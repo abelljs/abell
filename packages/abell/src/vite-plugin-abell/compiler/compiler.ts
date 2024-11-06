@@ -1,4 +1,5 @@
 /* eslint-disable max-len */
+import path from 'path';
 import { AbstractSyntaxArrayType } from '../../type-utils.js';
 import tokenize from './generic-tokenizer.js';
 import { getScopedHTML } from './scope-css/index.js';
@@ -76,13 +77,15 @@ export function compile(
     };
   }
 
+  const __filename = options.filepath;
+  const __dirname = path.dirname(options.filepath);
+
   const jsOut = `
-  import { default as _path } from 'path';
-  import { evaluateAbellBlock as e } from 'abell';
+  import { evaluateAbellBlock as e } from 'abell/dist/utils/evaluateAbellBlock';
   ${importBlock.text}
-  const __filename = ${JSON.stringify(options.filepath)};
-  const __dirname = _path.dirname(__filename);
-  const root = _path.relative(__dirname, ${JSON.stringify(options.cwd)})
+  const __filename = ${JSON.stringify(__filename)};
+  const __dirname = ${JSON.stringify(__dirname)};
+  const root = ${JSON.stringify(path.relative(__dirname, options.cwd ?? ''))}
   export const html = (props = {}) => {
     const Abell = { props, __filename, __dirname };
     ${declarationBlocks.text}

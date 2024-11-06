@@ -1,9 +1,6 @@
 import { test, describe, expect } from 'vitest';
-import {
-  getURLFromFilePath,
-  evaluateAbellBlock,
-  getFilePathFromURL
-} from '../internal-utils';
+import { getURLFromFilePath, getFilePathFromURL } from '../internal-utils';
+import { evaluateAbellBlock } from '../evaluateAbellBlock';
 import { BASE_PATH, prefix } from './test-utils';
 
 describe('getURLFromFilePath()', () => {
