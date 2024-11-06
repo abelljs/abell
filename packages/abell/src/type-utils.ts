@@ -65,6 +65,13 @@ export type AbellOptions = {
    * E.g. if you want to use top-level await in entry.build.ts, you can set target here without having to change target of your final client bundle
    */
   serverBuild?: ViteUserConfig['build'];
+
+  /**
+   * Allows `.abell` files to be imported in client-side code.
+   *
+   * Abell variables like `Abell.root`, `__dirname`, `__filename` etc return empty string when this flag is set
+   */
+  experimentalAllowClientSide?: boolean;
 };
 
 export interface AbellViteConfig extends ViteUserConfig {

@@ -22,7 +22,8 @@ export async function run(
   return new Promise((resolve, reject) => {
     const child = spawn(windowsifyCommand('pnpm'), ['generate'], {
       cwd,
-      stdio
+      stdio,
+      shell: true
     });
     let terminalOutput = '';
 

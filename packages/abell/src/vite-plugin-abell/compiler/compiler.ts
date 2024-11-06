@@ -18,6 +18,7 @@ interface CompileOptions {
   filepath: string;
   cwd?: string;
   outputType?: 'js-string' | 'syntax-blocks';
+  isClientSide?: boolean;
 }
 
 interface HTMLOutputCompileOptions extends CompileOptions {
@@ -77,12 +78,20 @@ export function compile(
   }
 
   const jsOut = `
-  import { default as _path } from 'path';
-  import { evaluateAbellBlock as e } from 'abell';
+  ${options.isClientSide ? '' : `import { default as _path } from 'path';`}
+  import { evaluateAbellBlock as e } from 'abell/dist/utils/evaluateAbellBlock';
   ${importBlock.text}
-  const __filename = ${JSON.stringify(options.filepath)};
-  const __dirname = _path.dirname(__filename);
-  const root = _path.relative(__dirname, ${JSON.stringify(options.cwd)})
+  const __filename = ${
+    options.isClientSide ? '"";' : JSON.stringify(options.filepath)
+  };
+  const __dirname = ${
+    options.isClientSide ? '"";' : '_path.dirname(__filename);'
+  }
+  const root = ${
+    options.isClientSide
+      ? '"";'
+      : `_path.relative(__dirname, ${JSON.stringify(options.cwd)});`
+  }
   export const html = (props = {}) => {
     const Abell = { props, __filename, __dirname };
     ${declarationBlocks.text}

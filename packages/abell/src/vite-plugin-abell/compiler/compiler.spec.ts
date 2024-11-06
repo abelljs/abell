@@ -36,21 +36,21 @@ describe('compile()', () => {
     });
     expect(js.trim().replace(`\\\\test.abell`, '/test.abell'))
       .toMatchInlineSnapshot(`
-      "import { default as _path } from 'path';
-        import { evaluateAbellBlock as e } from 'abell';
-        
-        const __filename = \\"/test.abell\\";
-        const __dirname = _path.dirname(__filename);
-        const root = _path.relative(__dirname, \\"/\\")
-        export const html = (props = {}) => {
-          const Abell = { props, __filename, __dirname };
+        "import { default as _path } from 'path';
+          import { evaluateAbellBlock as e } from 'abell/dist/utils/evaluateAbellBlock';
           
-          return \`
-          <nav>hello</nav>
-          \`
-        };
-        export default html;"
-    `);
+          const __filename = \\"/test.abell\\";
+          const __dirname = _path.dirname(__filename);
+          const root = _path.relative(__dirname, \\"/\\");
+          export const html = (props = {}) => {
+            const Abell = { props, __filename, __dirname };
+            
+            return \`
+            <nav>hello</nav>
+            \`
+          };
+          export default html;"
+      `);
   });
 
   test('should create first block as declaration block with declarations comment', () => {
@@ -94,30 +94,30 @@ describe('compile()', () => {
     });
     expect(js.trim().replace(`\\\\test.abell`, '/test.abell'))
       .toMatchInlineSnapshot(`
-      "import { default as _path } from 'path';
-        import { evaluateAbellBlock as e } from 'abell';
-        
-            import x from './x';
+        "import { default as _path } from 'path';
+          import { evaluateAbellBlock as e } from 'abell/dist/utils/evaluateAbellBlock';
           
-        const __filename = \\"/test.abell\\";
-        const __dirname = _path.dirname(__filename);
-        const root = _path.relative(__dirname, \\"/\\")
-        export const html = (props = {}) => {
-          const Abell = { props, __filename, __dirname };
-          
-            /** @declarations */
-            const x = 999;
-          
-          return \`
-          
+              import x from './x';
+            
+          const __filename = \\"/test.abell\\";
+          const __dirname = _path.dirname(__filename);
+          const root = _path.relative(__dirname, \\"/\\");
+          export const html = (props = {}) => {
+            const Abell = { props, __filename, __dirname };
+            
+              /** @declarations */
+              const x = 999;
+            
+            return \`
+            
 
-          <b>\${e( 3 + 4 )}</b>
-          
-          <nav>\${e( x * 2 )}</nav>
-          \`
-        };
-        export default html;"
-    `);
+            <b>\${e( 3 + 4 )}</b>
+            
+            <nav>\${e( x * 2 )}</nav>
+            \`
+          };
+          export default html;"
+      `);
   });
 
   test('should successfully compile with imports', () => {

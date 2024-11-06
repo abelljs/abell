@@ -29,7 +29,8 @@ export function vitePluginAbell(abellOptions?: AbellOptions): PluginOption {
       if (id.endsWith('.abell')) {
         const jsCode = compile(src, {
           filepath: id,
-          cwd: process.cwd()
+          cwd: process.cwd(),
+          isClientSide: abellOptions?.experimentalAllowClientSide ?? false
         });
         let outCode = jsCode;
         // If loader is not defined, skip the esbuild transform

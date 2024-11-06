@@ -4,4 +4,3 @@ export { vitePluginAbell } from './vite-plugin-abell/index.js';
 export { defineConfig, makeRoutesFromGlobImport } from './utils/api.js';
 
 export { Route, AbellViteConfig } from './type-utils.js';
-export { evaluateAbellBlock } from './utils/internal-utils.js';
