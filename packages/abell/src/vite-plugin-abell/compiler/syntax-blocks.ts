@@ -20,13 +20,22 @@ const ideal = {
   ]
 };
 
+type Pos =
+  | {
+      pos?: number;
+      col?: number;
+      line?: number;
+    }
+  | {};
+
 export const getSyntaxBlocks = (
   tokens: Token<TokenSchemaType>[],
   { isPage }: { isPage: boolean }
 ): any => {
   const blocks: {
-    type: 'import' | 'declaration' | 'abell-text' | 'css-text' | 'text';
+    type: 'abell-text' | 'css-text' | 'text';
     text: string;
+    pos?: { start: Pos; end: Pos };
     abellBlockProperties?: {
       blockCount: number;
       isInsideCSSBlock: boolean;
@@ -40,33 +49,57 @@ export const getSyntaxBlocks = (
   const blockState = {
     abell: {
       isInsideAbellBlock: false,
-      blockCount: 0
+      blockCount: 0,
+      posStart: {} as Pos,
+      posEnd: {} as Pos
     },
     css: {
       isInsideCSSBlock: false,
       blockCount: 0,
-      cssBlockAttributes: {}
+      cssBlockAttributes: {},
+      pos: {
+        start: {} as Pos,
+        end: {} as Pos
+      }
     }
   };
 
   for (const token of tokens) {
     switch (token.type) {
       case 'BLOCK_START': {
-        // console.log(token);
         blockState.abell.isInsideAbellBlock = true;
         blockState.abell.blockCount++;
+        blockState.abell.posStart = {
+          pos: token.pos,
+          col: token.col,
+          line: token.line
+        };
         break;
       }
 
       case 'BLOCK_END': {
-        // console.log(token);
+        if (!blockState.abell.isInsideAbellBlock) {
+          throw new Error('Nested Abell Blocks are not Allowed');
+        }
+
         blockState.abell.isInsideAbellBlock = false;
+        blockState.abell.posEnd = {
+          pos: token.pos,
+          col: token.col,
+          line: token.line
+        };
+        console.log(blockState.abell.posStart, blockState.abell.posEnd);
         break;
       }
 
       case 'STYLE_START': {
         blockState.css.isInsideCSSBlock = true;
         blockState.css.blockCount++;
+        blockState.css.pos.start = {
+          pos: token.pos,
+          col: token.col,
+          line: token.line
+        };
         if (token.matches?.[0]) {
           blockState.css.cssBlockAttributes = parseAttributes(token.matches[0]);
         } else {
@@ -77,6 +110,11 @@ export const getSyntaxBlocks = (
 
       case 'STYLE_END': {
         blockState.css.isInsideCSSBlock = false;
+        blockState.css.pos.end = {
+          pos: token.pos,
+          col: token.col,
+          line: token.line
+        };
         blockState.css.cssBlockAttributes = {};
         break;
       }
@@ -86,6 +124,10 @@ export const getSyntaxBlocks = (
           blocks.push({
             type: 'abell-text',
             text: token.text,
+            pos: {
+              start: blockState.abell.posStart,
+              end: blockState.abell.posEnd
+            },
             abellBlockProperties: {
               blockCount: blockState.abell.blockCount,
               isInsideCSSBlock: blockState.css.isInsideCSSBlock
@@ -95,11 +137,13 @@ export const getSyntaxBlocks = (
           blocks.push({
             type: 'css-text',
             text: token.text,
+            pos: blockState.css.pos,
             cssBlockProperties: {
               attributes: blockState.css.cssBlockAttributes,
               blockCount: blockState.css.blockCount
             }
           });
+          blockState.css.pos = { start: {}, end: {} };
         } else {
           blocks.push({
             type: 'text',
@@ -110,7 +154,7 @@ export const getSyntaxBlocks = (
     }
   }
 
-  console.log(blocks);
+  console.dir(blocks, { depth: 5 });
 
   return {
     blocks: []

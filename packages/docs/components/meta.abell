@@ -44,4 +44,4 @@
 
 <link rel="preload" onload="this.rel = 'stylesheet'" as="style"
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;{{ boldFontWeight }}&display=swap">
-<link rel="stylesheet" href="/client/global.scss" />
+<link rel="preload" onload="this.rel = 'stylesheet'" as="style" href="/client/global.scss" />
