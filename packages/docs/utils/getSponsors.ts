@@ -15,7 +15,6 @@ export const getSponsors = async () => {
     'https://ghs.vercel.app/v2/sponsors/saurabhdaware'
   ).then((res) => res.json());
 
-  // Current and past are swapped - https://github.com/filiptronicek/gh-sponsors-api/issues/27
-  const sponsors = sponsorsData.sponsors.past;
+  const sponsors = sponsorsData.sponsors.current;
   return sponsors;
 };
