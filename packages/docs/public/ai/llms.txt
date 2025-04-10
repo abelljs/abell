@@ -1,0 +1,279 @@
+# Abell Documentation
+
+Abell is a low-level, highly flexible, framework-agnostic, Vite-powered Static-Site-Generator for building fast and zero-js by default websites.
+
+## Getting Started
+
+<NoteBlock title="Compatibility Note">
+
+- Abell v1 requires [Node.js 16+](https://nodejs.org)
+- Syntax Highlighting: you can check out [Abell Language Features VSCode Extension](https://marketplace.visualstudio.com/items?itemName=saurabh.abell-language-features)
+
+</NoteBlock>
+
+### Scaffold Project with CLI
+
+Use **`create-abell`** package to start a project with boilerplate
+
+```shell
+npx create-abell my-abell-site
+```
+
+### Start with Zero Config Setup
+
+Don't like boilerplates? You just need 1 file to run Abell project!
+
+1. `npm install --save-dev abell@next`
+2. Create `index.abell` on root
+3. `npx abell dev` and your dev-server will start running 🥳
+
+`index.abell`
+
+```abell
+{{
+  /** @declarations */
+  const a = 'Hello, ';
+  const b = 'World 🌻';
+}}
+
+<html>
+<body>{{ a + b.toUpperCase() }}</body>
+</html>
+```
+
+`package.json`
+
+```json
+{
+  "name": "vite-abell",
+  "type": "module",
+  "scripts": {
+    "start": "abell dev",
+    "build": "abell generate"
+  },
+  "dependencies": {
+    "abell": "*"
+  }
+}
+```
+
+You can add `abell dev` and `abell generate` scripts in your package.json to simplify
+running commands (check `package.json` file in above example)
+
+### Community
+
+Got stuck somewhere? Feel free to ask for help at [GitHub Discussions](https://github.com/abelljs/abell/discussions) or [Discord Channel](https://discord.gg/ndsVpRG)
+
+## Syntax Guide
+
+This section explains the syntax of `.abell` files
+
+### JS-in-HTML Syntax
+
+In `.abell` files you can write JavaScript code inside the double curly braces.
+
+This code gets evaluated during build-time and the output is injected into HTML.
+
+```abell
+<body>{{ 2 + 1 }}</body>
+// Outputs: <body>3</body>
+```
+
+### Imports
+
+Imports are allowed in the first block of the file. You can import anything that Vite allows you to import.
+
+```abell
+{{
+  import { add } from './calculate.ts';
+}}
+
+<body>{{ add(2, 1) }}</body>
+```
+
+You can also extend the type of files you can import using Vite Plugins. E.g. You can use [vite-plugin-md-to-html](https://github.com/saurabhdaware/vite-plugin-md-to-html) to use `.md` imports
+
+### Variable Declarations
+
+In Abell, you can mark a block as declaration block using `/** @declarations */` comment
+
+```abell
+{{
+  /** @declarations */
+  const a = 3;
+  const b = 9;
+}}
+<body>{{ a + b }}</body>
+```
+
+**Note:** This is required because in JavaScript, assignments return values which abell might try to print unless `/** @declarations */` comment is used
+
+### Loops & Conditions
+
+You can use `.map` to loop over array. You can also ternary operators for any conditions.
+
+```abell
+<html>
+  {{
+    /** @declarations */
+    const fruits = ['apple', 'banana', 'orange'];
+  }}
+  <body>
+    <ul>
+    {{
+      fruits.map((fruit) => {
+        if (fruit === 'orange') {
+          return null;
+        }
+        return /* html */\`<li>${fruit}</li>`
+      })
+    }}
+    </ul>
+  </body>
+</html>
+```
+
+But... What if I hate writing `.map`? or using ternary operators in complex conditions?
+
+### Immediately Invoked Function Expressions
+
+If you write a function in abell block, It automatically gets invoked with empty params.
+
+Which means if you don't like writing `.map` or using ternary operators, You can write the good old `For` loops or `if-else` conditions inside function and return the value you want to print.
+
+```abell
+<html>
+  {{
+    /** @declarations */
+    const fruits = ['apple', 'banana', 'orange'];
+  }}
+  <body>
+    {{
+      // defined functions are automatically invoked by abell
+      () => {
+        if (fruits.includes('apple')) {
+          return /* html */`Array contains <b>apple</b>!! 🍎`;
+        }
+        return 'Array does not contain apple';
+      }
+    }}
+  </body>
+<html>
+```
+
+### Components
+
+Abell has native component support. It allows you to make your HTML, CSS code reusable.
+
+You can define component starting with `_` to tell abell to not create a page of it in final output. You can also opt-out of this `_` rule (and file-system routing) by using [Custom Routing](/custom-routing).
+
+#### `_navbar.abell`
+
+```abell
+{{
+  /** @declarations */
+  const links = [
+    {
+      title: 'Home',
+      href: '/',
+    },
+    {
+      title: 'About',
+      href: '/about'
+    }
+  ]
+}}
+<nav>
+  <ul>
+    {{
+      links.map((link) => /* html */`
+        <li>
+          <a
+            href="${link.href}"
+            class="${link.href === props.href ? 'active' : ''}"
+          >
+            ${link.title}
+          </a>
+        </li>
+      `)
+    }}
+  </ul>
+</nav>
+
+<!--
+  styles are scoped for component by default.
+  You can use scoped="false" attribute to make styles global
+-->
+<style>
+nav {
+  background-color: #eee;
+  color: #222;
+  padding: 4px 8px;
+}
+
+ul {
+  list-style: none;
+  display: flex;
+  gap: 12px;
+  padding: 0px;
+  margin: 0px;
+}
+
+a {
+  text-decoration: none;
+  color: #000;
+}
+
+a.active {
+  color: #2E3ECC;
+  font-weight: bold;
+}
+</style>
+```
+
+#### `index.abell`
+
+```abell
+{{
+  import navbar from './_navbar.abell';
+}}
+<html>
+<head>
+  <link rel="stylesheet" href="./global.css" />
+</head>
+<body>
+  {{ navbar({ href: '/' }) }}
+  <main>
+    <h2>Index Page</h2>
+    <p>This is coming from index.abell file</p>
+  </main>
+</body>
+</html>
+```
+
+#### Passing Props
+
+Whenever you import a `.abell` file, it returns a javascript function that can render the HTML.
+
+The first argument you pass to this function can be read from variable `props` in the imported file.
+
+E.g.
+
+```abell
+<!-- index.abell -->
+{{
+  import greet from './greet.abell';
+}}
+<body>
+  {{ greet({ msg: 'Abell is here!!' }) }}
+</body>
+```
+
+Now we can read the `msg` with `props.msg` in `greet.abell` file
+
+```abell
+<!-- greet.abell -->
+
+<h2>{{ props.msg }}</h2>
+<!-- Outputs: <h2>Abell is here!!</h2> -->
+```
