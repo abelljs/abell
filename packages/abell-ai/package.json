@@ -1,0 +1,41 @@
+{
+  "name": "abell-ai",
+  "description": "AI tools related to Abell. Currently includes MCP of Abell",
+  "version": "0.0.1",
+  "main": "dist/index.js",
+  "bin": {
+    "abell-ai": "dist/bin.js"
+  },
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc --project tsconfig.build.json",
+    "inspect": "npx @modelcontextprotocol/inspector node dist/bin.js mcp"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abelljs/abell.git"
+  },
+  "keywords": [
+    "ssg",
+    "abell",
+    "mcp"
+  ],
+  "author": "saurabhdaware",
+  "bugs": {
+    "url": "https://github.com/abelljs/abell/issues"
+  },
+  "homepage": "https://abelljs.org",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.10.2",
+    "zod": "^3.24.3"
+  },
+  "devDependencies": {
+    "@modelcontextprotocol/inspector": "^0.11.0"
+  }
+}
