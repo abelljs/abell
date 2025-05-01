@@ -25,12 +25,25 @@ server.tool(
   'This is to help understand the syntax of Abell and get basic understanding of abell',
   {},
   async () => {
-    const syntaxGuide = await fetch('https://abelljs.org/llms.txt').then(
-      (res) => res.text()
-    );
-    return {
-      content: [{ type: 'text', text: syntaxGuide }]
-    };
+    try {
+      const syntaxGuide = await fetch('https://abelljs.org/llms.txt').then(
+        (res) => res.text()
+      );
+      return {
+        content: [{ type: 'text', text: syntaxGuide }]
+      };
+    } catch (err: unknown) {
+      console.log(err);
+      return {
+        isError: true,
+        content: [
+          {
+            type: 'text',
+            text: String(err)
+          }
+        ]
+      };
+    }
   }
 );
 
@@ -47,9 +60,10 @@ server.tool(
       .string()
       .describe(
         'Current working directory of user. Ensure project is created in current directory and not root directory or somewhere outside'
-      )
+      ),
+    installer: z.enum(['skip', 'npm', 'pnpm', 'yarn', 'bun'])
   },
-  async ({ projectName = '.', cwd }) => {
+  async ({ projectName = '.', cwd, installer = 'skip' }) => {
     const projectSlugName = projectName.toLowerCase().replace(/ |_/g, '-');
     const projectPath = path.join(cwd, projectSlugName);
 
@@ -69,7 +83,7 @@ server.tool(
     }
 
     execSync(
-      `npx -y create-abell@latest ${projectName} --installer skip --template default`,
+      `npx -y create-abell@latest ${projectName} --installer ${installer} --template default`,
       { stdio: 'inherit', cwd }
     );
 
@@ -77,7 +91,7 @@ server.tool(
       content: [
         {
           type: 'text',
-          text: `Scaffolded ${projectName}`
+          text: `Scaffolded ${projectName}. Install dependencies if not already installed and Run "dev" script from package.json file`
         }
       ]
     };

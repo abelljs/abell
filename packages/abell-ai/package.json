@@ -1,7 +1,7 @@
 {
   "name": "abell-ai",
   "description": "AI tools related to Abell. Currently includes MCP of Abell",
-  "version": "0.0.1",
+  "version": "0.0.7",
   "main": "dist/index.js",
   "bin": {
     "abell-ai": "dist/bin.js"
@@ -14,7 +14,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc --project tsconfig.build.json",
-    "inspect": "npx @modelcontextprotocol/inspector node dist/bin.js mcp"
+    "inspect": "pnpm build && npx @modelcontextprotocol/inspector node dist/bin.js mcp",
+    "prepublishOnly": "pnpm build"
   },
   "repository": {
     "type": "git",
