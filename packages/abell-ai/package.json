@@ -1,7 +1,7 @@
 {
   "name": "abell-ai",
   "description": "AI tools related to Abell. Currently includes MCP of Abell",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "main": "dist/index.js",
   "bin": {
     "abell-ai": "dist/bin.js"

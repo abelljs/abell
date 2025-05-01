@@ -22,7 +22,7 @@ const server = new McpServer({
 // Add an addition tool
 server.tool(
   'get_abell_syntax',
-  'This is to help understand the syntax of Abell and get basic understanding of abell',
+  "This is to help understand the syntax of Abell and get basic understanding of abell. Call this tool everytime you're working with .abell files or need to show abell code snippets",
   {},
   async () => {
     try {
