@@ -1,0 +1,22 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-07-09/server.schema.json",
+  "name": "io.github.abelljs/abell",
+  "description": "AI tools related to Abell. Currently includes MCP of Abell",
+  "status": "active",
+  "repository": {
+    "url": "https://github.com/abelljs/abell",
+    "source": "github"
+  },
+  "version": "0.0.9",
+  "packages": [
+    {
+      "registry_type": "npm",
+      "registry_base_url": "https://registry.npmjs.org",
+      "identifier": "abell-ai",
+      "version": "0.0.9",
+      "transport": {
+        "type": "stdio"
+      }
+    }
+  ]
+}

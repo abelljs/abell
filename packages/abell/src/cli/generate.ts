@@ -49,9 +49,11 @@ async function generate(): Promise<void> {
   // Generate server build
   await viteBuild({
     build: {
+      ...viteConfigObj.abell?.serverBuild,
       outDir: TEMP_OUTPUT_DIR,
       ssr: true,
       rollupOptions: {
+        ...viteConfigObj.abell?.serverBuild?.rollupOptions,
         input: SOURCE_ENTRY_BUILD_PATH,
         external: ['abell'],
         onLog: (level, logObj) => {
@@ -61,8 +63,7 @@ async function generate(): Promise<void> {
           }
         }
       },
-      ssrManifest: true,
-      ...viteConfigObj.abell?.serverBuild
+      ssrManifest: true
     },
     ssr: {
       external: ['abell']
