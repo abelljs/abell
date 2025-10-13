@@ -1,0 +1,13 @@
+{{
+  import navbar from './_components/navbar.abell';
+  import globalMeta from './_components/global.meta.abell';
+}}
+<html>
+<head>
+  {{ globalMeta({ title: 'About Page' }) }}
+</head>
+<body>
+  {{ navbar({ activeRoute: '/about' }) }}
+  <div class="container">Welcome to About Page 📚</div>
+</body>
+</html>

@@ -1,0 +1,24 @@
+{{
+  import config from './config';
+  import counter from './_components/counter.abell'
+  import h from './_components/h.abell'
+  import logo from './_components/logo.abell'
+  import navbar from './_components/navbar.abell'
+  import globalMeta from './_components/global.meta.abell'
+}}
+<html>
+<head>
+  {{ globalMeta }}
+</head>
+<body>
+  <main class="container">
+    {{ navbar({ activeRoute: '/' }) }}
+      {{ logo() }}
+      {{ h({ level: 2, text: config.title, classes: "font-bold m-8 text-3xl" }) }}
+      <p class="subtext">Welcome to Abell's Default TailwindCSS Template 🚀</p>
+      <a class="button primary" href="https://abelljs.org/" target="_blank">View Documentation</a>
+    {{ counter() }}
+  </main>
+  <script src="./client-assets/index-client.js" type="module"></script>
+</body>
+</html>

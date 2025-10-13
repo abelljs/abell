@@ -1,0 +1,9 @@
+{{
+  import globalMeta from './_components/global.meta.abell'
+}}
+
+<div class="container mx-auto gridplace-items-center">
+  <button class="button secondary" id="counter-button">
+    Counter <span id="count">0</span>
+  </button>
+</div>
