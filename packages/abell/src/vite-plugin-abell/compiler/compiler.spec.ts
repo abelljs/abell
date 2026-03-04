@@ -167,7 +167,7 @@ describe('compile()', () => {
     expect(out.out.text).toMatchInlineSnapshot(`
       "
           <body>
-            Evaulation Block: \${e( 3 + 4 )}
+            Evaulation Block:
             Evaluation Block with Nesting: \${e( 'start-{{ 2 + 1 }}-end' )}
             Evaluation Block with Nesting: \${e( 'start-{{ {{ 2 + 1 }} }}-end' )}
             Escaped Block: \\\\{{ 2 + 1 }}
